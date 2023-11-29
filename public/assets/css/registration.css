@@ -176,25 +176,47 @@
   padding: 25px;
 }
 
-@media (max-height: 970px) {
-  .submission-message {
-    margin: 20% auto 20%;
-    height: 650px;
+@media (max-width: 767px) {
+  .stepper-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto; 
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    scrollbar-width: thin; 
+    scrollbar-color: gray lightgray; 
+  }
+
+  .stepper-item {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0 5px;
+  }
+
+  .stepper-number {
+    font-size: 14px; 
+    padding: 4px 8px;
+  }
+
+  .stepper-desc {
+    font-size: 9px;
+    max-width: 65px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    -webkit-line-clamp: 3;
+    -ms-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    -ms-box-orient: vertical;
+    line-height: 1.3em;
   }
 }
 
-.submission-message h1 {
-  height: 90%;
-  max-height: 90%;
-  padding-left: 50px;
-  padding-right: 50px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-}
 
-.home-button {
-  float: right;
-  align-self: flex-end;
-}

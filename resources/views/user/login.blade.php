@@ -60,16 +60,34 @@
     <!----------LOGIN----------->
     <main>
         <div class="container login">
+            <div class="mt-5">
+                @if ($errors->any())
+                    <div class="col-12">
+                        @foreach ($errors->all() as $error)
+                            <div class="alert alert-danger">{{$error}}</div>
+                        @endforeach
+                    </div>
+                @endif
+    
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">{{session('error')}}</div>
+                @endif
+    
+                @if (session()->has('success'))
+                    <div class="alert alert-success">{{session('success')}}</div>
+                @endif
+            </div>
             <div class="forms">
                 <div class="form login">
                     <span class="title1">Login to your account</span>
-                    <form action="#">
+                    <form action="{{ route('login.post') }}" method="POST">
+                        @csrf
                         <div class="input-field">
-                            <input type="text" placeholder="Enter your email" required>
+                            <input type="email" placeholder="Enter your email" name="email" required>
                             <i class="uil uil-envelope icon"></i>
                         </div>
                         <div class="input-field">
-                            <input type="password" class="password" placeholder="Enter your password" required>
+                            <input type="password" class="password" placeholder="Enter your password" name="password" required>
                             <i class="uil uil-lock icon"></i>
                             <i class="uil uil-eye-slash showHidePw"></i>
                         </div>
@@ -84,7 +102,7 @@
                         </div>
 
                         <div class="input-field button">
-                            <input type="button" value="Login">
+                            <button type="submit">Login</button>
                         </div>
                     </form>
 

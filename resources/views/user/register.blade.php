@@ -58,6 +58,23 @@
     </header>
 
     <div class="registration-container">
+        <div class="mt-5">
+            @if ($errors->any())
+                <div class="col-12">
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger">{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
+
+            @if (session()->has('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+
+            @if (session()->has('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+        </div>
         <!-- ======= STEP REGISTRATION ======= -->
         <h1 class="registration">REGISTRATION</h1>
         <div class="stepper stepper-pills" id="registration">
@@ -133,7 +150,9 @@
             </div>
         </div>
 
-        <form class="form w-lg-500px mx-auto" action="/" novalidate="novalidate" id="step-content">
+        <form class="form w-lg-500px mx-auto" action="{{ route('register.post') }}" method="POST"
+            id="step-content">
+            @csrf
             <!-- ======= STEP 1 ======= -->
             <div class="container mt-5 step-content active" id="step1Content">
                 <div class="row">
@@ -192,14 +211,15 @@
                         <div class="form-group">
                             <label for="firstname">First Name <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" id="firstname" placeholder="" required>
+                            <input type="text" class="form-control" id="firstname" placeholder=""
+                                required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="lastname">Last Name <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" id="lastname" placeholder="">
+                            <input type="text" class="form-control" id="lastname" placeholder="" required>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -621,14 +641,16 @@
                         <div class="form-group">
                             <label for="firstname">Email <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" id="email" placeholder="" required>
+                            <input type="email" class="form-control" name="email" id="email" placeholder=""
+                                required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="lastname">Password <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="password" class="form-control" id="password" placeholder="">
+                            <input type="password" class="form-control" name="password" id="password"
+                                placeholder="" required>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -656,7 +678,7 @@
                         Next
                     </button>
                     <button type="submit" class="btn btn-primary submit-button" id="submitButton"
-                    data-kt-stepper-action="submit" style="display: none;">
+                        data-kt-stepper-action="submit" style="display: none;">
                         Submit
                     </button>
                 </div>

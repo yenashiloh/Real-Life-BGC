@@ -19,8 +19,14 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [UserController::class, 'index']);
+Route::get('/home', function () {
+    return view('user.home');
+})->name('home');
+
 Route::get('/announcement', [UserController::class, 'announcement'])->name('announcement');
 Route::get('/contact', [UserController::class, 'contact'])->name('contact');
 Route::get('/faq', [UserController::class, 'faq'])->name('faq');
 Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::post('/login', [UserController::class, 'loginPost'])->name('login.post');
 Route::get('/register', [UserController::class, 'register'])->name('register');
+Route::post('/register', [UserController::class, 'registerPost'])->name('register.post');

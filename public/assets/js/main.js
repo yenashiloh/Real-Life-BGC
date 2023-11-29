@@ -491,7 +491,7 @@
 				'GradeEight': ['gradesText', 'grade4Gwa', 'grade5Gwa', 'grade6Gwa', 'reportCard'],
 				'GradeNine': ['gradesText', 'grade5Gwa', 'grade6Gwa', 'grade7Gwa', 'reportCard'],
 				'GradeTen': ['gradesText', 'grade6Gwa', 'grade7Gwa', 'grade8Gwa', 'reportCard'],
-				'GradeEleven': ['gradesText', 'grade7Gwa', 'grade8Gwa', 'grade9Gwa', 'reportCard', 'g11FirstSem', 'g11SecondSem', 'g11ThirdSem', 'g11FourthSem'],
+				'GradeEleven': ['gradesText', 'grade7Gwa', 'grade8Gwa', 'grade9Gwa', 'reportCard'],
 				'GradeTwelve': ['gradesText', 'grade8Gwa', 'grade9Gwa', 'grade10Gwa', 'reportCard'],
 				'FirstYear': ['gradesText', 'grade9Gwa', 'grade10Gwa', 'grade11Sem', 'schoolApplicationText', 'schoolChoice1', 'schoolChoice2', 'schoolChoice3', 'courseChoice1', 'courseChoice2', 'courseChoice3'],
 				'SecondYear': ['gradesText', 'grade10Gwa', 'grade11Sem', 'grade12Sem'],

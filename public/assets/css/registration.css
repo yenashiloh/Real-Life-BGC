@@ -138,7 +138,27 @@
   border: 1px solid #B0B0B0;
   box-shadow: 1px 1px 1px rgba(92, 92, 92, 0.4);
 }
+.stepper-nav {
+  position: relative;
+  padding-bottom: 10px; 
+}
 
+.stepper-nav::before {
+  content: "";
+  position: absolute;
+  bottom: 70%; 
+  left: 0;
+  width: 80%;
+  height: 1px;
+  margin-left:10% ;
+  background-color: #000; 
+  z-index: -1;
+}
+
+.stepper-item {
+  position: relative;
+  z-index: 1;
+}
 /* submission message  */
 
 .submission-message {

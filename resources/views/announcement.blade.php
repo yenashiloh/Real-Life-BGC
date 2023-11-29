@@ -1,6 +1,7 @@
 @include('partials.header')
 
 <!-- ======= FAQ Section ======= -->
+
 <section id="contact" class="contact">
     <div class="container">
         <div class="section-title">

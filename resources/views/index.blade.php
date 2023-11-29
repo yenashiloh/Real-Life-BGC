@@ -22,7 +22,7 @@
     <section class="about" id="mission_statement">
         <div class="container">
             <div class="section-title">
-                <h2>Mission Statements</h2>
+                <h2>Mission Statement</h2>
                 <p style="font-size: 19px; color: #454545;">Real LIFE Foundation is a Philippine nongovernmental
                     organization that exists to honor God by serving and empowering the underprivileged youth of the
                     Philippines through educational assistance, character formation, and leadership development.</p>

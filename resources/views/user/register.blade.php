@@ -214,8 +214,7 @@
                         <div class="form-group">
                             <label for="firstname">First Name <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" id="firstname" placeholder=""
-                                required>
+                            <input type="text" class="form-control" id="firstname" placeholder="" required>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -671,7 +670,7 @@
             <div class="d-flex justify-content-between mt-3">
                 <div>
                     <button type="button" class="btn btn-secondary custom-margin-right previous-button"
-                        id="previousButton" data-kt-stepper-action="previous">
+                        id="previousButton" data-kt-stepper-action="previous" style="display: none">
                         Previous
                     </button>
                 </div>

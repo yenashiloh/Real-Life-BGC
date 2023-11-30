@@ -102,13 +102,13 @@
                         </div>
 
                         <div class="input-field button">
-                            <button type="submit">Login</button>
+                            <input type="submit" value="Login">
                         </div>
                     </form>
 
                     <div class="login-signup">
                         <span class="text">You want to apply?
-                            <a href="registration.html" class="text signup-link">Apply Now</a>
+                            <a href="/register" class="text signup-link">Apply Now</a>
                         </span>
                     </div>
                 </div>

@@ -88,7 +88,7 @@
                         </div>
                         <div class="input-field">
                             <input type="password" class="password" placeholder="Enter your password" name="password" required>
-                            <i class="uil uil-lock icon"></i>
+                            <i class="uil uil-lock icon"></i>   
                             <i class="uil uil-eye-slash showHidePw"></i>
                         </div>
 

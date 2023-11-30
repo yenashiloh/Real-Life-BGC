@@ -102,7 +102,7 @@
                         </div>
 
                         <div class="input-field button">
-                            <button type="submit">Login</button>
+                            <input type="submit" value="Login">
                         </div>
                     </form>
 

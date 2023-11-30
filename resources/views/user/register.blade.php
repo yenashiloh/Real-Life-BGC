@@ -149,6 +149,9 @@
                 </div>
             </div>
         </div>
+        <div class="alert alert-danger mt-4" id="errorMessageFillout" style="display: none;"></div>
+
+
 
         <form class="form w-lg-500px mx-auto" action="{{ route('register.post') }}" method="POST"
             id="step-content">
@@ -260,7 +263,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="barangay">Municipality <span
+                            <label for="municipality">Municipality <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                             <input type="text" class="form-control" id="municipality" placeholder="" required>
                         </div>

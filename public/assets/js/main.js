@@ -307,6 +307,7 @@
 			errorMessage.style.display = 'block';
 		};
 
+		
 		const currentStep = document.querySelector('.stepper-item.current');
 		const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);
 		elements.previousButton.style.display = currentIndex === 0 ? 'none' : 'block';
@@ -314,7 +315,7 @@
 		elements.previousButton.addEventListener('click', function () {
 			const currentStep = document.querySelector('.stepper-item.current');
 			const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);
-
+		
 			if (currentIndex > 0) {
 				const previousStep = elements.stepperItems[currentIndex - 1];
 				if (previousStep) {
@@ -327,11 +328,16 @@
 
 			handleStepperNumberColors(currentIndex - 1);
 			displayStepContent(currentIndex - 1);
-
 			elements.previousButton.style.display = currentIndex === 1 ? 'none' : 'block';
-			elements.continueButton.textContent = 'Next';
+
+			if (currentIndex === 4) {
+				elements.submitButton.style.display = 'none';
+				elements.continueButton.style.display = 'block';
+				elements.continueButton.textContent = 'Next';
+			}
 		});
 
+		
 		elements.continueButton.addEventListener('click', function () {
 			const currentStep = document.querySelector('.stepper-item.current');
 			const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);
@@ -375,10 +381,13 @@
 			if(currentIndex === elements.stepperItems.length - 2){
 				elements.continueButton.style.display = 'none';
 				elements.submitButton.style.display = 'block';
+				
 			}
+			
 		});
 
-
+		
+		
 
 		const handleStepperNumberColors = (currentIndex) => {
 			elements.stepperItems.forEach((item, index) => {
@@ -677,3 +686,5 @@
 		});
 	});
 })()
+
+

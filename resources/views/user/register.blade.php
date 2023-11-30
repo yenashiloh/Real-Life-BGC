@@ -44,7 +44,7 @@
 
             <nav id="navbar" class=" navbar">
                 <ul>
-                    <li><a class="nav-link scrollto " href="/">Homes</a></li>
+                    <li><a class="nav-link scrollto " href="/">Home</a></li>
                     <li><a class="nav-link scrollto" href="/announcement">Announcement</a></li>
                     <li><a class="nav-link scrollto" href="/contact">Contact Us</a></li>
                     <li><a class="nav-link scrollto " href="/faq">FAQ</a></li>

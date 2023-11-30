@@ -307,7 +307,6 @@
 			errorMessage.style.display = 'block';
 		};
 
-		
 		const currentStep = document.querySelector('.stepper-item.current');
 		const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);
 		elements.previousButton.style.display = currentIndex === 0 ? 'none' : 'block';

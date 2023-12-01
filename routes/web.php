@@ -34,7 +34,7 @@ Route::post('/register', [UserController::class, 'registerPost'])->name('registe
 
 //admin
 Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin-login', [AdminController::class, 'loginPost'])->name('admin.login');
+Route::post('/admin-login', [AdminController::class, 'loginPost'])->name('admin.login.post');
 Route::get('/admin-registration', [AdminController::class, 'showRegistrationForm'])->name('admin.registration');
 Route::post('/admin-registration', [AdminController::class, 'register'])->name('admin.register.submit');
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');

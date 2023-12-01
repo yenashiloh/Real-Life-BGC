@@ -48,6 +48,22 @@
                     <p class="text-center small">Enter your personal details to create account</p>
                   </div>
 
+                   @if ($errors->any())
+                      <div class="alert alert-danger">
+                          <ul>
+                              @foreach ($errors->all() as $error)
+                                  <li>{{ $error }}</li>
+                              @endforeach
+                          </ul>
+                      </div>
+                  @endif
+
+                  @if(session('success'))
+                      <div class="alert alert-success">
+                          {{ session('success') }}
+                      </div>
+                  @endif
+
                   <form action="{{ route('admin.register.submit') }}" method="POST" class="row g-3 needs-validation" novalidate>
                     @csrf
                     <div class="col-12">
@@ -70,12 +86,12 @@
                       <label for="yourPassword" class="form-label">Password</label>
                       <input type="password" name="password" class="form-control" id="password" required>
                       <div class="invalid-feedback">Please enter your password!</div>
-                    </div>
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">Confirm Password</label>
-                      <input type="password" name="password" class="form-control" id="confirm_password" required>
-                      <div class="invalid-feedback">Please enter your confirm password!</div>
-                    </div>
+                  </div>
+                  <div class="col-12">
+                      <label for="yourConfirmPassword" class="form-label">Confirm Password</label>
+                      <input type="password" name="password_confirmation" class="form-control" id="confirm_password" required>
+                      <div class="invalid-feedback">Please confirm your password!</div>
+                  </div>
                     <div class="col-12">
                       <button class="btn btn-primary w-100" type="submit">Create Account</button>
                     </div>

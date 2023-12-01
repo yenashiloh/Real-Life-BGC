@@ -37,6 +37,10 @@ Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('adm
 Route::post('/admin-login', [AdminController::class, 'loginPost'])->name('admin.login');
 Route::get('/admin-registration', [AdminController::class, 'showRegistrationForm'])->name('admin.registration');
 Route::post('/admin-registration', [AdminController::class, 'register'])->name('admin.register.submit');
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+
+
 
 
 

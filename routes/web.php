@@ -40,7 +40,9 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::get('/home', function () {
         return view('user.home');
     })->name('applicant-home');
-    
+    Route::get('/personal-details', function(){
+        return view('user.personal_details');
+    });
     Route::post('/logout', [UserController::class, 'logout']);
 });
 

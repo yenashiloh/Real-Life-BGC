@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>{{$title}}</title>
+    <title>{{ $title }}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -31,8 +31,8 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/login.css" rel="stylesheet">
 
-
-
+    {{-- Popup Message js --}}
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
 <body>
@@ -60,39 +60,19 @@
     <!----------LOGIN----------->
     <main>
         <div class="container login">
-            <div class="mt-5">
-                @if ($errors->any())
-                    <div class="col-12">
-                        @foreach ($errors->all() as $error)
-                            <div class="alert alert-danger">{{$error}}</div>
-                        @endforeach
-                    </div>
-                @endif
-    
-                @if (session()->has('error'))
-                    <div class="alert alert-danger">{{session('error')}}</div>
-                @endif
-
-                @if (session()->has('message'))
-                    <div class="alert alert-success">{{session('message')}}</div>
-                @endif
-    
-                @if (session()->has('success'))
-                    <div class="alert alert-success">{{session('success')}}</div>
-                @endif
-            </div>
             <div class="forms">
                 <div class="form login">
                     <span class="title1">Login to your account</span>
-                    <form action="{{ route('login.post') }}" method="POST">
+                    <form action="{{ route('login.post') }}" method="POST" autocomplete="">
                         @csrf
                         <div class="input-field">
                             <input type="email" placeholder="Enter your email" name="email" required>
                             <i class="uil uil-envelope icon"></i>
                         </div>
                         <div class="input-field">
-                            <input type="password" class="password" placeholder="Enter your password" name="password" required>
-                            <i class="uil uil-lock icon"></i>   
+                            <input type="password" class="password" placeholder="Enter your password" name="password"
+                                required>
+                            <i class="uil uil-lock icon"></i>
                             <i class="uil uil-eye-slash showHidePw"></i>
                         </div>
 
@@ -109,17 +89,15 @@
                             <input type="submit" value="Login">
                         </div>
                     </form>
-
                     <div class="login-signup">
+                        <x-messages />
                         <span class="text">You want to apply?
                             <a href="/register" class="text signup-link">Apply Now</a>
                         </span>
                     </div>
                 </div>
-
-                </section>
-
             </div>
+        </div>
     </main><!-- End #main -->
     <script>
         const container = document.querySelector(".container"),

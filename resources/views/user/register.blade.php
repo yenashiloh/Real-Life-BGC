@@ -58,23 +58,7 @@
     </header>
 
     <div class="registration-container">
-        <div class="mt-5">
-            @if ($errors->any())
-                <div class="col-12">
-                    @foreach ($errors->all() as $error)
-                        <div class="alert alert-danger">{{ $error }}</div>
-                    @endforeach
-                </div>
-            @endif
-
-            @if (session()->has('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
-
-            @if (session()->has('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-        </div>
+        
         <!-- ======= STEP REGISTRATION ======= -->
         <h1 class="registration">REGISTRATION</h1>
         <div class="stepper stepper-pills" id="registration">
@@ -150,8 +134,6 @@
             </div>
         </div>
         <div class="alert alert-danger mt-4" id="errorMessageFillout" style="display: none;"></div>
-
-
 
         <form class="form w-lg-500px mx-auto" action="{{ route('register.post') }}" method="POST"
             id="step-content">
@@ -685,6 +667,7 @@
                     </button>
                 </div>
             </div>
+            <x-messages />
         </form>
     </div>
 

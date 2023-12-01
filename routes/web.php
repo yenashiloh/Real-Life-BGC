@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'index']);
 Route::get('/home', function () {
-    return view('user-login.personal_details');
+    return view('admin.admin-registration');
 })->name('home');
 
 Route::get('/announcement', [UserController::class, 'announcement'])->name('announcement');
@@ -30,3 +31,12 @@ Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login', [UserController::class, 'loginPost'])->name('login.post');
 Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register', [UserController::class, 'registerPost'])->name('register.post');
+
+//admin
+Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin-login', [AdminController::class, 'loginPost'])->name('admin.login');
+Route::get('/admin-registration', [AdminController::class, 'showRegistrationForm'])->name('admin.registration');
+Route::post('/admin-registration', [AdminController::class, 'register'])->name('admin.register.submit');
+
+
+

@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'index']);
 Route::get('/home', function () {
-    return view('admin.approved_applicants');
+    return view('user-login.personal_details');
 })->name('home');
 
 Route::get('/announcement', [UserController::class, 'announcement'])->name('announcement');

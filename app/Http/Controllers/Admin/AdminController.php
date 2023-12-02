@@ -117,7 +117,7 @@ class AdminController extends Controller
     Session::put('adminEmail', $admin->email);
     Session::put('adminContactNumber', $admin->contact_number);
 
-    $request->session()->flash('success', 'Profile updated successfully!');
+    $request->session()->flash('profileSuccess', 'Profile updated successfully!');
     return redirect()->route('admin-profile'); 
     }
 
@@ -129,6 +129,8 @@ class AdminController extends Controller
             'currentPassword' => 'required',
             'newPassword' => 'required|min:6|different:currentPassword',
             'renewPassword' => 'required|same:newPassword',
+        ], [
+            'renewPassword.same' => 'The re-enter new password field must match new password.',
         ]);
     
         if ($validator->fails()) {
@@ -142,7 +144,7 @@ class AdminController extends Controller
         $admin->password = bcrypt($request->newPassword);
         $admin->save();
 
-        $request->session()->flash('success', 'Password changed successfully!');
+        $request->session()->flash('passwordSuccess', 'Password changed successfully!');
         return redirect()->route('admin-profile');
     }
 

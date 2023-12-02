@@ -73,7 +73,7 @@
       </li><!-- End Charts Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed"  href="{{ route('admin.admin-logout') }}">
           <i class="bi bi-box-arrow-in-right"></i><span>Sign out</span></i>
         </a>
       </li><!-- End Icons Nav -->

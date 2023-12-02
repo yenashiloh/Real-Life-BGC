@@ -84,13 +84,14 @@
                   <!-- Profile Edit Form -->
                   <form method="POST" action="{{ route('admin.profile-update') }}">
                     @csrf 
-                    <div class="row mb-3" id="successAlert">
-                        @if(session('success'))
-                        <div class="alert alert-success" style="margin: 0 auto; text-align: center; margin-bottom: 10px; width: 400px;">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                    </div>
+                    <div class="row mb-3" id="profileSuccessAlert">
+                      @if(session('profileSuccess'))
+                          <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 0 auto; text-align: center; margin-bottom: 10px; width: 400px;">
+                              {{ session('profileSuccess') }}
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                      @endif
+                  </div>
 
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
@@ -127,38 +128,38 @@
 
                 </div>
 
-                </div>
-
+  
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
                   <form method="POST" action="{{ route('admin.password-update') }}">
-                      @csrf
-                      @if ($errors->has('currentPassword') || $errors->has('newPassword') || $errors->has('renewPassword'))
-                          <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 0 auto;  margin-bottom: 10px; width: 500px;">
-                              @if ($errors->count() > 1)
-                                  <ul>
-                                      @foreach ($errors->all() as $error)
-                                          <li>{{ $error }}</li>
-                                      @endforeach
-                                  </ul>
-                              @else
-                                  @foreach ($errors->all() as $error)
-                                      {{ $error }}
-                                  @endforeach
-                              @endif
-                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                          </div>
-                      @endif
-                
-                      @if(session('success'))
-                      <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert" style="margin: 0 auto; text-align: center; margin-bottom: 10px; width: 400px;">
-                          {{ session('success') }}
+                    @csrf
+                    @if ($errors->has('currentPassword') || $errors->has('newPassword') || $errors->has('renewPassword'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 0 auto;  margin-bottom: 10px; width: 500px;">
+                        @if ($errors->count() > 1)
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            @foreach ($errors->all() as $error)
+                                {{ $error }}
+                            @endforeach
+                        @endif
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+          
+                <div class="row mb-3" id="passwordSuccessAlert">
+                  @if(session('passwordSuccess'))
+                      <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 0 auto; text-align: center; margin-bottom: 10px; width: 400px;">
+                          {{ session('passwordSuccess') }}
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div>
                   @endif
-                  
-                  </div>
-                <div class="row mb-3" >
+              </div>
+
+                   <div class="row mb-3" >
                     <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                     <div class="col-md-8 col-lg-9">
                         <input name="currentPassword" type="password" class="form-control" id="currentPassword" required>
@@ -184,6 +185,7 @@
                     </div>
                   </form><!-- End Change Password Form -->
 
+
                 </div>
 
               </div><!-- End Bordered Tabs -->
@@ -194,6 +196,7 @@
         </div>
       </div>
     </section>
+
 
   </main><!-- End #main -->
 
@@ -221,14 +224,6 @@
             });
         });
 
-    let successAlert = document.getElementById('successAlert');
-    if (successAlert) {
-        successAlert.style.display = 'block';
-
-        setTimeout(function() {
-            successAlert.style.display = 'none';
-        }, 4000); 
-    }
     });
 
     </script>

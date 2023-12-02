@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+    
     //login
     public function showLoginForm()
     {

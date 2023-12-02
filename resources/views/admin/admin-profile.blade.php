@@ -127,52 +127,55 @@
 
                 </div>
 
-                <div class="tab-pane fade pt-3" id="profile-settings">
-
-                  <!-- Settings Form -->
-                  <form>
-                  </form><!-- End settings Form -->
-
                 </div>
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
                   <form method="POST" action="{{ route('admin.password-update') }}">
-                    @csrf
-                    @if ($errors->has('currentPassword') || $errors->has('newPassword') || $errors->has('renewPassword'))
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                {{ $error }}
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                      @csrf
+                      @if ($errors->has('currentPassword') || $errors->has('newPassword') || $errors->has('renewPassword'))
+                          <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 0 auto;  margin-bottom: 10px; width: 500px;">
+                              @if ($errors->count() > 1)
+                                  <ul>
+                                      @foreach ($errors->all() as $error)
+                                          <li>{{ $error }}</li>
+                                      @endforeach
+                                  </ul>
+                              @else
+                                  @foreach ($errors->all() as $error)
+                                      {{ $error }}
+                                  @endforeach
+                              @endif
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                      @endif
                 
-                @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-            
-                <div class="row mb-3">
+                      @if(session('success'))
+                      <div class="alert alert-success alert-dismissible fade show" role="alert" id="successAlert" style="margin: 0 auto; text-align: center; margin-bottom: 10px; width: 400px;">
+                          {{ session('success') }}
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                  @endif
+                  
+                  </div>
+                <div class="row mb-3" >
                     <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                     <div class="col-md-8 col-lg-9">
-                        <input name="currentPassword" type="password" class="form-control" id="currentPassword">
+                        <input name="currentPassword" type="password" class="form-control" id="currentPassword" required>
                     </div>
                 </div>
         
                 <div class="row mb-3">
                     <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                     <div class="col-md-8 col-lg-9">
-                        <input name="newPassword" type="password" class="form-control" id="newPassword">
+                        <input name="newPassword" type="password" class="form-control" id="newPassword" required>
                     </div>
                 </div>
         
                 <div class="row mb-3">
                     <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                     <div class="col-md-8 col-lg-9">
-                        <input name="renewPassword" type="password" class="form-control" id="renewPassword">
+                        <input name="renewPassword" type="password" class="form-control" id="renewPassword" required>
                     </div>
                 </div>
         
@@ -229,7 +232,15 @@
     });
 
     </script>
-   
+
+    <script>
+      document.querySelectorAll('.alert .btn-close').forEach(function(closeBtn) {
+          closeBtn.addEventListener('click', function() {
+              this.parentNode.style.display = 'none';
+          });
+      });
+    </script>
+      
 </body>
 
 </html>

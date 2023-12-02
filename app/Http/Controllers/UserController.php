@@ -42,10 +42,14 @@ class UserController extends Controller
             'password' => 'required'
         ]);
 
+        // if(auth()->attempt($credentials)){
+        //     $request->session()->regenerate();
+        //     return redirect(route('home'));
+        // }
+
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){
-            $request->session()->regenerate();
-            return redirect()->intended(route('applicant-home'));
+            return redirect()->intended(route('home'));
         }
         return redirect(route('login'))->with("error", "Login details are not valid");
     }
@@ -67,16 +71,14 @@ class UserController extends Controller
         $data['password'] = Hash::make($request->password);
         $applicant = User::create($data);
         if(!$applicant){
-            auth()->login($applicant);
             return redirect(route('register'))->with("error", "Registration failed, try again.");
         }
         return redirect(route('login'))->with("success", "Registration success, Login to access the app");
     }
 
-    function logout(Request $request){
-        auth()->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/login')->with('message', 'Logout successful');
+    function logout(){
+        Session::flush();
+        Auth::logout();
+        return redirect(route('login'));
     }
 }

@@ -48,12 +48,25 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
 
 
 //admin
-Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin-login', [AdminController::class, 'loginPost'])->name('admin.login.post');
-Route::get('/admin-registration', [AdminController::class, 'showRegistrationForm'])->name('admin.registration');
-Route::post('/admin-registration', [AdminController::class, 'register'])->name('admin.register.submit');
-Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
+Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
+    Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/admin-login', [AdminController::class, 'adminloginPost'])->name('admin.login.post');
+});
+
+Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
+    Route::get('/admin-registration', [AdminController::class, 'showRegistrationForm'])->name('admin.registration');
+    Route::post('/admin-registration', [AdminController::class, 'register'])->name('admin.register.submit');
+
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/admin-profile', [AdminController::class, 'adminProfile'])->name('admin-profile');
+    
+    Route::post('/admin-profile', [AdminController::class, 'updateProfile'])->name('admin.profile-update');
+    Route::post('/change-password', [AdminController::class, 'changePassword'])->name('admin.password-update');
+
+    Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
+    
+});
+
 
 
 

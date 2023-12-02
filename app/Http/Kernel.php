@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
     
     protected $routeMiddleware = [
         'no-cache' => \App\Http\Middleware\NoCacheMiddleware::class,
+        
     ];
     
     

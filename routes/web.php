@@ -19,9 +19,9 @@ use App\Http\Controllers\Admin\AdminController;
 //     return view('user.login');
 // });
 
-Route::get('/home', function () {
-    return view('admin.admin-registration');
-})->name('home');
+// Route::get('/home', function () {
+//     return view('admin.admin-registration');
+// })->name('home');
 
 //applicant
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
@@ -37,12 +37,8 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::post('/register', [UserController::class, 'registerPost'])->name('register.post');
 });
 Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
-    Route::get('/home', function () {
-        return view('user.home');
-    })->name('applicant-home');
-    Route::get('/personal-details', function(){
-        return view('user.personal_details');
-    });
+    Route::get('/home', [UserController::class, 'userHome'])->name('user.home');
+    Route::get('/personal-details', [UserController::class, 'personalDetails'])->name('user.profile');
     Route::post('/logout', [UserController::class, 'logout']);
 });
 

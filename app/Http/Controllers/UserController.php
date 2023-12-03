@@ -36,6 +36,14 @@ class UserController extends Controller
         return view('user.login')->with('title', $title);
     }
 
+    public function userHome(){
+        return view('user.home');
+    }
+
+    public function personalDetails(){
+        return view('user.personal_details');
+    }
+
     function loginPost(Request $request){
         $request->validate([
             'email' => 'required',
@@ -49,7 +57,7 @@ class UserController extends Controller
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)){
-            return redirect()->intended(route('home'));
+            return redirect()->intended(route('user.home'));
         }
         return redirect(route('login'))->with("error", "Login details are not valid");
     }

@@ -4,7 +4,7 @@
         <a href="index.html" class="logo me-auto"><img src="assets/img/RLlogo.png" alt="" class="img-fluid"></a>
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li><a class="nav-link scrollto active" href="#index.html">Home</a></li>
+                <li><a class="nav-link scrollto" href="#index.html">Home</a></li>
                 <li><a class="nav-link scrollto" href="#announcement.html">Announcement</a></li>
                 <li><a class="nav-link scrollto" href="#contact_us.html">Contact Us</a></li>
                 <li><a class="nav-link scrollto" href="#FAQ.html">FAQ</a></li>

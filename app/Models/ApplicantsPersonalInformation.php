@@ -9,6 +9,8 @@ class ApplicantsPersonalInformation extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'applicant_id';
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -17,6 +19,6 @@ class ApplicantsPersonalInformation extends Model
         'house_number',
         'street',
         'barangay',
-        'municipality',
+        'municipality'
     ];
 }

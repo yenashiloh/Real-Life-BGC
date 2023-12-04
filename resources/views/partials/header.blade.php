@@ -51,7 +51,7 @@
                     <li><a class="nav-link scrollto" href="/contact">Contact Us</a></li>
                     <li><a class="nav-link scrollto " href="/faq">FAQ</a></li>
                     <li><a class="nav-link scrollto" href="/login">Login</a></li>
-                    <li><a class="getstarted scrollto" href="/register">Apply Now</a></li>
+                    <li><a class="getstarted scrollto" href="/register" style="background-color: #71BF44;">Apply Now</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->

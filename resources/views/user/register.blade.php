@@ -36,7 +36,7 @@
 </head>
 
 <body>
-    <!-- ======= Header ======= -->
+    {{-- <!-- ======= Header ======= -->
     <header id="header" class=" shadow-sm d-flex align-items-center">
         <div class="container d-flex align-items-center">
             <a href="/" class="logo me-auto"><img src="assets/img/RLlogo.png" alt=""
@@ -55,12 +55,13 @@
             </nav>
 
         </div>
-    </header>
+    </header> --}}
 
     <div class="registration-container">
         
         <!-- ======= STEP REGISTRATION ======= -->
-        <h1 class="registration">REGISTRATION</h1>
+        <h1 class="registration">SCHOLARSHIP APPLICATION</h1>
+        <span style="text-align: center;  display: block;">Please fill out all the forms</span>
         <div class="stepper stepper-pills" id="registration">
             <div class="stepper-nav flex-center flex-wrap mb-10">
                 <div class="stepper-item mx-8 my-4 current" data-kt-stepper-element="nav">
@@ -651,23 +652,23 @@
             <!-- ======= NEXT AND PREVIOUS BUTTON ======= -->
             <div class="d-flex justify-content-between mt-3">
                 <div>
-                    <button type="button" class="btn btn-secondary custom-margin-right previous-button"
-                        id="previousButton" data-kt-stepper-action="previous" style="display: none">
+                    <button type="button" class="btn btn-secondary  custom-margin-right previous-button"
+                        id="previousButton" data-kt-stepper-action="previous" style="display: none;">
                         Previous
                     </button>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-primary next-button" id="nextButton"
-                        data-kt-stepper-action="next">
+                    <button type="button" class="btn  next-button" id="nextButton"
+                        data-kt-stepper-action="next" style="background-color: #518630; color: #fff;">
                         Next
                     </button>
-                    <button type="submit" class="btn btn-primary submit-button" id="submitButton"
-                        data-kt-stepper-action="submit" style="display: none;">
+                    <button type="submit" class="btn submit-button" id="submitButton"
+                        data-kt-stepper-action="submit" style="display: none; background-color: #518630; color: #fff;">
                         Submit
                     </button>
                 </div>
             </div>
-            <x-messages />
+            <x-messages/>
         </form>
     </div>
 

@@ -1,21 +1,32 @@
+body{
+    background-color: #F6F9FF;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 95vh; 
+    justify-content: space-between; 
+    margin: 5px 0; 
+  }
 .container .login {
     max-width: 430px;
     width: 100%;
     background: #dfdfdf;
     border-radius: 10px;
-    box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 7px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-   
   }
 
   .container .forms {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column; /* To stack elements vertically */
+    flex-direction: column;
     height: auto;
     width: 100%;
     transition: height 0.2s ease;
+    margin-top: auto; 
+    margin-bottom: auto; 
   }
 .container .form {
   width: 80%; 
@@ -82,7 +93,7 @@
   }
   
   .input-field input:is(:focus, :valid){
-      border-bottom-color: #4070f4;
+      border-bottom-color: #0A6E57;
   }
   
   .input-field i{
@@ -95,7 +106,7 @@
   }
   
   .input-field input:is(:focus, :valid) ~ i{
-      color: #4070f4;
+      color: #0A6E57;
   }
   
   .input-field i.icon{
@@ -121,7 +132,7 @@
   
   .checkbox-content input{
       margin-right: 10px;
-      accent-color: #4070f4;
+      accent-color: #0A6E57;
   }
   
   .form .text{
@@ -130,7 +141,7 @@
   }
   
   .form a.text{
-      color: #4070f4;
+      color: #0A6E57;
       text-decoration: none;
   }
   .form a:hover{
@@ -148,13 +159,13 @@
       font-weight: 500;
       letter-spacing: 1px;
       border-radius: 6px;
-      background-color: #4070f4;
+      background-color: #0A6E57;
       cursor: pointer;
       transition: all 0.3s ease;
   }
   
   .button input:hover{
-      background-color: #265df2;
+      background-color: #71BF44;
   }
   
   .form .login-signup{

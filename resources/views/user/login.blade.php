@@ -39,33 +39,16 @@
 </head>
 
 <body>
-    <!-- ======= Header ======= -->
-    <header id="header" class=" shadow-sm d-flex align-items-center">
-        <div class="container d-flex align-items-center">
-            <a href="/" class="logo me-auto"><img src="assets/img/RLlogo.png" alt=""
-                    class="img-fluid"></a>
-
-            <nav id="navbar" class=" navbar">
-                <ul>
-                    <li><a class="nav-link scrollto " href="/">Home</a></li>
-                    <li><a class="nav-link scrollto" href="/announcement">Announcement</a></li>
-                    <li><a class="nav-link scrollto" href="/contact">Contact Us</a></li>
-                    <li><a class="nav-link scrollto " href="/faq">FAQ</a></li>
-                    <li><a class="nav-link scrollto active" href="/login">Login</a></li>
-                    <li><a class="getstarted scrollto" href="/register">Apply Now</a></li>
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
-
-        </div>
-    </header><!-- End Header -->
+  
 
     <!----------LOGIN----------->
     <main>
-        <div class="container login">
+        <div class="container login ">
             <div class="forms">
                 <div class="form login">
-                    <span class="title1">Login to your account</span>
+                    
+                    <h5 class="card-title text-center  " style="font-weight: bold; font-size: 25px; color:#0A6E57;">Login</h5>
+                    <p class="text-center small" style="margin-top: 10px; font-size: 15px;">Enter your email & password to login</p>
                     <form action="{{ route('login.post') }}" method="POST" autocomplete="">
                         @csrf
                         <div class="input-field">

@@ -160,21 +160,21 @@
               </div>
 
                    <div class="row mb-3" >
-                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label" style="color: #607E77;">Current Password</label>
                     <div class="col-md-8 col-lg-9">
                         <input name="currentPassword" type="password" class="form-control" id="currentPassword" required>
                     </div>
                 </div>
         
                 <div class="row mb-3">
-                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label" style="color: #607E77;">New Password</label>
                     <div class="col-md-8 col-lg-9">
                         <input name="newPassword" type="password" class="form-control" id="newPassword" required>
                     </div>
                 </div>
         
                 <div class="row mb-3">
-                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label" style="color: #607E77;">Re-enter New Password</label>
                     <div class="col-md-8 col-lg-9">
                         <input name="renewPassword" type="password" class="form-control" id="renewPassword" required>
                     </div>

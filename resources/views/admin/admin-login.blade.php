@@ -71,7 +71,7 @@
                       <div class="invalid-feedback">Please enter your password</div>
                   </div>
                   <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
+                      <button class="btn w-100" type="submit" style="background-color: #0A6E57; color:#fff;">Login</button>
                   </div>
               </form>
               

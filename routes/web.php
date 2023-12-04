@@ -23,7 +23,7 @@ use App\Http\Controllers\Admin\AdminController;
 //     return view('admin.admin-registration');
 // })->name('home');
 
-//applicant
+// applicant
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/', [UserController::class, 'index']);
     Route::get('/announcement', [UserController::class, 'announcement'])->name('announcement');
@@ -55,16 +55,9 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/admin-profile', [AdminController::class, 'adminProfile'])->name('admin-profile');
-    
+
     Route::post('/admin-profile', [AdminController::class, 'updateProfile'])->name('admin.profile-update');
     Route::post('/change-password', [AdminController::class, 'changePassword'])->name('admin.password-update');
 
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
-    
 });
-
-
-
-
-
-

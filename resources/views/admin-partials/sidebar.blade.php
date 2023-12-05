@@ -66,7 +66,7 @@
       </li><!-- End Tables Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="{{ route('admin.registration') }}">
           <i class="bi bi-person-plus"></i><span>Create Account</span></i>
         </a>
         

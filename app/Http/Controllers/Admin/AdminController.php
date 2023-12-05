@@ -64,7 +64,8 @@ class AdminController extends Controller
     //registration
     public function showRegistrationForm()
     {
-        return view('admin.admin-registration');
+        $title = 'Create Account';
+        return view('admin.admin-registration', ['title' => $title]);
     }
 
     public function register(Request $request)
@@ -74,6 +75,7 @@ class AdminController extends Controller
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|unique:admins,email',
             'password' => 'required|string|min:6|confirmed',
+            'contact_no' => 'required|string|max:11',
         ]);
     
         if ($validator->fails()) {
@@ -87,9 +89,10 @@ class AdminController extends Controller
             'last_name' => $request->input('lastname'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
+            'contact_number' => $request->input('contact_no'),
         ]);
     
-        return redirect()->route('admin.registration')->with('success', 'Registration successful! You can now log in.');
+        return redirect()->route('admin.registration')->with('success', 'Create Account Successfully!');
     }
     
     //update profile 

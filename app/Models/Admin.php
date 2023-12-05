@@ -9,10 +9,10 @@ class Admin extends Authenticatable
 {
     // ...
     
-    protected $guard = 'admins'; // Specify the guard for this model
+    protected $guard = 'admins'; 
 
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password', 'contact_number'
     ];
 
     protected $hidden = [
@@ -23,7 +23,7 @@ class Admin extends Authenticatable
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    // You might also define relationships or custom methods relevant to your application
+    
 }
 
 

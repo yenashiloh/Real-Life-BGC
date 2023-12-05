@@ -5,35 +5,92 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Admin Registration</title>
+  <title>{{ $title }}</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
-  <!-- Favicons -->
-  <link href="assets-admin/img/RLlogo1.png" rel="icon">
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets-admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets-admin/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets-admin/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="assets-admin/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="assets-admin/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets-admin/vendor/simple-datatables/style.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="assets-admin/css/style.css" rel="stylesheet">
+  @include('admin-partials.header')
+  @include('admin-partials.sidebar')
 
 
-</head>
+  <main id="main" class="main">
 
-<body>
+    <div class="pagetitle">
+      <h1>Create Account</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">Create Account</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
 
-  <main>
-    <div class="container">
+    <div class="card">
+      <div class="card-body mt-4">
+        {{-- <h5 class="card-title">Multi Columns Form</h5> --}}
+
+        @if ($errors->any())
+        <div class="alert alert-danger" style="margin: 0 auto;  margin-bottom: 10px; width: 500px;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        <!-- Multi Columns Form -->
+        <form action="{{ route('admin.register.submit') }}" method="POST" class="row g-3 needs-validation" novalidate>
+          @csrf
+         
+          <div class="col-md-6">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" name="firstname" class="form-control" id="yourName" required>
+            <div class="invalid-feedback">Please, enter your first name</div>
+          </div>
+          <div class="col-md-6">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" name="lastname" class="form-control" id="lastName" required>
+            <div class="invalid-feedback">Please, enter your last name</div>
+          </div>
+          <div class="col-md-6">
+            <label for="yourEmail" class="form-label">Email Address</label>
+            <input type="email" name="email" class="form-control" id="yourEmail" required>
+            <div class="invalid-feedback">Please, enter a valid Email adddress</div>
+          </div>
+          <div class="col-md-6">
+            <label for="contact_no" class="form-label">Contact Number</label>
+            <input type="text" name="contact_no" class="form-control" id="contact_no" required>
+            <div class="invalid-feedback">Please enter your contact number</div>
+          </div>
+          <div class="col-md-6">
+            <label for="yourPassword" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" id="password" required>
+            <div class="invalid-feedback">Please, enter your password</div>
+          </div>
+          <div class="col-md-6">
+            <label for="yourConfirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" name="password_confirmation" class="form-control" id="confirm_password" required>
+            <div class="invalid-feedback">Please, confirm your password</div>
+          </div>
+      
+          <div class="text-center">
+            <button class="btn btn-primary" style="width: 200px;" type="submit">Create Account</button>
+        </div>        
+        </form><!-- End Multi Columns Form -->
+
+      </div>
+    </div>
+
+  </div>
+
+
+    {{-- <div class="container">
 
       <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
@@ -104,7 +161,7 @@
 
       </section>
 
-    </div>
+    </div> --}}
   </main><!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

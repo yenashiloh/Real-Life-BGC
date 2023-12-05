@@ -5,10 +5,12 @@
 
         <div class="section-title">
             <h2>Contact Us</h2>
+            <br>
             <p style="font-size: 18px; color: #444444;">Simply submit your name, email address, the nature of your
                 inquiry, and any background information below, and a member of our staff will contact you as soon as
                 possible. </p>
         </div>
+        <br>
 
         <div class="row">
 
@@ -50,12 +52,12 @@
                         </div>
                         <div class="form-group col-md-6 mt-3 mt-md-0">
                             <label for="name">Last Name</label>
-                            <input type="email" class="form-control" name="last_name" id="name" required>
+                            <input type="text" class="form-control" name="last_name" id="name" required>
                         </div>
                     </div>
                     <div class="form-group mt-3">
                         <label for="name">Email</label>
-                        <input type="text" class="form-control" name="email" id="email" required>
+                        <input type="email" class="form-control" name="email" id="email" required>
                     </div>
                     <div class="form-group mt-3">
                         <label for="name">Subject</label>

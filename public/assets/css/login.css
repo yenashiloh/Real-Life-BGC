@@ -1,12 +1,14 @@
 body{
-    background-color: #F6F9FF;
+    background-color: #ffffff;
+    margin: 0%;
 }
 .container {
     display: flex;
     flex-direction: column;
     height: 95vh; 
     justify-content: space-between; 
-    margin: 5px 0; 
+    margin: 10px 0; 
+    padding: 0 20px; /* Adjust padding as needed */
   }
 .container .login {
     max-width: 430px;
@@ -21,12 +23,11 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    height: auto;
+    height: 100%;
     width: 100%;
     transition: height 0.2s ease;
-    margin-top: auto; 
-    margin-bottom: auto; 
+    margin: auto;
+    margin-left: 50px;
   }
 .container .form {
   width: 80%; 
@@ -93,7 +94,7 @@ body{
   }
   
   .input-field input:is(:focus, :valid){
-      border-bottom-color: #0A6E57;
+      border-bottom-color: #518630;
   }
   
   .input-field i{
@@ -106,7 +107,7 @@ body{
   }
   
   .input-field input:is(:focus, :valid) ~ i{
-      color: #0A6E57;
+      color: #518630;
   }
   
   .input-field i.icon{
@@ -132,7 +133,7 @@ body{
   
   .checkbox-content input{
       margin-right: 10px;
-      accent-color: #0A6E57;
+      accent-color: #518630;
   }
   
   .form .text{
@@ -141,7 +142,7 @@ body{
   }
   
   .form a.text{
-      color: #0A6E57;
+      color: #518630;
       text-decoration: none;
   }
   .form a:hover{
@@ -159,7 +160,7 @@ body{
       font-weight: 500;
       letter-spacing: 1px;
       border-radius: 6px;
-      background-color: #0A6E57;
+      background-color: #518630;
       cursor: pointer;
       transition: all 0.3s ease;
   }
@@ -177,4 +178,5 @@ body{
           width: 90%;
           margin-top: 20px; 
       }
+      
   }

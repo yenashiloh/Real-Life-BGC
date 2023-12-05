@@ -60,7 +60,7 @@
     <div class="registration-container">
         
         <!-- ======= STEP REGISTRATION ======= -->
-        <h1 class="registration">SCHOLARSHIP APPLICATION</h1>
+        <h1 class="registration">APPLICATION FORM</h1>
         <span style="text-align: center;  display: block;">Please fill out all the forms</span>
         <div class="stepper stepper-pills" id="registration">
             <div class="stepper-nav flex-center flex-wrap mb-10">

@@ -47,7 +47,7 @@
             <div class="forms">
                 <div class="form login">
                     
-                    <h5 class="card-title text-center  " style="font-weight: bold; font-size: 25px; color:#0A6E57;">Login</h5>
+                    <h5 class="card-title text-center  " style="font-weight: bold; font-size: 27px; color:#518630;">Sign In</h5>
                     <p class="text-center small" style="margin-top: 10px; font-size: 15px;">Enter your email & password to login</p>
                     <form action="{{ route('login.post') }}" method="POST" autocomplete="">
                         @csrf

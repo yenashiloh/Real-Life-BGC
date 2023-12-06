@@ -1245,3 +1245,44 @@ h6 {
 .change-password:hover{
  background-color: #71BF44;
 }
+
+
+.drag-area {
+  border: 2px dashed #DEE2E6;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  height: 150px;
+}
+
+.drag-area .icon {
+  margin-top: 20px;
+  font-size: 50px;
+  color: black;
+}
+
+.drag-area header {
+  font-size: 15px;
+  margin: 17x 0;
+  color: #444;
+}
+
+.drag-area span {
+  font-size: 14px;
+  color: #777;
+}
+
+.drag-area button {
+  padding: 8px 15px;
+  margin-top: 15px;
+  background-color: #2980b9;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.drag-area input[type="file"] {
+  display: none;
+}

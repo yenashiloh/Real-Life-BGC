@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use App\Models\Announcement; 
 
 class UserController extends Controller
 {
@@ -16,9 +17,14 @@ class UserController extends Controller
         return view('index')->with('title', $title);
     }
 
-    public function announcement(){
+    public function announcement() {
         $title = 'Announcement';
-        return view('announcement')->with('title', $title);
+        $announcements = Announcement::all();
+        
+        return view('announcement', [
+            'title' => $title,
+            'announcement' => $announcements
+        ]);
     }
 
     public function contact(){

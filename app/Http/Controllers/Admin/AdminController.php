@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\Announcement; 
 
 
 
@@ -43,7 +43,7 @@ class AdminController extends Controller
     {
         $title = 'Dashboard';
         return view('admin.dashboard', ['title' => $title]);
-        return view('admin.dashboard');
+        
     }
 
     //admin profile
@@ -159,5 +159,48 @@ class AdminController extends Controller
         $request->session()->regenerateToken();
         return redirect()->route('admin.login');
     }
+
+    //announcement
+    public function showAnnouncement()
+    {
+        $title = 'Announcement';
+        return view('admin.announcement.admin-announcement', ['title' => $title]);
+    }
+    public function addAnnouncement()
+    {
+        $title = 'Add Announcement';
+        return view('admin.announcement.add-announcement', ['title' => $title]);
+    }
+
+    //add announcement
+    public function saveAnnouncement(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'announcement_caption' => 'required',
+       
+    ]);    
+
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
+    }
+
+    $announcement = new Announcement();
+    $announcement->caption = $request->input('announcement_caption', 'Default Caption');
+    $announcement->image = 'default_image.jpg'; 
+
+    if ($request->hasFile('announcement_image')) {
+        $image = $request->file('announcement_image');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move(public_path('images'), $imageName);
+        $announcement->image = 'images/' . $imageName;
+    }
+
+    $announcement->save();
+
+    $request->session()->flash('success', 'Announcement Added Successfully!');
+    return redirect()->route('admin.announcement.add-announcement');
+}
+
+    
 }
 

@@ -79,7 +79,8 @@
             <div class="invalid-feedback">Please, confirm your password</div>
           </div>
       
-          <div class="text-center">
+          
+          <div class="text-center mt-4">
             <button class="btn btn-primary" style="width: 200px;" type="submit">Create Account</button>
         </div>        
         </form><!-- End Multi Columns Form -->

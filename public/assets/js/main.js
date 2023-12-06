@@ -637,6 +637,7 @@
 			}
 		});
 
+		//Monthly Household 
 		householdSelect.addEventListener('change', function () {
 			const selectedValue = parseInt(householdSelect.value);
 

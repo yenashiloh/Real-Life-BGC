@@ -125,53 +125,42 @@
     });
   }
 
-  if (select('.quill-editor-full')) {
-    new Quill(".quill-editor-full", {
-      modules: {
-        toolbar: [
-          [{
-            font: []
-          }, {
-            size: []
-          }],
-          ["bold", "italic", "underline", "strike"],
-          [{
-              color: []
-            },
-            {
-              background: []
-            }
+  document.addEventListener("DOMContentLoaded", function () {
+    var form = document.getElementById("announcementForm");
+  
+    if (document.querySelector('.quill-editor-full')) {
+      var quill = new Quill(".quill-editor-full", {
+        modules: {
+          toolbar: [
+            [{ font: [] }, { size: [] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ color: [] }, { background: [] }],
+            [{ script: "super" }, { script: "sub" }],
+            [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+            ["direction", { align: [] }],
+            ["link", "image", "video"],
+            ["clean"],
           ],
-          [{
-              script: "super"
-            },
-            {
-              script: "sub"
-            }
-          ],
-          [{
-              list: "ordered"
-            },
-            {
-              list: "bullet"
-            },
-            {
-              indent: "-1"
-            },
-            {
-              indent: "+1"
-            }
-          ],
-          ["direction", {
-            align: []
-          }],
-          ["link", "image", "video"],
-          ["clean"]
-        ]
-      },
-      theme: "snow"
+        },
+        theme: "snow",
+      });
+  
+      quill.on("text-change", function () {
+        var htmlContent = quill.root.innerHTML;
+        document.getElementById("announcement_caption").value = htmlContent;
+      });
+    }
+  
+    form.addEventListener("submit", function (event) {
+      var captionField = document.getElementById("announcement_caption");
+      if (!captionField.value.trim()) {
+        event.preventDefault(); // Prevent form submission
+        alert("The announcement caption field is required.");
+      }
+      // Add other form validation or submission logic here if needed
     });
-  }
+  });
+  
 
   /**
    * Initiate TinyMCE Editor
@@ -262,7 +251,7 @@
     ],
     template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
     template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
-    height: 600,
+    height: 390,
     image_caption: true,
     quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
     noneditable_class: 'mceNonEditable',

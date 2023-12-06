@@ -59,5 +59,10 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::post('/admin-profile', [AdminController::class, 'updateProfile'])->name('admin.profile-update');
     Route::post('/change-password', [AdminController::class, 'changePassword'])->name('admin.password-update');
 
+    Route::get('/announcement/admin-announcement', [AdminController::class, 'showAnnouncement'])->name('admin.announcement.admin-announcement');
+    Route::get('/announcement/add-announcement', [AdminController::class, 'addAnnouncement'])->name('admin.announcement.add-announcement');
+    Route::post('/announcement/add-announcement', [AdminController::class, 'saveAnnouncement'])->name('admin.save-announcement');
+
+
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
 });

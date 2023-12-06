@@ -39,16 +39,17 @@
 </head>
 
 <body>
-  
 
     <!----------LOGIN----------->
     <main>
         <div class="container login ">
             <div class="forms">
                 <div class="form login">
-                    
-                    <h5 class="card-title text-center  " style="font-weight: bold; font-size: 27px; color:#518630;">Sign In</h5>
-                    <p class="text-center small" style="margin-top: 10px; font-size: 15px;">Enter your email & password to login</p>
+
+                    <h5 class="card-title text-center  " style="font-weight: bold; font-size: 27px; color:#518630;">Sign
+                        In</h5>
+                    <p class="text-center small" style="margin-top: 10px; font-size: 15px;">Enter your email & password
+                        to login</p>
                     <form action="{{ route('login.post') }}" method="POST" autocomplete="">
                         @csrf
                         <div class="input-field">
@@ -85,6 +86,7 @@
             </div>
         </div>
     </main><!-- End #main -->
+
     <script>
         const container = document.querySelector(".container"),
             pwShowHide = document.querySelectorAll(".showHidePw"),

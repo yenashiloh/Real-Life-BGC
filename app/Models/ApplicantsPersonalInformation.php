@@ -10,6 +10,7 @@ class ApplicantsPersonalInformation extends Model
     use HasFactory;
 
     protected $primaryKey = 'applicant_id';
+    public $timestamps = false;
 
     protected $fillable = [
         'first_name',

@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\ApplicantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,21 +25,21 @@ use App\Http\Controllers\Admin\AdminController;
 
 // applicant
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
-    Route::get('/', [UserController::class, 'index']);
-    Route::get('/announcement', [UserController::class, 'announcement'])->name('announcement');
-    Route::get('/contact', [UserController::class, 'contact'])->name('contact');
-    Route::get('/faq', [UserController::class, 'faq'])->name('faq');
+    Route::get('/', [ApplicantController::class, 'index']);
+    Route::get('/announcement', [ApplicantController::class, 'announcement'])->name('announcement');
+    Route::get('/contact', [ApplicantController::class, 'contact'])->name('contact');
+    Route::get('/faq', [ApplicantController::class, 'faq'])->name('faq');
 
-    Route::get('/login', [UserController::class, 'login'])->name('login');
-    Route::post('/login', [UserController::class, 'loginPost'])->name('login.post');
+    Route::get('/login', [ApplicantController::class, 'login'])->name('login');
+    Route::post('/login', [ApplicantController::class, 'loginPost'])->name('login.post');
 
-    Route::get('/register', [UserController::class, 'register'])->name('register');
-    Route::post('/register', [UserController::class, 'registerPost'])->name('register.post');
+    Route::get('/register', [ApplicantController::class, 'register'])->name('register');
+    Route::post('/register', [ApplicantController::class, 'registerPost'])->name('register.post');
 });
 Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
-    Route::get('/home', [UserController::class, 'userHome'])->name('user.home');
-    Route::get('/personal-details', [UserController::class, 'personalDetails'])->name('user.profile');
-    Route::post('/logout', [UserController::class, 'logout']);
+    Route::get('/home', [ApplicantController::class, 'userHome'])->name('user.home');
+    Route::get('/personal-details', [ApplicantController::class, 'personalDetails'])->name('user.profile');
+    Route::post('/logout', [ApplicantController::class, 'logout']);
 });
 
 

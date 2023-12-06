@@ -1,7 +1,13 @@
+@php
+    $personalInfo = auth()
+        ->user()
+        ->personalInformation()
+        ->first();
+@endphp
 <!-- ======= Header ======= -->
 <header id="header" class="shadow-sm d-flex align-items-center">
     <div class="container d-flex align-items-center">
-        <a href="index.html" class="logo me-auto"><img src="assets/img/RLlogo.png" alt="" class="img-fluid"></a>
+        <a href="/" class="logo me-auto"><img src="assets/img/RLlogo.png" alt="" class="img-fluid"></a>
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
                 <li><a class="nav-link scrollto" href="#index.html">Home</a></li>
@@ -78,12 +84,13 @@
                     data-bs-toggle="dropdown">
                     <i class="bi bi-person"></i>
                     <span
-                        class="d-none d-md-block dropdown-toggle ps-2">{{ explode(' ', auth()->user()->name)[0] }}</span>
+                        class="d-none d-md-block dropdown-toggle ps-2">{{ explode(' ', $personalInfo->first_name)[0] }}</span>
                 </a><!-- End Profile Image Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6 class="font-weight: bold; font-size: 5px;">{{ auth()->user()->name }}</h6>
+                        <h6 class="font-weight: bold; font-size: 5px;">{{ $personalInfo->first_name ?? '' }}
+                            {{ $personalInfo->last_name ?? '' }}</h6>
                         <span></span>
                     </li>
                     <li>

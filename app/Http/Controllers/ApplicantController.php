@@ -107,6 +107,21 @@ class ApplicantController extends Controller
                 'municipality' => $request->municipality
             ]);
 
+            $incomingGrade = $request->incomingGrade;
+            $academicInfoData = [
+                'current_course_program' => $request->currentCourse,
+                'current_school' => $request->currentSchool
+            ];
+
+            // Check the value of incomingGrade and create the corresponding record
+            if (in_array($incomingGrade, ['GradeSeven', 'GradeEight', 'GradeNine', 'GradeTen', 'GradeEleven', 'GradeTwelve'])) {
+                $academicInfoData['incoming_grade'] = $incomingGrade;
+                $applicant->academicInformation()->create($academicInfoData);
+            } elseif (in_array($incomingGrade, ['FirstYear', 'SecondYear', 'ThirdYear', 'FourthYear'])) {
+                $academicInfoData['incoming_year'] = $incomingGrade;
+                $applicant->academicInformationCollege()->create($academicInfoData);
+            }
+
             return redirect(route('login'))->with("success", "Registration success, Login to access the app");
         } else {
             return redirect(route('register'))->with("error", "Registration failed, try again.");

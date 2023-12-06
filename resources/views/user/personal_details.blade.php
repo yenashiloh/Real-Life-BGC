@@ -262,7 +262,7 @@
 
                                         <div class="col-md-6">
                                             <label for="municipality" class="col-form-label"
-                                                style="font-weight: normal;">Makati City</label>
+                                                style="font-weight: normal;">Municipality</label>
                                             <input name="municipality" type="text" class="form-control"
                                                 id="municipality" value="{{ $personalInfo->municipality ?? '' }}">
                                         </div>
@@ -307,7 +307,6 @@
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
                                     </div>
-
 
                                 </form><!-- End Profile Edit Form -->
 
@@ -514,7 +513,6 @@
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                     <!-- Change Password Form -->
                     <form>
-
                         <div class="row mb-3">
                             <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
                                 Password</label>
@@ -545,7 +543,6 @@
                             <button type="submit" class="btn btn-primary">Change Password</button>
                         </div>
                     </form><!-- End Change Password Form -->
-
                 </div>
             </div><!-- End Bordered Tabs -->
             </div>

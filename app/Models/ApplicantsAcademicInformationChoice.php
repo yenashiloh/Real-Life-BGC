@@ -10,6 +10,7 @@ class ApplicantsAcademicInformationChoice extends Model
     use HasFactory;
 
     protected $primaryKey = 'applicant_id';
+    public $timestamps = false;
 
     protected $fillable = [
         'first_choice_school',

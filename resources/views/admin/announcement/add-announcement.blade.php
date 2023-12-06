@@ -219,7 +219,7 @@
                 </div>
                 @endif
                 
-                <label for="fileUpload" style="font-weight: bold; margin-top: 20px; margin-bottom: 10px;">Caption</label>
+                <label for="fileUpload" style="font-weight: bold; margin-top: 20px; margin-bottom: 10px; margin-left: 5px;">Post an Announcement</label>
               <textarea class="tinymce-editor" name="announcement_caption">
               </textarea>
               <div class="text-center mt-3">

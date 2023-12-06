@@ -50,6 +50,8 @@ return new class extends Migration
             $table->string('incoming_year')->nullable();
             $table->string('current_course_program')->nullable();
             $table->string('current_school')->nullable();
+            $table->string('grade_nine_gwa')->nullable();
+            $table->string('grade_ten_gwa')->nullable();
             $table->string('grade_eleven_first_sem_gwa')->nullable();
             $table->string('grade_eleven_second_sem_gwa')->nullable();
             $table->string('grade_twelve_first_sem_gwa')->nullable();

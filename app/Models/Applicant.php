@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Applicant extends Model
+class Applicant extends Authenticatable
 {
-    use HasFactory;
     protected $primaryKey = 'applicant_id';
+    protected $table = 'applicants';
 
     protected $fillable = [
         'email',
@@ -17,6 +16,7 @@ class Applicant extends Model
 
     protected $hidden = [
         'password',
+        'remember_token',
     ];
 
     protected $casts = [

@@ -119,6 +119,12 @@
 </style>
 
 <body>
+    @php
+        $personalInfo = auth()
+            ->user()
+            ->personalInformation()
+            ->first();
+    @endphp
     @include('partials.user-header')
     <main id="main" class="main">
         <section class="section profile">
@@ -160,7 +166,9 @@
                                 </div>
                                 <div class="row mb-1">
                                     <div class="col-lg-3 col-md-4 label">Full Name</div>
-                                    <div class="col-lg-9 col-md-8">{{ auth()->user()->name }}</div>
+                                    <div class="col-lg-9 col-md-8">
+                                        {{ $personalInfo->first_name ?? '' }} {{ $personalInfo->last_name ?? '' }}
+                                    </div>
                                 </div>
 
                                 <div class="row mb-1 mb-1">
@@ -170,18 +178,22 @@
 
                                 <div class="row mb-1">
                                     <div class="col-lg-3 col-md-4 label">Birthdate</div>
-                                    <div class="col-lg-9 col-md-8">January 21, 2002</div>
+                                    <div class="col-lg-9 col-md-8">{{ $personalInfo->birthday ?? '' }}</div>
                                 </div>
 
                                 <div class="row mb-1">
                                     <div class="col-lg-3 col-md-4 label">Address</div>
-                                    <div class="col-lg-9 col-md-8">Blk 83 Lot 7 Milkweed St. Brgy. Rizal Makati City
+                                    <div class="col-lg-9 col-md-8">
+                                        {{ $personalInfo->house_number ?? '' }}
+                                        {{ $personalInfo->street ?? '' }}
+                                        {{ $personalInfo->barangay ?? '' }}
+                                        {{ $personalInfo->municipality ?? '' }}
                                     </div>
                                 </div>
 
                                 <div class="row mb-1">
                                     <div class="col-lg-3 col-md-4 label">Contact Number</div>
-                                    <div class="col-lg-9 col-md-8">09168759399</div>
+                                    <div class="col-lg-9 col-md-8">{{ $personalInfo->contact ?? '' }}</div>
                                 </div>
 
                             </div>
@@ -197,14 +209,14 @@
                                             <label for="first_name" class="col-form-label"
                                                 style="font-weight: normal;">First Name</label>
                                             <input name="first_name" type="text" class="form-control"
-                                                id="first_name" value="Shiloh">
+                                                id="first_name" value="{{ $personalInfo->first_name ?? '' }}">
                                         </div>
 
                                         <div class="col-md-6">
                                             <label for="last_name" class="col-form-label"
                                                 style="font-weight: normal;">Last Name</label>
                                             <input name="last_name" type="text" class="form-control"
-                                                id="last_name" value="Eugenio">
+                                                id="last_name" value="{{ $personalInfo->last_name ?? '' }}">
                                         </div>
                                     </div>
 
@@ -213,14 +225,14 @@
                                             <label for="contact_no" class="col-form-label"
                                                 style="font-weight: normal;">Contact Number</label>
                                             <input name="contact_no" type="number" class="form-control"
-                                                id="contact_no" value="09102258953">
+                                                id="contact_no" value="{{ $personalInfo->contact ?? '' }}">
                                         </div>
 
                                         <div class="col-md-6">
                                             <label for="birthdate" class="col-form-label"
                                                 style="font-weight: normal;">Birthdate</label>
                                             <input name="birthdate" type="date" class="form-control"
-                                                id="birthdate" value="01/21/2002">
+                                                id="birthdate" value="{{ $personalInfo->birthday ?? '' }}">
                                         </div>
                                     </div>
 
@@ -229,14 +241,14 @@
                                             <label for="house_no" class="col-form-label"
                                                 style="font-weight: normal;">House Number</label>
                                             <input name="house_no" type="text" class="form-control"
-                                                id="house_no" value="Blk 83 Lot 7">
+                                                id="house_no" value="{{ $personalInfo->house_number ?? '' }}">
                                         </div>
 
                                         <div class="col-md-6">
                                             <label for="street" class="col-form-label"
                                                 style="font-weight: normal;">Street</label>
                                             <input name="street" type="text" class="form-control" id="street"
-                                                value="Milkweed St.">
+                                                value="{{ $personalInfo->street ?? '' }}">
                                         </div>
                                     </div>
 
@@ -245,14 +257,14 @@
                                             <label for="barangay" class="col-form-label"
                                                 style="font-weight: normal;">Barangay</label>
                                             <input name="barangay" type="text" class="form-control"
-                                                id="barangay" value="Brgy. Rizal">
+                                                id="barangay" value="{{ $personalInfo->barangay ?? '' }}">
                                         </div>
 
                                         <div class="col-md-6">
                                             <label for="municipality" class="col-form-label"
-                                                style="font-weight: normal;">Makati City</label>
+                                                style="font-weight: normal;">Municipality</label>
                                             <input name="municipality" type="text" class="form-control"
-                                                id="municipality" value="Makati City">
+                                                id="municipality" value="{{ $personalInfo->municipality ?? '' }}">
                                         </div>
                                     </div>
                                     <br>
@@ -295,7 +307,6 @@
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Save Changes</button>
                                     </div>
-
 
                                 </form><!-- End Profile Edit Form -->
 
@@ -361,6 +372,7 @@
                                                                     attachment</header>
                                                             </div>
                                                         </div>
+                                                    </form>
                                                 </div>
 
 
@@ -461,9 +473,8 @@
                                                 <header>Drag and drop files here or click to upload attachment</header>
                                             </div>
                                         </div>
+                                    </form>
                                 </div>
-
-                                </form>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Close</button>
@@ -502,19 +513,20 @@
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                     <!-- Change Password Form -->
                     <form>
-
                         <div class="row mb-3">
                             <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
                                 Password</label>
                             <div class="col-md-8 col-lg-9">
-                                <input name="password" type="password" class="form-control" id="currentPassword" required>
+                                <input name="password" type="password" class="form-control" id="currentPassword"
+                                    required>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                             <div class="col-md-8 col-lg-9">
-                                <input name="newpassword" type="password" class="form-control" id="newPassword" required>
+                                <input name="newpassword" type="password" class="form-control" id="newPassword"
+                                    required>
                             </div>
                         </div>
 
@@ -522,7 +534,8 @@
                             <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
                                 Password</label>
                             <div class="col-md-8 col-lg-9">
-                                <input name="renewpassword" type="password" class="form-control" id="renewPassword" required>
+                                <input name="renewpassword" type="password" class="form-control" id="renewPassword"
+                                    required>
                             </div>
                         </div>
 
@@ -530,7 +543,6 @@
                             <button type="submit" class="btn btn-primary">Change Password</button>
                         </div>
                     </form><!-- End Change Password Form -->
-
                 </div>
             </div><!-- End Bordered Tabs -->
             </div>

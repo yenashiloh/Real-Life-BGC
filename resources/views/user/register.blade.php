@@ -58,7 +58,7 @@
     </header> --}}
 
     <div class="registration-container">
-        
+
         <!-- ======= STEP REGISTRATION ======= -->
         <h1 class="registration">SCREENING FORM</h1>
         <span style="text-align: center;  display: block;">Please fill out all the forms</span>
@@ -136,8 +136,7 @@
         </div>
         <div class="alert alert-danger mt-4" id="errorMessageFillout" style="display: none;"></div>
 
-        <form class="form w-lg-500px mx-auto" action="{{ route('register.post') }}" method="POST"
-            id="step-content">
+        <form class="form w-lg-500px mx-auto" action="{{ route('register.post') }}" method="POST" id="step-content">
             @csrf
             <!-- ======= STEP 1 ======= -->
             <div class="container mt-5 step-content active" id="step1Content">
@@ -197,57 +196,64 @@
                         <div class="form-group">
                             <label for="firstname">First Name <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" name="firstname" id="firstname" placeholder="" required>
+                            <input type="text" class="form-control" name="firstname" id="firstname"
+                                placeholder="" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="lastname">Last Name <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" name="lastname" id="lastname" placeholder="" required>
+                            <input type="text" class="form-control" name="lastname" id="lastname"
+                                placeholder="" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="contact_no">Contact Number <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" name="contact" id="contact_no" placeholder="" required>
+                            <input type="text" class="form-control" name="contact" id="contact_no"
+                                placeholder="" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="birthdate">Birthdate <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="date" class="form-control" name="birthdate" id="birthdate" style="color: #444444;"
-                                required>
+                            <input type="date" class="form-control" name="birthdate" id="birthdate"
+                                style="color: #444444;" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="house_no">House Number <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" name="houseNumber" id="house_no" placeholder="" required>
+                            <input type="text" class="form-control" name="houseNumber" id="house_no"
+                                placeholder="" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="street">Street <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" name="street" id="street" placeholder="" required>
+                            <input type="text" class="form-control" name="street" id="street" placeholder=""
+                                required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="barangay">Barangay <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" name="barangay" id="barangay" placeholder="" required>
+                            <input type="text" class="form-control" name="barangay" id="barangay"
+                                placeholder="" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="municipality">Municipality <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" name="municipality" id="municipality" placeholder="" required>
+                            <input type="text" class="form-control" name="municipality" id="municipality"
+                                placeholder="" required>
                         </div>
                     </div>
                 </div>
@@ -658,17 +664,18 @@
                     </button>
                 </div>
                 <div>
-                    <button type="button" class="btn  next-button" id="nextButton"
-                        data-kt-stepper-action="next" style="background-color: #518630; color: #fff;">
+                    <button type="button" class="btn  next-button" id="nextButton" data-kt-stepper-action="next"
+                        style="background-color: #518630; color: #fff;">
                         Next
                     </button>
                     <button type="submit" class="btn submit-button" id="submitButton"
-                        data-kt-stepper-action="submit" style="display: none; background-color: #518630; color: #fff;">
+                        data-kt-stepper-action="submit"
+                        style="display: none; background-color: #518630; color: #fff;">
                         Submit
                     </button>
                 </div>
             </div>
-            <x-messages/>
+            <x-messages />
         </form>
     </div>
 

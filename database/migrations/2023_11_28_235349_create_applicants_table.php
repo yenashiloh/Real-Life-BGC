@@ -45,7 +45,7 @@ return new class extends Migration
             $table->string('grade_ten_gwa')->nullable();
         });
 
-        Schema::create('applicants_academic_information_college', function (Blueprint $table) {
+        Schema::create('applicants_academic_information_colleges', function (Blueprint $table) {
             $table->id('applicant_id');
             $table->string('incoming_year')->nullable();
             $table->string('current_course_program')->nullable();

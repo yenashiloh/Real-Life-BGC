@@ -4,7 +4,6 @@
 <section id="hero">
     <div class="container">
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
-
             <!-- Banner -->
             <div class="carousel-inner">
                 <div class="item active">
@@ -12,11 +11,11 @@
                 </div>
             </div>
         </div>
+    </div>
 </section>
 <!-- End Hero -->
 
 <main id="main">
-
 
     <!-- ======= MISSION AND WHO ARE WE ======= -->
     <section class="about" id="mission_statement">
@@ -120,12 +119,11 @@
                                         grow in their strengths.
                                     </li>
                                 </ul>
+                            </div>
                         </section>
+                    </section>
                 </div>
-
-
             </div>
-
         </div>
     </section><!-- End About Us Section -->
 

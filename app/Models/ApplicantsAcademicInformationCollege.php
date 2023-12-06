@@ -10,6 +10,7 @@ class ApplicantsAcademicInformationCollege extends Model
     use HasFactory;
 
     protected $primaryKey = 'applicant_id';
+    public $timestamps = false;
 
     protected $fillable = [
         'incoming_year',

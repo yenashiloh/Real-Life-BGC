@@ -7,7 +7,10 @@ use App\Models\ApplicantsPersonalInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Announcement; 
+use App\Models\Announcement;
+use App\Models\ApplicantsAcademicInformation;
+use App\Models\ApplicantsAcademicInformationChoice;
+use App\Models\ApplicantsAcademicInformationGrade;
 
 class ApplicantController extends Controller
 {
@@ -17,10 +20,11 @@ class ApplicantController extends Controller
         return view('index')->with('title', $title);
     }
 
-    public function announcement() {
+    public function announcement()
+    {
         $title = 'Announcement';
         $announcements = Announcement::all();
-        
+
         return view('announcement', [
             'title' => $title,
             'announcement' => $announcements
@@ -101,7 +105,8 @@ class ApplicantController extends Controller
         $applicant = Applicant::create($data);
 
         if ($applicant) {
-            $applicant->personalInformation()->create([
+            $personalInfoData = [
+                'applicant_id' => $applicant->applicant_id,
                 'first_name' => $request->firstname,
                 'last_name' => $request->lastname,
                 'contact' => $request->contact,
@@ -110,22 +115,64 @@ class ApplicantController extends Controller
                 'street' => $request->street,
                 'barangay' => $request->barangay,
                 'municipality' => $request->municipality
-            ]);
+            ];
+            ApplicantsPersonalInformation::create($personalInfoData);
 
-            $incomingGrade = $request->incomingGrade;
             $academicInfoData = [
-                'current_course_program' => $request->currentCourse,
+                'applicant_id' => $applicant->applicant_id,
+                'incoming_grade_year' => $request->incomingGrade,
+                'current_course_program_grade' => $request->currentCourse,
                 'current_school' => $request->currentSchool
             ];
+            ApplicantsAcademicInformation::create($academicInfoData);
+
+            $academicInfoChoiceData = [
+                'applicant_id' => $applicant->applicant_id,
+                'first_choice_school' => $request->schoolChoice1,
+                'second_choice_school' => $request->schoolChoice2,
+                'third_choice_school' => $request->schoolChoice3,
+                'first_choice_course' => $request->courseChoice1,
+                'second_choice_course' => $request->courseChoice2,
+                'third_choice_course' => $request->courseChoice3,
+            ];
+            ApplicantsAcademicInformationChoice::create($academicInfoChoiceData);
+
+            $academicInfoGradesData = [
+                'applicant_id' => $applicant->applicant_id,
+                'grade_3_gwa' => $request->grade3GWA,
+                'grade_4_gwa' => $request->grade4GWA,
+                'grade_5_gwa' => $request->grade5GWA,
+                'grade_6_gwa' => $request->grade6GWA,
+                'grade_7_gwa' => $request->grade7GWA,
+                'grade_8_gwa' => $request->grade8GWA,
+                'grade_9_gwa' => $request->grade9GWA,
+                'grade_10_gwa' => $request->grade10GWA,
+                'grade_11_sem1_gwa' => $request->grade11FirstSemGWA,
+                'grade_11_sem2_gwa' => $request->grade11SecondSemGWA,
+                'grade_12_sem1_gwa' => $request->grade12FirstSemGWA,
+                'grade_12_sem2_gwa' => $request->grade12SecondSemGWA,
+                '1st_year_sem1_gwa' => $request->firstYearFirstSemGWA,
+                '1st_year_sem2_gwa' => $request->firstYearSecondSemGWA,
+                '2nd_year_sem1_gwa' => $request->secondYearFirstSemGWA,
+                '2nd_year_sem2_gwa' => $request->secondYearSecondSemGWA
+            ];
+            ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
+
+            // $incomingGrade = $request->incomingGrade;
+            // $academicInfoData = [
+            //     'applicant_id' => $applicant->id,
+            //     'current_course_program' => $request->currentCourse,
+            //     'current_school' => $request->currentSchool
+            // ];
 
             // Check the value of incomingGrade and create the corresponding record
-            if (in_array($incomingGrade, ['GradeSeven', 'GradeEight', 'GradeNine', 'GradeTen', 'GradeEleven', 'GradeTwelve'])) {
-                $academicInfoData['incoming_grade'] = $incomingGrade;
-                $applicant->academicInformation()->create($academicInfoData);
-            } elseif (in_array($incomingGrade, ['FirstYear', 'SecondYear', 'ThirdYear', 'FourthYear'])) {
-                $academicInfoData['incoming_year'] = $incomingGrade;
-                $applicant->academicInformationCollege()->create($academicInfoData);
-            }
+            // if (in_array($incomingGrade, ['GradeSeven', 'GradeEight', 'GradeNine', 'GradeTen', 'GradeEleven', 'GradeTwelve'])) {
+            //     $academicInfoData['incoming_grade'] = $incomingGrade;
+            //     $applicant->academicInformation()->create($academicInfoData);
+            // } elseif (in_array($incomingGrade, ['FirstYear', 'SecondYear', 'ThirdYear', 'FourthYear'])) {
+            //     $academicInfoData['incoming_year'] = $incomingGrade;
+            //     $applicant->academicInformationGrade()->create($academicInfoData);
+            // }
 
             return redirect(route('login'))->with("success", "Registration success, Login to access the app");
         } else {

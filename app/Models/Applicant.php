@@ -33,9 +33,9 @@ class Applicant extends Authenticatable
         return $this->hasOne(ApplicantsAcademicInformation::class, 'applicant_id', 'applicant_id');
     }
 
-    public function academicInformationCollege()
+    public function academicInformationGrade()
     {
-        return $this->hasOne(ApplicantsAcademicInformationCollege::class, 'applicant_id', 'applicant_id');
+        return $this->hasOne(ApplicantsAcademicInformationGrade::class, 'applicant_id', 'applicant_id');
     }
 
     public function academicInformationChoice()

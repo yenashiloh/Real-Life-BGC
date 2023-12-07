@@ -479,7 +479,7 @@
                         <label class="form-label">2nd Year First Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="firstYearFirstSemGWA" placeholder="" value="" />
+                            name="secondYearFirstSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" m id="secondYearSecondSem" style="display: none;">
                         <label class="form-label">2nd Year Second Sem GWA <span

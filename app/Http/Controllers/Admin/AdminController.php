@@ -164,8 +164,10 @@ class AdminController extends Controller
     public function showAnnouncement()
     {
         $title = 'Announcement';
-        return view('admin.announcement.admin-announcement', ['title' => $title]);
+        $announcements = Announcement::select('id', 'caption')->get();
+        return view('admin.announcement.admin-announcement', ['title' => $title, 'announcements' => $announcements]);
     }
+    
     public function addAnnouncement()
     {
         $title = 'Add Announcement';
@@ -199,7 +201,24 @@ class AdminController extends Controller
 
     $request->session()->flash('success', 'Announcement Added Successfully!');
     return redirect()->route('admin.announcement.add-announcement');
-}
+    }
+
+    //delete announcement
+    public function deleteAnnouncement($id)
+    {
+        $announcement = Announcement::find($id);
+
+        if (!$announcement) {
+            return redirect()->back()->with('error', 'Announcement not found.');
+        }
+    
+        if ($announcement->delete()) {
+            return redirect()->back()->with('success', 'Announcement Deleted Successfully!');
+        } else {
+            return redirect()->back()->with('error', 'Failed to delete the announcement.');
+        }
+    }
+
 
     
 }

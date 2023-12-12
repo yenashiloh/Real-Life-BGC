@@ -62,6 +62,8 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/announcement/admin-announcement', [AdminController::class, 'showAnnouncement'])->name('admin.announcement.admin-announcement');
     Route::get('/announcement/add-announcement', [AdminController::class, 'addAnnouncement'])->name('admin.announcement.add-announcement');
     Route::post('/announcement/add-announcement', [AdminController::class, 'saveAnnouncement'])->name('admin.save-announcement');
+    Route::delete('/delete-announcement/{id}', [AdminController::class, 'deleteAnnouncement'])->name('delete.announcement');
+
 
 
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');

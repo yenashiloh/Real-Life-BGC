@@ -23,27 +23,50 @@
             <div class="card-body">
               <h5 class="card-title">Add Announcement</h5>
               <!-- Table with stripped rows -->
-              <button type="button" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Add</button>
+              <button type="button" class="btn btn-primary" style="font-size: 12px; width: 120px; margin-bottom: 10px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Add</button>
+
               <table class="table datatable">
+                @if(session('success'))
+                    <div class="alert alert-success" style="margin: 0 auto; text-align: center; margin-bottom: 10px; width: 400px;">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger" style="margin: 0 auto; text-align: center; margin-bottom: 10px; width: 400px;">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Caption</th>
-                    <th scope="col">Images</th>
+                    <th scope="col">Content</th>
                     <th scope="col">Action</th>
-  
                   </tr>
                 </thead>
                 <tbody>
+                  @php
+                      $count = 1;
+                  @endphp
+                  @foreach($announcements as $announcement)
                   <tr>
-                    <th scope="row">1</th>
-                    <td>Shiloh</td>
-                    <td>Eugenio</td>
-                   
-                    <td>  <button type="button" class="btn" style="background-color: #2EB85C; color: white; font-size: 12px; width: 80px;">View</button> </td>
+                      <th scope="row">{{ $count++ }}</th>
+                      <td>{!! html_entity_decode(strip_tags($announcement->caption)) !!}</td>
+                      <td>
+                          <div>
+                            <a  class="btn" style="font-size: 12px; width: 80px; margin-bottom: 5px; background-color: #2EB85C; color: #fff;">Edit</a>
+                          </div>
+                          <div>
+                              <form action="{{ route('delete.announcement', ['id' => $announcement->id]) }}" method="post">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button type="submit" class="btn" style="font-size: 12px; width: 80px; background-color: #E55353; color: #fff;" >Delete</button>
+                              </form>
+                          </div>
+                      </td>
                   </tr>
-                 
-                </tbody>
+                  @endforeach
+              </tbody>
               </table>
               <!-- End Table with stripped rows -->
             </div>

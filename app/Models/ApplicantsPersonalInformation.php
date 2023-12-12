@@ -9,10 +9,11 @@ class ApplicantsPersonalInformation extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'applicant_id';
+    protected $primaryKey = 'personal_id';
     public $timestamps = false;
 
     protected $fillable = [
+        'applicant_id',
         'first_name',
         'last_name',
         'contact',

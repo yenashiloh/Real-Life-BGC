@@ -9,20 +9,13 @@ class ApplicantsAcademicInformation extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'applicant_id';
+    protected $primaryKey = 'academic_id';
     public $timestamps = false;
 
     protected $fillable = [
-        'incoming_grade',
-        'current_course_program',
-        'current_school',
-        'grade_three_gwa',
-        'grade_four_gwa',
-        'grade_five_gwa',
-        'grade_six_gwa',
-        'grade_seven_gwa',
-        'grade_eight_gwa',
-        'grade_nine_gwa',
-        'grade_ten_gwa'
+        'applicant_id',
+        'incoming_grade_year',
+        'current_course_program_grade',
+        'current_school'
     ];
 }

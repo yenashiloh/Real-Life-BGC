@@ -121,7 +121,7 @@ class ApplicantController extends Controller
             $academicInfoData = [
                 'applicant_id' => $applicant->applicant_id,
                 'incoming_grade_year' => $request->incomingGrade,
-                'current_course_program_grade' => $request->currentCourse,
+                'current_course_program_grade' => $request->currentProgram,
                 'current_school' => $request->currentSchool
             ];
             ApplicantsAcademicInformation::create($academicInfoData);
@@ -161,7 +161,7 @@ class ApplicantController extends Controller
             // $incomingGrade = $request->incomingGrade;
             // $academicInfoData = [
             //     'applicant_id' => $applicant->id,
-            //     'current_course_program' => $request->currentCourse,
+            //     'current_course_program' => $request->currentProgram,
             //     'current_school' => $request->currentSchool
             // ];
 

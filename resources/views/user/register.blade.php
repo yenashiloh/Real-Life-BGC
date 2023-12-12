@@ -290,16 +290,16 @@
                         <input type="text" class="form-control form-control-solid form-control-long"
                             name="currentSchool" placeholder="" value="" required/>
                     </div>
-                    <div class="col-md-4" style="display: none;" id="currentCourse">
+                    {{-- <div class="col-md-4" style="display: none;" id="currentCourse">
                         <label class="form-label">Current Course<span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                                <input type="text" class="form-control form-control-solid form-control-long" name="currentCourse" required>
-                    </div>
+                                <input type="text" class="form-control form-control-solid form-control-long" name="currentCourse" >
+                    </div> --}}
                     <div class="col-md-4" style="display: none;" id="currentProgram">
                         <label class="form-label">Current Program<span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-long"
-                            name="currentProgram" placeholder="" value="" required />
+                            name="currentProgram" placeholder="" value=""  />
                     </div>
                 </div>
                 <br>
@@ -315,49 +315,49 @@
                         <label class="form-label">Grade 3 GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade3GWA" placeholder="" value="" required />
+                            name="grade3GWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4" id="grade4Gwa" style="display: none;">
                         <label class="form-label">Grade 4 GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade4GWA" placeholder="" value="" required />
+                            name="grade4GWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4" id="grade5Gwa" style="display: none;">
                         <label class="form-label">Grade 5 GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade5GWA" placeholder="" value="" required />
+                            name="grade5GWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4" id="grade6Gwa" style="display: none;">
                         <label class="form-label">Grade 6 GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade6GWA" placeholder="" value="" required />
+                            name="grade6GWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4" id="grade7Gwa" style="display: none;">
                         <label class="form-label">Grade 7 GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade7GWA" placeholder="" value="" required />
+                            name="grade7GWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4" id="grade8Gwa" style="display: none;">
                         <label class="form-label">Grade 8 GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade8GWA" placeholder="" value="" required />
+                            name="grade8GWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="grade9Gwa" style="display: none;">
                         <label class="form-label">Grade 9 GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade9GWA" placeholder="" value="" required />
+                            name="grade9GWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="grade10Gwa" style="display: none;">
                         <label class="form-label">Grade 10 GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long"
-                            name="grade10GWA" placeholder="" value="" required />
+                            name="grade10GWA" placeholder="" value="" />
                     </div>
                     <!-- ======= STEP 3 - G11 SEMESTERS ======= -->
 
@@ -376,25 +376,25 @@
                         <label class="form-label">Grade 11 First Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade11FirstSemGWA" placeholder="" value="" required/>
+                            name="grade11FirstSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="g11SecondSem" style="display: none;">
                         <label class="form-label">Grade 11 Second Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long"
-                            name="grade11SecondSemGWA" placeholder="" value="" required />
+                            name="grade11SecondSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="g11ThirdSem" style="display: none;">
                         <label class="form-label">Grade 11 Third Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade11ThirdSemGWA" placeholder="" value="" required />
+                            name="grade11ThirdSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="g11FourthSem" style="display: none;">
                         <label class="form-label">Grade 11 Fourth Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade11FourthSemGWA" placeholder="" value="" required />
+                            name="grade11FourthSemGWA" placeholder="" value="" />
                     </div>
 
                     <!-- ======= STEP 3 - G12 SEMESTERS ======= -->
@@ -402,7 +402,7 @@
                         <label class="form-label">Grade 12 Semesters Completed<span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <select class="form-select form-select-solid form-control-long" id="grade12SemSelect"
-                            name="grade12Semester" required>
+                            name="grade12Semester" >
                             <option value="" style="color:#444444;">Select Semester</option>
                             <option value="g12TwoSem">Two Semesters</option>
                             <option value="g12ThreeSem">Three Semesters</option>
@@ -413,25 +413,25 @@
                         <label class="form-label">Grade 12 First Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade12FirstSemGWA" placeholder="" value="" required/>
+                            name="grade12FirstSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="g12SecondSem" style="display: none;">
                         <label class="form-label">Grade 12 Second Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long"
-                            name="grade12SecondSemGWA" placeholder="" value="" required/>
+                            name="grade12SecondSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="g12ThirdSem" style="display: none;">
                         <label class="form-label">Grade 12 Third Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade12ThirdSemGWA" placeholder="" value="" required />
+                            name="grade12ThirdSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="g12FourthSem" style="display: none;">
                         <label class="form-label">Grade 12 Fourth Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade12FourthSemGWA" placeholder="" value="" required />
+                            name="grade12FourthSemGWA" placeholder="" value="" />
                     </div>
 
                     <!-- ======= STEP 3 - FIRST YEAR SEMESTERS AND GWA ======= -->
@@ -439,7 +439,7 @@
                         <label class="form-label">1st Year Semesters Completed <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <select class="form-select form-select-solid form-control-long" id="firstYearSemSelect"
-                            name="firstYearSemester" required>
+                            name="firstYearSemester" >
                             <option value="" style="color:#444444;">Select Semester</option>
                             <option value="firstYearTwoSem">Two Semesters</option>
                             <option value="firstYearThreeSem">Three Semesters</option>
@@ -450,25 +450,25 @@
                         <label class="form-label">1st Year First Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="firstYearFirstSemGWA" placeholder="" value="" required/>
+                            name="firstYearFirstSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" m id="firstYearSecondSem" style="display: none;">
                         <label class="form-label">1st Year Second Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long"
-                            name="firstYearSecondSemGWA" placeholder="" value="" required/>
+                            name="firstYearSecondSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="firstYearThirdSem" style="display: none;">
                         <label class="form-label">1st Year Third Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="firstYearThirdSemGWA" placeholder="" value="" required />
+                            name="firstYearThirdSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="firstYearFourthSem" style="display: none;">
                         <label class="form-label">1st Year Fourth Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="firstYearFourthSemGWA" placeholder="" value="" required />
+                            name="firstYearFourthSemGWA" placeholder="" value="" />
                     </div>
 
 
@@ -477,7 +477,7 @@
                         <label class="form-label">2nd Year Semesters Completed <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <select class="form-select form-select-solid form-control-long" id="secondYearSemSelect"
-                            name="secondYearSemester" required>
+                            name="secondYearSemester" >
                             <option value="" style="color:#444444;">Select Semester</option>
                             <option value="secondYearTwoSem">Two Semesters</option>
                             <option value="secondYearThreeSem">Three Semesters</option>
@@ -494,24 +494,24 @@
                         <label class="form-label">2nd Year Second Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long"
-                            name="secondYearSecondSemGWA" placeholder="" value="" required />
+                            name="secondYearSecondSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="secondYearThirdSem" style="display: none;">
                         <label class="form-label">2nd Year Third Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="secondYearThirdSemGWA" placeholder="" value="" required />
+                            name="secondYearThirdSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="secondYearFourthSem" style="display: none;">
                         <label class="form-label">2nd Year Fourth Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="secondYearFourthSemGWA" placeholder="" value="" required />
+                            name="secondYearFourthSemGWA" placeholder="" value="" />
                     </div>
 
                     <div class="col-md-4 mb-3" id="reportCard" style="display: none;">
                         <label class="form-label">Report Card <span style="color: red; font-size: 10px;">*Upload PDF for Three Indicated Grade/Year Levels</span></label>
-                        <input type="file" class="form-control" name="ReportCard" accept=".pdf" required>
+                        <input type="file" class="form-control" name="ReportCard" accept=".pdf" >
                     </div>
                 </div>
                 <br>
@@ -531,19 +531,19 @@
                         <label class="form-label">First Choice School <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="schoolChoice1" placeholder="" value="" required/>
+                            name="schoolChoice1" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="schoolChoice2" style="display: none;">
                         <label class="form-label">Second Choice School <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-long"
-                            name="schoolChoice2" placeholder="" value="" required />
+                            name="schoolChoice2" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" id="schoolChoice3" style="display: none;">
                         <label class="form-label">Third Choice School <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-long"
-                            name="schoolChoice3" placeholder=" " value="" required />
+                            name="schoolChoice3" placeholder=" " value="" />
                     </div>
                 </div>
 
@@ -552,19 +552,19 @@
                         <label class="form-label">First Choice Course <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="courseChoice1" placeholder="" value="" required/>
+                            name="courseChoice1" placeholder="" value="" />
                     </div>
                     <div class="col-md-4" id="courseChoice2" style="display: none;">
                         <label class="form-label">Second Choice Course <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-long"
-                            name="courseChoice2" placeholder="" value="" required/>
+                            name="courseChoice2" placeholder="" value="" />
                     </div>
                     <div class="col-md-4" id="courseChoice3" style="display: none;">
                         <label class="form-label">Third Choice Course <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-long"
-                            name="courseChoice3" placeholder=" " value="" required />
+                            name="courseChoice3" placeholder=" " value="" />
                     </div>
                     <button type="button" class="btn btn-primary" id="nextButtonStep3">Next</button>
                 </div>
@@ -796,7 +796,7 @@ function validateRequiredFields(selectedGrade) {
     const incomingGrade = document.getElementById("incomingGrade");
     const currentSchool = document.getElementsByName("currentSchool")[0];
     const currentProgram = document.getElementsByName("currentProgram")[0];
-    const currentCourse = document.getElementsByName("currentCourse")[0];
+    // const currentCourse = document.getElementsByName("currentCourse")[0];
     
     const grade3GWA = document.getElementsByName("grade3GWA")[0];
     const grade4GWA = document.getElementsByName("grade4GWA")[0];
@@ -852,7 +852,7 @@ function validateRequiredFields(selectedGrade) {
         GradeEleven: [incomingGrade, currentSchool, grade7GWA, grade8GWA, grade9GWA, reportCard],
         GradeTwelve: [incomingGrade, currentSchool, currentProgram, grade8GWA, grade9GWA, grade10GWA, reportCard],
         FirstYear: [currentSchool, currentProgram, grade9GWA, grade10GWA, grade11SemSelect, reportCard, schoolChoice1, schoolChoice2, schoolChoice3, courseChoice1, courseChoice2, courseChoice3],
-        SecondYear: [incomingGrade, currentSchool, currentCourse, grade10GWA, grade11SemSelect, grade12SemSelect, reportCard]
+        SecondYear: [incomingGrade, currentProgram, currentSchool, grade10GWA, grade11SemSelect, grade12SemSelect, reportCard]
     };
 
     let isValid = true;
@@ -1071,7 +1071,7 @@ document.getElementById("grade12SemSelect").addEventListener('change', function(
 
     //REAL-TIME VALIDATION
     const elementNames = [
-    "currentSchool", "currentProgram", "currentCourse", "ReportCard", "grade3GWA", "grade4GWA", "grade5GWA", "grade6GWA",
+    "currentSchool", "currentProgram", "ReportCard", "grade3GWA", "grade4GWA", "grade5GWA", "grade6GWA",
     "grade7GWA", "grade8GWA", "grade9GWA", "grade10GWA", "grade11Semester", "grade11FirstSemGWA", "grade11SecondSemGWA",
     "grade11ThirdSemGWA", "grade11FourthSemGWA", "schoolChoice1", "schoolChoice2", "schoolChoice3", "courseChoice1",
     "courseChoice2", "courseChoice3", "grade12Semester", "grade12FirstSemGWA", "grade12SecondSemGWA",

@@ -242,7 +242,7 @@
 			// Grades and Semesters
 			incomingGradeSelect: document.getElementById('incomingGrade'),
 			currentProgram: document.getElementById('currentProgram'),
-			currentProgram: document.getElementById('currentCourse'),
+			// currentProgram: document.getElementById('currentCourse'),
 
 			gradesText: document.getElementById('gradesText'),
 			grade3Gwa: document.getElementById('grade3Gwa'),
@@ -505,9 +505,9 @@
 				'GradeEleven': ['gradesText', 'grade7Gwa', 'grade8Gwa', 'grade9Gwa', 'reportCard'],
 				'GradeTwelve': ['currentProgram', 'gradesText', 'grade8Gwa', 'grade9Gwa', 'grade10Gwa', 'reportCard'],
 				'FirstYear': ['currentProgram','gradesText', 'grade9Gwa', 'grade10Gwa', 'grade11Sem', 'schoolApplicationText', 'schoolChoice1', 'schoolChoice2', 'schoolChoice3', 'courseChoice1', 'courseChoice2', 'courseChoice3'],
-				'SecondYear': ['currentCourse','gradesText', 'grade10Gwa', 'grade11Sem', 'grade12Sem'],
-				'ThirdYear': ['currentCourse','gradesText', 'grade11Sem', 'grade12Sem', 'firstYearSem'],
-				'FourthYear': ['currentCourse','gradesText', 'grade12Sem', 'firstYearSem', 'secondYearSem'],
+				'SecondYear': ['currentProgram','gradesText', 'grade10Gwa', 'grade11Sem', 'grade12Sem'],
+				'ThirdYear': ['currentProgram','gradesText', 'grade11Sem', 'grade12Sem', 'firstYearSem'],
+				'FourthYear': ['currentProgram','gradesText', 'grade12Sem', 'firstYearSem', 'secondYearSem'],
 			};
 
 			const hideAllElements = () => {

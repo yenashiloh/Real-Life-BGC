@@ -231,6 +231,7 @@
 			previousButton: document.getElementById('previousButton'),
 			continueButton: document.getElementById('nextButton'),
 			submitButton: document.getElementById('submitButton'),
+			
 
 
 			step1Content: document.getElementById('step1Content'),
@@ -310,86 +311,71 @@
 			errorMessage.style.display = 'block';
 		};
 
-		const currentStep = document.querySelector('.stepper-item.current');
-		const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);
-		elements.previousButton.style.display = currentIndex === 0 ? 'none' : 'block';
-
-		elements.previousButton.addEventListener('click', function () {
-			const currentStep = document.querySelector('.stepper-item.current');
-			const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);
 		
-			if (currentIndex > 0) {
-				const previousStep = elements.stepperItems[currentIndex - 1];
-				if (previousStep) {
-					currentStep.classList.remove('current');
-					previousStep.classList.add('current');
-					handleStepTransition(currentIndex - 1);
-					window.scrollTo(0, 0);
-				}
-			}
+		const currentStep = document.querySelector('.stepper-item.current');
+        const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);
+        elements.previousButton.style.display = currentIndex === 0 ? 'none' : 'block';
+        elements.continueButton.style.display = currentIndex === 0 ? 'block' : 'none';
+        elements.submitButton.style.display = 'none'; 
 
-			handleStepperNumberColors(currentIndex - 1);
-			displayStepContent(currentIndex - 1);
-			elements.previousButton.style.display = currentIndex === 1 ? 'none' : 'block';
+        elements.previousButton.addEventListener('click', function () {
+            const currentStep = document.querySelector('.stepper-item.current');
+            const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);
 
-			if (currentIndex === 4) {
-				elements.submitButton.style.display = 'none';
-				elements.continueButton.style.display = 'block';
-				elements.continueButton.textContent = 'Next';
-			}
-		});
+            if (currentIndex > 0) {
+                const previousStep = elements.stepperItems[currentIndex - 1];
+                if (previousStep) {
+                    currentStep.classList.remove('current');
+                    previousStep.classList.add('current');
+                    handleStepTransition(currentIndex - 1);
+                    window.scrollTo(0, 0);
+                }
+            }
+
+            handleStepperNumberColors(currentIndex - 1);
+            displayStepContent(currentIndex - 1);
+
+            elements.previousButton.style.display = currentIndex === 1 ? 'none' : 'block';
+
+            if (currentIndex === 1) {
+                elements.continueButton.style.display = 'block'; 
+            }
+
+            elements.submitButton.style.display = 'none'; 
+        });
 
 		
 		elements.continueButton.addEventListener('click', function () {
-			const currentStep = document.querySelector('.stepper-item.current');
-			const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);
-
-			// if (currentIndex === elements.stepperItems.length - 1) {
-
-			// 	elements.previousButton.style.display = 'none';
-			// 	elements.continueButton.style.display = 'none';
-
-			// 	// const registerContent = document.querySelector('.registration-container');
-			// 	// registerContent.style.display = 'none';
-
-
-			// 	// const submissionMessage = document.querySelector('.submission-message');
-			// 	// submissionMessage.style.display = 'block';
-
-
-			// 	return;
-			// }
-
+            const currentStep = document.querySelector('.stepper-item.current');
+            const currentIndex = Array.from(elements.stepperItems).indexOf(currentStep);    
 			if (currentIndex === 0 && !elements.agreeCheckbox.checked) {
-				displayErrorMessage();
-				return;
-			}
+                displayErrorMessage();
+                return;
+            }
 
-			if (currentIndex < elements.stepperItems.length - 1) {
-				const nextStep = elements.stepperItems[currentIndex + 1];
-				if (nextStep) {
-					currentStep.classList.remove('current');
-					nextStep.classList.add('current');
-					handleStepTransition(currentIndex + 1);
-					window.scrollTo(0, 0);
-				}
-			}
+            if (currentIndex < elements.stepperItems.length - 1) {
+                const nextStep = elements.stepperItems[currentIndex + 1];
+                if (nextStep) {
+                    currentStep.classList.remove('current');
+                    nextStep.classList.add('current');
+                    handleStepTransition(currentIndex + 1);
+                    window.scrollTo(0, 0);
+                }
+            }
 
 			handleStepperNumberColors(currentIndex + 1);
-			displayStepContent(currentIndex + 1);
+            displayStepContent(currentIndex + 1);
 
-			elements.previousButton.style.display = 'block';
-			// elements.continueButton.textContent = currentIndex === elements.stepperItems.length - 2 ? 'Submit' : 'Next';
-			if(currentIndex === elements.stepperItems.length - 2){
-				elements.continueButton.style.display = 'none';
-				elements.submitButton.style.display = 'block';
-				
-			}
-			
-		});
+            elements.previousButton.style.display = 'block';
+            // elements.continueButton.textContent = currentIndex === elements.stepperItems.length - 2 ? 'Submit' : 'Next';
 
-		
-		
+            if (currentIndex === 0) {
+                elements.continueButton.style.display = 'none'; 
+            } else if (currentIndex === elements.stepperItems.length - 2) {
+                elements.submitButton.style.display = 'block'; 
+            }
+        });
+
 
 		const handleStepperNumberColors = (currentIndex) => {
 			elements.stepperItems.forEach((item, index) => {
@@ -689,5 +675,31 @@
 		});
 	});
 })()
+
+// Add an event listener to calculate the total monthly income when 'Monthly Income' fields change
+document.addEventListener('input', function (event) {
+    if (event.target && event.target.id.startsWith('monthlyIncome')) {
+        calculateTotalIncome();
+    }
+});
+
+// Function to calculate the total income
+function calculateTotalIncome() {
+    const totalMonthlyIncomeField = document.getElementById('totalMonthlyIncome');
+    const monthlyIncomeFields = document.querySelectorAll('[id^="monthlyIncome"]');
+    
+    let totalIncome = 0;
+
+    monthlyIncomeFields.forEach(field => {
+        const income = parseFloat(field.value) || 0;
+        totalIncome += income;
+    });
+
+    totalMonthlyIncomeField.value = totalIncome.toFixed(2);
+}
+
+// Rest of your code...
+// The 'totalMonthlyIncomeField' will update based on the calculation when Monthly Income fields are modified
+
 
 

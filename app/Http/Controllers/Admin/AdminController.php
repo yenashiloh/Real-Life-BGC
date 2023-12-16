@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Announcement; 
+use App\Models\Applicant;
+use App\Models\ApplicantsAcademicInformation;
+use App\Models\ApplicantsPersonalInformation;
+use Illuminate\Support\Facades\DB; 
+
 
 
 
@@ -218,8 +223,54 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Failed to delete the announcement.');
         }
     }
+ 
+    //dashboard 
+    public function totalApplicants()
+    {
+        $totalApplicants = Applicant::count();
+        $title = 'Dashboard'; 
+        
+        return view('admin.dashboard', compact('totalApplicants', 'title'));
+    }
 
-
+    //bar chart - incoming grade/yr level
+    public function getApplicantsByGradeYear()
+    {
+        $gradeCounts = ApplicantsAcademicInformation::select('incoming_grade_year', DB::raw('count(*) as count'))
+            ->groupBy('incoming_grade_year')
+            ->orderBy('incoming_grade_year')
+            ->get();
     
+        $labels = $gradeCounts->pluck('incoming_grade_year')->toArray(); 
+        $counts = $gradeCounts->pluck('count')->toArray(); 
+    
+        return response()->json([
+            'labels' => $labels,
+            'counts' => $counts,
+        ]);
+    }
+
+    //applicants data 
+    public function showNewApplicants()
+    {
+        $title = 'New Applicants';
+        $applicantsData = $this->getApplicantsData();
+        return view('admin.applicants.new_applicants', compact('title', 'applicantsData'));
+    }
+    
+    public function getApplicantsData()
+    {
+        $applicantsData = ApplicantsPersonalInformation::select(
+            'applicants_personal_information.first_name',
+            'applicants_personal_information.last_name',
+            'applicants_academic_information.incoming_grade_year',
+            'applicants_academic_information.current_school' 
+        )
+        ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
+        ->get();
+
+        return $applicantsData;
+    }
+
 }
 

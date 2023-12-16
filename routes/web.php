@@ -64,7 +64,13 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::post('/announcement/add-announcement', [AdminController::class, 'saveAnnouncement'])->name('admin.save-announcement');
     Route::delete('/delete-announcement/{id}', [AdminController::class, 'deleteAnnouncement'])->name('delete.announcement');
 
+    //DASHBOARD
+    Route::get('/dashboard', [AdminController::class, 'totalApplicants'])->name('dashboard');
+    Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
 
+    // DATA APPLICANTS 
+    Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
+    Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
 
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
 });

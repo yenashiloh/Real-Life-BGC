@@ -17,7 +17,7 @@
           </a>
           <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
             <li>
-              <a href="new_applicants.html">
+              <a href="{{ route('admin.applicants.new_applicants') }}">
                 <i class="bi bi-circle"></i><span>New Applicants</span>
               </a>
             </li>

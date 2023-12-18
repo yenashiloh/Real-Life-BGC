@@ -22,12 +22,12 @@
         <div class="container">
             <div class="section-title">
                 <h2>Mission Statement</h2>
-                <p style="font-size: 19px; color: #454545;">Real LIFE Foundation is a Philippine nongovernmental
+                <p style="font-size: 22px; color: #454545;">Real LIFE Foundation is a Philippine nongovernmental
                     organization that exists to honor God by serving and empowering the underprivileged youth of the
                     Philippines through educational assistance, character formation, and leadership development.</p>
             </div>
             <br><br>
-            <div class="section-title" id="educational_assistance">
+            <div class="section-title" id="educational_assistance" >
                 <h3 style="color:#71BF44">What we do</h3>
                 <img src="assets/img/cup.png" alt="" style="max-width: 40%; height: auto; " class="image_about">
                 <div class="section-title">
@@ -38,7 +38,7 @@
                         themselves out of poverty. The financial aid we give to our scholars serves this purpose. On
                         top of covering their tuition and miscellaneous fees, we also provide for the following:
                     </p>
-                    <ul style="font-size: 18px; display: inline-block; vertical-align: middle; margin-top: 10px; "
+                    <ul style="font-size: 19px; display: inline-block; vertical-align: middle; margin-top: 10px; "
                         class="text-start">
                         <li> <strong>School-related expenses - </strong>
                             With their school supplies, uniforms, and other school-related expenses provided for,
@@ -71,7 +71,7 @@
                                 <img src="assets/img/life-groups.jpg" class="img-fluid mb-4  " alt="">
                             </div>
                             <ul class="col-lg-6 pt-lg-0 order-2 order-lg-1 content text-start custom-margin-top"
-                                style="font-size: 18px;">
+                                style="font-size: 19px;">
                                 <strong>LIFE Groups -</strong>
                                 All Real LIFE scholars are plugged into LIFE Groups where they learn about
                                 leadership, integrity, faith, and excellence. This is also where they can share
@@ -84,7 +84,7 @@
                                 <img src="assets/img/scholar-updates.jpeg" class="img-fluid mb-4  " alt="">
                             </div>
                             <ul class="col-lg-6 pt-lg-0 order-2 order-lg-1 content text-start scholar custom-margin-top-1"
-                                style="font-size: 18px;  ">
+                                style="font-size: 19px;  ">
                                 <strong>Scholar Updates -</strong>
                                 During these monthly updates, the scholars are able to share their struggles and
                                 wins with one another, building a community they know they can turn to for support.
@@ -103,7 +103,7 @@
                                     empowering a generation of future leaders who will make an impact in the
                                     different sectors of society.
                                 </p>
-                                <ul style="font-size: 18px; display: inline-block; vertical-align: middle; margin-top: 10px; "
+                                <ul style="font-size: 19px; display: inline-block; vertical-align: middle; margin-top: 10px; "
                                     class="text-start">
                                     <li> <strong>Special workshops -</strong>
                                         Both the Real LIFE national office and local centers regularly hold
@@ -130,20 +130,20 @@
 </main><!-- End #main -->
 
 <!-- ======= Footer ======= -->
-<footer id="footer" class="footer mt-4 mb-4">
+<footer id="footer" class="footer mt-4 mb-4" >
 
-    <div class="footer-top">
-        <div class="container">
-            <div class="row gy-4">
+    <div class="footer-top" style="margin-top: 0; background-color: rgb(230, 230, 230);">
+        <div class="container " >
+            <div class="row gy-4" >
                 <div class="col-lg-4 col-md-4 col-12 footer-links mb-4 ml-md-12">
                     <h4>About</h4>
                     <ul>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#mission_statement">Mission</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#educational_assistance">Educational
+                        <li><i class="bi bi-chevron-right" style="color:#0A6E57;"></i> <a href="#mission_statement">Mission</a></li>
+                        <li><i class="bi bi-chevron-right"  style="color:#0A6E57;"></i> <a href="#educational_assistance">Educational
                                 Assistance</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#character_formation">Character
+                        <li><i class="bi bi-chevron-right"  style="color:#0A6E57;"></i> <a href="#character_formation">Character
                                 Formation</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#leadership_development">Leadership
+                        <li><i class="bi bi-chevron-right"  style="color:#0A6E57;"></i> <a href="#leadership_development">Leadership
                                 Development</a></li>
                     </ul>
                 </div>
@@ -151,8 +151,8 @@
                 <div class="col-lg-4 col-md-4 col-12 footer-links mb-4">
                     <h4>Resources</h4>
                     <ul>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">FAQ</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Announcement</a></li>
+                        <li><i class="bi bi-chevron-right" style="color:#0A6E57;"></i> <a href="#">FAQ</a></li>
+                        <li><i class="bi bi-chevron-right" style="color:#0A6E57;"></i> <a href="#">Announcement</a></li>
 
                     </ul>
                 </div>
@@ -175,7 +175,7 @@
 
     <div class="container">
         <div class="copyright ">
-            &copy; Copyright <strong><span>Real LIFE Foundation</span></strong>. All Rights Reserved
+            &copy; Copyright <strong>Real LIFE Foundation</strong>. All Rights Reserved
         </div>
     </div>
 </footer>

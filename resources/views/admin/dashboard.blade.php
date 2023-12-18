@@ -45,12 +45,12 @@
               <div class="card-body">
                 <h5 class="card-title">Total of Applicants</h5>
                 <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-person"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>1000</h6>
-                  </div>
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{ $totalApplicants }}</h6>
+                    </div>
                 </div>
               </div>
             </div>
@@ -199,7 +199,6 @@
             </div>
           </div><!-- End Total Accepted Applicants-->
         </div>
-    
 
             <!-- Reports -->
             <div class="col-12">
@@ -211,46 +210,53 @@
                   <canvas id="barChart" style="max-height: 400px;"></canvas>
                   <script>
                     document.addEventListener("DOMContentLoaded", () => {
-                      new Chart(document.querySelector('#barChart'), {
-                        type: 'bar',
-                        data: {
-                          labels: ['Grade 10', 'Grade 11', 'Grade 12', 'First Year College', 'Second Year College', 'Third  Year College', 'Fourth Year College'],
-                          datasets: [{
-                            label: 'Grade School / Year Level',
-                            data: [65, 59, 80, 81, 56, 55, 40],
-                            backgroundColor: [
-                              'rgba(255, 99, 132, 0.2)',
-                              'rgba(255, 159, 64, 0.2)',
-                              'rgba(255, 205, 86, 0.2)',
-                              'rgba(75, 192, 192, 0.2)',
-                              'rgba(54, 162, 235, 0.2)',
-                              'rgba(153, 102, 255, 0.2)',
-                              'rgba(201, 203, 207, 0.2)'
-                            ],
-                            borderColor: [
-                              'rgb(255, 99, 132)',
-                              'rgb(255, 159, 64)',
-                              'rgb(255, 205, 86)',
-                              'rgb(75, 192, 192)',
-                              'rgb(54, 162, 235)',
-                              'rgb(153, 102, 255)',
-                              'rgb(201, 203, 207)'
-                            ],
-                            borderWidth: 1
-                          }]
-                        },
-                        options: {
-                          scales: {
-                            y: {
-                              beginAtZero: true
+                      fetch('/getApplicantsByGradeYear')
+                        .then(response => response.json())
+                        .then(data => {
+                          const labels = data.labels;
+                          const counts = data.counts;
+
+                          const randomColor = () => {
+                            const r = Math.floor(Math.random() * 256);
+                            const g = Math.floor(Math.random() * 256);
+                            const b = Math.floor(Math.random() * 256);
+                            return `rgba(${r}, ${g}, ${b}, 0.2)`;
+                          };
+
+                          const randomBorderColor = () => {
+                            const r = Math.floor(Math.random() * 256);
+                            const g = Math.floor(Math.random() * 256);
+                            const b = Math.floor(Math.random() * 256);
+                            return `rgb(${r}, ${g}, ${b})`;
+                          };
+                          
+                          new Chart(document.querySelector('#barChart'), {
+                            type: 'bar',
+                            data: {
+                              labels: labels,
+                              datasets: [{
+                                label: 'Grade School / Year Level',
+                                data: counts,
+                                backgroundColor: Array.from({ length: counts.length }, () => randomColor()),
+                                borderColor: Array.from({ length: counts.length }, () => randomBorderColor()),
+                                borderWidth: 1
+                              }]
+                            },
+                            options: {
+                              scales: {
+                                y: {
+                                  beginAtZero: true
+                                }
+                              }
                             }
-                          }
-                        }
-                      });
+                          });
+                        })
+                        .catch(error => {
+                          console.error('Error fetching data:', error);
+                        });
                     });
                   </script>
                   <!-- End Bar CHart -->
-    
                 </div>
               </div>
             </div><!-- End Reports -->

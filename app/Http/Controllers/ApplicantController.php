@@ -12,6 +12,7 @@ use App\Models\ApplicantsAcademicInformation;
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
 
+
 class ApplicantController extends Controller
 {
     public function index()
@@ -172,4 +173,7 @@ class ApplicantController extends Controller
         $request->session()->regenerateToken();
         return redirect(route('login'));
     }
+
+   
+    
 }

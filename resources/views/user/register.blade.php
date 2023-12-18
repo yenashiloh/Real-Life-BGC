@@ -32,6 +32,15 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/registration.css">
 
+    <style>
+/* Custom styles to align the error message */
+#contactError {
+    display: none;
+    margin-left: 5px; /* Adjust the margin for proper positioning */
+}
+
+
+    </style>
 
 </head>
 
@@ -60,7 +69,7 @@
     <div class="registration-container">
 
         <!-- ======= STEP REGISTRATION ======= -->
-        <h1 class="registration">SCREENING FORM</h1>
+        <h2 class="registration">SCREENING FORM</h2>
         <span style="text-align: center;  display: block;">Please fill out all the forms</span>
         <div class="stepper stepper-pills" id="registration">
             <div class="stepper-nav flex-center flex-wrap mb-10">
@@ -192,31 +201,45 @@
             <!-- ======= STEP 2 ======= -->
             <div class="container mt-4 mb-4" id="step2Content" style="display: none;">
                 <div class="row">
-                      <span id="step2ErrorMessage"  style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all required fields.</span>
+                      <span id="step2ErrorMessage"  style="display: none; color: red; text-align: center; margin-bottom: 15px;"></span>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="firstname">First Name <span
-                                    style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" name="firstname" id="firstname"
-                                placeholder="" required>
+                        <div class="form-group" style="display: flex; align-items: center;">
+                            <label for="firstname" style="display: inline-block; margin-right: 5px;">
+                                First Name
+                                <span style="color: red; font-size: 12px; font-weight: normal;">*</span>
+                            </label>
+                            <span id="nameErrorMessage" style="display: none; color: red; font-size: 12px; font-weight: bold; margin-right: 5px;">(Invalid characters entered)</span>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="firstname" id="firstname" placeholder="" required>
+                        </div>
+                    </div>       
+
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="lastname">Last Name <span
-                                    style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="text" class="form-control" name="lastname" id="lastname"
-                                placeholder="" required>
+                        <div class="form-group" style="display: flex; align-items: center;">
+                            <label for="lastname" style="display: inline-block; margin-right: 5px;">
+                                Last Name
+                                <span style="color: red; font-size: 12px; font-weight: normal;">*</span>
+                            </label>
+                            <span id="lnameErrorMessage" style="display: none; color: red; font-size: 12px; font-weight: bold; margin-right: 5px;">(Invalid characters entered)</span>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="lastname" id="lastname" placeholder="" required>
+                        </div>
+                    </div>       
+
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="contact_no">Contact Number <span
-                                    style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <input type="number" class="form-control" name="contact" id="contact_no"
-                                placeholder="" required>
+                        <div class="form-group" style="display: flex; align-items: center;">
+                            <label for="contact_no" style="display: inline-block; margin-right: 5px;">
+                                Contact Number 
+                                <span style="color: red; font-size: 12px; font-weight: normal;">*</span>
+                            </label>
+                            <span id="contactError" style="display: none; color: red; font-size: 12px; font-weight: bold; margin-right: 5px;">(Phone number must be 11 digits long)</span>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <input type="number" class="form-control" name="contact" id="contact_no" placeholder="" required>
+                        </div>
+                    </div>                                                                                                                                       
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="birthdate">Birthdate <span
@@ -263,14 +286,14 @@
             </div>
 
             <!-- ======= STEP 3 CONTENT ======= -->
-            <div class="container" id="step3Content" style="display: none;">
+            <div class="container" id="step3Content" style="display: none;" >
                 <div class="row">
                 <span id="step3ErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all required fields.</span>
                     <div class="col-md-4">
                         <label class="form-label">Incoming Grade or Year <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label></label>
                         <select class="form-select form-select-solid form-control-long" name="incomingGrade"
-                            id="incomingGrade" required>
+                            id="incomingGrade" >
                             <option value="" style="color:#444444;">Select grade or year level</option>
                             <option value="GradeSeven">Grade 7</option>
                             <option value="GradeEight">Grade 8</option>
@@ -288,7 +311,7 @@
                         <label class="form-label">Current School <span
                                 style="color: red; font-size: 12px; font-weight: normal;" >*</span></label>
                         <input type="text" class="form-control form-control-solid form-control-long"
-                            name="currentSchool" placeholder="" value="" required/>
+                            name="currentSchool" placeholder="" value="" />
                     </div>
                     {{-- <div class="col-md-4" style="display: none;" id="currentCourse">
                         <label class="form-label">Current Course<span
@@ -452,7 +475,7 @@
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
                             name="firstYearFirstSemGWA" placeholder="" value="" />
                     </div>
-                    <div class="col-md-4 mb-3" m id="firstYearSecondSem" style="display: none;">
+                    <div class="col-md-4 mb-3" id="firstYearSecondSem" style="display: none;">
                         <label class="form-label">1st Year Second Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long"
@@ -488,7 +511,7 @@
                         <label class="form-label">2nd Year First Sem GWA <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                         <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="firstYearFirstSemGWA" placeholder="" value="" />
+                            name="secondYearFirstSemGWA" placeholder="" value="" />
                     </div>
                     <div class="col-md-4 mb-3" m id="secondYearSecondSem" style="display: none;">
                         <label class="form-label">2nd Year Second Sem GWA <span
@@ -574,11 +597,13 @@
             <!-- ======= STEP 4 - MONTHLY HOUSEHOLD ======= -->
             <div class="container mt-4 mb-3" id="step4Content" style="display: none;">
                 <div class="row">
+                    <span id="step4ErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all required fields.</span>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label for="householdSelect">Number of Household Employed <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <select class="form-select form-select-solid form-control" id="householdSelect">
+                                    <select class="form-select form-select-solid form-control-long" id="householdSelect">
+                                   
                                 <option value="" style="color:#444444;">Select a number </option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -631,6 +656,7 @@
                         </div>
                     </div>
                 </div>
+                <button type="button" class="btn btn-primary" id="nextButtonStep4">Next</button>
             </div>
             
 
@@ -639,7 +665,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="firstname">Email <span
+                            <label for="email">Email <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                             <input type="email" class="form-control" name="email" id="email" placeholder=""
                                 required>
@@ -647,7 +673,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="lastname">Password <span
+                            <label for="password">Password <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                             <input type="password" class="form-control" name="password" id="password"
                                 placeholder="" required>
@@ -655,13 +681,21 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="contact_no">Confirm Password <span
+                            <label for="confirm_password">Confirm Password <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                             <input type="password" class="form-control" id="confirm_password" placeholder=""
                                 required>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="submit-button">
+                <button type="submit" class="btn submit-button" id="submitButton"
+                    data-kt-stepper-action="submit"
+                    style="display:none; background-color: #518630; color: #fff;">
+                    Submit
+                </button>
             </div>
 
             <!-- ======= NEXT AND PREVIOUS BUTTON ======= -->
@@ -677,14 +711,9 @@
                         style="background-color: #518630; color: #fff;">
                         Next
                     </button>
-                    <button type="submit" class="btn submit-button" id="submitButton"
-                        data-kt-stepper-action="submit"
-                        style="display: none; background-color: #518630; color: #fff;">
-                        Submit
-                    </button>
                 </div>
             </div>
-            <x-messages />
+            <x-messages/>
         </form>
     </div>
 
@@ -716,80 +745,248 @@
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const nextButtonStep2 = document.getElementById("nextButtonStep2");
-    const step2ErrorMessage = document.getElementById("step2ErrorMessage");
-    const nextButtonStep3 = document.getElementById("nextButtonStep3");
-    const step3ErrorMessage = document.getElementById("step3ErrorMessage");
+        document.addEventListener("DOMContentLoaded", function () {
+        const nextButtonStep2 = document.getElementById("nextButtonStep2");
+        const step2ErrorMessage = document.getElementById("step2ErrorMessage");
+        const nextButtonStep3 = document.getElementById("nextButtonStep3");
+        const step3ErrorMessage = document.getElementById("step3ErrorMessage");
 
-    const elements = {
-        stepperItems: document.querySelectorAll(".stepper-item"),
-        step1Content: document.getElementById("step1Content"),
-        step2Content: document.getElementById("step2Content"),
-        step3Content: document.getElementById("step3Content"),
-        step4Content: document.getElementById("step4Content"),
-        step5Content: document.getElementById("step5Content")
-    };
 
-  function validateInput(input) {
-    if (input.value.trim() === '') {
-        input.classList.add('border', 'border-danger', 'is-invalid'); 
-        return false;
-    } else {
-        input.classList.remove('border', 'border-danger', 'is-invalid');
-        return true;
+        const elements = {
+            stepperItems: document.querySelectorAll(".stepper-item"),
+            step1Content: document.getElementById("step1Content"),
+            step2Content: document.getElementById("step2Content"),
+            step3Content: document.getElementById("step3Content"),
+            step4Content: document.getElementById("step4Content"),
+            step5Content: document.getElementById("step5Content")
+        };
+
+        function validateInput(input) {
+            const trimmedValue = input.value.trim();
+            const isValid = trimmedValue !== '';
+            if (!isValid) {
+                input.classList.add('border', 'border-danger', 'is-invalid');
+            } else {
+                input.classList.remove('border', 'border-danger', 'is-invalid');
+            }
+            return isValid;
+        }
+
+        
+        function validateNameInput(input, errorMessageElement) {
+        const trimmedValue = input.value.trim();
+        const hasSpecialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?]+/.test(trimmedValue); 
+        const isValid = /^[A-Za-z\s]*$/.test(trimmedValue); 
+        const isRequiredField = input.getAttribute('required') !== null; 
+
+        if (isRequiredField && trimmedValue === '') {
+            input.classList.add('border', 'border-danger', 'is-invalid');
+            errorMessageElement.style.display = 'block'; 
+            errorMessageElement.innerText = '';
+            return false;
+        } else if (!hasSpecialChars && !isRequiredField && trimmedValue === '') {
+            input.classList.remove('border', 'border-danger', 'is-invalid');
+            errorMessageElement.style.display = 'none'; 
+            return true;
+        } else if (hasSpecialChars || !isValid) {
+            input.classList.add('border', 'border-danger', 'is-invalid');
+            errorMessageElement.style.display = 'block'; 
+            errorMessageElement.innerText = '(Invalid characters entered.)';
+            return false;
+        } else {
+            input.classList.remove('border', 'border-danger', 'is-invalid');
+            errorMessageElement.style.display = 'none'; 
+            return true;
+        }
     }
-}
-// REAL-TIME VALIDATION
-document.querySelectorAll('#step2Content input[required]').forEach(function (input) {
-    input.addEventListener('input', function () {
-        validateInput(this);
-    });
-});
 
-nextButtonStep2.addEventListener("click", function () {
+        function validateContactLength(input) {
+            const contactError = document.getElementById('contactError');
+            const expectedLength = 11;
+            const trimmedValue = input.value.trim();
+            
+            if (trimmedValue === '') {
+                contactError.style.display = 'none';
+                return false; 
+            } else if (trimmedValue.length !== expectedLength) {
+                contactError.style.display = 'block';
+                return false; 
+            } else {
+                contactError.style.display = 'none';
+                return true; 
+            }
+        }
+
+        const firstNameInput = document.getElementById('firstname');
+        const lastNameInput = document.getElementById('lastname');
+
+        const nameErrorMessage = document.getElementById('nameErrorMessage');
+        const lnameErrorMessage = document.getElementById('lnameErrorMessage');
+
+        firstNameInput.addEventListener('input', function () {
+            validateNameInput(this, nameErrorMessage);
+        });
+
+        lastNameInput.addEventListener('input', function () {
+            validateNameInput(this, lnameErrorMessage);
+        });
+
+        //CONTACT NUMBER LENGTH
+        function validateContactLength(input) {
+            const contactError = document.getElementById('contactError');
+            const expectedLength = 11;
+            const isValidLength = input.value.trim().length === expectedLength;
+
+            contactError.style.display = isValidLength ? 'none' : 'block';
+            return isValidLength;
+        }
+
+        // REAL-TIME VALIDATION
+        const contactInput = document.getElementById('contact_no');
+        contactInput.addEventListener('input', function () {
+            validateInput(this);
+            validateContactLength(this);
+        });
+
+        document.querySelectorAll('#step2Content input[required]').forEach(function (input) {
+            input.addEventListener('input', function () {
+                validateInput(this);
+            });
+        });
+
+        const birthdateInput = document.getElementById('birthdate'); 
+        birthdateInput.addEventListener('input', function () {
+            validateInput(this);
+        });
+
+        //BIRTHDATE VALIDATION
+        const today = new Date();
+        const maxDate = new Date(today.getFullYear() - 25, today.getMonth(), today.getDate());
+        const maxDateString = today.toISOString().split('T')[0]; 
+        birthdateInput.setAttribute('max', maxDateString);
+
+        function calculateAge(birthdate) {
+        const today = new Date();
+        const birthDate = new Date(birthdate);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+        function validateAge(input) {
+            if (input.value === '') {
+                return false;
+            }
+
+            const age = calculateAge(input.value);
+            return age < 26; 
+        }
+
+        //NEXT BUTTON
+       nextButtonStep2.addEventListener("click", function (e) {
+    e.preventDefault();
+
     const inputs = document.querySelectorAll('#step2Content input[required]');
     let isValid = true;
+    let hasSpecialCharacters = false;
+    let ageValid = true;
+    let birthdateEmpty = false;
+    let contactValid = true;
+    let firstNameValid = true;
+    let lastNameValid = true;
+    let addressFieldsValid = true; 
 
-    inputs.forEach(function (input) {
-        if (!validateInput(input)) {
-            isValid = false;
+     inputs.forEach(function (input) {
+        if (input.id === 'firstname') {
+            firstNameValid = validateNameInput(input, nameErrorMessage);
+            if (!firstNameValid) {
+                hasSpecialCharacters = true;
+            }
+        } else if (input.id === 'lastname') {
+            lastNameValid = validateNameInput(input, lnameErrorMessage);
+            if (!lastNameValid) {
+                hasSpecialCharacters = true;
+            }
+        } else if (input.id === 'house_no' || input.id === 'street' || input.id === 'barangay' || input.id === 'municipality') {
+            if (!input.value.trim()) {
+                validateInput(input);
+                addressFieldsValid = false;
+                isValid = false;
+            }
+        } else {
+            if (!input.value.trim()) {
+                validateInput(input);
+                isValid = false;
+            }
         }
     });
 
-    if (isValid) {
-        step2ErrorMessage.style.display = "none";
+    // VALDATION AGE AND BDAY
+    if (birthdateInput.value === '') {
+        birthdateEmpty = true;
+        isValid = false;
+    } else {
+        if (!validateAge(birthdateInput)) {
+            ageValid = false;
+            isValid = false;
+        }
+    }
+
+    const contactInput = document.getElementById('contact_no');
+    const trimmedContactValue = contactInput.value.trim();
+    if (!trimmedContactValue) {
+        validateInput(contactInput);
+        isValid = false;
+        contactError.style.display = 'none'; 
+    } else {
+        contactValid = validateContactLength(contactInput);
+        if (!contactValid) {
+            isValid = false;
+            step2ErrorMessage.innerText = ''; 
+        }
+        contactError.style.display = contactValid ? 'none' : 'block'; 
+    }
+
+    if (isValid && ageValid && !hasSpecialCharacters && !birthdateEmpty) {
         handleStepTransition(2);
         setTimeout(() => {
             elements.stepperItems[1].classList.add('done');
-            handleStepperNumberColors(2); 
+            handleStepperNumberColors(2);
+            step2ErrorMessage.style.display = "none";
         }, 100);
     } else {
-        step2ErrorMessage.style.display = "block";
+        if (birthdateEmpty) {
+            step2ErrorMessage.innerText = "Please fill out all required fields.";
+        } else if (!ageValid) {
+            step2ErrorMessage.innerText = "You must be under the age of 25 to qualify for the scholarship.";
+        } else if (hasSpecialCharacters) {
+            step2ErrorMessage.innerText = "";
+        }
+
+        nameErrorMessage.style.display = firstNameValid ? 'none' : 'block';
+        lnameErrorMessage.style.display = lastNameValid ? 'none' : 'block';
     }
-});
+
+   
+    document.querySelectorAll('#step2Content input[type="text"][required]').forEach(function (input) {
+        if (!input.value.trim()) {
+            const errorMessageElement = document.getElementById(input.id + "ErrorMessage");
+            if (errorMessageElement) {
+                errorMessageElement.style.display = 'block';
+            }
+        }
+    });
+
+        step2ErrorMessage.style.display = (isValid && !hasSpecialCharacters) ? 'none' : 'block';
+    });
+
+
 
 //STEP 3
-
-function validateInput(input) {
-    if (input.tagName === 'SELECT' || input.tagName === 'INPUT') {
-        if (input.tagName === 'INPUT' && input.value.trim() === '') {
-            console.log('Input is invalid');
-            input.classList.add('border', 'border-danger', 'is-invalid');
-            return false;
-        } else if (input.tagName === 'SELECT' && input.value === '') {
-            console.log('Select is invalid');
-            input.classList.add('border', 'border-danger', 'is-invalid');
-            return false;
-        } else {
-            console.log('Input is valid');
-            input.classList.remove('border', 'border-danger', 'is-invalid');
-            return true;
-        }
-    } else {
-        return true;
-    }
-}
 
 // REQUIRED FIELDS
 function validateRequiredFields(selectedGrade) {
@@ -831,6 +1028,21 @@ function validateRequiredFields(selectedGrade) {
     const g12SecondSem = document.getElementsByName("grade12SecondSemGWA")[0];
     const g12ThirdSem = document.getElementsByName("grade12ThirdSemGWA")[0];
     const g12FourthSem = document.getElementsByName("grade12FourthSemGWA")[0];
+
+    //FIRST YEAR GWA
+    const firstYearSemSelect = document.getElementById("firstYearSemSelect");
+    const firstYearFirstSem = document.getElementsByName("firstYearFirstSemGWA")[0];
+    const firstYearSecondSem = document.getElementsByName("firstYearSecondSemGWA")[0];
+    const firstYearThirdSem = document.getElementsByName("firstYearThirdSemGWA")[0];
+    const firstYearFourthSem = document.getElementsByName("firstYearFourthSemGWA")[0];
+
+     //SECOND YEAR GWA
+    const secondYearSemSelect = document.getElementById("secondYearSemSelect");
+    const secondYearFirstSem = document.getElementsByName("secondYearFirstSemGWA")[0];
+    const secondYearSecondSem = document.getElementsByName("secondYearSecondSemGWA")[0];
+    const secondYearThirdSem = document.getElementsByName("secondYearThirdSemGWA")[0];
+    const secondYearFourthSem = document.getElementsByName("secondYearFourthSemGWA")[0];
+
     
     const grade11Semesters = {
         TwoSem: ["g11FirstSem", "g11SecondSem"],
@@ -844,6 +1056,19 @@ function validateRequiredFields(selectedGrade) {
         FourSem: ["g12FirstSem", "g12SecondSem", "g12ThirdSem", "g12FourthSem"]
     };
 
+    const firstYearSemesters = {
+        TwoSem: ["firstYearFirstSem", "firstYearSecondSem"],
+        ThreeSem: ["firstYearFirstSem", "firstYearSecondSem", "firstYearThirdSem"],
+        FourSem: ["firstYearFirstSem", "firstYearSecondSem", "firstYearThirdSem", "firstYearFourthSem"]
+    };
+
+    const secondYearSemesters = {
+        TwoSem: ["secondYearFirstSem", "secondYearSecondSem"],
+        ThreeSem: ["secondYearFirstSem", "secondYearSecondSem", "secondYearThirdSem"],
+        FourSem: ["secondYearFirstSem", "secondYearSecondSem", "secondYearThirdSem", "secondYearFourthSem"]
+    };
+
+
     const requiredFields = {
         GradeSeven: [incomingGrade, currentSchool, grade3GWA, grade4GWA, grade5GWA, reportCard],
         GradeEight: [incomingGrade, currentSchool, grade4GWA, grade5GWA, grade6GWA, reportCard],
@@ -852,25 +1077,25 @@ function validateRequiredFields(selectedGrade) {
         GradeEleven: [incomingGrade, currentSchool, grade7GWA, grade8GWA, grade9GWA, reportCard],
         GradeTwelve: [incomingGrade, currentSchool, currentProgram, grade8GWA, grade9GWA, grade10GWA, reportCard],
         FirstYear: [currentSchool, currentProgram, grade9GWA, grade10GWA, grade11SemSelect, reportCard, schoolChoice1, schoolChoice2, schoolChoice3, courseChoice1, courseChoice2, courseChoice3],
-        SecondYear: [incomingGrade, currentProgram, currentSchool, grade10GWA, grade11SemSelect, grade12SemSelect, reportCard]
+        SecondYear: [incomingGrade, currentProgram, currentSchool, grade10GWA, grade11SemSelect, grade12SemSelect, reportCard],
+        ThirdYear: [incomingGrade, currentProgram, currentSchool, grade11SemSelect, grade12SemSelect, firstYearSemSelect, reportCard],
+        FourthYear: [incomingGrade, currentProgram, currentSchool, grade12SemSelect, firstYearSemSelect, reportCard]
     };
 
     let isValid = true;
 
      //RESET GRADE 12 SEMESTER FIELDS
-     function resetGrade12SemesterFields() {
+    function resetGrade12SemesterFields() {
     g12FirstSem.value = '';
     g12SecondSem.value = '';
     g12ThirdSem.value = '';
     g12FourthSem.value = '';
-    reportCard.value= '';
 
     // REMOVE ANY VALIDATION
     g12FirstSem.classList.remove('border', 'border-danger', 'is-invalid');
     g12SecondSem.classList.remove('border', 'border-danger', 'is-invalid');
     g12ThirdSem.classList.remove('border', 'border-danger', 'is-invalid');
     g12FourthSem.classList.remove('border', 'border-danger', 'is-invalid');
-    reportCard.classList.remove('border', 'border-danger', 'is-invalid');
 }
 
 document.getElementById("grade12SemSelect").addEventListener('change', function() {
@@ -895,33 +1120,11 @@ document.getElementById("grade12SemSelect").addEventListener('change', function(
     });
 
      //FIRST YEAR REQUIRED - GRADE11 SEMESTERS REQUIRED
-    if (selectedGrade === 'FirstYear') {
-        const grade11SemSelect = document.getElementById("grade11SemSelect");
-        const selectedSemesters = grade11SemSelect.value;
 
-        const filledSemesters = [g11FirstSem, g11SecondSem, g11ThirdSem, g11FourthSem]
-            .filter(semester => semester.value.trim() !== '');
-
-        const requiredSemesterFields = [g11FirstSem, g11SecondSem];
-        if (selectedSemesters === "ThreeSem") {
-            requiredSemesterFields.push(g11ThirdSem);
-        } else if (selectedSemesters === "FourSem") {
-            requiredSemesterFields.push(g11ThirdSem, g11FourthSem);
-        }
-
-        requiredSemesterFields.forEach(semesterField => {
-            if (!filledSemesters.includes(semesterField)) {
-                semesterField.classList.add('border', 'border-danger', 'is-invalid');
-                isValid = false;
-            } else {
-                semesterField.classList.remove('border', 'border-danger', 'is-invalid');
-            }
-        });
-        //SECOND YEAR REQUIRED
-    }  else if (selectedGrade === 'SecondYear') {
-        //GRADE 11 SEMESTERS REQUIRED
+    if (selectedGrade === 'FirstYear' || selectedGrade === 'SecondYear' || selectedGrade === 'ThirdYear') {
     const grade11SemSelect = document.getElementById("grade11SemSelect");
     const selectedSemesters11 = grade11SemSelect.value;
+    
 
     const filledSemesters11 = [g11FirstSem, g11SecondSem, g11ThirdSem, g11FourthSem]
         .filter(semester => semester.value.trim() !== '');
@@ -943,19 +1146,80 @@ document.getElementById("grade12SemSelect").addEventListener('change', function(
         }
     });
 
+    if (selectedGrade === 'SecondYear' || selectedGrade === 'ThirdYear') {
+        const grade12SemSelect = document.getElementById("grade12SemSelect");
+        const selectedSemesters12 = grade12SemSelect.value;
+        const filledSemesters12 = [g12FirstSem, g12SecondSem, g12ThirdSem, g12FourthSem]
+            .filter(semester => semester.value.trim() !== '');
+
+        const requiredSemesterFields12 = [g12FirstSem, g12SecondSem];
+
+        if (selectedSemesters12 === "g12ThreeSem") {
+            requiredSemesterFields12.push(g12ThirdSem);
+        } else if (selectedSemesters12 === "g12FourSem") {
+            requiredSemesterFields12.push(g12ThirdSem, g12FourthSem);
+        }
+
+        requiredSemesterFields12.forEach(semesterField => {
+            if (!filledSemesters12.includes(semesterField)) {
+                semesterField.classList.add('border', 'border-danger', 'is-invalid');
+                isValid = false;
+            } else {
+                semesterField.classList.remove('border', 'border-danger', 'is-invalid');
+            }
+        });
+
+        if (!validateInput(grade12SemSelect)) {
+            isValid = false;
+        }
+    }
+
+    if (selectedGrade === 'ThirdYear') {
+        const firstYearSemSelect = document.getElementById("firstYearSemSelect");
+        const selectedFirstYearSemesters = firstYearSemSelect.value;
+
+        const firstYearSemesterFields = [
+            document.getElementsByName("firstYearFirstSemGWA")[0],
+            document.getElementsByName("firstYearSecondSemGWA")[0],
+            document.getElementsByName("firstYearThirdSemGWA")[0],
+            document.getElementsByName("firstYearFourthSemGWA")[0]
+        ];
+
+        const filledFirstYearSemesters = firstYearSemesterFields
+            .filter(semester => semester.value.trim() !== '');
+
+        const requiredFirstYearSemesterFields = [
+            document.getElementsByName("firstYearFirstSemGWA")[0],
+            document.getElementsByName("firstYearSecondSemGWA")[0]
+        ];
+
+        if (selectedFirstYearSemesters === "firstYearThreeSem") {
+            requiredFirstYearSemesterFields.push(document.getElementsByName("firstYearThirdSemGWA")[0]);
+        } else if (selectedFirstYearSemesters === "firstYearFourSem") {
+            requiredFirstYearSemesterFields.push(
+                document.getElementsByName("firstYearThirdSemGWA")[0],
+                document.getElementsByName("firstYearFourthSemGWA")[0]
+            );
+        }
+
+        requiredFirstYearSemesterFields.forEach(semesterField => {
+            if (!filledFirstYearSemesters.includes(semesterField)) {
+                semesterField.classList.add('border', 'border-danger', 'is-invalid');
+                isValid = false;
+            } else {
+                semesterField.classList.remove('border', 'border-danger', 'is-invalid');
+            }
+        });
+       if (selectedGrade === 'FourthYear') {
     const grade12SemSelect = document.getElementById("grade12SemSelect");
     const selectedSemesters12 = grade12SemSelect.value;
-
     const filledSemesters12 = [g12FirstSem, g12SecondSem, g12ThirdSem, g12FourthSem]
         .filter(semester => semester.value.trim() !== '');
 
-    const requiredSemesterFields12 = [g12FirstSem, g12SecondSem];
+    const requiredSemesterFields12 = [g12FirstSem, g12SecondSem, g12ThirdSem, g12FourthSem];
 
-    // GRADE 12 SEMESTERS REQUIRED
     if (selectedSemesters12 === "g12ThreeSem") {
-        requiredSemesterFields12.push(g12ThirdSem);
-    } else if (selectedSemesters12 === "g12FourSem") {
-        requiredSemesterFields12.push(g12ThirdSem, g12FourthSem);
+        requiredSemesterFields12.pop();
     }
 
     requiredSemesterFields12.forEach(semesterField => {
@@ -967,10 +1231,185 @@ document.getElementById("grade12SemSelect").addEventListener('change', function(
         }
     });
 
-    if (!validateInput(grade12SemSelect)) {
+    if (!validateInput(grade12SemSelect) || filledSemesters12.length !== requiredSemesterFields12.length) {
+        isValid = false;
+    }
+
+    const firstYearSemesterFields = [
+        document.getElementsByName("firstYearFirstSemGWA")[0],
+        document.getElementsByName("firstYearSecondSemGWA")[0],
+        document.getElementsByName("firstYearThirdSemGWA")[0],
+        document.getElementsByName("firstYearFourthSemGWA")[0]
+    ];
+
+    const filledFirstYearSemesters = firstYearSemesterFields
+        .filter(semester => semester.value.trim() !== '');
+
+    const requiredFirstYearSemesterFields = [
+        document.getElementsByName("firstYearFirstSemGWA")[0],
+        document.getElementsByName("firstYearSecondSemGWA")[0],
+        document.getElementsByName("firstYearThirdSemGWA")[0],
+        document.getElementsByName("firstYearFourthSemGWA")[0]
+    ];
+
+    const firstYearSemSelect = document.getElementById("firstYearSemSelect");
+    const selectedFirstYearSemesters = firstYearSemSelect.value;
+
+    if (selectedFirstYearSemesters === "firstYearThreeSem") {
+        requiredFirstYearSemesterFields.pop();
+    }
+
+    requiredFirstYearSemesterFields.forEach(semesterField => {
+        if (!filledFirstYearSemesters.includes(semesterField)) {
+            semesterField.classList.add('border', 'border-danger', 'is-invalid');
+            isValid = false;
+        } else {
+            semesterField.classList.remove('border', 'border-danger', 'is-invalid');
+        }
+    });
+
+    if (!validateInput(firstYearSemSelect) || filledFirstYearSemesters.length !== requiredFirstYearSemesterFields.length) {
         isValid = false;
     }
 }
+
+
+    }
+}
+
+
+
+
+
+//     if (selectedGrade === 'FirstYear') {
+//         const grade11SemSelect = document.getElementById("grade11SemSelect");
+//         const selectedSemesters = grade11SemSelect.value;
+
+//         const filledSemesters = [g11FirstSem, g11SecondSem, g11ThirdSem, g11FourthSem]
+//             .filter(semester => semester.value.trim() !== '');
+
+//         const requiredSemesterFields = [g11FirstSem, g11SecondSem];
+//         if (selectedSemesters === "ThreeSem") {
+//             requiredSemesterFields.push(g11ThirdSem);
+//         } else if (selectedSemesters === "FourSem") {
+//             requiredSemesterFields.push(g11ThirdSem, g11FourthSem);
+//         }
+
+//         requiredSemesterFields.forEach(semesterField => {
+//             if (!filledSemesters.includes(semesterField)) {
+//                 semesterField.classList.add('border', 'border-danger', 'is-invalid');
+//                 isValid = false;
+//             } else {
+//                 semesterField.classList.remove('border', 'border-danger', 'is-invalid');
+//             }
+//         });
+//         //SECOND YEAR REQUIRED
+//     }  else if (selectedGrade === 'SecondYear') {
+//         //GRADE 11 SEMESTERS REQUIRED
+//     const grade11SemSelect = document.getElementById("grade11SemSelect");
+//     const selectedSemesters11 = grade11SemSelect.value;
+
+//     const filledSemesters11 = [g11FirstSem, g11SecondSem, g11ThirdSem, g11FourthSem]
+//         .filter(semester => semester.value.trim() !== '');
+
+//     const requiredSemesterFields11 = [g11FirstSem, g11SecondSem];
+
+//     if (selectedSemesters11 === "ThreeSem") {
+//         requiredSemesterFields11.push(g11ThirdSem);
+//     } else if (selectedSemesters11 === "FourSem") {
+//         requiredSemesterFields11.push(g11ThirdSem, g11FourthSem);
+//     }
+
+//     requiredSemesterFields11.forEach(semesterField => {
+//         if (!filledSemesters11.includes(semesterField)) {
+//             semesterField.classList.add('border', 'border-danger', 'is-invalid');
+//             isValid = false;
+//         } else {
+//             semesterField.classList.remove('border', 'border-danger', 'is-invalid');
+//         }
+//     });
+
+//     const grade12SemSelect = document.getElementById("grade12SemSelect");
+//     const selectedSemesters12 = grade12SemSelect.value;
+
+//     const filledSemesters12 = [g12FirstSem, g12SecondSem, g12ThirdSem, g12FourthSem]
+//         .filter(semester => semester.value.trim() !== '');
+
+//     const requiredSemesterFields12 = [g12FirstSem, g12SecondSem];
+
+//     // GRADE 12 SEMESTERS REQUIRED
+//     if (selectedSemesters12 === "g12ThreeSem") {
+//         requiredSemesterFields12.push(g12ThirdSem);
+//     } else if (selectedSemesters12 === "g12FourSem") {
+//         requiredSemesterFields12.push(g12ThirdSem, g12FourthSem);
+//     }
+
+//     requiredSemesterFields12.forEach(semesterField => {
+//         if (!filledSemesters12.includes(semesterField)) {
+//             semesterField.classList.add('border', 'border-danger', 'is-invalid');
+//             isValid = false;
+//         } else {
+//             semesterField.classList.remove('border', 'border-danger', 'is-invalid');
+//         }
+//     });
+
+//     if (!validateInput(grade12SemSelect)) {
+//         isValid = false;
+//     }
+
+//     else if (selectedGrade === 'ThirdYear') {
+//     // THIRD YEAR REQUIRED
+//     const thirdYearGrade11SemSelect = document.getElementById('Grade11SemSelect');
+//     const thirdYearSelectedSemesters11 = grade11SemSelect.value;
+
+//     const thirdYearFilledSemesters11 = [g11FirstSem, g11SecondSem, g11ThirdSem, g11FourthSem]
+//     .filter(semester => semester.value.trim() !== '');
+
+//   const thirdYearRequiredSemesterFields11 = [g11FirstSem, g11SecondSem];
+
+//   if (thirdYearSelectedSemesters11 === 'ThreeSem') {
+//     thirdYearRequiredSemesterFields11.push(g11ThirdSem);
+//   } else if (thirdYearSelectedSemesters11 === 'FourSem') {
+//     thirdYearRequiredSemesterFields11.push(g11ThirdSem, g11FourthSem);
+//   }
+
+//   thirdYearRequiredSemesterFields11.forEach(semesterField => {
+//     if (!thirdYearFilledSemesters11.includes(semesterField)) {
+//       semesterField.classList.add('border', 'border-danger', 'is-invalid');
+//       isValid = false;
+//     } else {
+//       semesterField.classList.remove('border', 'border-danger', 'is-invalid');
+//     }
+//   });
+
+//   const thirdYearGrade12SemSelect = document.getElementById('grade12SemSelect');
+//   const thirdYearSelectedSemesters12 = grade12SemSelect.value;
+
+//   const thirdYearFilledSemesters12 = [g12FirstSem, g12SecondSem, g12ThirdSem, g12FourthSem]
+//     .filter(semester => semester.value.trim() !== '');
+
+//   const thirdYearRequiredSemesterFields12 = [g12FirstSem, g12SecondSem];
+
+//   if (thirdYearSelectedSemesters12 === 'g12ThreeSem') {
+//     thirdYearRequiredSemesterFields12.push(g12ThirdSem);
+//   } else if (thirdYearSelectedSemesters12 === 'g12FourSem') {
+//     thirdYearRequiredSemesterFields12.push(g12ThirdSem, g12FourthSem);
+//   }
+
+//   thirdYearRequiredSemesterFields12.forEach(semesterField => {
+//     if (!thirdYearFilledSemesters12.includes(semesterField)) {
+//       semesterField.classList.add('border', 'border-danger', 'is-invalid');
+//       isValid = false;
+//     } else {
+//       semesterField.classList.remove('border', 'border-danger', 'is-invalid');
+//     }
+//   });
+
+//   if (!validateInput(thirdYearGrade12SemSelect)) {
+//     isValid = false;
+//     }
+// }
+//     }
 
     //RESET GRADE 11 SEMESTER FIELDS
     function resetGrade11SemesterFields() {
@@ -978,15 +1417,31 @@ document.getElementById("grade12SemSelect").addEventListener('change', function(
     g11SecondSem.value = '';
     g11ThirdSem.value = '';
     g11FourthSem.value = '';
-    reportCard.value= '';
 
     // REMOVE ANY VALIDATION
     g11FirstSem.classList.remove('border', 'border-danger', 'is-invalid');
     g11SecondSem.classList.remove('border', 'border-danger', 'is-invalid');
     g11ThirdSem.classList.remove('border', 'border-danger', 'is-invalid');
     g11FourthSem.classList.remove('border', 'border-danger', 'is-invalid');
-    reportCard.classList.remove('border', 'border-danger', 'is-invalid');
 }
+
+     //RESET GRADE FIRST YEAR SEMESTER FIELDS
+    function resetFirstYearSemesterFields() {
+    firstYearFirstSem.value = '';
+    firstYearSecondSem.value = '';
+    firstYearThirdSem.value = '';
+    firstYearFourthSem.value = '';
+
+    // REMOVE ANY VALIDATION
+    firstYearFirstSem.classList.remove('border', 'border-danger', 'is-invalid');
+    firstYearSecondSem.classList.remove('border', 'border-danger', 'is-invalid');
+    firstYearThirdSem.classList.remove('border', 'border-danger', 'is-invalid');
+    firstYearFourthSem.classList.remove('border', 'border-danger', 'is-invalid');
+}
+
+document.getElementById("firstYearSemSelect").addEventListener('change', function() {
+        resetFirstYearSemesterFields(); 
+    });
 
     document.getElementById("grade11SemSelect").addEventListener('change', function() {
         resetGrade11SemesterFields(); // RESET GRADE 11
@@ -997,6 +1452,7 @@ document.getElementById("grade12SemSelect").addEventListener('change', function(
     }
 
     //GRADE 11 SEMESTERS
+    const thirdYearSelectedSemesters11 = grade11SemSelect.value;
     const selectedSemesters = grade11SemSelect.value;
     const semesterFields = grade11Semesters[selectedSemesters] || [];
     const requiredSemesterFields = [];
@@ -1024,8 +1480,8 @@ document.getElementById("grade12SemSelect").addEventListener('change', function(
     }
 
     //GRADE 12 SEMESTERS 
-    const selectedSemesters12 = grade12SemSelect.value;
-    const semesterFields12 = grade11Semesters[selectedSemesters12] || [];
+    // const selectedSemesters12 = grade12SemSelect.value;
+    // const semesterFields12 = grade11Semesters[selectedSemesters12] || [];
     const requiredSemesterFields12 = [];
 
     requiredFields.SecondYear.forEach(function (field) {
@@ -1075,7 +1531,9 @@ document.getElementById("grade12SemSelect").addEventListener('change', function(
     "grade7GWA", "grade8GWA", "grade9GWA", "grade10GWA", "grade11Semester", "grade11FirstSemGWA", "grade11SecondSemGWA",
     "grade11ThirdSemGWA", "grade11FourthSemGWA", "schoolChoice1", "schoolChoice2", "schoolChoice3", "courseChoice1",
     "courseChoice2", "courseChoice3", "grade12Semester", "grade12FirstSemGWA", "grade12SecondSemGWA",
-    "grade12ThirdSemGWA", "grade12FourthSemGWA"
+    "grade12ThirdSemGWA", "grade12FourthSemGWA", "firstYearSemester", "firstYearFirstSemGWA", "firstYearSecondSemGWA",
+    "firstYearThirdSemGWA", "firstYearFourthSemGWA", "secondYearSemester", "secondYearFirstSemGWA", "secondYearSecondSemGWA",
+    "secondYearThirdSemGWA", "secondYearFourthSemGWA"
     ];
 
     elementNames.forEach(name => {
@@ -1092,14 +1550,78 @@ document.getElementById("grade12SemSelect").addEventListener('change', function(
     }
     });
 
+    //STEP 4    
+    function validateInput(input) {
+    const trimmedValue = input.value.trim();
+    const isValid = trimmedValue !== '';
+
+    if (input.id !== 'totalMonthlyIncome') {
+        if (!isValid) {
+            input.classList.add('border', 'border-danger', 'is-invalid');
+        } else {
+            input.classList.remove('border', 'border-danger', 'is-invalid');
+        }
+    } else {
+        input.classList.remove('border', 'border-danger', 'is-invalid');
+    }
+
+    return isValid;
+}
+
+document.getElementById("nextButtonStep4").addEventListener("click", function () {
+    const step4ErrorMessage = document.getElementById("step4ErrorMessage");
+    const householdFields = document.querySelectorAll('#step4Content input[required], #step4Content select[required]');
+    const payslipField = document.getElementById('payslip');
+    const householdSelect = document.getElementById('householdSelect');
+    const totalMonthlyIncomeField = document.getElementById('totalMonthlyIncome');
+
+    let isValid = true;
+
+    householdFields.forEach(field => {
+        if (!validateInput(field)) {
+            isValid = false;
+        }
+    });
+
+    // VALIDATION
+    const occupationFields = document.querySelectorAll('#step4Content input[id^="occupation"]');
+    occupationFields.forEach(field => {
+        if (!validateInput(field)) {
+            isValid = false;
+        }
+    });
+
+    if (!validateInput(householdSelect)) {
+        isValid = false;
+    }
+
+    if (!validateInput(payslipField)) {
+        isValid = false;
+    }
+
+    if (!isValid) {  
+        step4ErrorMessage.style.display = 'block';
+    } else {
+        step4ErrorMessage.style.display = 'none';
+        handleStepTransition(4);
+        setTimeout(() => {
+            elements.stepperItems[3].classList.add('done');
+            handleStepperNumberColors(4);
+        }, 100);
+    }
+});
 
     //STEPPER CHECK
     function handleStepTransition(currentIndex) {
         const step2Content = document.getElementById("step2Content");
         const step3Content = document.getElementById("step3Content");
+        const step4Content = document.getElementById("step4Content");
+        const step5Content = document.getElementById("step5Content");
 
         step2Content.style.display = "none";
         step3Content.style.display = "block";
+        step4Content.style.display = "block";
+        step5Content.style.display = "block";
 
         handleStepperNumberColors(currentIndex);
         displayStepContent(currentIndex);

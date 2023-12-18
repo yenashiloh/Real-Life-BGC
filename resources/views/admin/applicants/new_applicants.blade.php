@@ -29,8 +29,7 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
+                    <th scope="col">Full Name</th>
                     <th scope="col" >Incoming Grade/Year Level</th>
                     <th scope="col" >School</th>
                     <th scope="col">Status</th>
@@ -41,8 +40,8 @@
                   <tr> 
                     @foreach($applicantsData as $applicant)
                     <th scope="row">{{ $loop->index + 1 }}</th>
-                      <td>{{ $applicant->first_name }}</td>
-                      <td>{{ $applicant->last_name }}</td>
+                      <td> {{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                      {{-- <td>{{ $applicant->last_name }}</td> --}}
                       <td>{{ $applicant->incoming_grade_year }}</td>
                       <td>{{ $applicant->current_school }}</td> 
                     <td> <span class="badge" style="background-color: #CFE2FF; color: #0B2C5F; font-weight: medium; font-size: 13px; font-weight: normal; ">For Review</span></td>

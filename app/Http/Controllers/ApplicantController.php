@@ -103,6 +103,7 @@ class ApplicantController extends Controller
 
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
+        $data['status'] = 'New Applicant';
         $applicant = Applicant::create($data);
 
         if ($applicant) {
@@ -158,22 +159,6 @@ class ApplicantController extends Controller
                 '2nd_year_sem2_gwa' => $request->secondYearSecondSemGWA
             ];
             ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
-
-            // $incomingGrade = $request->incomingGrade;
-            // $academicInfoData = [
-            //     'applicant_id' => $applicant->id,
-            //     'current_course_program' => $request->currentProgram,
-            //     'current_school' => $request->currentSchool
-            // ];
-
-            // Check the value of incomingGrade and create the corresponding record
-            // if (in_array($incomingGrade, ['GradeSeven', 'GradeEight', 'GradeNine', 'GradeTen', 'GradeEleven', 'GradeTwelve'])) {
-            //     $academicInfoData['incoming_grade'] = $incomingGrade;
-            //     $applicant->academicInformation()->create($academicInfoData);
-            // } elseif (in_array($incomingGrade, ['FirstYear', 'SecondYear', 'ThirdYear', 'FourthYear'])) {
-            //     $academicInfoData['incoming_year'] = $incomingGrade;
-            //     $applicant->academicInformationGrade()->create($academicInfoData);
-            // }
 
             return redirect(route('login'))->with("success", "Registration success, Login to access the app");
         } else {

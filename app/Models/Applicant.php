@@ -12,6 +12,7 @@ class Applicant extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'status'
     ];
 
     protected $hidden = [

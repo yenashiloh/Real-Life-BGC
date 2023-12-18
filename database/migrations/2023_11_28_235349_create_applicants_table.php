@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('applicant_id');
             $table->string('email')->unique();
             $table->string('password')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

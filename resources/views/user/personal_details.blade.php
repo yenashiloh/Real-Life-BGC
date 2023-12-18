@@ -161,8 +161,9 @@
                                 <h5 style="font-weight: bold;">Profile Details</h5>
                                 <div class="row mb-1">
                                     <div class="col-lg-3 col-md-4 label ">Status</div>
-                                    <div class="col-lg-9 col-md-8"> <span class="badge bg-primary">For
-                                            Interview</span></div>
+                                    <div class="col-lg-9 col-md-8">
+                                        <span class="badge bg-primary">{{ auth()->user()->status }}</span>
+                                    </div>
                                 </div>
                                 <div class="row mb-1">
                                     <div class="col-lg-3 col-md-4 label">Full Name</div>

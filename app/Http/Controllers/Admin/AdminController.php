@@ -273,7 +273,6 @@ class AdminController extends Controller
     $status = $request->input('status');
 
     try {
-        // Find the applicant by ID and update status
         $applicant = Applicant::find($applicantId);
 
         if (!$applicant) {
@@ -282,7 +281,6 @@ class AdminController extends Controller
 
         $applicant->status = $status;
         $applicant->save();
-
         return response()->json(['success' => true]);
     } catch (\Exception $exception) {
         return response()->json(['success' => false, 'error' => $exception->getMessage()]);

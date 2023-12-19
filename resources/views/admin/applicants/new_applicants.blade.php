@@ -53,18 +53,14 @@
                               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 13px; height: 33px;">
                                   Action
                               </button>
-                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                  <!-- Update your Blade template with the following -->
-<li>
-  <a class="dropdown-item under-review" href="#"
-  data-applicant-id="{{ $applicant->id }}"
-  data-route="{{ route('update.status') }}"
-  style="color: #67A3F0; text-align:center;">Under Review
-</a>
-
-
-</li>
-
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">  
+                                <li>
+                                  <a class="dropdown-item under-review" href="#"
+                                  data-applicant-id="{{ $applicant->id }}"
+                                  data-route="{{ route('update.status') }}"
+                                  style="color: #67A3F0; text-align:center;">Under Review
+                                </a>
+                                </li>
                                   <div class="dropdown-divider"></div>
                                   <li><a class="dropdown-item" href="#" style="color: red;  text-align:center;">Declined</a></li>
                               </ul>
@@ -76,11 +72,7 @@
                   </tr>
                   @endforeach
                 </tbody>
-                <!-- Your existing code -->
-
               </table>
-              <!-- End Table with stripped rows -->
-
             </div>
           </div>
 
@@ -92,13 +84,12 @@
       
   @include('admin-partials.footer')
 
- <!-- Update your Blade template with the following JavaScript -->
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  <script>
   $(document).ready(function() {
     $('.under-review').on('click', function(e) {
         e.preventDefault();
-        var applicant_id = $(this).data('applicant-id'); // Confirm this line retrieves the ID correctly
+        var applicant_id = $(this).data('applicant-id'); 
         console.log('Button clicked');
         console.log('Applicant ID:', applicant_id);
 
@@ -106,11 +97,9 @@
             console.log('Applicant ID is empty or undefined');
             return;
         }
-
         var updateRoute = $(this).data('route');
         console.log('Update Route:', updateRoute);
 
-        // AJAX request to update status
         $.ajax({
             type: 'POST',
             url: updateRoute,
@@ -122,7 +111,6 @@
             success: function(response) {
                 console.log('Success:', response);
                 if (response.success) {
-                    // Update UI or handle success response
                     console.log('Status updated successfully');
                 } else {
                     console.log('Failed to update status:', response.error);
@@ -134,14 +122,8 @@
         });
     });
 });
-
- </script>
- 
-  
-
-
+</script>
 
 </body>
-
 </html>
 

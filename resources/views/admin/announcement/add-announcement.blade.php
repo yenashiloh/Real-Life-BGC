@@ -218,9 +218,17 @@
                     </ul>
                 </div>
                 @endif
+                <label for="fileUpload" style="font-weight: bold; margin-top: 20px; margin-bottom: 15px; margin-left: 5px;">Post an Announcement</label>
                 
-                <label for="fileUpload" style="font-weight: bold; margin-top: 20px; margin-bottom: 10px; margin-left: 5px;">Post an Announcement</label>
-              <textarea class="tinymce-editor" name="announcement_caption">
+                <div class="form-group">
+                  <label for="announcement_title">Title</label>
+                  <input type="text" class="form-control" id="announcement_title" name="announcement_title">
+                </div>
+                <br>
+           
+           
+                <h6>Caption</h6>
+                <textarea class="tinymce-editor" name="announcement_caption">
               </textarea>
               <div class="text-center mt-3">
                 <button class="btn btn-primary" style="width: 200px;" type="submit">Add Announcement</button>

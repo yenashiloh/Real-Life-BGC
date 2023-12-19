@@ -72,5 +72,7 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
     Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
 
+    Route::post('/new-applicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
+
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
 });

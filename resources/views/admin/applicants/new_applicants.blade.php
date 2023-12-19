@@ -37,30 +37,47 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr> 
-                    @foreach($applicantsData as $applicant)
-                    <th scope="row">{{ $loop->index + 1 }}</th>
-                      <td> {{ $applicant->first_name }} {{ $applicant->last_name }}</td>
-                      {{-- <td>{{ $applicant->last_name }}</td> --}}
+                  @foreach($applicantsData as $applicant)
+                  <tr>
+                      <th scope="row">{{ $loop->index + 1 }}</th>
+                      <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
                       <td>{{ $applicant->incoming_grade_year }}</td>
-                      <td>{{ $applicant->current_school }}</td> 
-                    <td> <span class="badge" style="background-color: #CFE2FF; color: #0B2C5F; font-weight: medium; font-size: 13px; font-weight: normal; ">For Review</span></td>
-                    <td>
-                      <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 13px; height: 33px;" >
-                          Action
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          <li><a class="dropdown-item" href="#" style="color: #67A3F0; text-align:center;">Under Review</a></li>
-                          <div class="dropdown-divider"></div>
-                          <li><a class="dropdown-item" href="#" style="color: red;  text-align:center;">Declined</a></li>
-                        </ul>
-                        <div class="view-button"><button class="btn btn-secondary" style="font-size: 13px; margin-top: 5px; width: 77px; height: 31px;">View</button></div>
-                      </div>
-                      </td>        
+                      <td>{{ $applicant->current_school }}</td>
+                      <td>
+                        <span id="status-{{ $applicant->id }}" class="badge" style="background-color: #CFE2FF; color: #0B2C5F; font-weight: normal;">
+                          {{ $applicant->status }}
+                        </span>
+                      </td>
+                      <td>
+                          <div class="dropdown">
+                              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 13px; height: 33px;">
+                                  Action
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <!-- Update your Blade template with the following -->
+<li>
+  <a class="dropdown-item under-review" href="#"
+  data-applicant-id="{{ $applicant->id }}"
+  data-route="{{ route('update.status') }}"
+  style="color: #67A3F0; text-align:center;">Under Review
+</a>
+
+
+</li>
+
+                                  <div class="dropdown-divider"></div>
+                                  <li><a class="dropdown-item" href="#" style="color: red;  text-align:center;">Declined</a></li>
+                              </ul>
+                              <div class="view-button">
+                                  <button class="btn btn-secondary" style="font-size: 13px; margin-top: 5px; width: 77px; height: 31px;">View</button>
+                              </div>
+                          </div>
+                      </td>
                   </tr>
-                    @endforeach
+                  @endforeach
                 </tbody>
+                <!-- Your existing code -->
+
               </table>
               <!-- End Table with stripped rows -->
 
@@ -75,6 +92,56 @@
       
   @include('admin-partials.footer')
 
+ <!-- Update your Blade template with the following JavaScript -->
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script>
+  $(document).ready(function() {
+    $('.under-review').on('click', function(e) {
+        e.preventDefault();
+        var applicant_id = $(this).data('applicant-id'); // Confirm this line retrieves the ID correctly
+        console.log('Button clicked');
+        console.log('Applicant ID:', applicant_id);
+
+        if (!applicant_id) {
+            console.log('Applicant ID is empty or undefined');
+            return;
+        }
+
+        var updateRoute = $(this).data('route');
+        console.log('Update Route:', updateRoute);
+
+        // AJAX request to update status
+        $.ajax({
+            type: 'POST',
+            url: updateRoute,
+            data: {
+                _token: '{{ csrf_token() }}',
+                applicant_id: applicant_id,
+                status: 'Under Review'
+            },
+            success: function(response) {
+                console.log('Success:', response);
+                if (response.success) {
+                    // Update UI or handle success response
+                    console.log('Status updated successfully');
+                } else {
+                    console.log('Failed to update status:', response.error);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+});
+
+ </script>
+ 
+  
+
+
+
 </body>
 
 </html>
+

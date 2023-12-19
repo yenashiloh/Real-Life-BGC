@@ -40,6 +40,7 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Title</th>
                     <th scope="col">Content</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -51,6 +52,7 @@
                   @foreach($announcements as $announcement)
                   <tr>
                       <th scope="row">{{ $count++ }}</th>
+                      <td>{{ $announcement->title }}</td> 
                       <td>{!! html_entity_decode(strip_tags($announcement->caption)) !!}</td>
                       <td>
                           <div>

@@ -32,97 +32,8 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/registration.css">
 
-    <style>
-        #contactError {
-            display: none;
-            margin-left: 5px;
-        }
-        .next-button {
-            display: flex;
-            justify-content: flex-end; 
-            margin-left: 465%; 
-        }
-
-        .next-button-step2 {
-            display: flex;
-            justify-content: flex-end;
-            margin-left: 94%;
-            float: right;
-            margin-top: 35px;
-            transition: background-color 0.3s; 
-            background-color: #518630;
-            border: #518630;
-        }
-
-        .next-button-step2:hover {
-            background-color: #71BF44;
-            color: #fff; 
-        }
-
-
-        .next-button-3{
-            display: flex;
-            justify-content: flex-end; 
-            margin-left: 94%; 
-            float: right;
-            margin-top: 30px; 
-            transition: background-color 0.3s; 
-            background-color: #518630;
-            border: #518630;
-            
-        }
-        .next-button-3:hover {
-            background-color: #71BF44;
-            color: #fff; 
-        }
-
-        .next-button-4{
-            display: flex;
-            justify-content: flex-end; 
-            margin-left: 94%; 
-            float: right;
-            margin-top: 30px; 
-            transition: background-color 0.3s; 
-            background-color: #518630;
-            border: #518630;  
-        }
-
-        .next-button-4:hover {
-            background-color: #71BF44;
-            color: #fff; 
-        }
-
-        .submit-button{
-            transition: background-color 0.3s; 
-            background-color: #518630;
-            border: #518630;  
-            color: #fff; 
-        }
-
-        .submit-button:hover {
-            background-color: #71BF44;
-            color: #fff; 
-        }
-
-        @media screen and (max-width: 768px) {
-            .next-button {
-                margin-left: 155%; 
-            }
-            .next-button-step2 {
-                margin-right: 15%; 
-            }
-            .next-button-3 {
-                margin-right: 15%; 
-            }
-            .next-button-4 {
-                margin-right: 15%; 
-            }
-            .previous-button {
-                margin-right: 20%;
-            }
-        }
-
-    </style>
+   
+    
 
 </head>
 
@@ -293,7 +204,7 @@
                                 <span style="color: red; font-size: 12px; font-weight: normal;">*</span>
                             </label>
                             <span id="nameErrorMessage"
-                                style="display: none; color: red; font-size: 12px; font-weight: bold; margin-right: 5px;">(Invalid
+                                style="display: none; color: red; font-size: 12px; margin-right: 5px;">(Invalid
                                 characters entered)</span>
                         </div>
                         <div class="form-group">
@@ -309,7 +220,7 @@
                                 <span style="color: red; font-size: 12px; font-weight: normal;">*</span>
                             </label>
                             <span id="lnameErrorMessage"
-                                style="display: none; color: red; font-size: 12px; font-weight: bold; margin-right: 5px;">(Invalid
+                                style="display: none; color: red; font-size: 12px; margin-right: 5px;">(Invalid
                                 characters entered)</span>
                         </div>
                         <div class="form-group">
@@ -325,8 +236,7 @@
                                 <span style="color: red; font-size: 12px; font-weight: normal;">*</span>
                             </label>
                             <span id="contactError"
-                                style="display: none; color: red; font-size: 12px; font-weight: bold; margin-right: 5px;">(Phone
-                                number must be 11 digits long)</span>
+                                style="display: none; color: red; font-size: 12px;  margin-right: 5px;">(Must be 11-digit number)</span>
                         </div>
                         <div class="form-group">
                             <input type="number" class="form-control" name="contact" id="contact_no"
@@ -408,11 +318,7 @@
                 <input type="text" class="form-control form-control-solid form-control-long" name="currentSchool"
                     placeholder="" value="" />
             </div>
-            {{-- <div class="col-md-4" style="display: none;" id="currentCourse">
-                        <label class="form-label">Current Course<span
-                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                                <input type="text" class="form-control form-control-solid form-control-long" name="currentCourse" >
-                    </div> --}}
+           
             <div class="col-md-4" style="display: none;" id="currentProgram">
                 <label class="form-label">Current Program<span
                         style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
@@ -884,7 +790,7 @@
                 } else if (hasSpecialChars || !isValid) {
                     input.classList.add('border', 'border-danger', 'is-invalid');
                     errorMessageElement.style.display = 'block';
-                    errorMessageElement.innerText = '(Invalid characters entered.)';
+                    errorMessageElement.innerText = '(Invalid characters entered)';
                     return false;
                 } else {
                     input.classList.remove('border', 'border-danger', 'is-invalid');
@@ -1494,9 +1400,39 @@
                 const selectedGrade = incomingGrade.value;
 
                 const isValid = validateRequiredFields(selectedGrade);
+                const gwaInputs = document.querySelectorAll('.form-control-long[type="number"]');
+                let isValidGWAs = true;
+
+                gwaInputs.forEach(input => {
+                    const gwaValue = parseFloat(input.value);
+                    if (input.value.trim() === '' || gwaValue < 88 || isNaN(gwaValue)) {
+                        isValidGWAs = false;
+                        input.classList.add('border', 'border-danger', 'is-invalid');
+                    } else {
+                        input.classList.remove('border', 'border-danger', 'is-invalid');
+                    }
+                });
 
                 if (!isValid) {
+                    step3ErrorMessage.textContent = "Please fill out all required fields.";
                     step3ErrorMessage.style.display = 'block';
+                } else if (!isValidGWAs) {
+                    const anyBelow88 = Array.from(gwaInputs).some(input => {
+                        const gwaValue = parseFloat(input.value);
+                        return gwaValue < 88 && input.value.trim() !== '';
+                    });
+
+                    if (anyBelow88) {
+                        step3ErrorMessage.textContent = "Please ensure all GWAs are 88 or above.";
+                        step3ErrorMessage.style.display = 'block';
+                    } else {
+                        step3ErrorMessage.style.display = 'none';
+                        handleStepTransition(3);
+                        setTimeout(() => {
+                            elements.stepperItems[2].classList.add('done');
+                            handleStepperNumberColors(3);
+                        }, 100);
+                    }
                 } else {
                     step3ErrorMessage.style.display = 'none';
                     handleStepTransition(3);
@@ -1509,7 +1445,7 @@
 
             //REAL-TIME VALIDATION
             const elementNames = [
-                "currentSchool", "currentProgram", "ReportCard", "grade3GWA", "grade4GWA", "grade5GWA",
+                "incomingGrade","currentSchool", "currentProgram", "ReportCard", "grade3GWA", "grade4GWA", "grade5GWA",
                 "grade6GWA",
                 "grade7GWA", "grade8GWA", "grade9GWA", "grade10GWA", "grade11Semester", "grade11FirstSemGWA",
                 "grade11SecondSemGWA",
@@ -1537,6 +1473,9 @@
                     });
                 }
             });
+
+            
+  
 
             //STEP 4    
             function validateInput(input) {

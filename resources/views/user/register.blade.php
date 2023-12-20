@@ -33,12 +33,95 @@
     <link rel="stylesheet" href="assets/css/registration.css">
 
     <style>
-        /* Custom styles to align the error message */
         #contactError {
             display: none;
             margin-left: 5px;
-            /* Adjust the margin for proper positioning */
         }
+        .next-button {
+            display: flex;
+            justify-content: flex-end; 
+            margin-left: 465%; 
+        }
+
+        .next-button-step2 {
+            display: flex;
+            justify-content: flex-end;
+            margin-left: 94%;
+            float: right;
+            margin-top: 35px;
+            transition: background-color 0.3s; 
+            background-color: #518630;
+            border: #518630;
+        }
+
+        .next-button-step2:hover {
+            background-color: #71BF44;
+            color: #fff; 
+        }
+
+
+        .next-button-3{
+            display: flex;
+            justify-content: flex-end; 
+            margin-left: 94%; 
+            float: right;
+            margin-top: 30px; 
+            transition: background-color 0.3s; 
+            background-color: #518630;
+            border: #518630;
+            
+        }
+        .next-button-3:hover {
+            background-color: #71BF44;
+            color: #fff; 
+        }
+
+        .next-button-4{
+            display: flex;
+            justify-content: flex-end; 
+            margin-left: 94%; 
+            float: right;
+            margin-top: 30px; 
+            transition: background-color 0.3s; 
+            background-color: #518630;
+            border: #518630;  
+        }
+
+        .next-button-4:hover {
+            background-color: #71BF44;
+            color: #fff; 
+        }
+
+        .submit-button{
+            transition: background-color 0.3s; 
+            background-color: #518630;
+            border: #518630;  
+            color: #fff; 
+        }
+
+        .submit-button:hover {
+            background-color: #71BF44;
+            color: #fff; 
+        }
+
+        @media screen and (max-width: 768px) {
+            .next-button {
+                margin-left: 155%; 
+            }
+            .next-button-step2 {
+                margin-right: 15%; 
+            }
+            .next-button-3 {
+                margin-right: 15%; 
+            }
+            .next-button-4 {
+                margin-right: 15%; 
+            }
+            .previous-button {
+                margin-right: 20%;
+            }
+        }
+
     </style>
 
 </head>
@@ -290,10 +373,10 @@
                                 placeholder="" required>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary" id="nextButtonStep2">Next</button>
                 </div>
+                <button type="button" class="btn btn-primary next-button-step2" id="nextButtonStep2">Next</button>
             </div>
-    </div>
+        </div>
 
     <!-- ======= STEP 3 CONTENT ======= -->
     <div class="container" id="step3Content" style="display: none;">
@@ -602,8 +685,8 @@
                 <input type="text" class="form-control form-control-solid form-control-long" name="courseChoice3"
                     placeholder=" " value="" />
             </div>
-            <button type="button" class="btn btn-primary" id="nextButtonStep3">Next</button>
         </div>
+        <button type="button" class="btn btn-primary next-button-3" id="nextButtonStep3">Next</button>
     </div>
 
 
@@ -670,7 +753,7 @@
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="nextButtonStep4">Next</button>
+        <button type="button" class="btn btn-primary next-button-4" id="nextButtonStep4">Next</button>
     </div>
 
 
@@ -712,14 +795,13 @@
             </button>
         </div>
         <div>
-            <button type="button" class="btn  next-button" id="nextButton" data-kt-stepper-action="next"
-                style="background-color: #518630; color: #fff;">
+            <button type="button" class="btn btn-primary next-button" id="nextButton" data-kt-stepper-action="next">
                 Next
             </button>
         </div>
         <div>
             <button type="submit" class="btn submit-button" id="submitButton" data-kt-stepper-action="submit"
-                style="display:none; background-color: #518630; color: #fff;">
+                style="display:none;">
                 Submit
             </button>
         </div>
@@ -1311,140 +1393,6 @@
                     }
                 }
 
-
-
-
-
-                //     if (selectedGrade === 'FirstYear') {
-                //         const grade11SemSelect = document.getElementById("grade11SemSelect");
-                //         const selectedSemesters = grade11SemSelect.value;
-
-                //         const filledSemesters = [g11FirstSem, g11SecondSem, g11ThirdSem, g11FourthSem]
-                //             .filter(semester => semester.value.trim() !== '');
-
-                //         const requiredSemesterFields = [g11FirstSem, g11SecondSem];
-                //         if (selectedSemesters === "ThreeSem") {
-                //             requiredSemesterFields.push(g11ThirdSem);
-                //         } else if (selectedSemesters === "FourSem") {
-                //             requiredSemesterFields.push(g11ThirdSem, g11FourthSem);
-                //         }
-
-                //         requiredSemesterFields.forEach(semesterField => {
-                //             if (!filledSemesters.includes(semesterField)) {
-                //                 semesterField.classList.add('border', 'border-danger', 'is-invalid');
-                //                 isValid = false;
-                //             } else {
-                //                 semesterField.classList.remove('border', 'border-danger', 'is-invalid');
-                //             }
-                //         });
-                //         //SECOND YEAR REQUIRED
-                //     }  else if (selectedGrade === 'SecondYear') {
-                //         //GRADE 11 SEMESTERS REQUIRED
-                //     const grade11SemSelect = document.getElementById("grade11SemSelect");
-                //     const selectedSemesters11 = grade11SemSelect.value;
-
-                //     const filledSemesters11 = [g11FirstSem, g11SecondSem, g11ThirdSem, g11FourthSem]
-                //         .filter(semester => semester.value.trim() !== '');
-
-                //     const requiredSemesterFields11 = [g11FirstSem, g11SecondSem];
-
-                //     if (selectedSemesters11 === "ThreeSem") {
-                //         requiredSemesterFields11.push(g11ThirdSem);
-                //     } else if (selectedSemesters11 === "FourSem") {
-                //         requiredSemesterFields11.push(g11ThirdSem, g11FourthSem);
-                //     }
-
-                //     requiredSemesterFields11.forEach(semesterField => {
-                //         if (!filledSemesters11.includes(semesterField)) {
-                //             semesterField.classList.add('border', 'border-danger', 'is-invalid');
-                //             isValid = false;
-                //         } else {
-                //             semesterField.classList.remove('border', 'border-danger', 'is-invalid');
-                //         }
-                //     });
-
-                //     const grade12SemSelect = document.getElementById("grade12SemSelect");
-                //     const selectedSemesters12 = grade12SemSelect.value;
-
-                //     const filledSemesters12 = [g12FirstSem, g12SecondSem, g12ThirdSem, g12FourthSem]
-                //         .filter(semester => semester.value.trim() !== '');
-
-                //     const requiredSemesterFields12 = [g12FirstSem, g12SecondSem];
-
-                //     // GRADE 12 SEMESTERS REQUIRED
-                //     if (selectedSemesters12 === "g12ThreeSem") {
-                //         requiredSemesterFields12.push(g12ThirdSem);
-                //     } else if (selectedSemesters12 === "g12FourSem") {
-                //         requiredSemesterFields12.push(g12ThirdSem, g12FourthSem);
-                //     }
-
-                //     requiredSemesterFields12.forEach(semesterField => {
-                //         if (!filledSemesters12.includes(semesterField)) {
-                //             semesterField.classList.add('border', 'border-danger', 'is-invalid');
-                //             isValid = false;
-                //         } else {
-                //             semesterField.classList.remove('border', 'border-danger', 'is-invalid');
-                //         }
-                //     });
-
-                //     if (!validateInput(grade12SemSelect)) {
-                //         isValid = false;
-                //     }
-
-                //     else if (selectedGrade === 'ThirdYear') {
-                //     // THIRD YEAR REQUIRED
-                //     const thirdYearGrade11SemSelect = document.getElementById('Grade11SemSelect');
-                //     const thirdYearSelectedSemesters11 = grade11SemSelect.value;
-
-                //     const thirdYearFilledSemesters11 = [g11FirstSem, g11SecondSem, g11ThirdSem, g11FourthSem]
-                //     .filter(semester => semester.value.trim() !== '');
-
-                //   const thirdYearRequiredSemesterFields11 = [g11FirstSem, g11SecondSem];
-
-                //   if (thirdYearSelectedSemesters11 === 'ThreeSem') {
-                //     thirdYearRequiredSemesterFields11.push(g11ThirdSem);
-                //   } else if (thirdYearSelectedSemesters11 === 'FourSem') {
-                //     thirdYearRequiredSemesterFields11.push(g11ThirdSem, g11FourthSem);
-                //   }
-
-                //   thirdYearRequiredSemesterFields11.forEach(semesterField => {
-                //     if (!thirdYearFilledSemesters11.includes(semesterField)) {
-                //       semesterField.classList.add('border', 'border-danger', 'is-invalid');
-                //       isValid = false;
-                //     } else {
-                //       semesterField.classList.remove('border', 'border-danger', 'is-invalid');
-                //     }
-                //   });
-
-                //   const thirdYearGrade12SemSelect = document.getElementById('grade12SemSelect');
-                //   const thirdYearSelectedSemesters12 = grade12SemSelect.value;
-
-                //   const thirdYearFilledSemesters12 = [g12FirstSem, g12SecondSem, g12ThirdSem, g12FourthSem]
-                //     .filter(semester => semester.value.trim() !== '');
-
-                //   const thirdYearRequiredSemesterFields12 = [g12FirstSem, g12SecondSem];
-
-                //   if (thirdYearSelectedSemesters12 === 'g12ThreeSem') {
-                //     thirdYearRequiredSemesterFields12.push(g12ThirdSem);
-                //   } else if (thirdYearSelectedSemesters12 === 'g12FourSem') {
-                //     thirdYearRequiredSemesterFields12.push(g12ThirdSem, g12FourthSem);
-                //   }
-
-                //   thirdYearRequiredSemesterFields12.forEach(semesterField => {
-                //     if (!thirdYearFilledSemesters12.includes(semesterField)) {
-                //       semesterField.classList.add('border', 'border-danger', 'is-invalid');
-                //       isValid = false;
-                //     } else {
-                //       semesterField.classList.remove('border', 'border-danger', 'is-invalid');
-                //     }
-                //   });
-
-                //   if (!validateInput(thirdYearGrade12SemSelect)) {
-                //     isValid = false;
-                //     }
-                // }
-                //     }
-
                 //RESET GRADE 11 SEMESTER FIELDS
                 function resetGrade11SemesterFields() {
                     g11FirstSem.value = '';
@@ -1654,12 +1602,14 @@
 
             //STEPPER CHECK
             function handleStepTransition(currentIndex) {
+                const step1Content = document.getElementById("step1Content");
                 const step2Content = document.getElementById("step2Content");
                 const step3Content = document.getElementById("step3Content");
                 const step4Content = document.getElementById("step4Content");
                 const step5Content = document.getElementById("step5Content");
 
-                step2Content.style.display = "none";
+                step1Content.style.display = "none";
+                step2Content.style.display = "block";
                 step3Content.style.display = "block";
                 step4Content.style.display = "block";
                 step5Content.style.display = "block";

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\EmailController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,11 +37,17 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
 
     Route::get('/register', [ApplicantController::class, 'register'])->name('register');
     Route::post('/register', [ApplicantController::class, 'registerPost'])->name('register.post');
+
+    Route::get('/email', [EmailController::class, 'create']);
+    Route::post('/email', [EmailController::class, 'sendEmail'])->name('send.email');
+    
 });
 Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::get('/home', [ApplicantController::class, 'userHome'])->name('user.home');
     Route::get('/personal-details', [ApplicantController::class, 'personalDetails'])->name('user.profile');
     Route::post('/logout', [ApplicantController::class, 'logout']);
+
+
 });
 
 

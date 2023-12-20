@@ -116,10 +116,19 @@
   margin-right: 60px;
   margin-top: 10px;
   margin-bottom: 30px;
+  transition: background-color 0.3s; 
+  background-color: #518630;
+  border: #518630;
 }
 
+.next-button:hover {
+  background-color: #71BF44; 
+  color: #fff; 
+}
+
+
 .previous-button {
-  margin-left: 60px;
+  margin-left: 65px;
   margin-top: 10px;
   margin-bottom: 30px;
 }

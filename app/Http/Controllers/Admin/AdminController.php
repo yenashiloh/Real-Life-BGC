@@ -372,21 +372,7 @@ class AdminController extends Controller
         return $applicantsData;
     }
 
-    public function exportDeclinedApplicants()
-    {
-        try {
-            // Your code to generate and return the Excel file
-    
-            // Return the Excel file (example using Maatwebsite/Excel)
-            return Excel::download(new DeclinedApplicantsExport, 'declined_applicants.xlsx');
-        } catch (\Exception $e) {
-            // Log the error for debugging purposes
-            \Log::error('Error exporting declined applicants: ' . $e->getMessage());
-    
-            // Return an error response or handle the exception accordingly
-            return response()->json(['error' => 'Error exporting declined applicants'], 500);
-        }
-    }
+   
     
 
 

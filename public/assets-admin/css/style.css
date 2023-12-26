@@ -1286,3 +1286,29 @@ h6 {
 .drag-area input[type="file"] {
   display: none;
 }
+.status-new-applicant {
+  background-color: #CFE2FF;
+  color: #052C92;
+}
+
+.status-under-review {
+  background-color: #FFF3CD;
+  color: #7A4D03;
+}
+
+.status-declined {
+  background-color: #F8D7DA;
+  color: #58151C;
+}
+.status-shortlisted{
+  background-color: #fbdcc2;
+  color: #9f6119;
+}
+.status-interview{
+  background-color: #CFF4FC;
+  color: #055160;
+}
+.status-housevisit{
+  background-color: #D1E7DD;
+  color: #0A3622;
+}

@@ -67,20 +67,32 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::post('/admin-profile', [AdminController::class, 'updateProfile'])->name('admin.profile-update');
     Route::post('/change-password', [AdminController::class, 'changePassword'])->name('admin.password-update');
 
+    //ANNOUNCEMENT
     Route::get('/announcement/admin-announcement', [AdminController::class, 'showAnnouncement'])->name('admin.announcement.admin-announcement');
     Route::get('/announcement/add-announcement', [AdminController::class, 'addAnnouncement'])->name('admin.announcement.add-announcement');
     Route::post('/announcement/add-announcement', [AdminController::class, 'saveAnnouncement'])->name('admin.save-announcement');
     Route::delete('/delete-announcement/{id}', [AdminController::class, 'deleteAnnouncement'])->name('delete.announcement');
+    Route::match(['post', 'put'], '/announcement/update-announcement/{id}', [AdminController::class, 'updateAnnouncement'])->name('admin.update-announcement');
+    Route::get('/announcement/edit-announcement/{id}', [AdminController::class, 'showEditAnnouncement'])->name('admin.announcement.edit-announcement');
 
     //DASHBOARD
     Route::get('/dashboard', [AdminController::class, 'totalApplicants'])->name('dashboard');
+    Route::get('/totalDeclined', [AdminController::class, 'totalDeclined'])->name('dashboard');
     Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
 
-    // DATA APPLICANTS 
+    //DATA APPLICANTS 
     Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
     Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
 
-    Route::post('/new-applicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
+    //DECLINED APPLICANTS
+    Route::get('/applicants/declined_applicants', [AdminController::class, 'showDeclinedApplicants'])->name('admin.applicants.declined_applicants');
+    Route::get('/applicants-declined', [AdminController::class, 'getDeclinedData'])->name('declined.data');
 
+    Route::post('/applicants/new-pplicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
+
+    //LOGOUT
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
+    Route::get('/export-declined-applicants', 'AdminController@exportDeclinedApplicants')->name('export.declined.applicants');
+
+
 });

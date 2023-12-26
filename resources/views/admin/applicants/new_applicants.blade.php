@@ -158,7 +158,6 @@
       var updateRoute = $(this).data('route');
       var action = $(this).data('action');
 
-      // Log the values to check if they are correctly fetched
       console.log('Applicant ID:', applicant_id);
       console.log('Update Route:', updateRoute);
       console.log('Action:', action);
@@ -167,8 +166,6 @@
         console.log('Invalid data');
         return;
       }
-
-      // Remove any existing alert messages
       $('.alert').remove();
 
       $.ajax({
@@ -185,18 +182,15 @@
             console.log('Status updated successfully');
             var applicantId = applicant_id;
             var newStatus = action;
-            var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(1)').text(); // Get the applicant's full name from the second column
-
-            // Construct the Bootstrap alert message
+            var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(1)').text(); 
             var alertHTML = '<div class="alert alert-success" role="alert" style="text-align:center;">' +
               '<strong>' + applicantFullName + ' is ' + newStatus + '</strong>' +
               '</div>';
-            // Prepend the alert before the table with the class 'datatable'
+
             $('.datatable').before(alertHTML);
             $('#status-' + applicantId).text(newStatus);
 
             if (newStatus === 'Declined' || newStatus === 'Approved') {
-              // Hide the dropdown button
               $('#dropdownMenuButton' + applicantId).show();
               $('#dropdownMenuButton' + applicantId).closest('.dropdown').find('.view-button').show();
               $('#status-' + applicantId).closest('tr').remove();
@@ -228,7 +222,6 @@
                   '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Declined</a></li>';
                  $('#status-' + applicantId).addClass('badge status-housevisit');
                 break;
-              // Add more cases for other statuses here
               default:
                 dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Default Action" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Default Action</a></li>';
                 break;
@@ -237,7 +230,7 @@
             }
             setTimeout(function() {
               $('.alert').remove();
-            }, 8000); // 10 seconds (10000 milliseconds)
+            }, 8000); 
           } else {
             console.log('Failed to update status:', response.error);
           }

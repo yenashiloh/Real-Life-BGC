@@ -77,7 +77,7 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
 
     //DASHBOARD
     Route::get('/dashboard', [AdminController::class, 'totalApplicants'])->name('dashboard');
-    Route::get('/totalDeclined', [AdminController::class, 'totalDeclined'])->name('dashboard');
+    // Route::get('/totalDeclined', [AdminController::class, 'totalDeclined'])->name('totalDeclined');
     Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
 
     //DATA APPLICANTS 

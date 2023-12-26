@@ -112,11 +112,7 @@
       var count = $('tbody tr').length;
       $('#applicantsCount').text(count);
     }
-
-
     updateApplicantsCount();
-
-    // Function to update count after status change
     function updateCountOnStatusChange() {
       updateApplicantsCount();
     }
@@ -158,19 +154,18 @@
 
             if (newStatus !== 'Declined') {
               $('tbody tr').each(function() {
-                var statusText = $(this).find('td:eq(4)').text().trim(); // Assuming status is in the fifth column
+                var statusText = $(this).find('td:eq(4)').text().trim(); 
                 if (statusText !== 'Declined') {
-                  $(this).remove(); // Remove rows with status other than "Declined"
+                  $(this).remove(); 
                 }
               });
             }
 
-            // Update count after changes
             updateCountOnStatusChange();
 
             setTimeout(function() {
               $('.alert').remove();
-            }, 8000); // 8 seconds (8000 milliseconds)
+            }, 8000); 
           } else {
             console.log('Failed to update status:', response.error);
           }
@@ -179,10 +174,6 @@
           console.log('Error:', error);
         }
       });
-    });
-
-    $('#exportExcelBtn').click(function() {
-      // Your export Excel code
     });
   });
 </script>

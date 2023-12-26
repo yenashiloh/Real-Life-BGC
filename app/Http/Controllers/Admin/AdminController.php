@@ -261,13 +261,13 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('totalApplicants', 'title'));
     }
     
-    public function totalDeclined()
-    {
-        $totalDeclined = Applicant::where('status', 'Declined')->count();
-        $title = 'Dashboard'; 
+    // public function totalDeclined()
+    // {
+    //     $totalDeclined = Applicant::where('status', 'Declined')->count();
+    //     $title = 'Dashboard'; 
 
-        return view('admin.totalDeclined', ['totalDeclined' => $totalDeclined, 'title' => $title]);
-    }
+    //     return view('admin.total_declined', ['totalDeclined' => $totalDeclined, 'title' => $title]);
+    // }
 
     
     

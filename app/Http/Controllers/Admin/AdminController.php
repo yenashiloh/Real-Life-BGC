@@ -339,7 +339,6 @@ class AdminController extends Controller
     
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
-            // Log the error for debugging
             \Log::error('Error updating status: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to update status'], 500);
         }

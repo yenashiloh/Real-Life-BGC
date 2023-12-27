@@ -87,12 +87,15 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     //DECLINED APPLICANTS
     Route::get('/applicants/declined_applicants', [AdminController::class, 'showDeclinedApplicants'])->name('admin.applicants.declined_applicants');
     Route::get('/applicants-declined', [AdminController::class, 'getDeclinedData'])->name('declined.data');
-
+    
     Route::post('/applicants/new-pplicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
+
+
 
     //LOGOUT
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
     Route::get('/export-declined-applicants', 'AdminController@exportDeclinedApplicants')->name('export.declined.applicants');
 
+    // Route::post('/applicants/new-applicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
 
 });

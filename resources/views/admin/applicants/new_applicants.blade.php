@@ -37,11 +37,11 @@
                 </thead>
                 <tbody>
                   @php
-                  $count = 1; // Initialize the count
+                  $count = 1; 
                 @endphp
                 @foreach($applicantsData as $applicant)
                   <tr>
-                    <th scope="row">{{ $count }}</th> <!-- Display the count -->
+                    <th scope="row">{{ $count }}</th> 
                       <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
                       <td>{{ $applicant->incoming_grade_year }}</td>
                       <td>{{ $applicant->current_school }}</td>
@@ -86,7 +86,6 @@
                                           </a>
                                       </li>
                                     @elseif($applicant->status === 'Shortlisted')
-                                      <!-- Dropdown items for 'Shortlisted' -->
                                       <li>
                                           <a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
                                               For Interview
@@ -151,94 +150,100 @@
 
 
 <script>
-     $(document).ready(function() {
-    $(document).on('click', '.dropdown-item', function(e) {
-      e.preventDefault();
-      var applicant_id = $(this).data('applicant-id');
-      var updateRoute = $(this).data('route');
-      var action = $(this).data('action');
+        $.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
 
-      console.log('Applicant ID:', applicant_id);
-      console.log('Update Route:', updateRoute);
-      console.log('Action:', action);
+$(document).ready(function() {
+  $(document).on('click', '.dropdown-item', function(e) {
+    e.preventDefault();
+    var applicant_id = $(this).data('applicant-id');
+    var updateRoute = $(this).data('route');
+    var action = $(this).data('action');
 
-      if (!applicant_id || !updateRoute || !action) {
-        console.log('Invalid data');
-        return;
-      }
-      $('.alert').remove();
+    console.log('Applicant ID:', applicant_id);
+    console.log('Update Route:', updateRoute);
+    console.log('Action:', action);
 
-      $.ajax({
-        type: 'POST',
-        url: updateRoute,
-        data: {
-          _token: '{{ csrf_token() }}',
-          applicant_id: applicant_id,
-          status: action
-        },
-        success: function(response) {
-          console.log('Success:', response);
-          if (response.success) {
-            console.log('Status updated successfully');
-            var applicantId = applicant_id;
-            var newStatus = action;
-            var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(1)').text(); 
-            var alertHTML = '<div class="alert alert-success" role="alert" style="text-align:center;">' +
-              '<strong>' + applicantFullName + ' is ' + newStatus + '</strong>' +
-              '</div>';
+    if (!applicant_id || !updateRoute || !action) {
+      console.log('Invalid data');
+      return;
+    }
+    $('.alert').remove();
 
-            $('.datatable').before(alertHTML);
-            $('#status-' + applicantId).text(newStatus);
+    $.ajax({
+      type: 'POST',
+      url: updateRoute,
+      data: {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        applicant_id: applicant_id,
+        status: action
+      },
+      success: function(response) {
+        console.log('Success:', response);
+        if (response.success) {
+          console.log('Status updated successfully');
+          var applicantId = applicant_id;
+          var newStatus = action;
+          var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(1)').text(); 
+          var alertHTML = '<div class="alert alert-success" role="alert" style="text-align:center;">' +
+            '<strong>' + applicantFullName + ' is ' + newStatus + '</strong>' +
+            '</div>';
 
-            if (newStatus === 'Declined' || newStatus === 'Approved') {
-              $('#dropdownMenuButton' + applicantId).show();
-              $('#dropdownMenuButton' + applicantId).closest('.dropdown').find('.view-button').show();
-              $('#status-' + applicantId).closest('tr').remove();
-            } else {
+          $('.datatable').before(alertHTML);
+          $('#status-' + applicantId).text(newStatus);
+
+          if (newStatus === 'Declined' || newStatus === 'Approved') {
+            $('#dropdownMenuButton' + applicantId).show();
+            $('#dropdownMenuButton' + applicantId).closest('.dropdown').find('.view-button').show();
+            $('#status-' + applicantId).closest('tr').remove();
+          } else {
             var dropdownContent = '';
             switch (newStatus) {
               case 'New Applicant':
                 dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Under Review</a></li>' +
-                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Declined</a></li>';
+                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
                   $('#status-' + applicantId).addClass('badge status-new-applicant');
                 break;
               case 'Under Review':
                 dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Shortlisted</a></li>' +
-                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Declined</a></li>';
+                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
                   $('#status-' + applicantId).addClass('badge status-under-review');                
                 break;
               case 'Shortlisted':
                 dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">For Interview</a></li>' +
-                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Declined</a></li>';
+                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
                   $('#status-' + applicantId).addClass('badge status-shortlisted');
                 break;
               case 'For Interview':
                 dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">For House Visitation</a></li>' +
-                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Declined</a></li>';
+                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
                   $('#status-' + applicantId).addClass('badge status-interview');
                 break;
               case 'For House Visitation':
                 dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Approved" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve</a></li>' +
-                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Declined</a></li>';
+                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
                  $('#status-' + applicantId).addClass('badge status-housevisit');
                 break;
               default:
                 dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Default Action" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Default Action</a></li>';
                 break;
             }
-            $('#dropdownMenuButton' + applicantId).next('.dropdown-menu').html(dropdownContent);
+             $('#dropdownMenuButton' + applicantId).next('.dropdown-menu').html(dropdownContent);
             }
             setTimeout(function() {
-              $('.alert').remove();
-            }, 8000); 
-          } else {
-            console.log('Failed to update status:', response.error);
-          }
-        },
-        error: function(xhr, status, error) {
-          console.log('Error:', error);
+            $('.alert').remove();
+          }, 8000);
+        } else {
+          console.log('Failed to update status:', response.error);
         }
-      });
+      },
+      error: function(xhr, status, error) {
+        console.log('Error:', error);
+        }
+      }); 
     });
   });
 </script>

@@ -13,7 +13,8 @@ use App\Models\Applicant;
 use App\Models\ApplicantsAcademicInformation;
 use App\Models\ApplicantsPersonalInformation;
 use Illuminate\Support\Facades\DB; 
-
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\StatusUpdateNotification; 
 
 class AdminController extends Controller
 {
@@ -319,30 +320,39 @@ class AdminController extends Controller
     public function updateStatus(Request $request)
     {
         try {
-            \Log::info('Received Applicant ID:', ['applicant_id' => $request->applicant_id]);
             $applicant = Applicant::where('applicant_id', $request->applicant_id)->first();
 
-    
             if (!$applicant) {
                 return response()->json(['error' => 'Applicant not found'], 404);
             }
-    
+
             $status = $request->status;
             $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Approved', 'Declined'];
-    
+
             if (!in_array($status, $validStatuses)) {
                 return response()->json(['error' => 'Invalid status'], 400);
             }
-    
+
+            $applicantEmail = $applicant->email;
             $applicant->status = $status;
             $applicant->save();
-    
+
+            dispatch(function () use ($applicantEmail, $applicant) {
+                try {
+                    $notification = new StatusUpdateNotification($applicant);
+                    Mail::to($applicantEmail)->send($notification);
+                } catch (\Exception $emailException) {
+                    \Log::error('Email sending failed: ' . $emailException->getMessage());
+                }
+            })->afterResponse();
+
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             \Log::error('Error updating status: ' . $e->getMessage());
             return response()->json(['error' => 'Failed to update status'], 500);
         }
     }
+
     
     public function showDeclinedApplicants()
     {

@@ -84,16 +84,21 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
         return $this->subject('Real LIFE Scholarship Application')
             ->view('emails.applicant-for-house-visitation', [
                 'applicant' => $applicant,
-                'firstName' => $firstName,
-                'lastName' => $lastName
+                'firstName' => $firstName
             ]);
     }
 
 
     private function sendDefaultEmail()
     {
+        $applicant = $this->applicant->load('applicants_personal_information');
+        $firstName = $applicant->applicants_personal_information->first_name ?? '';
+
         return $this->subject('Real LIFE Scholarship Application')
-            ->view('emails.applicant-status-update', ['applicant' => $this->applicant]);
+            ->view('emails.applicant-status-update', [
+                'applicant' => $applicant,
+                'firstName' => $firstName
+            ]);
             
     }
 }

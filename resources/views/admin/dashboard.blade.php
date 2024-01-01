@@ -192,7 +192,7 @@
                
                   </div>
                   <div class="ps-3">
-                    <h6>53</h6>
+                    <h6></h6>
                   </div>
                 </div>
               </div>

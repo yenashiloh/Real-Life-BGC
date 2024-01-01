@@ -43,4 +43,8 @@ class Applicant extends Authenticatable
     {
         return $this->hasOne(ApplicantsAcademicInformationChoice::class, 'applicant_id', 'applicant_id');
     }
+    public function applicants_personal_information()
+{
+    return $this->hasOne(ApplicantsPersonalInformation::class, 'applicant_id');
+}
 }

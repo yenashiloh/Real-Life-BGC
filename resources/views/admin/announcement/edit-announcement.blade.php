@@ -5,32 +5,32 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Add Announcement</title>
+  <title>Edit Announcement</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="../assets-admin/img/RLlogo1.png" rel="icon">
-
-
+  <link href= "{{ asset('assets-admin/img/RLlogo1.png') }}"rel="icon">
+ 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="../assets-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../assets-admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="../assets-admin/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="../assets-admin/vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="../assets-admin/vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="../assets-admin/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="../assets-admin/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="{{ asset('assets-admin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets-admin/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets-admin/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets-admin/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets-admin/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets-admin/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets-admin/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+ 
 
+  
+  
   <!-- Template Main CSS File -->
-  <link href="../assets-admin/css/style.css" rel="stylesheet">
-
+  <link href="{{ asset('assets-admin/css/style.css') }}" rel="stylesheet">
 </head>
-
 <body>
 
 <!-- ======= Header ======= -->
@@ -38,7 +38,8 @@
   <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
           <img src="../assets-admin/img/RLlogo1.png" alt="">
-          <span class="d-none d-lg-block" style="font-size: 20px;">Real LIFE Foundation </span>
+          <span class="d-none d-lg-block" style="font-size: 20px; text-decoration: none;">Real LIFE Foundation </span>
+
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
   </div><!-- End Logo -->
@@ -102,14 +103,15 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
           <li class="breadcrumb-item">Announcement</li>
-          <li class="breadcrumb-item active">Add Announcement</li>
+          <li class="breadcrumb-item active">Edit Announcement</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
     <section class="section">
-      <form method="POST" action="{{ route('admin.save-announcement') }}" id="announcementForm">
+      <form method="POST" action="{{ route('admin.update-announcement', ['id' => $announcement->id]) }}">
         @csrf
+        @method('PUT') 
       <div class="row">
         <div class="col-lg-12">
           <div class="card">
@@ -120,7 +122,6 @@
                     {{ session('success') }}
                 </div>
                 @endif
-    
                 @if ($errors->any())
                 <div class="alert alert-danger mt-3">
                         @foreach ($errors->all() as $error)
@@ -129,18 +130,16 @@
                     </ul>
                 </div>
                 @endif
-                <label for="fileUpload" style="font-weight: bold; margin-top: 20px; margin-bottom: 15px; margin-left: 5px;">Post an Announcement</label>
-                
+                <label for="fileUpload" style="font-weight: bold; margin-top: 20px; margin-bottom: 15px; margin-left: 5px;">Post an Announcement</label> 
                 <div class="form-group">
                   <label for="announcement_title">Title</label>
-                  <input type="text" class="form-control" id="announcement_title" name="announcement_title">
+                  <input type="text" class="form-control" id="announcement_title" name="announcement_title" value="{{ $announcement->title }}">
                 </div>
                 <br>
                 <h6>Content</h6>
-                <textarea class="tinymce-editor" name="announcement_caption">
-              </textarea>
-              <div class="text-center mt-3">
-                <button class="btn btn-primary" style="width: 200px;" type="submit">Add Announcement</button>
+                  <textarea class="tinymce-editor" name="announcement_caption">{{ $announcement->caption }}</textarea>
+                <div class="text-center mt-3">
+                  <button class="btn btn-primary" style="width: 200px;" type="submit">Save Changes</button>
               </div>
             </div>
           </div>
@@ -150,9 +149,22 @@
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
- 
+  <link href="{{ asset('assets-admin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  @include('admin-partials.footer')
+  <!-- Vendor JS Files -->
+  <script src="{{ asset('assets-admin/vendor/apexcharts/apexcharts.min.js') }}"></script>
+  <script src="{{ asset('assets-admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('assets-admin/vendor/chart.js/chart.umd.js') }}"></script>
+  <script src="{{ asset('assets-admin/vendor/echarts/echarts.min.js') }}"></script>
+  <script src="{{ asset('assets-admin/vendor/quill/quill.min.js') }}"></script>
+  <script src="{{ asset('assets-admin/vendor/simple-datatables/simple-datatables.js') }}"></script>
+  <script src="{{ asset('assets-admin/vendor/tinymce/tinymce.min.js') }}"></script>
+  <script src="{{ asset('assets-admin/vendor/php-email-form/validate.js') }}"></script>
+  <script src="{{ asset('assets-admin/tinymce/tinymce.min.js') }}"></script>
+
+    <!-- Template Main JS File -->
+  <script src="{{ asset('assets-admin/js/main.js') }}"></script>
 
 
 </body>

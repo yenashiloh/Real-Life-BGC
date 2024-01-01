@@ -23,15 +23,15 @@
             </li>
             <li>
               <a href="components-accordion.html">
-                <i class="bi bi-circle"></i><span>Shortlisted</span>
+                <i class="bi bi-circle"></i><span>Approved Applicants</span>
               </a>
             </li>
             <li>
-              <a href="components-badges.html">
-                <i class="bi bi-circle"></i><span>For Interview</span>
+              <a href="{{ route('admin.applicants.declined_applicants') }}">
+                <i class="bi bi-circle"></i><span>Declined Applicants</span>
               </a>
             </li>
-            <li>
+            {{-- <li>
               <a href="components-breadcrumbs.html">
                 <i class="bi bi-circle"></i><span>For House Visitation</span>
               </a>
@@ -46,7 +46,7 @@
                 <i class="bi bi-circle"></i><span>Declined</span>
               </a>
             </li>
-            
+             --}}
           </ul>
         </li><!-- End Components Nav -->
 

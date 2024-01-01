@@ -13,9 +13,8 @@ use App\Models\Applicant;
 use App\Models\ApplicantsAcademicInformation;
 use App\Models\ApplicantsPersonalInformation;
 use Illuminate\Support\Facades\DB; 
-
-
-
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\StatusUpdateNotification; 
 
 class AdminController extends Controller
 {
@@ -169,8 +168,8 @@ class AdminController extends Controller
     public function showAnnouncement()
     {
         $title = 'Announcement';
-        $announcements = Announcement::select('id', 'caption')->get();
-        return view('admin.announcement.admin-announcement', ['title' => $title, 'announcements' => $announcements]);
+        $announcements = Announcement::select('id', 'title', 'caption')->get();
+        return view('admin.announcement.admin-announcement', compact('title', 'announcements'));
     }
     
     public function addAnnouncement()
@@ -179,33 +178,63 @@ class AdminController extends Controller
         return view('admin.announcement.add-announcement', ['title' => $title]);
     }
 
+    //edit announcement page
+    public function showEditAnnouncement($id)
+    {
+        $title = 'Edit Announcement';
+        $announcement = Announcement::find($id);
+        
+        if (!$announcement) {
+            return redirect()->back()->with('error', 'Announcement not found.');
+        }
+        
+        return view('admin.announcement.edit-announcement', compact('title', 'announcement'));
+    }
+
+    //update announcement
+    public function updateAnnouncement(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'announcement_title' => 'required',
+            'announcement_caption' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $announcement = Announcement::find($id);
+
+        if (!$announcement) {
+            return redirect()->back()->with('error', 'Announcement not found.');
+        }
+
+        $announcement->title = $request->input('announcement_title');
+        $announcement->caption = $request->input('announcement_caption');
+        $announcement->save();
+
+        return redirect()->route('admin.announcement.edit-announcement', ['id' => $id])->with('success', 'Announcement Updated Successfully!');
+    }
+
     //add announcement
     public function saveAnnouncement(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'announcement_caption' => 'required',
-       
-    ]);    
-
-    if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
-    }
-
-    $announcement = new Announcement();
-    $announcement->caption = $request->input('announcement_caption', 'Default Caption');
-    $announcement->image = 'default_image.jpg'; 
-
-    if ($request->hasFile('announcement_image')) {
-        $image = $request->file('announcement_image');
-        $imageName = time() . '_' . $image->getClientOriginalName();
-        $image->move(public_path('images'), $imageName);
-        $announcement->image = 'images/' . $imageName;
-    }
-
-    $announcement->save();
-
-    $request->session()->flash('success', 'Announcement Added Successfully!');
-    return redirect()->route('admin.announcement.add-announcement');
+    {
+        $validator = Validator::make($request->all(), [
+            'announcement_caption' => 'required',
+            'announcement_title' => 'required', 
+        ]);    
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        $announcement = new Announcement();
+        $announcement->title = $request->input('announcement_title', 'Default Title'); 
+        $announcement->caption = $request->input('announcement_caption', 'Default Caption');
+        $announcement->save();
+    
+        $request->session()->flash('success', 'Announcement Added Successfully!');
+        return redirect()->route('admin.announcement.add-announcement');
     }
 
     //delete announcement
@@ -224,7 +253,7 @@ class AdminController extends Controller
         }
     }
  
-    //dashboard 
+    //dashboard total
     public function totalApplicants()
     {
         $totalApplicants = Applicant::count();
@@ -232,7 +261,17 @@ class AdminController extends Controller
         
         return view('admin.dashboard', compact('totalApplicants', 'title'));
     }
+    
+    // public function totalDeclined()
+    // {
+    //     $totalDeclined = Applicant::where('status', 'Declined')->count();
+    //     $title = 'Dashboard'; 
 
+    //     return view('admin.total_declined', ['totalDeclined' => $totalDeclined, 'title' => $title]);
+    // }
+
+    
+    
     //bar chart - incoming grade/yr level
     public function getApplicantsByGradeYear()
     {
@@ -260,17 +299,91 @@ class AdminController extends Controller
     
     public function getApplicantsData()
     {
+        $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
+    
         $applicantsData = ApplicantsPersonalInformation::select(
             'applicants_personal_information.first_name',
             'applicants_personal_information.last_name',
             'applicants_academic_information.incoming_grade_year',
-            'applicants_academic_information.current_school' 
+            'applicants_academic_information.current_school',
+            'applicants.status',
+            'applicants.applicant_id'
         )
         ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
+        ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
+        ->whereIn('applicants.status', $validStatuses)
         ->get();
-
+    
         return $applicantsData;
     }
+    
+    public function updateStatus(Request $request)
+    {
+        try {
+            $applicant = Applicant::where('applicant_id', $request->applicant_id)->first();
+
+            if (!$applicant) {
+                return response()->json(['error' => 'Applicant not found'], 404);
+            }
+
+            $status = $request->status;
+            $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Approved', 'Declined'];
+
+            if (!in_array($status, $validStatuses)) {
+                return response()->json(['error' => 'Invalid status'], 400);
+            }
+
+            $applicantEmail = $applicant->email;
+            $applicant->status = $status;
+            $applicant->save();
+
+            dispatch(function () use ($applicantEmail, $applicant) {
+                try {
+                    $notification = new StatusUpdateNotification($applicant);
+                    Mail::to($applicantEmail)->send($notification);
+                } catch (\Exception $emailException) {
+                    \Log::error('Email sending failed: ' . $emailException->getMessage());
+                }
+            })->afterResponse();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            \Log::error('Error updating status: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to update status'], 500);
+        }
+    }
+
+    
+    public function showDeclinedApplicants()
+    {
+        $title = 'Declined Applicants';
+        $applicantsData = $this->getDeclinedData();
+        return view('admin.applicants.declined_applicants', compact('title', 'applicantsData'));
+    }
+
+    public function getDeclinedData()
+    {
+        $validStatuses = ['Declined'];
+    
+        $applicantsData = ApplicantsPersonalInformation::select(
+            'applicants_personal_information.first_name',
+            'applicants_personal_information.last_name',
+            'applicants_academic_information.incoming_grade_year',
+            'applicants_academic_information.current_school',
+            'applicants.status',
+            'applicants.applicant_id'
+        )
+        ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
+        ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
+        ->whereIn('applicants.status', $validStatuses)
+        ->get();
+    
+        return $applicantsData;
+    }
+
+   
+    
+
 
 }
 

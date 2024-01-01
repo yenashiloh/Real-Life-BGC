@@ -1,2 +1,7 @@
-*
+# Ignore all files except .gitignore
+/*
 !.gitignore
+
+# Ignore storage/logs directory
+/storage/logs/
+*.log

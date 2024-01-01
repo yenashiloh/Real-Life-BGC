@@ -290,9 +290,10 @@
     <!-- ======= STEP 3 CONTENT ======= -->
     <div class="container" id="step3Content" style="display: none;">
         <div class="row">
-            <span id="step3ErrorMessage"
-                style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all
+            <span id="step3ErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all
                 required fields.</span>
+            <span id="step3PdfErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please upload a PDF file only.</span>    
+        
             <div class="col-md-4">
                 <label class="form-label">Incoming Grade or Year <span
                         style="color: red; font-size: 12px; font-weight: normal;">*</span></label></label>
@@ -319,11 +320,12 @@
             </div>
            
             <div class="col-md-4" style="display: none;" id="currentProgram">
-                <label class="form-label">Current Program<span
+                <label class="form-label">Current Course or Program<span
                         style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                 <input type="text" class="form-control form-control-solid form-control-long" name="currentProgram"
                     placeholder="" value="" />
             </div>
+            
         </div>
         <br>
 
@@ -535,7 +537,7 @@
             <div class="col-md-4 mb-3" id="reportCard" style="display: none;">
                 <label class="form-label">Report Card <span style="color: red; font-size: 10px;">*Upload PDF for Three
                         Indicated Grade/Year Levels</span></label>
-                <input type="file" class="form-control" name="ReportCard" accept=".pdf">
+                <input type="file" id="reportCardFile" class="form-control" name="ReportCard" accept=".pdf">
             </div>
         </div>
         <br>
@@ -598,9 +600,8 @@
     <!-- ======= STEP 4 - MONTHLY HOUSEHOLD ======= -->
     <div class="container mt-4 mb-3" id="step4Content" style="display: none;">
         <div class="row">
-            <span id="step4ErrorMessage"
-                style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all
-                required fields.</span>
+            <span id="step4ErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all required fields.</span>
+            <span id="step4PdfErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please upload a PDF file only.</span>
             <div class="col-md-6">
                 <div class="form-group mb-3">
                     <label for="householdSelect">Number of Household Employed <span
@@ -633,10 +634,8 @@
             </div>
             <div class="col-md-6 mb-3">
                 <div class="form-group">
-                    <label for="payslip">Payslip/DSWD Report/ITR <span
-                            style="color: red; font-size: 12px; font-weight: normal;">*Upload the pdf of
-                            Payslip/DSWD
-                            Report/ITR </span></label>
+                    <label for="payslip">Payslip/DSWD Report/ITR <span style="color: red; font-size: 12px; font-weight: normal;">*Upload the pdf of
+                            Payslip/DSWD Report/ITR </span></label>
                     <div class="input-group">
                         <input type="file" class="form-control" id="payslip" placeholder="" accept=".pdf">
                     </div>
@@ -663,8 +662,13 @@
 
 
     <!-- ======= STEP 5 - ACCOUNT INFORMATION ======= -->
-    <div class="container mt-4 mb-4" id="step5Content" style="display: none;">
+    <div class="container mt-4 mb-4" id="step5Content" style="display: none;" >
         <div class="row">
+            <span id="step5ErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">
+                @if($errors->any() && $errors->has('email'))
+                {{ $errors->first('email') }}
+            @endif
+           </span>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="email">Email <span
@@ -711,7 +715,7 @@
             </button>
         </div>
     </div>
-    <x-messages />
+    <x-messages/>
     </form>
     </div>
 
@@ -909,8 +913,7 @@
                         if (!lastNameValid) {
                             hasSpecialCharacters = true;
                         }
-                    } else if (input.id === 'house_no' || input.id === 'street' || input.id ===
-                        'barangay' || input.id === 'municipality') {
+                    } else if (input.id === 'house_no' || input.id === 'street' || input.id === 'barangay' || input.id === 'municipality') {
                         if (!input.value.trim()) {
                             validateInput(input);
                             addressFieldsValid = false;
@@ -950,7 +953,7 @@
                     contactError.style.display = contactValid ? 'none' : 'block';
                 }
 
-                if (isValid && ageValid && !hasSpecialCharacters && !birthdateEmpty) {
+                if (isValid && ageValid && !hasSpecialCharacters && !birthdateEmpty && addressFieldsValid) {
                     handleStepTransition(2);
                     setTimeout(() => {
                         elements.stepperItems[1].classList.add('done');
@@ -965,6 +968,8 @@
                             "You must be under the age of 25 to qualify for the scholarship.";
                     } else if (hasSpecialCharacters) {
                         step2ErrorMessage.innerText = "";
+                    }  else if (!addressFieldsValid) {
+                        step2ErrorMessage.innerText = "Please fill out all address fields.";
                     }
 
                     nameErrorMessage.style.display = firstNameValid ? 'none' : 'block';
@@ -1095,7 +1100,7 @@
                         grade12SemSelect, firstYearSemSelect, reportCard
                     ],
                     FourthYear: [incomingGrade, currentProgram, currentSchool, grade12SemSelect,
-                        firstYearSemSelect, reportCard
+                        firstYearSemSelect, secondYearSemSelect, reportCard
                     ]
                 };
 
@@ -1164,7 +1169,7 @@
                         }
                     });
 
-                    if (selectedGrade === 'SecondYear' || selectedGrade === 'ThirdYear') {
+                    if (selectedGrade === 'SecondYear' || selectedGrade === 'ThirdYear' ) {
                         const grade12SemSelect = document.getElementById("grade12SemSelect");
                         const selectedSemesters12 = grade12SemSelect.value;
                         const filledSemesters12 = [g12FirstSem, g12SecondSem, g12ThirdSem, g12FourthSem]
@@ -1473,10 +1478,26 @@
                 }
             });
 
-            
-  
+            //PDF FILE VALIDATION
+            const reportCardField = document.getElementById('reportCardFile');
+            reportCardField.addEventListener('change', function(event) {
+            const file = event.target.files[0]; 
+            const fileType = file.type; 
 
-            //STEP 4    
+            if (fileType !== 'application/pdf') {
+                step3PdfErrorMessage.style.display = 'block'; 
+                event.target.value = '';
+            } else {
+                step3PdfErrorMessage.style.display = 'none'; 
+            }
+        });
+
+
+        // STEP 4    
+            const householdSelect = document.getElementById('householdSelect');
+            const totalMonthlyIncomeField = document.getElementById('totalMonthlyIncome');
+            const householdSections = document.getElementById('householdSections');
+
             function validateInput(input) {
                 const trimmedValue = input.value.trim();
                 const isValid = trimmedValue !== '';
@@ -1494,6 +1515,25 @@
                 return isValid;
             }
 
+            householdSections.addEventListener('input', function (event) {
+                if (event.target.matches('input[required], select[required]')) {
+                    validateInput(event.target);
+                }
+            });
+
+            const payslipField = document.getElementById('payslip');
+            payslipField.addEventListener('change', function(event) {
+            const file = event.target.files[0]; 
+            const fileType = file.type; 
+
+            if (fileType !== 'application/pdf') {
+                step4PdfErrorMessage.style.display = 'block'; 
+                event.target.value = '';
+            } else {
+                step4PdfErrorMessage.style.display = 'none'; 
+            }
+        });
+        
             document.getElementById("nextButtonStep4").addEventListener("click", function() {
                 const step4ErrorMessage = document.getElementById("step4ErrorMessage");
                 const householdFields = document.querySelectorAll(
@@ -1511,12 +1551,16 @@
                 });
 
                 // VALIDATION
-                const occupationFields = document.querySelectorAll('#step4Content input[id^="occupation"]');
+                const occupationFields = document.querySelectorAll('[id^="occupation"]');
                 occupationFields.forEach(field => {
+                    field.addEventListener('input', function (event) {
+                        validateInput(event.target);
+                    });
                     if (!validateInput(field)) {
                         isValid = false;
                     }
                 });
+                
 
                 if (!validateInput(householdSelect)) {
                     isValid = false;
@@ -1536,7 +1580,11 @@
                         handleStepperNumberColors(4);
                     }, 100);
                 }
+                
             });
+
+     
+
 
             //STEPPER CHECK
             function handleStepTransition(currentIndex) {

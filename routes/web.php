@@ -40,6 +40,7 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
 
     Route::get('/email', [EmailController::class, 'create']);
     Route::post('/email', [EmailController::class, 'sendEmail'])->name('send.email');
+
     
 });
 Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
@@ -47,6 +48,14 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::get('/personal-details', [ApplicantController::class, 'personalDetails'])->name('user.profile');
     Route::post('/logout', [ApplicantController::class, 'logout']);
 
+    
+
+    Route::post('/update-personal-details', [ApplicantController::class, 'updatePersonalDetails'])
+    ->name('update_personal_details');
+
+    Route::post('/user/change-password', [ApplicantController::class, 'changePassword'])->name('change.password');
+    Route::get('/applicant_dashboard', [ApplicantController::class, 'applicantDashboard'])->name('user.applicant_dashboard');
+    Route::get('/change_password', [ApplicantController::class, 'viewChangePassword'])->name('user.change_password');
 
 });
 
@@ -73,11 +82,11 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::post('/announcement/add-announcement', [AdminController::class, 'saveAnnouncement'])->name('admin.save-announcement');
     Route::delete('/delete-announcement/{id}', [AdminController::class, 'deleteAnnouncement'])->name('delete.announcement');
     Route::match(['post', 'put'], '/announcement/update-announcement/{id}', [AdminController::class, 'updateAnnouncement'])->name('admin.update-announcement');
-    Route::get('/announcement/edit-announcement/{id}', [AdminController::class, 'showEditAnnouncement'])->name('admin.announcement.edit-announcement');
+    Route::get('/announcement/{id}', [AdminController::class, 'showEditAnnouncement'])->name('admin.announcement.edit-announcement');
 
-    //DASHBOARD
+    //TOTAL FOR DASHBOARD
+    // Route::get('/dashboard', [AdminController::class, 'totalDeclined'])->name('total_declined');
     Route::get('/dashboard', [AdminController::class, 'totalApplicants'])->name('dashboard');
-    // Route::get('/totalDeclined', [AdminController::class, 'totalDeclined'])->name('totalDeclined');
     Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
 
     //DATA APPLICANTS 
@@ -90,6 +99,12 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     
     Route::post('/applicants/new-pplicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
 
+    //APPROVED DECLINED APPLICANTS
+    Route::get('/applicants/approved_applicants', [AdminController::class, 'showApprovedApplicants'])->name('admin.applicants.approved_applicants');
+    Route::get('/applicants-approved', [AdminController::class, 'getApprovedData'])->name('approved.data');
+
+    //VIEW DATA OF APPLICANTS
+    Route::get('/applicants/{id}', [AdminController::class, 'viewApplicant'])->name('admin.view_applicant');
 
 
     //LOGOUT

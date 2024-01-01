@@ -8,9 +8,7 @@
             <i class="bi bi-grid"></i>
             <span>Dashboard</span>
           </a>
-        </li><!-a- End Dashboard Nav -->
-
-
+        </li>
         <li class="nav-item">
           <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="applicants-link">
             <i class="bi bi-menu-button-wide" ></i><span>Applicants</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -18,11 +16,11 @@
           <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
             <li>
               <a href="{{ route('admin.applicants.new_applicants') }}">
-                <i class="bi bi-circle"></i><span>New Applicants</span>
+                <i class="bi bi-circle"></i><span>All Applicants</span>
               </a>
             </li>
             <li>
-              <a href="components-accordion.html">
+              <a href="{{ route('admin.applicants.approved_applicants') }}">
                 <i class="bi bi-circle"></i><span>Approved Applicants</span>
               </a>
             </li>
@@ -77,13 +75,7 @@
             <i class="bi bi-box-arrow-in-right"></i><span>Sign out</span></i>
           </a>
         </li><!-- End Icons Nav -->
-
-
-
-      
     </aside><!-- End Sidebar-->
-
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 

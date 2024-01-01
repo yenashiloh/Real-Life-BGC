@@ -77,7 +77,7 @@
                     <i class="bi bi-journal-text"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>200</h6>
+                    <h6>{{ $totalShortlisted }}</h6>
                   </div>
                 </div>
               </div>
@@ -105,7 +105,7 @@
                     <i class="bi bi-people"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>200</h6>
+                    <h6>{{ $totalForInterview}}</h6>
                   </div>
                 </div>
               </div>
@@ -135,7 +135,7 @@
                     <i class="bi bi-house"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>1000</h6>
+                    <h6>{{ $totalHouseVisitation}}</h6>
                   </div>
                 </div>
               </div>
@@ -157,13 +157,13 @@
                 </ul>
               </div>
               <div class="card-body">
-                <h5 class="card-title">Total of Accepted</h5>
+                <h5 class="card-title">Total of Approved</h5>
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-person-check"></i>
                   </div>
                   <div class="ps-3">
-                    <h6>53</h6>
+                    <h6>{{ $totalApproved}}</h6>
                   </div>
                 </div>
               </div>
@@ -189,10 +189,10 @@
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <i class="bi bi-person-x"></i>
-               
+                    <h6></h6>
                   </div>
                   <div class="ps-3">
-                    <h6></h6>
+                    <h6>{{ $totalDeclined}}</h6>
                   </div>
                 </div>
               </div>

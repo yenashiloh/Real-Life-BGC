@@ -21,4 +21,10 @@ class ApplicantsAcademicInformationChoice extends Model
         'second_choice_course',
         'third_choice_course',
     ];
+
+    public function applicant()
+    {
+        return $this->belongsTo(ApplicantsPersonalInformation::class, 'applicant_id');
+    }
+
 }

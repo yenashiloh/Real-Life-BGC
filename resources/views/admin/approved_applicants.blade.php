@@ -202,7 +202,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Approved Applicants</h5>
-              <button type="button" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button>
+              {{-- <button type="button" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button> --}}
               
               <!-- Table with stripped rows -->
               <table class="table datatable">

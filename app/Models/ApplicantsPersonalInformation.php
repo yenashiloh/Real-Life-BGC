@@ -23,4 +23,18 @@ class ApplicantsPersonalInformation extends Model
         'barangay',
         'municipality'
     ];
+
+    public function academicInformation() {
+        return $this->hasOne(ApplicantsAcademicInformation::class, 'applicant_id');
+    }
+
+    public function choices()
+    {
+        return $this->hasMany(ApplicantsAcademicInformationChoice::class, 'applicant_id');
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(ApplicantsAcademicInformationGrade::class, 'applicant_id');
+    }
 }

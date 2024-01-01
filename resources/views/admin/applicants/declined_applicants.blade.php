@@ -21,13 +21,14 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Declined Applicants</h5>
-              <button type="button" id="exportExcelBtn" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button>
+              {{-- <button type="button" id="exportExcelBtn" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button> --}}
               
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Date Applied</th>
                     <th scope="col">Full Name</th>
                     <th scope="col" >Incoming Grade/Year Level</th>
                     <th scope="col" >School</th>
@@ -42,6 +43,7 @@
                 @foreach($applicantsData as $applicant)
                   <tr>
                     <th scope="row">{{ $count }}</th> 
+                      <td>{{ date('F d, Y', strtotime($applicant->created_at)) }}</td>
                       <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
                       <td>{{ $applicant->incoming_grade_year }}</td>
                       <td>{{ $applicant->current_school }}</td>
@@ -78,8 +80,10 @@
                               </li>
                             </ul>
                             <div class="view-button">
-                              <button class="btn btn-secondary" style="font-size: 13px; margin-top: 5px; width: 77px; height: 31px;">View</button>
-                            </div>
+                              <a href="{{ route('admin.view_applicant', ['id' => $applicant->applicant_id]) }}" class="btn btn-secondary" style="font-size: 13px; margin-top: 5px; width: 77px; height: 31px;">
+                             View
+                         </a>
+                           </div>
                           </div>
                       </td>
                   </tr>
@@ -142,7 +146,7 @@
             console.log('Status updated successfully');
             var applicantId = applicant_id;
             var newStatus = action;
-            var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(1)').text();
+            var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(2)').text();
 
             var alertHTML = '<div class="alert alert-success" role="alert" style="text-align:center;">' +
               '<strong>' + applicantFullName + ' is change the status to ' + newStatus + '</strong>' +

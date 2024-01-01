@@ -661,7 +661,7 @@
 													
 													<div class="form-group">
 															<label for="monthlyIncome${i}">Monthly Income <span style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-															<input type="text" class="form-control" id="monthlyIncome${i}" placeholder="" required>
+															<input type="number" class="form-control" id="monthlyIncome${i}" placeholder="" required>
 													</div>
 											</div>
 									</div>
@@ -676,14 +676,12 @@
 	});
 })()
 
-// Add an event listener to calculate the total monthly income when 'Monthly Income' fields change
 document.addEventListener('input', function (event) {
     if (event.target && event.target.id.startsWith('monthlyIncome')) {
         calculateTotalIncome();
     }
 });
 
-// Function to calculate the total income
 function calculateTotalIncome() {
     const totalMonthlyIncomeField = document.getElementById('totalMonthlyIncome');
     const monthlyIncomeFields = document.querySelectorAll('[id^="monthlyIncome"]');
@@ -697,9 +695,6 @@ function calculateTotalIncome() {
 
     totalMonthlyIncomeField.value = totalIncome.toFixed(2);
 }
-
-// Rest of your code...
-// The 'totalMonthlyIncomeField' will update based on the calculation when Monthly Income fields are modified
 
 
 

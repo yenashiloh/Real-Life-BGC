@@ -21,13 +21,14 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Applicants</h5>
-              <button type="button" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button>
+              {{-- <button type="button" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button> --}}
               
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Date Apply</th>
                     <th scope="col">Full Name</th>
                     <th scope="col" >Incoming Grade/Year Level</th>
                     <th scope="col" >School</th>
@@ -42,6 +43,7 @@
                 @foreach($applicantsData as $applicant)
                   <tr>
                     <th scope="row">{{ $count }}</th> 
+                    <td>{{ date('F d, Y', strtotime($applicant->created_at)) }}</td>
                       <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
                       <td>{{ $applicant->incoming_grade_year }}</td>
                       <td>{{ $applicant->current_school }}</td>
@@ -65,7 +67,7 @@
                               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $applicant->applicant_id }}">
                                   @if($applicant->status === 'New Applicant')
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
+                                          <a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
                                               Under Review
                                           </a>
                                       </li>
@@ -76,53 +78,56 @@
                                       </li>
                                     @elseif($applicant->status === 'Under Review')
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
+                                          <a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
                                               Shortlisted
                                           </a>
                                       </li>
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                              Decline
+                                          <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: red;">
+                                              Decline Shorlist
                                           </a>
                                       </li>
                                     @elseif($applicant->status === 'Shortlisted')
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                              For Interview
+                                          <a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
+                                              Approve for Interview
                                           </a>
                                       </li>
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                              Decline
+                                          <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: red;">
+                                              Decline for Interview
                                           </a>
                                       </li>
                                     @elseif($applicant->status === 'For Interview')
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                             <Form></Form> House Visitation
+                                          <a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
+                                             <Form></Form>Approve for House Visitation
                                           </a>
                                       </li>
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                              Decline
+                                          <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: red;">
+                                              Decline for House Visitation
                                           </a>
                                       </li>
                                     @elseif($applicant->status === 'For House Visitation')
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="Approved" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                              Approve
+                                          <a class="dropdown-item" href="#" data-action="Approved" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
+                                              Approve Scholarship
                                           </a>
                                       </li>
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                              Decline
+                                          <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: red;">
+                                              Decline Scholarship
                                           </a>
                                       </li>
                                   @endif
                               </ul>
                               <div class="view-button">
-                                  <button class="btn btn-secondary" style="font-size: 13px; margin-top: 5px; width: 77px; height: 31px;">View</button>
+                                 <a href="{{ route('admin.view_applicant', ['id' => $applicant->applicant_id]) }}" class="btn btn-secondary" style="font-size: 13px; margin-top: 5px; width: 77px; height: 31px;">
+                                View
+                            </a>
                               </div>
+                              
                           </div>
                       </td>
                   </tr>
@@ -187,7 +192,7 @@ $(document).ready(function() {
           console.log('Status updated successfully');
           var applicantId = applicant_id;
           var newStatus = action;
-          var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(1)').text(); 
+          var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(2)').text(); 
           var alertHTML = '<div class="alert alert-success" role="alert" style="text-align:center;">' +
             '<strong>' + applicantFullName + ' is ' + newStatus + '</strong>' +
             '</div>';
@@ -242,7 +247,7 @@ $(document).ready(function() {
       },
       error: function(xhr, status, error) {
         console.log('Error:', error);
-        }
+      }
       }); 
     });
   });

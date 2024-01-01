@@ -10,8 +10,8 @@
         <a href="/" class="logo me-auto"><img src="assets/img/RLlogo.png" alt="" class="img-fluid"></a>
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li><a class="nav-link scrollto" href="#index.html">Home</a></li>
-                <li><a class="nav-link scrollto" href="#announcement.html">Announcement</a></li>
+                <li><a class="nav-link scrollto" href="/">Home</a></li>
+                <li><a class="nav-link scrollto" href="/announcement">Announcement</a></li>
                 <li><a class="nav-link scrollto" href="#contact_us.html">Contact Us</a></li>
                 <li><a class="nav-link scrollto" href="#FAQ.html">FAQ</a></li>
             </ul>
@@ -24,7 +24,7 @@
                 <span class="badge bg-primary badge-number">4</span>
             </a>
 
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications ">
                 <li class="dropdown-header">
                     You have 4 new notifications
                     <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
@@ -84,7 +84,7 @@
                     data-bs-toggle="dropdown">
                     <i class="bi bi-person"></i>
                     <span
-                        class="d-none d-md-block dropdown-toggle ps-2">{{ explode(' ', $personalInfo->first_name)[0] }}</span>
+                        class="d-none d-md-block dropdown-toggle ps-2 nav-link scrollto" style="font-family: 'Poppins', san-serif; font-size:16px; font-weight: medium;">{{ explode(' ', $personalInfo->first_name)[0] }}</span>
                 </a><!-- End Profile Image Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -96,7 +96,12 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="/applicant_dashboard">
+                            <i class="bi bi-speedometer"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="/personal-details">
                             <i class="bi bi-person"></i>
@@ -107,18 +112,18 @@
                         <hr class="dropdown-divider">
                     </li>
 
-                    <li>
+                    {{-- <li>
                         <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
                             <i class="bi bi-journal-text"></i>
                             <span>Requirements</span>
                         </a>
-                    </li>
-                    <li>
+                    </li> --}}
+                    {{-- <li>
                         <hr class="dropdown-divider">
-                    </li>
+                    </li> --}}
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                        <a class="dropdown-item d-flex align-items-center" href="/change_password">
                             <i class="bi bi-gear"></i>
                             <span>Change Password</span>
                         </a>

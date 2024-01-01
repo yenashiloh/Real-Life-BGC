@@ -15,6 +15,8 @@ use App\Models\ApplicantsPersonalInformation;
 use Illuminate\Support\Facades\DB; 
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\StatusUpdateNotification; 
+use App\Models\ApplicantsAcademicInformationChoice;
+use App\Models\ApplicantsAcademicInformationGrade;
 
 class AdminController extends Controller
 {
@@ -257,20 +259,15 @@ class AdminController extends Controller
     public function totalApplicants()
     {
         $totalApplicants = Applicant::count();
+        $totalShortlisted = Applicant::where('status', 'Shortlisted')->count();
+        $totalForInterview = Applicant::where('status', 'For Interview')->count();
+        $totalHouseVisitation = Applicant::where('status', 'For House Visitation')->count();
+        $totalDeclined = Applicant::where('status', 'Declined')->count();
+        $totalApproved = Applicant::where('status', 'Approved')->count();
         $title = 'Dashboard'; 
         
-        return view('admin.dashboard', compact('totalApplicants', 'title'));
+        return view('admin.dashboard', compact('totalApplicants', 'totalShortlisted', 'totalForInterview', 'totalHouseVisitation','totalDeclined', 'totalApproved', 'title'));
     }
-    
-    // public function totalDeclined()
-    // {
-    //     $totalDeclined = Applicant::where('status', 'Declined')->count();
-    //     $title = 'Dashboard'; 
-
-    //     return view('admin.total_declined', ['totalDeclined' => $totalDeclined, 'title' => $title]);
-    // }
-
-    
     
     //bar chart - incoming grade/yr level
     public function getApplicantsByGradeYear()
@@ -307,12 +304,14 @@ class AdminController extends Controller
             'applicants_academic_information.incoming_grade_year',
             'applicants_academic_information.current_school',
             'applicants.status',
+            'applicants.created_at',
             'applicants.applicant_id'
         )
         ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
         ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
         ->whereIn('applicants.status', $validStatuses)
         ->get();
+        
     
         return $applicantsData;
     }
@@ -371,6 +370,7 @@ class AdminController extends Controller
             'applicants_academic_information.incoming_grade_year',
             'applicants_academic_information.current_school',
             'applicants.status',
+            'applicants.created_at',
             'applicants.applicant_id'
         )
         ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
@@ -381,9 +381,59 @@ class AdminController extends Controller
         return $applicantsData;
     }
 
-   
+    //approved table page 
+    public function showApprovedApplicants()
+    {
+        $title = 'Approved Applicants';
+        $applicantsData = $this->getApprovedData(); 
+        return view('admin.applicants.approved_applicants', compact('title', 'applicantsData'));
+    }
+
+    //approved table page 
+    public function getApprovedData()
+    {
+        $validStatuses = ['Approved'];
     
+        $applicantsData = ApplicantsPersonalInformation::select(
+            'applicants_personal_information.first_name',
+            'applicants_personal_information.last_name',
+            'applicants_academic_information.incoming_grade_year',
+            'applicants_academic_information.current_school',
+            'applicants.status',
+            'applicants.created_at',
+            'applicants.applicant_id'
+        )
+        ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
+        ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
+        ->whereIn('applicants.status', $validStatuses)
+        ->get();
+    
+        return $applicantsData;
+    }
 
+    public function viewApplicant($id)
+    {
+        $title = 'Applicant Details';
 
+        $applicant = ApplicantsPersonalInformation::with([
+            'academicInformation',
+            'choices',
+            'grades'
+        ])->find($id);
+
+        if (!$applicant) {
+            return redirect()->back()->with('error', 'Applicant not found.');
+        }
+
+        $applicantData = DB::table('applicants')
+            ->where('applicant_id', $id) 
+            ->select('email', 'status') 
+            ->first();
+
+        $email = $applicantData ? $applicantData->email : null;
+        $status = $applicantData ? $applicantData->status : null;
+
+        return view('admin.applicants.view_applicant', compact('title', 'applicant', 'email', 'status'));
+    }
 }
 

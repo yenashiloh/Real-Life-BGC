@@ -11,7 +11,9 @@ use App\Models\Announcement;
 use App\Models\ApplicantsAcademicInformation;
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
-use Illuminate\Support\Facades\Validator; 
+use App\Models\Household;
+use App\Models\Member;
+use Illuminate\Support\Facades\Validator;
 
 
 class ApplicantController extends Controller
@@ -61,15 +63,15 @@ class ApplicantController extends Controller
     {
         $applicantId = auth()->id();
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
-        $academicInfoGradesData = ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
-        $academicInfoChoiceData = ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
-  
-        $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
-    
+        $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
+        $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
+        
         $title = 'Dashboard';
-        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo'));
+        return view('user.applicant_dashboard', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData'));
     }
     
+    
+
     public function personalDetails()
     {
         $applicantId = auth()->id();
@@ -86,7 +88,7 @@ class ApplicantController extends Controller
         return view('user.change_password')->with('title', $title);
     }
 
-    
+
     function loginPost(Request $request)
     {
         $request->validate([
@@ -116,8 +118,8 @@ class ApplicantController extends Controller
     function registerPost(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'confirmed', 'min:8'],
+            'email' => 'required|email|unique:applicants',
+            'password' => 'required|min:8',
             'firstname' => 'required',
             'lastname' => 'required',
             'contact' => 'required',
@@ -127,7 +129,7 @@ class ApplicantController extends Controller
             'barangay' => 'required',
             'municipality' => 'required',
         ]);
-        
+
         // $existingUser = Applicant::where('email', $request->email)->first();
 
         // if ($validator->fails()) {
@@ -135,12 +137,12 @@ class ApplicantController extends Controller
         // }
 
         // Check for existing user with the provided email
-        $existingUser = Applicant::where('email', $request->email)->first();
-        if ($existingUser) {
-            $errorMessage = "Email already exists.";
-            return redirect(route('register'))->with("error", $errorMessage)->withInput();
-        }
-    
+        // $existingUser = Applicant::where('email', $request->email)->first();
+        // if ($existingUser) {
+        //     $errorMessage = "Email already exists.";
+        //     return redirect(route('register'))->with("error", $errorMessage)->withInput();
+        // }
+
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['status'] = 'New Applicant';
@@ -160,13 +162,31 @@ class ApplicantController extends Controller
             ];
             ApplicantsPersonalInformation::create($personalInfoData);
 
+            $gradeMapping = [
+                'GradeSeven' => 'Grade 7',
+                'GradeEight' => 'Grade 8',
+                'GradeNine' => 'Grade 9',
+                'GradeTen' => 'Grade 10',
+                'GradeEleven' => 'Grade 11',
+                'GradeTwelve' => 'Grade 12',
+                'FirstYear' => 'First Year College',
+                'SecondYear' => 'Second Year College',
+                'ThirdYear' => 'Third Year College',
+                'FourthYear' => 'Fourth Year College',
+            ];
+
+            $incomingGrade = $request->incomingGrade;
+            $convertedGrade = isset($gradeMapping[$incomingGrade]) ? $gradeMapping[$incomingGrade] : $incomingGrade;
+
             $academicInfoData = [
                 'applicant_id' => $applicant->applicant_id,
-                'incoming_grade_year' => $request->incomingGrade,
+                'incoming_grade_year' => $convertedGrade,
                 'current_course_program_grade' => $request->currentProgram,
                 'current_school' => $request->currentSchool
             ];
+
             ApplicantsAcademicInformation::create($academicInfoData);
+
 
             $academicInfoChoiceData = [
                 'applicant_id' => $applicant->applicant_id,
@@ -191,14 +211,40 @@ class ApplicantController extends Controller
                 'grade_10_gwa' => $request->grade10GWA,
                 'grade_11_sem1_gwa' => $request->grade11FirstSemGWA,
                 'grade_11_sem2_gwa' => $request->grade11SecondSemGWA,
+                'grade_11_sem3_gwa' => $request->grade11ThirdSemGWA,
                 'grade_12_sem1_gwa' => $request->grade12FirstSemGWA,
                 'grade_12_sem2_gwa' => $request->grade12SecondSemGWA,
+                'grade_12_sem3_gwa' => $request->grade12ThirdSemGWA,
                 '1st_year_sem1_gwa' => $request->firstYearFirstSemGWA,
                 '1st_year_sem2_gwa' => $request->firstYearSecondSemGWA,
+                '1st_year_sem3_gwa' => $request->firstYearThirdSemGWA,
+                '1st_year_sem4_gwa' => $request->firstYearFourthSemGWA,
                 '2nd_year_sem1_gwa' => $request->secondYearFirstSemGWA,
-                '2nd_year_sem2_gwa' => $request->secondYearSecondSemGWA
+                '2nd_year_sem2_gwa' => $request->secondYearSecondSemGWA,
+                '2nd_year_sem3_gwa' => $request->secondYearThirdSemGWA,
+                '2nd_year_sem4_gwa' => $request->secondYearFourthSemGWA
             ];
             ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
+
+            // Validate and store the main household information
+            Household::create([
+                'applicant_id' => $applicant->applicant_id,
+                'total_members' => $request->input('householdMembers'),
+                // 'payslip_path' => $request->file('payslip')->store('payslips', 'public'),
+            ]);
+
+            // Store individual household member information
+            for ($i = 1; $i <= $request->input('householdMembers'); $i++) {
+                Member::create([
+                    'applicant_id' => $applicant->applicant_id,
+                    'name' => $request->input("name$i"),
+                    'relationship' => $request->input("relationship$i"),
+                    'occupation' => $request->input("occupation$i"),
+                    'monthly_income' => $request->input("monthlyIncome$i")
+                ]);
+            }
+
+            
 
             return redirect(route('login'))->with("success", "Registration success, Login to access the app");
         } else {
@@ -225,9 +271,9 @@ class ApplicantController extends Controller
         $street = $request->input('street');
         $barangay = $request->input('barangay');
         $municipality = $request->input('municipality');
-        
+
         $personalInfo = ApplicantsPersonalInformation::updateOrCreate(
-            ['applicant_id' => auth()->id()], 
+            ['applicant_id' => auth()->id()],
             [
                 'first_name' => $firstName,
                 'last_name' => $lastName,
@@ -242,11 +288,12 @@ class ApplicantController extends Controller
 
         $academicInfoGradesData = $request->only([
             'grade_3_gwa', 'grade_4_gwa', 'grade_5_gwa', 'grade_6_gwa', 'grade_7_gwa', 'grade_8_gwa', 'grade_9_gwa', 'grade_10_gwa',
-            'grade_11_sem1_gwa', 'grade_11_sem2_gwa', 'grade_12_sem1_gwa', 'grade_12_sem2_gwa',
-            '1st_year_sem1_gwa', '1st_year_sem2_gwa', '2nd_year_sem1_gwa', '2nd_year_sem2_gwa'
+            'grade_11_sem1_gwa', 'grade_11_sem2_gwa', 'grade_11_sem3_gwa', 'grade_12_sem1_gwa', 'grade_12_sem2_gwa', 'grade_12_sem3_gwa',
+            '1st_year_sem1_gwa', '1st_year_sem2_gwa', '1st_year_sem3_gwa', '1st_year_sem4_gwa', '2nd_year_sem1_gwa', '2nd_year_sem2_gwa',
+            '2nd_year_sem3_gwa', '2nd_year_sem4_gwa'
         ]);
-    
-         $academicInfoGradesData['applicant_id'] = auth()->id();
+
+        $academicInfoGradesData['applicant_id'] = auth()->id();
 
         $academicInfo = ApplicantsAcademicInformationGrade::updateOrCreate(
             ['applicant_id' => auth()->id()],
@@ -267,7 +314,7 @@ class ApplicantController extends Controller
         );
 
         $academicInfoChoiceData = $request->only([
-            'first_choice_school', 'second_choice_school', 'third_choice_school', 
+            'first_choice_school', 'second_choice_school', 'third_choice_school',
             'first_choice_course', 'second_choice_course', 'third_choice_course'
         ]);
         $academicInfoChoiceData['applicant_id'] = auth()->id();
@@ -276,7 +323,7 @@ class ApplicantController extends Controller
             ['applicant_id' => auth()->id()],
             $academicInfoChoiceData
         );
-    
+
         if ($personalInfo && $academicInfo && $academicInfoIncoming && $academicChoices) {
             return redirect()->back()->with('success', 'Updated Successfully!');
         } else {
@@ -292,38 +339,36 @@ class ApplicantController extends Controller
                 'new_password' => 'required|min:8|different:current_password',
                 'renew_password' => 'required|same:new_password',
             ]);
-        
+
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-        
+
             $applicantId = auth()->id(); // Retrieve the ID of the authenticated applicant
-        
+
             $user = Auth::user();
-        
+
             if ($user->id !== $applicantId) {
                 return redirect()->back()->with('error', 'Unauthorized access.');
             }
-        
+
             if (!Hash::check($request->current_password, $user->password)) {
                 return redirect()->back()->with('error', 'The current password is incorrect.');
             }
-        
+
             $user->password = Hash::make($request->new_password);
             $user->save();
-    
+
             // Log success message
             \Log::info('Password changed successfully for user: ' . $user->email);
-        
+
             return redirect()->back()->with('success', 'Password changed successfully.');
         } catch (\Exception $e) {
             // Log error message
             \Log::error('Error changing password: ' . $e->getMessage());
-            
+
             // Handle the error or exception accordingly
             return redirect()->back()->with('error', 'Password change failed.');
         }
     }
-    
-    
 }

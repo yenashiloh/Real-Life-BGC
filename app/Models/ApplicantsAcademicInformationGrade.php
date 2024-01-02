@@ -24,11 +24,17 @@ class ApplicantsAcademicInformationGrade extends Model
         'grade_10_gwa',
         'grade_11_sem1_gwa',
         'grade_11_sem2_gwa',
+        'grade_11_sem3_gwa',
         'grade_12_sem1_gwa',
         'grade_12_sem2_gwa',
+        'grade_12_sem3_gwa',
         '1st_year_sem1_gwa',
         '1st_year_sem2_gwa',
+        '1st_year_sem3_gwa',
+        '1st_year_sem4_gwa',
         '2nd_year_sem1_gwa',
-        '2nd_year_sem2_gwa'
+        '2nd_year_sem2_gwa',
+        '2nd_year_sem3_gwa',
+        '2nd_year_sem4_gwa'
     ];
 }

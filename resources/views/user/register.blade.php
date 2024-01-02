@@ -235,7 +235,8 @@
                                 <span style="color: red; font-size: 12px; font-weight: normal;">*</span>
                             </label>
                             <span id="contactError"
-                                style="display: none; color: red; font-size: 12px;  margin-right: 5px;">(Must be 11-digit number)</span>
+                                style="display: none; color: red; font-size: 12px;  margin-right: 5px;">(Must be
+                                11-digit number)</span>
                         </div>
                         <div class="form-group">
                             <input type="number" class="form-control" name="contact" id="contact_no"
@@ -285,147 +286,151 @@
                 </div>
                 <button type="button" class="btn btn-primary next-button-step2" id="nextButtonStep2">Next</button>
             </div>
-        </div>
 
-    <!-- ======= STEP 3 CONTENT ======= -->
-    <div class="container" id="step3Content" style="display: none;">
-        <div class="row">
-            <span id="step3ErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all
-                required fields.</span>
-            <span id="step3PdfErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please upload a PDF file only.</span>    
-        
-            <div class="col-md-4">
-                <label class="form-label">Incoming Grade or Year <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label></label>
-                <select class="form-select form-select-solid form-control-long" name="incomingGrade"
-                    id="incomingGrade">
-                    <option value="" style="color:#444444;">Select grade or year level</option>
-                    <option value="GradeSeven">Grade 7</option>
-                    <option value="GradeEight">Grade 8</option>
-                    <option value="GradeNine">Grade 9</option>
-                    <option value="GradeTen">Grade 10</option>
-                    <option value="GradeEleven">Grade 11</option>
-                    <option value="GradeTwelve">Grade 12</option>
-                    <option value="FirstYear">First Year College</option>
-                    <option value="SecondYear">Second Year College</option>
-                    <option value="ThirdYear">Third Year College</option>
-                    <option value="FourthYear">Fourth Year College</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Current School <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="text" class="form-control form-control-solid form-control-long" name="currentSchool"
-                    placeholder="" value="" />
-            </div>
-           
-            <div class="col-md-4" style="display: none;" id="currentProgram">
-                <label class="form-label">Current Course or Program<span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="text" class="form-control form-control-solid form-control-long" name="currentProgram"
-                    placeholder="" value="" />
-            </div>
-            
-        </div>
-        <br>
 
-        <!-- ======= STEP 3 GRADES ======= -->
-        <div class="row">
-            <h4 class="grades" id="gradesText" style="display: none; font-weight: bold;">
-                Grades <span style="color: red; font-size: 10px; font-weight: normal;">*GWA (General Weighted
-                    Average):
-                    If grades are 5 point scale, write the equivalent. </span>
-            </h4>
-            <div class="col-md-4" id="grade3Gwa" style="display: none;">
-                <label class="form-label">Grade 3 GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade3GWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4" id="grade4Gwa" style="display: none;">
-                <label class="form-label">Grade 4 GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade4GWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4" id="grade5Gwa" style="display: none;">
-                <label class="form-label">Grade 5 GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade5GWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4" id="grade6Gwa" style="display: none;">
-                <label class="form-label">Grade 6 GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade6GWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4" id="grade7Gwa" style="display: none;">
-                <label class="form-label">Grade 7 GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade7GWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4" id="grade8Gwa" style="display: none;">
-                <label class="form-label">Grade 8 GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade8GWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="grade9Gwa" style="display: none;">
-                <label class="form-label">Grade 9 GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade9GWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="grade10Gwa" style="display: none;">
-                <label class="form-label">Grade 10 GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long" name="grade10GWA"
-                    placeholder="" value="" />
-            </div>
-            <!-- ======= STEP 3 - G11 SEMESTERS ======= -->
+            <!-- ======= STEP 3 CONTENT ======= -->
+            <div class="container" id="step3Content" style="display: none;">
+                <div class="row">
+                    <span id="step3ErrorMessage"
+                        style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all
+                        required fields.</span>
+                    <span id="step3PdfErrorMessage"
+                        style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please upload a PDF
+                        file
+                        only.</span>
 
-            <div class="col-md-4 mb-3" id="grade11Sem" style="display: none;">
-                <label class="form-label">Grade 11 Semesters Completed <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <select class="form-select form-select-solid form-control-long" id="grade11SemSelect"
-                    name="grade11Semester">
-                    <option value="" style="color:#444444;">Select Semester</option>
-                    <option value="TwoSem">Two Semesters</option>
-                    <option value="ThreeSem">Three Semesters</option>
-                    <option value="FourSem">Four Semesters</option>
-                </select>
-            </div>
-            <div class="col-md-4 mb-3" id="g11FirstSem" style="display: none;">
-                <label class="form-label">Grade 11 First Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade11FirstSemGWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="g11SecondSem" style="display: none;">
-                <label class="form-label">Grade 11 Second Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long"
-                    name="grade11SecondSemGWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="g11ThirdSem" style="display: none;">
-                <label class="form-label">Grade 11 Third Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade11ThirdSemGWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="g11FourthSem" style="display: none;">
-                <label class="form-label">Grade 11 Fourth Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="grade11FourthSemGWA" placeholder="" value="" />
-            </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Incoming Grade or Year <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label></label>
+                        <select class="form-select form-select-solid form-control-long" name="incomingGrade"
+                            id="incomingGrade">
+                            <option value="" style="color:#444444;">Select grade or year level</option>
+                            <option value="GradeSeven">Grade 7</option>
+                            <option value="GradeEight">Grade 8</option>
+                            <option value="GradeNine">Grade 9</option>
+                            <option value="GradeTen">Grade 10</option>
+                            <option value="GradeEleven">Grade 11</option>
+                            <option value="GradeTwelve">Grade 12</option>
+                            <option value="FirstYear">First Year College</option>
+                            <option value="SecondYear">Second Year College</option>
+                            <option value="ThirdYear">Third Year College</option>
+                            <option value="FourthYear">Fourth Year College</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Current School <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="text" class="form-control form-control-solid form-control-long"
+                            name="currentSchool" placeholder="" value="" />
+                    </div>
+
+                    <div class="col-md-4" style="display: none;" id="currentProgram">
+                        <label class="form-label">Current Course or Program<span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="text" class="form-control form-control-solid form-control-long"
+                            name="currentProgram" placeholder="" value="" />
+                    </div>
+
+                </div>
+                <br>
+
+                <!-- ======= STEP 3 GRADES ======= -->
+                <div class="row">
+                    <h4 class="grades" id="gradesText" style="display: none; font-weight: bold;">
+                        Grades <span style="color: red; font-size: 10px; font-weight: normal;">*GWA (General Weighted
+                            Average):
+                            If grades are 5 point scale, write the equivalent. </span>
+                    </h4>
+                    <div class="col-md-4" id="grade3Gwa" style="display: none;">
+                        <label class="form-label">Grade 3 GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade3GWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4" id="grade4Gwa" style="display: none;">
+                        <label class="form-label">Grade 4 GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade4GWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4" id="grade5Gwa" style="display: none;">
+                        <label class="form-label">Grade 5 GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade5GWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4" id="grade6Gwa" style="display: none;">
+                        <label class="form-label">Grade 6 GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade6GWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4" id="grade7Gwa" style="display: none;">
+                        <label class="form-label">Grade 7 GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade7GWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4" id="grade8Gwa" style="display: none;">
+                        <label class="form-label">Grade 8 GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade8GWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="grade9Gwa" style="display: none;">
+                        <label class="form-label">Grade 9 GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade9GWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="grade10Gwa" style="display: none;">
+                        <label class="form-label">Grade 10 GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long"
+                            name="grade10GWA" placeholder="" value="" />
+                    </div>
+                    <!-- ======= STEP 3 - G11 SEMESTERS ======= -->
+
+                    <div class="col-md-4 mb-3" id="grade11Sem" style="display: none;">
+                        <label class="form-label">Grade 11 Semesters Completed <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <select class="form-select form-select-solid form-control-long" id="grade11SemSelect"
+                            name="grade11Semester">
+                            <option value="" style="color:#444444;">Select Semester</option>
+                            <option value="TwoSem">Two Semesters</option>
+                            <option value="ThreeSem">Three Semesters</option>
+                            <option value="FourSem">Four Semesters</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3" id="g11FirstSem" style="display: none;">
+                        <label class="form-label">Grade 11 First Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade11FirstSemGWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="g11SecondSem" style="display: none;">
+                        <label class="form-label">Grade 11 Second Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long"
+                            name="grade11SecondSemGWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="g11ThirdSem" style="display: none;">
+                        <label class="form-label">Grade 11 Third Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade11ThirdSemGWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="g11FourthSem" style="display: none;">
+                        <label class="form-label">Grade 11 Fourth Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="grade11FourthSemGWA" placeholder="" value="" />
+                    </div>
 
             <!-- ======= STEP 3 - G12 SEMESTERS ======= -->
             <div class="col-md-4 mb-3" id="grade12Sem" style="display: none;">
                 <label class="form-label">Grade 12 Semesters Completed<span
-                        style="color: red; font-size: 12px; font-weight: normal;"> *</span></label>
+                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                 <select class="form-select form-select-solid form-control-long" id="grade12SemSelect"
                     name="grade12Semester">
                     <option value="" style="color:#444444;">Select Semester</option>
@@ -459,264 +464,276 @@
                     name="grade12FourthSemGWA" placeholder="" value="" />
             </div>
 
-            <!-- ======= STEP 3 - FIRST YEAR SEMESTERS AND GWA ======= -->
-            <div class="col-md-4 mb-3" id="firstYearSem" style="display: none;">
-                <label class="form-label">1st Year Semesters Completed <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <select class="form-select form-select-solid form-control-long" id="firstYearSemSelect"
-                    name="firstYearSemester">
-                    <option value="" style="color:#444444;">Select Semester</option>
-                    <option value="firstYearTwoSem">Two Semesters</option>
-                    <option value="firstYearThreeSem">Three Semesters</option>
-                    <option value="firstYearFourSem">Four Semesters</option>
-                </select>
-            </div>
-            <div class="col-md-4 mb-3" id="firstYearFirstSem" style="display: none;">
-                <label class="form-label">1st Year First Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="firstYearFirstSemGWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="firstYearSecondSem" style="display: none;">
-                <label class="form-label">1st Year Second Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long"
-                    name="firstYearSecondSemGWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="firstYearThirdSem" style="display: none;">
-                <label class="form-label">1st Year Third Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="firstYearThirdSemGWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="firstYearFourthSem" style="display: none;">
-                <label class="form-label">1st Year Fourth Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="firstYearFourthSemGWA" placeholder="" value="" />
-            </div>
+                    <!-- ======= STEP 3 - FIRST YEAR SEMESTERS AND GWA ======= -->
+                    <div class="col-md-4 mb-3" id="firstYearSem" style="display: none;">
+                        <label class="form-label">1st Year Semesters Completed <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <select class="form-select form-select-solid form-control-long" id="firstYearSemSelect"
+                            name="firstYearSemester">
+                            <option value="" style="color:#444444;">Select Semester</option>
+                            <option value="firstYearTwoSem">Two Semesters</option>
+                            <option value="firstYearThreeSem">Three Semesters</option>
+                            <option value="firstYearFourSem">Four Semesters</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3" id="firstYearFirstSem" style="display: none;">
+                        <label class="form-label">1st Year First Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="firstYearFirstSemGWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="firstYearSecondSem" style="display: none;">
+                        <label class="form-label">1st Year Second Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long"
+                            name="firstYearSecondSemGWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="firstYearThirdSem" style="display: none;">
+                        <label class="form-label">1st Year Third Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="firstYearThirdSemGWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="firstYearFourthSem" style="display: none;">
+                        <label class="form-label">1st Year Fourth Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="firstYearFourthSemGWA" placeholder="" value="" />
+                    </div>
 
 
-            <!-- ======= STEP 3 - SECOND YEAR SEMESTERS AND GWA ======= -->
-            <div class="col-md-4 mb-3" id="secondYearSem" style="display: none;">
-                <label class="form-label">2nd Year Semesters Completed <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <select class="form-select form-select-solid form-control-long" id="secondYearSemSelect"
-                    name="secondYearSemester">
-                    <option value="" style="color:#444444;">Select Semester</option>
-                    <option value="secondYearTwoSem">Two Semesters</option>
-                    <option value="secondYearThreeSem">Three Semesters</option>
-                    <option value="secondYearFourSem">Four Semesters</option>
-                </select>
-            </div>
-            <div class="col-md-4 mb-3" id="secondYearFirstSem" style="display: none;">
-                <label class="form-label">2nd Year First Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="secondYearFirstSemGWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" m id="secondYearSecondSem" style="display: none;">
-                <label class="form-label">2nd Year Second Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long"
-                    name="secondYearSecondSemGWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="secondYearThirdSem" style="display: none;">
-                <label class="form-label">2nd Year Third Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="secondYearThirdSemGWA" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="secondYearFourthSem" style="display: none;">
-                <label class="form-label">2nd Year Fourth Sem GWA <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="secondYearFourthSemGWA" placeholder="" value="" />
-            </div>
+                    <!-- ======= STEP 3 - SECOND YEAR SEMESTERS AND GWA ======= -->
+                    <div class="col-md-4 mb-3" id="secondYearSem" style="display: none;">
+                        <label class="form-label">2nd Year Semesters Completed <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <select class="form-select form-select-solid form-control-long" id="secondYearSemSelect"
+                            name="secondYearSemester">
+                            <option value="" style="color:#444444;">Select Semester</option>
+                            <option value="secondYearTwoSem">Two Semesters</option>
+                            <option value="secondYearThreeSem">Three Semesters</option>
+                            <option value="secondYearFourSem">Four Semesters</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3" id="secondYearFirstSem" style="display: none;">
+                        <label class="form-label">2nd Year First Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="secondYearFirstSemGWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" m id="secondYearSecondSem" style="display: none;">
+                        <label class="form-label">2nd Year Second Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long"
+                            name="secondYearSecondSemGWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="secondYearThirdSem" style="display: none;">
+                        <label class="form-label">2nd Year Third Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="secondYearThirdSemGWA" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="secondYearFourthSem" style="display: none;">
+                        <label class="form-label">2nd Year Fourth Sem GWA <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="secondYearFourthSemGWA" placeholder="" value="" />
+                    </div>
 
-            <div class="col-md-4 mb-3" id="reportCard" style="display: none;">
-                <label class="form-label">Report Card <span style="color: red; font-size: 10px;">*Upload PDF for Three
-                        Indicated Grade/Year Levels</span></label>
-                <input type="file" id="reportCardFile" class="form-control" name="ReportCard" accept=".pdf">
-            </div>
-        </div>
-        <br>
-
-        <!-- ======= STEP 3 - SCHOOL APPLICATION & CHOICE COURSE ======= -->
-
-        <div class="row">
-
-            <h4 class="grades" id="schoolApplicationText" style="display: none; font-weight: bold;">
-                School Application<span style="color: red; font-size: 10px; font-weight: normal;"> *Enter
-                    Preferred
-                    School and Course </span>
-            </h4>
-
-
-            <div class="col-md-4 mb-3" id="schoolChoice1" style="display: none;">
-                <label class="form-label">First Choice School <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="text" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="schoolChoice1" placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="schoolChoice2" style="display: none;">
-                <label class="form-label">Second Choice School <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="text" class="form-control form-control-solid form-control-long" name="schoolChoice2"
-                    placeholder="" value="" />
-            </div>
-            <div class="col-md-4 mb-3" id="schoolChoice3" style="display: none;">
-                <label class="form-label">Third Choice School <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="text" class="form-control form-control-solid form-control-long" name="schoolChoice3"
-                    placeholder=" " value="" />
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4" id="courseChoice1" style="display: none;">
-                <label class="form-label">First Choice Course <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="text" class="form-control form-control-solid form-control-long shadow-sm"
-                    name="courseChoice1" placeholder="" value="" />
-            </div>
-            <div class="col-md-4" id="courseChoice2" style="display: none;">
-                <label class="form-label">Second Choice Course <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="text" class="form-control form-control-solid form-control-long" name="courseChoice2"
-                    placeholder="" value="" />
-            </div>
-            <div class="col-md-4" id="courseChoice3" style="display: none;">
-                <label class="form-label">Third Choice Course <span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                <input type="text" class="form-control form-control-solid form-control-long" name="courseChoice3"
-                    placeholder=" " value="" />
-            </div>
-        </div>
-        <button type="button" class="btn btn-primary next-button-3" id="nextButtonStep3">Next</button>
-    </div>
-
-
-    <!-- ======= STEP 4 - MONTHLY HOUSEHOLD ======= -->
-    <div class="container mt-4 mb-3" id="step4Content" style="display: none;">
-        <div class="row">
-            <span id="step4ErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all required fields.</span>
-            <span id="step4PdfErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please upload a PDF file only.</span>
-            <div class="col-md-6">
-                <div class="form-group mb-3">
-                    <label for="householdSelect">Number of Household Employed <span
-                            style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                    <select class="form-select form-select-solid form-control-long" id="householdSelect">
-
-                        <option value="" style="color:#444444;">Select a number </option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                    </select>
+                    <div class="col-md-4 mb-3" id="reportCard" style="display: none;">
+                        <label class="form-label">Report Card <span style="color: red; font-size: 10px;">*Upload PDF
+                                for Three
+                                Indicated Grade/Year Levels</span></label>
+                        <input type="file" id="reportCardFile" class="form-control" name="ReportCard"
+                            accept=".pdf">
+                    </div>
                 </div>
+                <br>
+
+                <!-- ======= STEP 3 - SCHOOL APPLICATION & CHOICE COURSE ======= -->
+
+                <div class="row">
+
+                    <h4 class="grades" id="schoolApplicationText" style="display: none; font-weight: bold;">
+                        School Application<span style="color: red; font-size: 10px; font-weight: normal;"> *Enter
+                            Preferred
+                            School and Course </span>
+                    </h4>
+
+
+                    <div class="col-md-4 mb-3" id="schoolChoice1" style="display: none;">
+                        <label class="form-label">First Choice School <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="text" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="schoolChoice1" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="schoolChoice2" style="display: none;">
+                        <label class="form-label">Second Choice School <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="text" class="form-control form-control-solid form-control-long"
+                            name="schoolChoice2" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4 mb-3" id="schoolChoice3" style="display: none;">
+                        <label class="form-label">Third Choice School <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="text" class="form-control form-control-solid form-control-long"
+                            name="schoolChoice3" placeholder=" " value="" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4" id="courseChoice1" style="display: none;">
+                        <label class="form-label">First Choice Course <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="text" class="form-control form-control-solid form-control-long shadow-sm"
+                            name="courseChoice1" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4" id="courseChoice2" style="display: none;">
+                        <label class="form-label">Second Choice Course <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="text" class="form-control form-control-solid form-control-long"
+                            name="courseChoice2" placeholder="" value="" />
+                    </div>
+                    <div class="col-md-4" id="courseChoice3" style="display: none;">
+                        <label class="form-label">Third Choice Course <span
+                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        <input type="text" class="form-control form-control-solid form-control-long"
+                            name="courseChoice3" placeholder=" " value="" />
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary next-button-3" id="nextButtonStep3">Next</button>
             </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="payslip">Payslip/DSWD Report/ITR <span style="color: red; font-size: 12px; font-weight: normal;">*Upload the pdf of
-                            Payslip/DSWD Report/ITR </span></label>
-                    <div class="input-group">
-                        <input type="file" class="form-control" id="payslip" placeholder="" accept=".pdf">
+
+
+            <!-- ======= STEP 4 - MONTHLY HOUSEHOLD ======= -->
+            <div class="container mt-4 mb-3" id="step4Content" style="display: none;">
+                <div class="row">
+                    <span id="step4ErrorMessage"
+                        style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all
+                        required fields.</span>
+                    <span id="step4PdfErrorMessage"
+                        style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please upload a PDF
+                        file
+                        only.</span>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="householdSelect">Number of Household Employed <span
+                                    style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                            <select class="form-select form-select-solid form-control-long" name="householdMembers" id="householdSelect">
+
+                                <option value="" style="color:#444444;">Select a number </option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label for="payslip">Payslip/DSWD Report/ITR <span
+                                    style="color: red; font-size: 12px; font-weight: normal;">*Upload the pdf of
+                                    Payslip/DSWD Report/ITR </span></label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="payslip" placeholder=""
+                                    accept=".pdf">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="householdSections">
+                    </div>
+                    <div class="col-md-12 mb-3" id="householdInfoFields">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-group" id="totalMonthlyIncomeField" style="display: none;">
+                            <label for="totalMonthlyIncome" style="font-weight: bold;">Total Monthly Household
+                                Income</label>
+                            <input type="text" class="form-control" id="totalMonthlyIncome" required disabled>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary next-button-4" id="nextButtonStep4">Next</button>
+            </div>
+
+
+            <!-- ======= STEP 5 - ACCOUNT INFORMATION ======= -->
+            <div class="container mt-4 mb-4" id="step5Content" style="display: none;">
+                <div class="row">
+                    <span id="step5ErrorMessage"
+                        style="display: none; color: red; text-align: center; margin-bottom: 15px;">
+                        @if ($errors->any() && $errors->has('email'))
+                            {{ $errors->first('email') }}
+                        @endif
+                    </span>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="email">Email <span
+                                    style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                            <input type="email" class="form-control" name="email" id="email" placeholder=""
+                                required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="password">Password <span
+                                    style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                            <input type="password" class="form-control" name="password" id="password"
+                                placeholder="" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="confirm_password">Confirm Password <span
+                                    style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                            <input type="password" class="form-control" id="confirm_password" placeholder=""
+                                required>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div id="householdSections">
-            </div>
-            <div class="col-md-12 mb-3" id="householdInfoFields">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <div class="form-group" id="totalMonthlyIncomeField" style="display: none;">
-                    <label for="totalMonthlyIncome" style="font-weight: bold;">Total Monthly Household
-                        Income</label>
-                    <input type="text" class="form-control" id="totalMonthlyIncome" required disabled>
-                </div>
-            </div>
-        </div>
-        <button type="button" class="btn btn-primary next-button-4" id="nextButtonStep4">Next</button>
-    </div>
 
-
-    <!-- ======= STEP 5 - ACCOUNT INFORMATION ======= -->
-    <div class="container mt-4 mb-4" id="step5Content" style="display: none;" >
-        <div class="row">
-            <span id="step5ErrorMessage" style="display: none; color: red; text-align: center; margin-bottom: 15px;">
-                @if($errors->any() && $errors->has('email'))
-                {{ $errors->first('email') }}
-            @endif
-           </span>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="email">Email <span
-                            style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                    <input type="email" class="form-control" name="email" id="email" placeholder=""
-                        required>
+            <!-- ======= NEXT AND PREVIOUS BUTTON ======= -->
+            <div class="d-flex justify-content-between mt-3">
+                <div>
+                    <button type="button" class="btn btn-secondary  custom-margin-right previous-button"
+                        id="previousButton" data-kt-stepper-action="previous" style="display: none;">
+                        Previous
+                    </button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary next-button" id="nextButton"
+                        data-kt-stepper-action="next">
+                        Next
+                    </button>
+                </div>
+                <div>
+                    <button type="submit" class="btn submit-button" id="submitButton"
+                        data-kt-stepper-action="submit" style="display:none;">
+                        Submit
+                    </button>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="password">Password <span
-                            style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder=""
-                        required>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="confirm_password">Confirm Password <span
-                            style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                    <input type="password" class="form-control" id="confirm_password" placeholder="" required>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ======= NEXT AND PREVIOUS BUTTON ======= -->
-    <div class="d-flex justify-content-between mt-3">
-        <div>
-            <button type="button" class="btn btn-secondary  custom-margin-right previous-button" id="previousButton"
-                data-kt-stepper-action="previous" style="display: none;">
-                Previous
-            </button>
-        </div>
-        <div>
-            <button type="button" class="btn btn-primary next-button" id="nextButton" data-kt-stepper-action="next">
-                Next
-            </button>
-        </div>
-        <div>
-            <button type="submit" class="btn submit-button" id="submitButton" data-kt-stepper-action="submit"
-                style="display:none;">
-                Submit
-            </button>
-        </div>
-    </div>
-    <x-messages/>
-    </form>
+            <x-messages />
+        </form>
     </div>
 
 
@@ -913,7 +930,8 @@
                         if (!lastNameValid) {
                             hasSpecialCharacters = true;
                         }
-                    } else if (input.id === 'house_no' || input.id === 'street' || input.id === 'barangay' || input.id === 'municipality') {
+                    } else if (input.id === 'house_no' || input.id === 'street' || input.id ===
+                        'barangay' || input.id === 'municipality') {
                         if (!input.value.trim()) {
                             validateInput(input);
                             addressFieldsValid = false;
@@ -968,7 +986,7 @@
                             "You must be under the age of 25 to qualify for the scholarship.";
                     } else if (hasSpecialCharacters) {
                         step2ErrorMessage.innerText = "";
-                    }  else if (!addressFieldsValid) {
+                    } else if (!addressFieldsValid) {
                         step2ErrorMessage.innerText = "Please fill out all address fields.";
                     }
 
@@ -1169,7 +1187,7 @@
                         }
                     });
 
-                    if (selectedGrade === 'SecondYear' || selectedGrade === 'ThirdYear' ) {
+                    if (selectedGrade === 'SecondYear' || selectedGrade === 'ThirdYear') {
                         const grade12SemSelect = document.getElementById("grade12SemSelect");
                         const selectedSemesters12 = grade12SemSelect.value;
                         const filledSemesters12 = [g12FirstSem, g12SecondSem, g12ThirdSem, g12FourthSem]
@@ -1450,15 +1468,20 @@
 
             //REAL-TIME VALIDATION
             const elementNames = [
-                "incomingGrade", "currentSchool", "currentProgram", "ReportCard",
-                ...Array.from({ length: 35 }, (_, i) => `grade${i + 3}GWA`),
-                "schoolChoice1", "schoolChoice2", "schoolChoice3",
-                "courseChoice1", "courseChoice2", "courseChoice3",
-                ...Array.from({ length: 16 }, (_, i) => `grade12Semester${i > 0 ? i : ''}GWA`),
-                ...Array.from({ length: 16 }, (_, i) => `firstYearSemester${i > 0 ? i : ''}GWA`),
-                ...Array.from({ length: 16 }, (_, i) => `secondYearSemester${i > 0 ? i : ''}GWA`)
+                "incomingGrade","currentSchool", "currentProgram", "ReportCard", "grade3GWA", "grade4GWA", "grade5GWA",
+                "grade6GWA",
+                "grade7GWA", "grade8GWA", "grade9GWA", "grade10GWA", "grade11Semester", "grade11FirstSemGWA",
+                "grade11SecondSemGWA",
+                "grade11ThirdSemGWA", "grade11FourthSemGWA", "schoolChoice1", "schoolChoice2", "schoolChoice3",
+                "courseChoice1",
+                "courseChoice2", "courseChoice3", "grade12Semester", "grade12FirstSemGWA",
+                "grade12SecondSemGWA",
+                "grade12ThirdSemGWA", "grade12FourthSemGWA", "firstYearSemester", "firstYearFirstSemGWA",
+                "firstYearSecondSemGWA",
+                "firstYearThirdSemGWA", "firstYearFourthSemGWA", "secondYearSemester", "secondYearFirstSemGWA",
+                "secondYearSecondSemGWA",
+                "secondYearThirdSemGWA", "secondYearFourthSemGWA"
             ];
-
 
             elementNames.forEach(name => {
                 const elements = document.getElementsByName(name);
@@ -1477,19 +1500,19 @@
             //PDF FILE VALIDATION
             const reportCardField = document.getElementById('reportCardFile');
             reportCardField.addEventListener('change', function(event) {
-            const file = event.target.files[0]; 
-            const fileType = file.type; 
+                const file = event.target.files[0];
+                const fileType = file.type;
 
-            if (fileType !== 'application/pdf') {
-                step3PdfErrorMessage.style.display = 'block'; 
-                event.target.value = '';
-            } else {
-                step3PdfErrorMessage.style.display = 'none'; 
-            }
-        });
+                if (fileType !== 'application/pdf') {
+                    step3PdfErrorMessage.style.display = 'block';
+                    event.target.value = '';
+                } else {
+                    step3PdfErrorMessage.style.display = 'none';
+                }
+            });
 
 
-        // STEP 4    
+            // STEP 4    
             const householdSelect = document.getElementById('householdSelect');
             const totalMonthlyIncomeField = document.getElementById('totalMonthlyIncome');
             const householdSections = document.getElementById('householdSections');
@@ -1511,7 +1534,7 @@
                 return isValid;
             }
 
-            householdSections.addEventListener('input', function (event) {
+            householdSections.addEventListener('input', function(event) {
                 if (event.target.matches('input[required], select[required]')) {
                     validateInput(event.target);
                 }
@@ -1519,17 +1542,17 @@
 
             const payslipField = document.getElementById('payslip');
             payslipField.addEventListener('change', function(event) {
-            const file = event.target.files[0]; 
-            const fileType = file.type; 
+                const file = event.target.files[0];
+                const fileType = file.type;
 
-            if (fileType !== 'application/pdf') {
-                step4PdfErrorMessage.style.display = 'block'; 
-                event.target.value = '';
-            } else {
-                step4PdfErrorMessage.style.display = 'none'; 
-            }
-        });
-        
+                if (fileType !== 'application/pdf') {
+                    step4PdfErrorMessage.style.display = 'block';
+                    event.target.value = '';
+                } else {
+                    step4PdfErrorMessage.style.display = 'none';
+                }
+            });
+
             document.getElementById("nextButtonStep4").addEventListener("click", function() {
                 const step4ErrorMessage = document.getElementById("step4ErrorMessage");
                 const householdFields = document.querySelectorAll(
@@ -1549,14 +1572,14 @@
                 // VALIDATION
                 const occupationFields = document.querySelectorAll('[id^="occupation"]');
                 occupationFields.forEach(field => {
-                    field.addEventListener('input', function (event) {
+                    field.addEventListener('input', function(event) {
                         validateInput(event.target);
                     });
                     if (!validateInput(field)) {
                         isValid = false;
                     }
                 });
-                
+
 
                 if (!validateInput(householdSelect)) {
                     isValid = false;
@@ -1576,8 +1599,11 @@
                         handleStepperNumberColors(4);
                     }, 100);
                 }
-                
+
             });
+
+     
+
 
             //STEPPER CHECK
                     function handleStepTransition(currentIndex) {
@@ -1597,23 +1623,52 @@
             handleStepperNumberColors(currentIndex);
         }
 
-        const handleStepperNumberColors = (currentIndex) => {
-            elements.stepperItems.forEach((item, index) => {
-                const stepperNumber = item.querySelector('.stepper-number');
-                const isDone = item.classList.contains('done');
+            const handleStepperNumberColors = (currentIndex) => {
+                elements.stepperItems.forEach((item, index) => {
+                    const stepperNumber = item.querySelector('.stepper-number');
+                    if (item.classList.contains('done')) {
+                        stepperNumber.style.backgroundColor = '#518630';
+                        stepperNumber.innerHTML = '<i class="fas fa-check"></i>';
+                        stepperNumber.style.color = '#fff';
+                    } else if (index === currentIndex) {
+                        stepperNumber.style.backgroundColor = '#518630';
+                        stepperNumber.innerHTML = (index + 1).toString();
+                        stepperNumber.style.color = '#fff';
+                    } else {
+                        stepperNumber.style.backgroundColor = '#D9D9D9';
+                        stepperNumber.innerHTML = (index + 1).toString();
+                        stepperNumber.style.color = '#000';
+                    }
+                });
+            };
 
-                if (isDone) {
-                    stepperNumber.style.backgroundColor = '#518630';
-                    stepperNumber.innerHTML = '<i class="fas fa-check"></i>';
-                    stepperNumber.style.color = '#fff';
-                } else {
-                    stepperNumber.style.backgroundColor = (index === currentIndex ? '#518630' : '#D9D9D9');
-                    stepperNumber.innerHTML = (isDone ? '<i class="fas fa-check"></i>' : (index + 1).toString());
-                    stepperNumber.style.color = (index === currentIndex || isDone ? '#fff' : '#000');
-                }
-            });
-        };
-    });
+            function displayStepContent(currentIndex) {
+                const stepsContent = [
+                    elements.step1Content,
+                    elements.step2Content,
+                    elements.step3Content,
+                    elements.step4Content,
+                    elements.step5Content
+                ];
+
+                elements.stepperItems.forEach((item, index) => {
+                    const stepContent = stepsContent[index];
+                    if (index === currentIndex) {
+                        item.classList.add('current');
+                        stepContent.style.display = 'block';
+                        if(index === 4) {
+                            document.getElementById('submitButton').style.display = 'block';
+                        }
+                        else {
+                            document.getElementById('submitButton').style.display = 'none';
+                        }
+                    } else {
+                        item.classList.remove('current');
+                        stepContent.style.display = 'none';
+                    }
+                });
+            }
+        });
     </script>
 
 

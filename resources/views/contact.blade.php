@@ -77,5 +77,6 @@
             </div>
         </div>
     </section><!-- End Contact Section -->
+    <br><br>
 
 @include('partials.footer')

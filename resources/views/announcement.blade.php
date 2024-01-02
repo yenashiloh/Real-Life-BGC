@@ -25,58 +25,6 @@
     </div>
 </section>
 
-<!-- ======= Footer ======= -->
-<footer id="footer" class="footer" >
-    <div class="footer-top" style="margin-top: 0; background-color: rgb(230, 230, 230);">
-        <div class="container " >
-            <div class="row gy-4" >
-                <div class="col-lg-4 col-md-4 col-12 footer-links mb-4 ml-md-12">
-                    <h4>About</h4>
-                    <ul>
-                        <li><i class="bi bi-chevron-right" style="color:#0A6E57;"></i> <a href="#mission_statement">Mission</a></li>
-                        <li><i class="bi bi-chevron-right"  style="color:#0A6E57;"></i> <a href="#educational_assistance">Educational
-                                Assistance</a></li>
-                        <li><i class="bi bi-chevron-right"  style="color:#0A6E57;"></i> <a href="#character_formation">Character
-                                Formation</a></li>
-                        <li><i class="bi bi-chevron-right"  style="color:#0A6E57;"></i> <a href="#leadership_development">Leadership
-                                Development</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-12 footer-links mb-4">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><i class="bi bi-chevron-right" style="color:#0A6E57;"></i> <a href="#">FAQ</a></li>
-                        <li><i class="bi bi-chevron-right" style="color:#0A6E57;"></i> <a href="#">Announcement</a></li>
-
-                    </ul>
-                </div>
-
-                <div class="col-lg-4 col-md-4 col-12 footer-contact mb-4">
-                    <h4>Contact Us</h4>
-                    <p>
-                        32nd Street corner
-                        <br>
-                        Bonifacio Global City, <br>
-                        1634 Philippines<br><br>
-                        <strong>Phone:</strong>(632) 8817-1212<br>
-                        <strong>Email:</strong>reallifebgc@gmail.com<br>
-                    </p>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="copyright ">
-            &copy; Copyright <strong>Real LIFE Foundation</strong>. All Rights Reserved
-        </div>
-    </div>
-</footer>
-<!-- End Footer -->
-
-
 
 
 @include('partials.footer')

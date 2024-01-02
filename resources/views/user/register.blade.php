@@ -184,7 +184,7 @@
                             </label>
                             <span id="error-message" style="display: none; color: red; font-size: 10px;">
                                 <i class="fas fa-exclamation-circle"></i>
-                                Please agree to the Terms and Conditions
+                                You need to agree to the terms and conditions to proceed to the next step.
                             </span>
                         </div>
                     </div>
@@ -425,7 +425,7 @@
             <!-- ======= STEP 3 - G12 SEMESTERS ======= -->
             <div class="col-md-4 mb-3" id="grade12Sem" style="display: none;">
                 <label class="form-label">Grade 12 Semesters Completed<span
-                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                        style="color: red; font-size: 12px; font-weight: normal;"> *</span></label>
                 <select class="form-select form-select-solid form-control-long" id="grade12SemSelect"
                     name="grade12Semester">
                     <option value="" style="color:#444444;">Select Semester</option>
@@ -1427,7 +1427,8 @@
                     });
 
                     if (anyBelow88) {
-                        step3ErrorMessage.textContent = "Please ensure all GWAs are 88 or above.";
+                        step3ErrorMessage.textContent = "To qualify, your Grade Weighted Average (GWA) should be between 88 to 100. Please ensure that the provided GWA meets this requirement before proceeding to the next step.";
+                        step3ErrorMessage.style.fontSize = '14px';
                         step3ErrorMessage.style.display = 'block';
                     } else {
                         step3ErrorMessage.style.display = 'none';
@@ -1449,20 +1450,15 @@
 
             //REAL-TIME VALIDATION
             const elementNames = [
-                "incomingGrade","currentSchool", "currentProgram", "ReportCard", "grade3GWA", "grade4GWA", "grade5GWA",
-                "grade6GWA",
-                "grade7GWA", "grade8GWA", "grade9GWA", "grade10GWA", "grade11Semester", "grade11FirstSemGWA",
-                "grade11SecondSemGWA",
-                "grade11ThirdSemGWA", "grade11FourthSemGWA", "schoolChoice1", "schoolChoice2", "schoolChoice3",
-                "courseChoice1",
-                "courseChoice2", "courseChoice3", "grade12Semester", "grade12FirstSemGWA",
-                "grade12SecondSemGWA",
-                "grade12ThirdSemGWA", "grade12FourthSemGWA", "firstYearSemester", "firstYearFirstSemGWA",
-                "firstYearSecondSemGWA",
-                "firstYearThirdSemGWA", "firstYearFourthSemGWA", "secondYearSemester", "secondYearFirstSemGWA",
-                "secondYearSecondSemGWA",
-                "secondYearThirdSemGWA", "secondYearFourthSemGWA"
+                "incomingGrade", "currentSchool", "currentProgram", "ReportCard",
+                ...Array.from({ length: 35 }, (_, i) => `grade${i + 3}GWA`),
+                "schoolChoice1", "schoolChoice2", "schoolChoice3",
+                "courseChoice1", "courseChoice2", "courseChoice3",
+                ...Array.from({ length: 16 }, (_, i) => `grade12Semester${i > 0 ? i : ''}GWA`),
+                ...Array.from({ length: 16 }, (_, i) => `firstYearSemester${i > 0 ? i : ''}GWA`),
+                ...Array.from({ length: 16 }, (_, i) => `secondYearSemester${i > 0 ? i : ''}GWA`)
             ];
+
 
             elementNames.forEach(name => {
                 const elements = document.getElementsByName(name);
@@ -1583,73 +1579,41 @@
                 
             });
 
-     
-
-
             //STEPPER CHECK
-            function handleStepTransition(currentIndex) {
-                const step1Content = document.getElementById("step1Content");
-                const step2Content = document.getElementById("step2Content");
-                const step3Content = document.getElementById("step3Content");
-                const step4Content = document.getElementById("step4Content");
-                const step5Content = document.getElementById("step5Content");
+                    function handleStepTransition(currentIndex) {
+            const stepsContent = ["step1Content", "step2Content", "step3Content", "step4Content", "step5Content"];
+            const submitButton = document.getElementById('submitButton');
 
-                step1Content.style.display = "none";
-                step2Content.style.display = "block";
-                step3Content.style.display = "block";
-                step4Content.style.display = "block";
-                step5Content.style.display = "block";
+            stepsContent.forEach((content, index) => {
+                const stepContent = document.getElementById(content);
+                stepContent.style.display = (index === currentIndex ? "block" : "none");
+                elements.stepperItems[index].classList.toggle('current', index === currentIndex);
 
-                handleStepperNumberColors(currentIndex);
-                displayStepContent(currentIndex);
-            }
+                if (index === 4) {
+                    submitButton.style.display = (index === currentIndex ? 'block' : 'none');
+                }
+            });
 
-            const handleStepperNumberColors = (currentIndex) => {
-                elements.stepperItems.forEach((item, index) => {
-                    const stepperNumber = item.querySelector('.stepper-number');
-                    if (item.classList.contains('done')) {
-                        stepperNumber.style.backgroundColor = '#518630';
-                        stepperNumber.innerHTML = '<i class="fas fa-check"></i>';
-                        stepperNumber.style.color = '#fff';
-                    } else if (index === currentIndex) {
-                        stepperNumber.style.backgroundColor = '#518630';
-                        stepperNumber.innerHTML = (index + 1).toString();
-                        stepperNumber.style.color = '#fff';
-                    } else {
-                        stepperNumber.style.backgroundColor = '#D9D9D9';
-                        stepperNumber.innerHTML = (index + 1).toString();
-                        stepperNumber.style.color = '#000';
-                    }
-                });
-            };
+            handleStepperNumberColors(currentIndex);
+        }
 
-            function displayStepContent(currentIndex) {
-                const stepsContent = [
-                    elements.step1Content,
-                    elements.step2Content,
-                    elements.step3Content,
-                    elements.step4Content,
-                    elements.step5Content
-                ];
+        const handleStepperNumberColors = (currentIndex) => {
+            elements.stepperItems.forEach((item, index) => {
+                const stepperNumber = item.querySelector('.stepper-number');
+                const isDone = item.classList.contains('done');
 
-                elements.stepperItems.forEach((item, index) => {
-                    const stepContent = stepsContent[index];
-                    if (index === currentIndex) {
-                        item.classList.add('current');
-                        stepContent.style.display = 'block';
-                        if(index === 4) {
-                            document.getElementById('submitButton').style.display = 'block';
-                        }
-                        else {
-                            document.getElementById('submitButton').style.display = 'none';
-                        }
-                    } else {
-                        item.classList.remove('current');
-                        stepContent.style.display = 'none';
-                    }
-                });
-            }
-        });
+                if (isDone) {
+                    stepperNumber.style.backgroundColor = '#518630';
+                    stepperNumber.innerHTML = '<i class="fas fa-check"></i>';
+                    stepperNumber.style.color = '#fff';
+                } else {
+                    stepperNumber.style.backgroundColor = (index === currentIndex ? '#518630' : '#D9D9D9');
+                    stepperNumber.innerHTML = (isDone ? '<i class="fas fa-check"></i>' : (index + 1).toString());
+                    stepperNumber.style.color = (index === currentIndex || isDone ? '#fff' : '#000');
+                }
+            });
+        };
+    });
     </script>
 
 

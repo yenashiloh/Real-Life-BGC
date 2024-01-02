@@ -1,6 +1,26 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>{{ $title }}</title>
 @include('admin-partials.header')
+<style>
+ .loader {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      display: none;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+</style>
 @include('admin-partials.sidebar')
 <main id="main" class="main">
 
@@ -22,7 +42,8 @@
             <div class="card-body">
               <h5 class="card-title">Applicants</h5>
               {{-- <button type="button" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button> --}}
-              
+        
+              <div class="loader"></div>
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
@@ -101,7 +122,7 @@
                                     @elseif($applicant->status === 'For Interview')
                                       <li>
                                           <a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
-                                             <Form></Form>Approve for House Visitation
+                                             Approve for House Visitation
                                           </a>
                                       </li>
                                       <li>
@@ -117,7 +138,7 @@
                                       </li>
                                       <li>
                                           <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: red;">
-                                              Decline Scholarship
+                                            Decline Scholarship
                                           </a>
                                       </li>
                                   @endif
@@ -164,6 +185,7 @@
 $(document).ready(function() {
   $(document).on('click', '.dropdown-item', function(e) {
     e.preventDefault();
+    $('.loader').show();
     var applicant_id = $(this).data('applicant-id');
     var updateRoute = $(this).data('route');
     var action = $(this).data('action');
@@ -199,6 +221,7 @@ $(document).ready(function() {
 
           $('.datatable').before(alertHTML);
           $('#status-' + applicantId).text(newStatus);
+          $('.loader').hide();
 
           if (newStatus === 'Declined' || newStatus === 'Approved') {
             $('#dropdownMenuButton' + applicantId).show();
@@ -213,23 +236,23 @@ $(document).ready(function() {
                   $('#status-' + applicantId).addClass('badge status-new-applicant');
                 break;
               case 'Under Review':
-                dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Shortlisted</a></li>' +
-                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
+                dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve for Shortlisted</a></li>' +
+                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline for Shorlisted</a></li>';
                   $('#status-' + applicantId).addClass('badge status-under-review');                
                 break;
               case 'Shortlisted':
-                dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">For Interview</a></li>' +
+                dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve for Interview</a></li>' +
                   '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
                   $('#status-' + applicantId).addClass('badge status-shortlisted');
                 break;
               case 'For Interview':
-                dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">For House Visitation</a></li>' +
+                dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve for House Visitation</a></li>' +
                   '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
                   $('#status-' + applicantId).addClass('badge status-interview');
                 break;
               case 'For House Visitation':
-                dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Approved" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve</a></li>' +
-                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
+                dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Approved" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve Scholarship</a></li>' +
+                  '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline Scholarship</a></li>';
                  $('#status-' + applicantId).addClass('badge status-housevisit');
                 break;
               default:
@@ -247,6 +270,7 @@ $(document).ready(function() {
       },
       error: function(xhr, status, error) {
         console.log('Error:', error);
+        $('.loader').hide();
       }
       }); 
     });

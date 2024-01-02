@@ -45,7 +45,6 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
 });
 Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::get('/home', [ApplicantController::class, 'userHome'])->name('user.home');
-    Route::get('/personal-details', [ApplicantController::class, 'personalDetails'])->name('user.profile');
     Route::post('/logout', [ApplicantController::class, 'logout']);
 
     

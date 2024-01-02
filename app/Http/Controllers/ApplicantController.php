@@ -127,14 +127,14 @@ class ApplicantController extends Controller
             'municipality' => 'required',
         ]);
         
-        $existingUser = User::where('email', $request->email)->first();
+        // $existingUser = Applicant::where('email', $request->email)->first();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        // if ($validator->fails()) {
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
 
         // Check for existing user with the provided email
-        $existingUser = User::where('email', $request->email)->first();
+        $existingUser = Applicant::where('email', $request->email)->first();
         if ($existingUser) {
             $errorMessage = "Email already exists.";
             return redirect(route('register'))->with("error", $errorMessage)->withInput();

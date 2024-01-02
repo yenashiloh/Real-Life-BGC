@@ -157,7 +157,7 @@
                  @if (!empty($academicInfoChoiceData->first_choice_course))
                      <div class="col-md-4">
                          <label for="first_choice_course" class="col-form-label" style="font-weight: normal;">First
-                             Choice Course</label>
+                             Choice Courses</label>
                          <input name="first_choice_course" type="text" class="form-control"
                              id="first_choice_course" value="{{ $academicInfoChoiceData->first_choice_course }}">
                      </div>

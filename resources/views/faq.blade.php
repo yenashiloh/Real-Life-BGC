@@ -146,4 +146,5 @@
         }
     }
 </script>
+<br><br>
 @include('partials.footer')

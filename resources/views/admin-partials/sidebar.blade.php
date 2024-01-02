@@ -56,12 +56,12 @@
         
         </li><!-- End Forms Nav -->
 
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a class="nav-link collapsed" href="{{ route('admin.announcement.admin-announcement') }}" id="notify-link">
             <i class="bi bi-envelope-arrow-up"></i><span>Notify</span></i>
           </a>
         
-        </li><!-- End Tables Nav -->
+        </li><!-- End Tables Nav --> --}}
 
         <li class="nav-item">
           <a class="nav-link collapsed" href="{{ route('admin.registration') }}" id="createaccount-link">
@@ -76,8 +76,7 @@
           </a>
         </li><!-- End Icons Nav -->
     </aside><!-- End Sidebar-->
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
 <script>

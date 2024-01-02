@@ -56,7 +56,8 @@ class ApplicantController extends Controller
 
     public function userHome()
     {
-        return view('user.home');
+        $title = 'Real LIFE Foundation - Home'; 
+        return view('user.home', compact('title')); 
     }
 
     public function applicantDashboard()
@@ -65,12 +66,12 @@ class ApplicantController extends Controller
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
         $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
         $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
-
+        $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $title = 'Dashboard';
-        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData'));
+        return view('user.applicant_dashboard', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo'));
     }
-
-
+    
+    
 
     public function personalDetails()
     {

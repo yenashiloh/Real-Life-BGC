@@ -184,7 +184,7 @@
                             </label>
                             <span id="error-message" style="display: none; color: red; font-size: 10px;">
                                 <i class="fas fa-exclamation-circle"></i>
-                                Please agree to the Terms and Conditions
+                                You need to agree to the terms and conditions to proceed to the next step.
                             </span>
                         </div>
                     </div>
@@ -427,42 +427,42 @@
                             name="grade11FourthSemGWA" placeholder="" value="" />
                     </div>
 
-                    <!-- ======= STEP 3 - G12 SEMESTERS ======= -->
-                    <div class="col-md-4 mb-3" id="grade12Sem" style="display: none;">
-                        <label class="form-label">Grade 12 Semesters Completed<span
-                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                        <select class="form-select form-select-solid form-control-long" id="grade12SemSelect"
-                            name="grade12Semester">
-                            <option value="" style="color:#444444;">Select Semester</option>
-                            <option value="g12TwoSem">Two Semesters</option>
-                            <option value="g12ThreeSem">Three Semesters</option>
-                            <option value="g12FourSem">Four Semesters</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 mb-3" id="g12FirstSem" style="display: none;">
-                        <label class="form-label">Grade 12 First Sem GWA <span
-                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade12FirstSemGWA" placeholder="" value="" />
-                    </div>
-                    <div class="col-md-4 mb-3" id="g12SecondSem" style="display: none;">
-                        <label class="form-label">Grade 12 Second Sem GWA <span
-                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                        <input type="number" class="form-control form-control-solid form-control-long"
-                            name="grade12SecondSemGWA" placeholder="" value="" />
-                    </div>
-                    <div class="col-md-4 mb-3" id="g12ThirdSem" style="display: none;">
-                        <label class="form-label">Grade 12 Third Sem GWA <span
-                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade12ThirdSemGWA" placeholder="" value="" />
-                    </div>
-                    <div class="col-md-4 mb-3" id="g12FourthSem" style="display: none;">
-                        <label class="form-label">Grade 12 Fourth Sem GWA <span
-                                style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                        <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
-                            name="grade12FourthSemGWA" placeholder="" value="" />
-                    </div>
+            <!-- ======= STEP 3 - G12 SEMESTERS ======= -->
+            <div class="col-md-4 mb-3" id="grade12Sem" style="display: none;">
+                <label class="form-label">Grade 12 Semesters Completed<span
+                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                <select class="form-select form-select-solid form-control-long" id="grade12SemSelect"
+                    name="grade12Semester">
+                    <option value="" style="color:#444444;">Select Semester</option>
+                    <option value="g12TwoSem">Two Semesters</option>
+                    <option value="g12ThreeSem">Three Semesters</option>
+                    <option value="g12FourSem">Four Semesters</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3" id="g12FirstSem" style="display: none;">
+                <label class="form-label">Grade 12 First Sem GWA <span
+                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                    name="grade12FirstSemGWA" placeholder="" value="" />
+            </div>
+            <div class="col-md-4 mb-3" id="g12SecondSem" style="display: none;">
+                <label class="form-label">Grade 12 Second Sem GWA <span
+                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                <input type="number" class="form-control form-control-solid form-control-long"
+                    name="grade12SecondSemGWA" placeholder="" value="" />
+            </div>
+            <div class="col-md-4 mb-3" id="g12ThirdSem" style="display: none;">
+                <label class="form-label">Grade 12 Third Sem GWA <span
+                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                    name="grade12ThirdSemGWA" placeholder="" value="" />
+            </div>
+            <div class="col-md-4 mb-3" id="g12FourthSem" style="display: none;">
+                <label class="form-label">Grade 12 Fourth Sem GWA <span
+                        style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
+                <input type="number" class="form-control form-control-solid form-control-long shadow-sm"
+                    name="grade12FourthSemGWA" placeholder="" value="" />
+            </div>
 
                     <!-- ======= STEP 3 - FIRST YEAR SEMESTERS AND GWA ======= -->
                     <div class="col-md-4 mb-3" id="firstYearSem" style="display: none;">
@@ -1445,7 +1445,8 @@
                     });
 
                     if (anyBelow88) {
-                        step3ErrorMessage.textContent = "Please ensure all GWAs are 88 or above.";
+                        step3ErrorMessage.textContent = "To qualify, your Grade Weighted Average (GWA) should be between 88 to 100. Please ensure that the provided GWA meets this requirement before proceeding to the next step.";
+                        step3ErrorMessage.style.fontSize = '14px';
                         step3ErrorMessage.style.display = 'block';
                     } else {
                         step3ErrorMessage.style.display = 'none';
@@ -1467,8 +1468,7 @@
 
             //REAL-TIME VALIDATION
             const elementNames = [
-                "incomingGrade", "currentSchool", "currentProgram", "ReportCard", "grade3GWA", "grade4GWA",
-                "grade5GWA",
+                "incomingGrade","currentSchool", "currentProgram", "ReportCard", "grade3GWA", "grade4GWA", "grade5GWA",
                 "grade6GWA",
                 "grade7GWA", "grade8GWA", "grade9GWA", "grade10GWA", "grade11Semester", "grade11FirstSemGWA",
                 "grade11SecondSemGWA",
@@ -1602,26 +1602,26 @@
 
             });
 
-
+     
 
 
             //STEPPER CHECK
-            function handleStepTransition(currentIndex) {
-                const step1Content = document.getElementById("step1Content");
-                const step2Content = document.getElementById("step2Content");
-                const step3Content = document.getElementById("step3Content");
-                const step4Content = document.getElementById("step4Content");
-                const step5Content = document.getElementById("step5Content");
+                    function handleStepTransition(currentIndex) {
+            const stepsContent = ["step1Content", "step2Content", "step3Content", "step4Content", "step5Content"];
+            const submitButton = document.getElementById('submitButton');
 
-                step1Content.style.display = "none";
-                step2Content.style.display = "block";
-                step3Content.style.display = "block";
-                step4Content.style.display = "block";
-                step5Content.style.display = "block";
+            stepsContent.forEach((content, index) => {
+                const stepContent = document.getElementById(content);
+                stepContent.style.display = (index === currentIndex ? "block" : "none");
+                elements.stepperItems[index].classList.toggle('current', index === currentIndex);
 
-                handleStepperNumberColors(currentIndex);
-                displayStepContent(currentIndex);
-            }
+                if (index === 4) {
+                    submitButton.style.display = (index === currentIndex ? 'block' : 'none');
+                }
+            });
+
+            handleStepperNumberColors(currentIndex);
+        }
 
             const handleStepperNumberColors = (currentIndex) => {
                 elements.stepperItems.forEach((item, index) => {
@@ -1656,9 +1656,10 @@
                     if (index === currentIndex) {
                         item.classList.add('current');
                         stepContent.style.display = 'block';
-                        if (index === 4) {
+                        if(index === 4) {
                             document.getElementById('submitButton').style.display = 'block';
-                        } else {
+                        }
+                        else {
                             document.getElementById('submitButton').style.display = 'none';
                         }
                     } else {

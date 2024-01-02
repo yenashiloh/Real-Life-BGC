@@ -13,6 +13,7 @@ use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
 use App\Models\Household;
 use App\Models\Member;
+use App\Models\Requirement;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -243,7 +244,33 @@ class ApplicantController extends Controller
                 ]);
             }
 
-            
+            $reportcardFile = $request->file('ReportCard');
+            $reportcardfilename = $reportcardFile->getClientOriginalName();
+            $fileName = pathinfo($reportcardfilename, PATHINFO_FILENAME);
+            $extension = $reportcardFile->getClientOriginalExtension();
+            $fileName = $fileName . '.' . $extension;
+
+            $reportcardData = [
+                'applicant_id' => $applicant->applicant_id,
+                'document_type' => 'Report of Grades',
+                'uploaded_document' => $reportcardFile->storeAs('ReportCards', $fileName, 'public'),
+                'status' => 'For Review',
+            ];
+            Requirement::create($reportcardData);
+
+            $payslipFile = $request->file('payslip');
+            $payslipfilename = $payslipFile->getClientOriginalName();
+            $fileName = pathinfo($payslipfilename, PATHINFO_FILENAME);
+            $extension = $payslipFile->getClientOriginalExtension();
+            $fileName = $fileName . '.' . $extension;
+
+            $payslipData = [
+                'applicant_id' => $applicant->applicant_id,
+                'document_type' => 'Payslip / DSWD Report / ITR',
+                'uploaded_document' => $payslipFile->storeAs('Payslips', $fileName, 'public'),
+                'status' => 'For Review',
+            ];
+            Requirement::create($payslipData);
 
             return redirect(route('login'))->with("success", "Registration success, Login to access the app");
         } else {

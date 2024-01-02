@@ -138,7 +138,7 @@
         <div class="alert alert-danger mt-4" id="errorMessageFillout" style="display: none;"></div>
 
         <form class="form w-lg-500px mx-auto" action="{{ route('register.post') }}" method="POST"
-            id="step-content-form">
+            id="step-content-form" enctype="multipart/form-data">
             @csrf
             <!-- ======= STEP 1 ======= -->
             <div class="container mt-5 step-content active" id="step1Content">
@@ -650,7 +650,7 @@
                                     style="color: red; font-size: 12px; font-weight: normal;">*Upload the pdf of
                                     Payslip/DSWD Report/ITR </span></label>
                             <div class="input-group">
-                                <input type="file" class="form-control" id="payslip" placeholder=""
+                                <input type="file" class="form-control" name="payslip" id="payslip" placeholder=""
                                     accept=".pdf">
                             </div>
                         </div>

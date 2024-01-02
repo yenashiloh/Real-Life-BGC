@@ -5,20 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Household extends Model
+class Requirement extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'household_id';
     public $timestamps = false;
 
     protected $fillable = [
         'applicant_id',
-        'total_members'
+        'document_type',
+        'notes',
+        'uploaded_document',
+        'status'
     ];
-
-    public function members()
-    {
-        return $this->hasMany(Member::class);
-    }
 }

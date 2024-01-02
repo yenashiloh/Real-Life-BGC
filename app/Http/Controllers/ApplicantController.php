@@ -115,8 +115,8 @@ class ApplicantController extends Controller
     function registerPost(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'confirmed', 'min:8'],
+            'email' => 'required|email|unique:applicants',
+            'password' => 'required|min:8',
             'firstname' => 'required',
             'lastname' => 'required',
             'contact' => 'required',
@@ -134,11 +134,11 @@ class ApplicantController extends Controller
         // }
 
         // Check for existing user with the provided email
-        $existingUser = Applicant::where('email', $request->email)->first();
-        if ($existingUser) {
-            $errorMessage = "Email already exists.";
-            return redirect(route('register'))->with("error", $errorMessage)->withInput();
-        }
+        // $existingUser = Applicant::where('email', $request->email)->first();
+        // if ($existingUser) {
+        //     $errorMessage = "Email already exists.";
+        //     return redirect(route('register'))->with("error", $errorMessage)->withInput();
+        // }
     
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
@@ -159,13 +159,31 @@ class ApplicantController extends Controller
             ];
             ApplicantsPersonalInformation::create($personalInfoData);
 
+            $gradeMapping = [
+                'GradeSeven' => 'Grade 7',
+                'GradeEight' => 'Grade 8',
+                'GradeNine' => 'Grade 9',
+                'GradeTen' => 'Grade 10',
+                'GradeEleven' => 'Grade 11',
+                'GradeTwelve' => 'Grade 12',
+                'FirstYear' => 'First Year College',
+                'SecondYear' => 'Second Year College',
+                'ThirdYear' => 'Third Year College',
+                'FourthYear' => 'Fourth Year College',
+            ];
+            
+            $incomingGrade = $request->incomingGrade;
+            $convertedGrade = isset($gradeMapping[$incomingGrade]) ? $gradeMapping[$incomingGrade] : $incomingGrade;
+            
             $academicInfoData = [
                 'applicant_id' => $applicant->applicant_id,
-                'incoming_grade_year' => $request->incomingGrade,
+                'incoming_grade_year' => $convertedGrade,
                 'current_course_program_grade' => $request->currentProgram,
                 'current_school' => $request->currentSchool
             ];
+            
             ApplicantsAcademicInformation::create($academicInfoData);
+            
 
             $academicInfoChoiceData = [
                 'applicant_id' => $applicant->applicant_id,
@@ -190,12 +208,18 @@ class ApplicantController extends Controller
                 'grade_10_gwa' => $request->grade10GWA,
                 'grade_11_sem1_gwa' => $request->grade11FirstSemGWA,
                 'grade_11_sem2_gwa' => $request->grade11SecondSemGWA,
+                'grade_11_sem3_gwa' => $request->grade11ThirdSemGWA,
                 'grade_12_sem1_gwa' => $request->grade12FirstSemGWA,
                 'grade_12_sem2_gwa' => $request->grade12SecondSemGWA,
+                'grade_12_sem3_gwa' => $request->grade12ThirdSemGWA,
                 '1st_year_sem1_gwa' => $request->firstYearFirstSemGWA,
                 '1st_year_sem2_gwa' => $request->firstYearSecondSemGWA,
+                '1st_year_sem3_gwa' => $request->firstYearThirdSemGWA,
+                '1st_year_sem4_gwa' => $request->firstYearFourthSemGWA,
                 '2nd_year_sem1_gwa' => $request->secondYearFirstSemGWA,
-                '2nd_year_sem2_gwa' => $request->secondYearSecondSemGWA
+                '2nd_year_sem2_gwa' => $request->secondYearSecondSemGWA,
+                '2nd_year_sem3_gwa' => $request->secondYearThirdSemGWA,
+                '2nd_year_sem4_gwa' => $request->secondYearFourthSemGWA
             ];
             ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
 
@@ -241,8 +265,9 @@ class ApplicantController extends Controller
 
         $academicInfoGradesData = $request->only([
             'grade_3_gwa', 'grade_4_gwa', 'grade_5_gwa', 'grade_6_gwa', 'grade_7_gwa', 'grade_8_gwa', 'grade_9_gwa', 'grade_10_gwa',
-            'grade_11_sem1_gwa', 'grade_11_sem2_gwa', 'grade_12_sem1_gwa', 'grade_12_sem2_gwa',
-            '1st_year_sem1_gwa', '1st_year_sem2_gwa', '2nd_year_sem1_gwa', '2nd_year_sem2_gwa'
+            'grade_11_sem1_gwa', 'grade_11_sem2_gwa', 'grade_11_sem3_gwa', 'grade_12_sem1_gwa', 'grade_12_sem2_gwa', 'grade_12_sem3_gwa',
+            '1st_year_sem1_gwa', '1st_year_sem2_gwa', '1st_year_sem3_gwa', '1st_year_sem4_gwa', '2nd_year_sem1_gwa', '2nd_year_sem2_gwa',
+            '2nd_year_sem3_gwa', '2nd_year_sem4_gwa'
         ]);
     
          $academicInfoGradesData['applicant_id'] = auth()->id();

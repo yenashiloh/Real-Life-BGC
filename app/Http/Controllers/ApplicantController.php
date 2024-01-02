@@ -65,9 +65,9 @@ class ApplicantController extends Controller
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
         $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
         $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
-        
+        $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $title = 'Dashboard';
-        return view('user.applicant_dashboard', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData'));
+        return view('user.applicant_dashboard', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo'));
     }
     
     

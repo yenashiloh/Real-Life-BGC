@@ -632,7 +632,7 @@
 
 			householdSections.innerHTML = "";
 
-			if (selectedValue >= 1 && selectedValue <= 20) {
+			if (selectedValue >= 1 && selectedValue <= 10) {
 				totalMonthlyIncomeField.style.display = 'block';
 
 				for (let i = 1; i <= selectedValue; i++) {
@@ -645,23 +645,23 @@
 											<div class="col-md-6">
 													<div class="form-group">
 															<label for="name${i}">Name <span style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-															<input type="text" class="form-control" id="name${i}" placeholder="" required>
+															<input type="text" class="form-control" name="name${i}" id="name${i}" placeholder="" required>
 													</div>
 													
 													<div class="form-group">
 															<label for="relationship${i}">Relationship <span style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-															<input type="text" class="form-control" id="relationship${i}" placeholder="" required>
+															<input type="text" class="form-control" name="relationship${i}" id="relationship${i}" placeholder="" required>
 													</div>
 											</div>
 											<div class="col-md-6">
 													<div class="form-group">
 															<label for="occupation${i}">Occupation <span style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-															<input type="text" class="form-control" id="occupation${i}" placeholder="">
+															<input type="text" class="form-control" name="occupation${i}" id="occupation${i}" placeholder="" required>
 													</div>
 													
 													<div class="form-group">
 															<label for="monthlyIncome${i}">Monthly Income <span style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-															<input type="number" class="form-control" id="monthlyIncome${i}" placeholder="" required>
+															<input type="number" class="form-control" name="monthlyIncome${i}" id="monthlyIncome${i}" placeholder="" required>
 													</div>
 											</div>
 									</div>

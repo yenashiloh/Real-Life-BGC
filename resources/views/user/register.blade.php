@@ -618,7 +618,7 @@
                         <div class="form-group mb-3">
                             <label for="householdSelect">Number of Household Employed <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
-                            <select class="form-select form-select-solid form-control-long" id="householdSelect">
+                            <select class="form-select form-select-solid form-control-long" name="householdMembers" id="householdSelect">
 
                                 <option value="" style="color:#444444;">Select a number </option>
                                 <option value="1">1</option>

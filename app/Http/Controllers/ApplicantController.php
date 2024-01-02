@@ -11,7 +11,9 @@ use App\Models\Announcement;
 use App\Models\ApplicantsAcademicInformation;
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
-use Illuminate\Support\Facades\Validator; 
+use App\Models\Household;
+use App\Models\Member;
+use Illuminate\Support\Facades\Validator;
 
 
 class ApplicantController extends Controller
@@ -62,12 +64,12 @@ class ApplicantController extends Controller
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
         $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
         $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
-        
+
         $title = 'Dashboard';
-        return view('user.applicant_dashboard', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData'));
+        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData'));
     }
-    
-    
+
+
 
     public function personalDetails()
     {
@@ -85,7 +87,7 @@ class ApplicantController extends Controller
         return view('user.change_password')->with('title', $title);
     }
 
-    
+
     function loginPost(Request $request)
     {
         $request->validate([
@@ -126,7 +128,7 @@ class ApplicantController extends Controller
             'barangay' => 'required',
             'municipality' => 'required',
         ]);
-        
+
         // $existingUser = Applicant::where('email', $request->email)->first();
 
         // if ($validator->fails()) {
@@ -139,7 +141,7 @@ class ApplicantController extends Controller
         //     $errorMessage = "Email already exists.";
         //     return redirect(route('register'))->with("error", $errorMessage)->withInput();
         // }
-    
+
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['status'] = 'New Applicant';
@@ -171,19 +173,19 @@ class ApplicantController extends Controller
                 'ThirdYear' => 'Third Year College',
                 'FourthYear' => 'Fourth Year College',
             ];
-            
+
             $incomingGrade = $request->incomingGrade;
             $convertedGrade = isset($gradeMapping[$incomingGrade]) ? $gradeMapping[$incomingGrade] : $incomingGrade;
-            
+
             $academicInfoData = [
                 'applicant_id' => $applicant->applicant_id,
                 'incoming_grade_year' => $convertedGrade,
                 'current_course_program_grade' => $request->currentProgram,
                 'current_school' => $request->currentSchool
             ];
-            
+
             ApplicantsAcademicInformation::create($academicInfoData);
-            
+
 
             $academicInfoChoiceData = [
                 'applicant_id' => $applicant->applicant_id,
@@ -223,6 +225,26 @@ class ApplicantController extends Controller
             ];
             ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
 
+            // Validate and store the main household information
+            Household::create([
+                'applicant_id' => $applicant->applicant_id,
+                'total_members' => $request->input('householdMembers'),
+                // 'payslip_path' => $request->file('payslip')->store('payslips', 'public'),
+            ]);
+
+            // Store individual household member information
+            for ($i = 1; $i <= $request->input('householdMembers'); $i++) {
+                Member::create([
+                    'applicant_id' => $applicant->applicant_id,
+                    'name' => $request->input("name$i"),
+                    'relationship' => $request->input("relationship$i"),
+                    'occupation' => $request->input("occupation$i"),
+                    'monthly_income' => $request->input("monthlyIncome$i")
+                ]);
+            }
+
+            
+
             return redirect(route('login'))->with("success", "Registration success, Login to access the app");
         } else {
             return redirect(route('register'))->with("error", "Registration failed, try again.");
@@ -248,9 +270,9 @@ class ApplicantController extends Controller
         $street = $request->input('street');
         $barangay = $request->input('barangay');
         $municipality = $request->input('municipality');
-        
+
         $personalInfo = ApplicantsPersonalInformation::updateOrCreate(
-            ['applicant_id' => auth()->id()], 
+            ['applicant_id' => auth()->id()],
             [
                 'first_name' => $firstName,
                 'last_name' => $lastName,
@@ -269,8 +291,8 @@ class ApplicantController extends Controller
             '1st_year_sem1_gwa', '1st_year_sem2_gwa', '1st_year_sem3_gwa', '1st_year_sem4_gwa', '2nd_year_sem1_gwa', '2nd_year_sem2_gwa',
             '2nd_year_sem3_gwa', '2nd_year_sem4_gwa'
         ]);
-    
-         $academicInfoGradesData['applicant_id'] = auth()->id();
+
+        $academicInfoGradesData['applicant_id'] = auth()->id();
 
         $academicInfo = ApplicantsAcademicInformationGrade::updateOrCreate(
             ['applicant_id' => auth()->id()],
@@ -291,7 +313,7 @@ class ApplicantController extends Controller
         );
 
         $academicInfoChoiceData = $request->only([
-            'first_choice_school', 'second_choice_school', 'third_choice_school', 
+            'first_choice_school', 'second_choice_school', 'third_choice_school',
             'first_choice_course', 'second_choice_course', 'third_choice_course'
         ]);
         $academicInfoChoiceData['applicant_id'] = auth()->id();
@@ -300,7 +322,7 @@ class ApplicantController extends Controller
             ['applicant_id' => auth()->id()],
             $academicInfoChoiceData
         );
-    
+
         if ($personalInfo && $academicInfo && $academicInfoIncoming && $academicChoices) {
             return redirect()->back()->with('success', 'Updated Successfully!');
         } else {
@@ -316,38 +338,36 @@ class ApplicantController extends Controller
                 'new_password' => 'required|min:8|different:current_password',
                 'renew_password' => 'required|same:new_password',
             ]);
-        
+
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-        
+
             $applicantId = auth()->id(); // Retrieve the ID of the authenticated applicant
-        
+
             $user = Auth::user();
-        
+
             if ($user->id !== $applicantId) {
                 return redirect()->back()->with('error', 'Unauthorized access.');
             }
-        
+
             if (!Hash::check($request->current_password, $user->password)) {
                 return redirect()->back()->with('error', 'The current password is incorrect.');
             }
-        
+
             $user->password = Hash::make($request->new_password);
             $user->save();
-    
+
             // Log success message
             \Log::info('Password changed successfully for user: ' . $user->email);
-        
+
             return redirect()->back()->with('success', 'Password changed successfully.');
         } catch (\Exception $e) {
             // Log error message
             \Log::error('Error changing password: ' . $e->getMessage());
-            
+
             // Handle the error or exception accordingly
             return redirect()->back()->with('error', 'Password change failed.');
         }
     }
-    
-    
 }

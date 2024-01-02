@@ -106,7 +106,6 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     //VIEW DATA OF APPLICANTS
     Route::get('/applicants/{id}', [AdminController::class, 'viewApplicant'])->name('admin.view_applicant');
 
-
     //LOGOUT
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
     Route::get('/export-declined-applicants', 'AdminController@exportDeclinedApplicants')->name('export.declined.applicants');

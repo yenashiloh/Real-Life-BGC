@@ -26,9 +26,11 @@ return new class extends Migration
             $table->string('grade_11_sem1_gwa')->nullable();
             $table->string('grade_11_sem2_gwa')->nullable();
             $table->string('grade_11_sem3_gwa')->nullable();
+            $table->string('grade_11_sem4_gwa')->nullable();
             $table->string('grade_12_sem1_gwa')->nullable();
             $table->string('grade_12_sem2_gwa')->nullable();
             $table->string('grade_12_sem3_gwa')->nullable();
+            $table->string('grade_12_sem4_gwa')->nullable();
             $table->string('1st_year_sem1_gwa')->nullable();
             $table->string('1st_year_sem2_gwa')->nullable();
             $table->string('1st_year_sem3_gwa')->nullable();

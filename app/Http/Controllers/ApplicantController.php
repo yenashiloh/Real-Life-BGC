@@ -215,9 +215,11 @@ class ApplicantController extends Controller
                 'grade_11_sem1_gwa' => $request->grade11FirstSemGWA,
                 'grade_11_sem2_gwa' => $request->grade11SecondSemGWA,
                 'grade_11_sem3_gwa' => $request->grade11ThirdSemGWA,
+                'grade_11_sem4_gwa' => $request->grade11FourthSemGWA,
                 'grade_12_sem1_gwa' => $request->grade12FirstSemGWA,
                 'grade_12_sem2_gwa' => $request->grade12SecondSemGWA,
                 'grade_12_sem3_gwa' => $request->grade12ThirdSemGWA,
+                'grade_12_sem4_gwa' => $request->grade12FourthSemGWA,
                 '1st_year_sem1_gwa' => $request->firstYearFirstSemGWA,
                 '1st_year_sem2_gwa' => $request->firstYearSecondSemGWA,
                 '1st_year_sem3_gwa' => $request->firstYearThirdSemGWA,
@@ -249,7 +251,7 @@ class ApplicantController extends Controller
             $reportcardfilename = $reportcardFile->getClientOriginalName();
             $fileName = pathinfo($reportcardfilename, PATHINFO_FILENAME);
             $extension = $reportcardFile->getClientOriginalExtension();
-            $fileName = $fileName . '.' . $extension;
+            $fileName = $fileName . '_' . time() . '.' . $extension;
 
             $reportcardData = [
                 'applicant_id' => $applicant->applicant_id,
@@ -263,7 +265,7 @@ class ApplicantController extends Controller
             $payslipfilename = $payslipFile->getClientOriginalName();
             $fileName = pathinfo($payslipfilename, PATHINFO_FILENAME);
             $extension = $payslipFile->getClientOriginalExtension();
-            $fileName = $fileName . '.' . $extension;
+            $fileName = $fileName . '_' . time() . '.' . $extension;
 
             $payslipData = [
                 'applicant_id' => $applicant->applicant_id,
@@ -315,9 +317,9 @@ class ApplicantController extends Controller
 
         $academicInfoGradesData = $request->only([
             'grade_3_gwa', 'grade_4_gwa', 'grade_5_gwa', 'grade_6_gwa', 'grade_7_gwa', 'grade_8_gwa', 'grade_9_gwa', 'grade_10_gwa',
-            'grade_11_sem1_gwa', 'grade_11_sem2_gwa', 'grade_11_sem3_gwa', 'grade_12_sem1_gwa', 'grade_12_sem2_gwa', 'grade_12_sem3_gwa',
-            '1st_year_sem1_gwa', '1st_year_sem2_gwa', '1st_year_sem3_gwa', '1st_year_sem4_gwa', '2nd_year_sem1_gwa', '2nd_year_sem2_gwa',
-            '2nd_year_sem3_gwa', '2nd_year_sem4_gwa'
+            'grade_11_sem1_gwa', 'grade_11_sem2_gwa', 'grade_11_sem3_gwa', 'grade_11_sem4_gwa', 'grade_12_sem1_gwa', 'grade_12_sem2_gwa',
+            'grade_12_sem3_gwa', 'grade_12_sem4_gwa', '1st_year_sem1_gwa', '1st_year_sem2_gwa', '1st_year_sem3_gwa', '1st_year_sem4_gwa', '2nd_year_sem1_gwa',
+            '2nd_year_sem2_gwa', '2nd_year_sem3_gwa', '2nd_year_sem4_gwa'
         ]);
 
         $academicInfoGradesData['applicant_id'] = auth()->id();

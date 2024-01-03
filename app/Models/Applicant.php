@@ -47,4 +47,16 @@ class Applicant extends Authenticatable
     {
         return $this->hasOne(ApplicantsPersonalInformation::class, 'applicant_id');
     }
+    public function household()
+    {
+        return $this->hasOne(Household::class, 'applicant_id', 'applicant_id');
+    }
+    public function member()
+    {
+        return $this->hasOne(Member::class, 'applicant_id', 'applicant_id');
+    }
+    public function requirements()
+    {
+        return $this->hasOne(Requirement::class, 'applicant_id', 'applicant_id');
+    }
 }

@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('households', function (Blueprint $table) {
-            $table->id('household_id');
+        Schema::create('requirements', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('applicant_id');
             $table->foreign('applicant_id')->references('applicant_id')->on('applicants')->onDelete('cascade');
-            $table->integer('total_members')->nullable();
+            $table->string('document_type')->nullable();
+            $table->string('notes')->nullable();
+            $table->string('uploaded_document')->nullable();
+            $table->string('status')->nullable();
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('households');
+        Schema::dropIfExists('requirements');
     }
 };

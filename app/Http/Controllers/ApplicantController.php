@@ -13,6 +13,7 @@ use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
 use App\Models\Household;
 use App\Models\Member;
+use App\Models\Requirement;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -55,8 +56,8 @@ class ApplicantController extends Controller
 
     public function userHome()
     {
-        $title = 'Real LIFE Foundation - Home'; 
-        return view('user.home', compact('title')); 
+        $title = 'Real LIFE Foundation - Home';
+        return view('user.home', compact('title'));
     }
 
     public function applicantDashboard()
@@ -67,10 +68,10 @@ class ApplicantController extends Controller
         $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
         $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $title = 'Dashboard';
-        return view('user.applicant_dashboard', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo'));
+        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo'));
     }
-    
-    
+
+
 
     public function personalDetails()
     {
@@ -244,7 +245,33 @@ class ApplicantController extends Controller
                 ]);
             }
 
-            
+            $reportcardFile = $request->file('ReportCard');
+            $reportcardfilename = $reportcardFile->getClientOriginalName();
+            $fileName = pathinfo($reportcardfilename, PATHINFO_FILENAME);
+            $extension = $reportcardFile->getClientOriginalExtension();
+            $fileName = $fileName . '.' . $extension;
+
+            $reportcardData = [
+                'applicant_id' => $applicant->applicant_id,
+                'document_type' => 'Report of Grades',
+                'uploaded_document' => $reportcardFile->storeAs('ReportCards', $fileName, 'public'),
+                'status' => 'For Review',
+            ];
+            Requirement::create($reportcardData);
+
+            $payslipFile = $request->file('payslip');
+            $payslipfilename = $payslipFile->getClientOriginalName();
+            $fileName = pathinfo($payslipfilename, PATHINFO_FILENAME);
+            $extension = $payslipFile->getClientOriginalExtension();
+            $fileName = $fileName . '.' . $extension;
+
+            $payslipData = [
+                'applicant_id' => $applicant->applicant_id,
+                'document_type' => 'Payslip / DSWD Report / ITR',
+                'uploaded_document' => $payslipFile->storeAs('Payslips', $fileName, 'public'),
+                'status' => 'For Review',
+            ];
+            Requirement::create($payslipData);
 
             return redirect(route('login'))->with("success", "Registration success, Login to access the app");
         } else {
@@ -338,17 +365,19 @@ class ApplicantController extends Controller
                 'current_password' => 'required',
                 'new_password' => 'required|min:8|different:current_password',
                 'renew_password' => 'required|same:new_password',
+            ], [
+                'renew_password.same' => 'The re-enter new password field must match new password.',
             ]);
-
+            
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-
+            
             $applicantId = auth()->id(); // Retrieve the ID of the authenticated applicant
 
             $user = Auth::user();
 
-            if ($user->id !== $applicantId) {
+            if ($user->applicant_id !== $applicantId) {
                 return redirect()->back()->with('error', 'Unauthorized access.');
             }
 

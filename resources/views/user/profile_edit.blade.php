@@ -183,7 +183,6 @@
 
         <br>
 
-
         <div class="row mb-3">
             <h5 class="card-title" style="font-weight: bold; color:#212529;">Grades</h5>
 
@@ -225,6 +224,12 @@
                     </div>
                 @endif
             @endforeach
+        </div>
+
+        <br>
+        
+        <div class="row mb-3">
+            <h5 class="card-title" style="font-weight: bold; color:#212529;">Household Information</h5>
         </div>
 
         <div class="text-center">

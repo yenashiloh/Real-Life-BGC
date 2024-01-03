@@ -68,9 +68,9 @@ class ApplicantController extends Controller
         $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
         $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $title = 'Dashboard';
-        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo'));
+        $reportcardData = Requirement::where('applicant_id', $applicantId)->get();
+        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo' , 'reportcardData'));
     }
-
 
 
     public function personalDetails()
@@ -79,8 +79,10 @@ class ApplicantController extends Controller
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
         $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
         $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
+        $members = Member::where('applicant_id', $applicantId)->get();
 
-        return view('user.personal_details', compact('academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData'));
+
+        return view('user.personal_details', compact('academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'members'));
     }
 
     public function viewChangePassword()
@@ -227,14 +229,12 @@ class ApplicantController extends Controller
             ];
             ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
 
-            // Validate and store the main household information
             Household::create([
                 'applicant_id' => $applicant->applicant_id,
                 'total_members' => $request->input('householdMembers'),
                 // 'payslip_path' => $request->file('payslip')->store('payslips', 'public'),
             ]);
 
-            // Store individual household member information
             for ($i = 1; $i <= $request->input('householdMembers'); $i++) {
                 Member::create([
                     'applicant_id' => $applicant->applicant_id,
@@ -351,6 +351,25 @@ class ApplicantController extends Controller
             $academicInfoChoiceData
         );
 
+        $householdMembersData = $request->input('household_members');
+
+        $householdMembersData = $request->input('name');
+
+        if (isset($householdMembersData) && is_array($householdMembersData)) {
+            foreach ($householdMembersData as $key => $name) {
+                // Adjust the 'Member' model and table name according to your application
+                Member::updateOrCreate(
+                    ['members_id' => auth()->id(), 'members_id' => $key + 1], // Assuming the household member ID starts from 1
+                    [
+                        'name' => $request->input("name.$key") ?? null,
+                        'relationship' => $request->input("relationship.$key") ?? null,
+                        'occupation' => $request->input("occupation.$key") ?? null,
+                        'monthly_income' => $request->input("monthly_income.$key") ?? null,
+                    ]
+                );
+            }
+        }
+    
         if ($personalInfo && $academicInfo && $academicInfoIncoming && $academicChoices) {
             return redirect()->back()->with('success', 'Updated Successfully!');
         } else {
@@ -373,7 +392,7 @@ class ApplicantController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
             
-            $applicantId = auth()->id(); // Retrieve the ID of the authenticated applicant
+            $applicantId = auth()->id(); 
 
             $user = Auth::user();
 
@@ -388,16 +407,15 @@ class ApplicantController extends Controller
             $user->password = Hash::make($request->new_password);
             $user->save();
 
-            // Log success message
             \Log::info('Password changed successfully for user: ' . $user->email);
 
             return redirect()->back()->with('success', 'Password changed successfully.');
         } catch (\Exception $e) {
-            // Log error message
             \Log::error('Error changing password: ' . $e->getMessage());
 
-            // Handle the error or exception accordingly
             return redirect()->back()->with('error', 'Password change failed.');
         }
     }
+   
+
 }

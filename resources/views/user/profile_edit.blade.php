@@ -225,11 +225,39 @@
                 @endif
             @endforeach
         </div>
-
         <br>
         
+        @foreach ($members as $key => $member)
         <div class="row mb-3">
-            <h5 class="card-title" style="font-weight: bold; color:#212529;">Household Information</h5>
+           
+            <h5 class="card-title" style="font-weight: bold; color: #212529;">Household Employed {{ $key + 1 }}</h5>
+            <div class="col-md-6">
+                <label for="name{{ $key + 1 }}" class="col-form-label" style="font-weight: normal;">Name</label>
+                <input name="name[]" type="text" class="form-control" id="name{{ $key + 1 }}" value="{{ $member['name'] ?? '' }}">
+            </div>
+    
+            <div class="col-md-6">
+                <label for="occupation{{ $key + 1 }}" class="col-form-label" style="font-weight: normal;">Occupation</label>
+                <input name="occupation[]" type="text" class="form-control" id="occupation{{ $key + 1 }}" value="{{ $member['occupation'] ?? '' }}">
+            </div>
+        </div>
+    
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="relationship{{ $key + 1 }}" class="col-form-label" style="font-weight: normal;">Relationship</label>
+                <input name="relationship[]" type="text" class="form-control" id="relationship{{ $key + 1 }}" value="{{ $member['relationship'] ?? '' }}">
+            </div>
+    
+            <div class="col-md-6">
+                <label for="monthly_income{{ $key + 1 }}" class="col-form-label" style="font-weight: normal;">Monthly Income</label>
+                <input name="monthly_income[]" type="number" class="form-control" id="monthly_income{{ $key + 1 }}" value="{{ $member['monthly_income'] ?? '' }}">
+            </div>
+        </div>
+        <br>
+    @endforeach
+    
+    
+
         </div>
 
         <div class="text-center">

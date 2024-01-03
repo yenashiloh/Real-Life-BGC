@@ -322,8 +322,8 @@
             <h2>ANNOUNCEMENT</h2>
         </div>
     </div>
-</section>
-<div class="container">  
+
+
     <div class="row">
         
         <div class="col-lg-10 mx-auto"> 
@@ -367,10 +367,10 @@
             @endif
         </div>
     </div>
-</div>
+
 <br><br><br>
 
-
+</section>
 <!-- Add this script before the closing </body> tag -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

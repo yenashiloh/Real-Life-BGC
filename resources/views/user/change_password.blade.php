@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Real LIFE Foundation - Home</title>
+    <title>Change Password</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 

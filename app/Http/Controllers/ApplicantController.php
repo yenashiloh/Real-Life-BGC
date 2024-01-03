@@ -249,7 +249,7 @@ class ApplicantController extends Controller
             $reportcardfilename = $reportcardFile->getClientOriginalName();
             $fileName = pathinfo($reportcardfilename, PATHINFO_FILENAME);
             $extension = $reportcardFile->getClientOriginalExtension();
-            $fileName = $fileName . '.' . $extension;
+            $fileName = $fileName . '_' . time() . '.' . $extension;
 
             $reportcardData = [
                 'applicant_id' => $applicant->applicant_id,
@@ -263,7 +263,7 @@ class ApplicantController extends Controller
             $payslipfilename = $payslipFile->getClientOriginalName();
             $fileName = pathinfo($payslipfilename, PATHINFO_FILENAME);
             $extension = $payslipFile->getClientOriginalExtension();
-            $fileName = $fileName . '.' . $extension;
+            $fileName = $fileName . '_' . time() . '.' . $extension;
 
             $payslipData = [
                 'applicant_id' => $applicant->applicant_id,

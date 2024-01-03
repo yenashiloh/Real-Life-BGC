@@ -134,8 +134,8 @@
                         <ul class="nav nav-tabs nav-tabs-bordered">
 
                             <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab"
-                                    data-bs-target="#profile-overview" style="font-size: 19px; cursor: auto;">Change Password</button>
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview"
+                                    style="font-size: 19px; cursor: auto;">Change Password</button>
                             </li>
 
                         </ul>
@@ -143,57 +143,63 @@
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
                                 <br>
-                              
+
                                 <form action="{{ route('change.password') }}" method="POST">
                                     @csrf
                                     @if (session('success'))
-                                    <div class="alert alert-success" role="alert">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
-                                
-                                @if (session('error'))
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ session('error') }}
-                                    </div>
-                                @endif
+                                        <div class="alert alert-success" role="alert">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
+
+                                    @if (session('error'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
                                     <div class="row mb-3">
-                                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
+                                            Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="current_password" type="password" class="form-control" id="currentPassword" required>
+                                            <input name="current_password" type="password" class="form-control"
+                                                id="currentPassword" required>
                                         </div>
                                     </div>
-                                
+
                                     <div class="row mb-3">
-                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
+                                            Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="new_password" type="password" class="form-control" id="newPassword" required>
+                                            <input name="new_password" type="password" class="form-control"
+                                                id="newPassword" required>
                                         </div>
                                     </div>
-                                
+
                                     <div class="row mb-3">
-                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
+                                            Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="renew_password" type="password" class="form-control" id="renewPassword" required>
+                                            <input name="renew_password" type="password" class="form-control"
+                                                id="renewPassword" required>
                                         </div>
                                     </div>
-    
+
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary">Change Password</button>
                                     </div>
-                                        </div>
-                                     
-                            </form><!-- End settings Form -->
                             </div>
-                        </div>
-                     </div><!-- End Bordered Tabs -->
-                 </div>
-             </div>
-        </div>
-    </section>
-</main><!-- End #main -->
 
-@include('partials.user-footer')
+                            </form><!-- End settings Form -->
+                        </div>
+                    </div>
+                </div><!-- End Bordered Tabs -->
+            </div>
+            </div>
+            </div>
+        </section>
+    </main><!-- End #main -->
+
+    @include('partials.user-footer')
 </body>
 
 </html>

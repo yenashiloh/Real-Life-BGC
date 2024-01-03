@@ -29,22 +29,6 @@
                 <i class="bi bi-circle"></i><span>Declined Applicants</span>
               </a>
             </li>
-            {{-- <li>
-              <a href="components-breadcrumbs.html">
-                <i class="bi bi-circle"></i><span>For House Visitation</span>
-              </a>
-            </li>
-            <li>
-              <a href="components-buttons.html">
-                <i class="bi bi-circle"></i><span>Approved</span>
-              </a>
-            </li>
-            <li>
-              <a href="components-cards.html">
-                <i class="bi bi-circle"></i><span>Declined</span>
-              </a>
-            </li>
-             --}}
           </ul>
         </li><!-- End Components Nav -->
 
@@ -55,13 +39,6 @@
           </a>
         
         </li><!-- End Forms Nav -->
-
-        {{-- <li class="nav-item">
-          <a class="nav-link collapsed" href="{{ route('admin.announcement.admin-announcement') }}" id="notify-link">
-            <i class="bi bi-envelope-arrow-up"></i><span>Notify</span></i>
-          </a>
-        
-        </li><!-- End Tables Nav --> --}}
 
         <li class="nav-item">
           <a class="nav-link collapsed" href="{{ route('admin.registration') }}" id="createaccount-link">
@@ -78,25 +55,16 @@
     </aside><!-- End Sidebar-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-
+{{-- 
 <script>
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    sidebar.classList.toggle('active');
-
-    const isActive = sidebar.classList.contains('active');
-
-    navLinks.forEach((link) => {
-      if (isActive) {
-        link.classList.remove('collapsed');
-      } else {
-        link.classList.add('collapsed');
-      }
+  $(document).ready(function() {
+    $('.nav-link').click(function() {
+      $(this).toggleClass('collapsed');
     });
-  }
+  });
 
   const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
   sidebarToggleBtn.addEventListener('click', toggleSidebar);
-</script>
+</script> --}}
+
+

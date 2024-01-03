@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\EmailController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,9 +25,9 @@ use App\Http\Controllers\EmailController;
 // })->name('home');
 
 // applicant
-Route::get('/announcement', [ApplicantController::class, 'announcement'])->name('announcement');
-Route::get('/contact', [ApplicantController::class, 'contact'])->name('contact');
-Route::get('/faq', [ApplicantController::class, 'faq'])->name('faq');
+Route::get('/announcement', [ApplicantController::class, 'announcement'])->name('announcement')->middleware('PreventBackHistory');
+Route::get('/contact', [ApplicantController::class, 'contact'])->name('contact')->middleware('PreventBackHistory');
+Route::get('/faq', [ApplicantController::class, 'faq'])->name('faq')->middleware('PreventBackHistory');
 
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/', [ApplicantController::class, 'index']);

@@ -56,8 +56,8 @@ class ApplicantController extends Controller
 
     public function userHome()
     {
-        $title = 'Real LIFE Foundation - Home'; 
-        return view('user.home', compact('title')); 
+        $title = 'Real LIFE Foundation - Home';
+        return view('user.home', compact('title'));
     }
 
     public function applicantDashboard()
@@ -68,10 +68,10 @@ class ApplicantController extends Controller
         $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
         $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $title = 'Dashboard';
-        return view('user.applicant_dashboard', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo'));
+        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo'));
     }
-    
-    
+
+
 
     public function personalDetails()
     {
@@ -365,17 +365,19 @@ class ApplicantController extends Controller
                 'current_password' => 'required',
                 'new_password' => 'required|min:8|different:current_password',
                 'renew_password' => 'required|same:new_password',
+            ], [
+                'renew_password.same' => 'The re-enter new password field must match new password.',
             ]);
-
+            
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
-
+            
             $applicantId = auth()->id(); // Retrieve the ID of the authenticated applicant
 
             $user = Auth::user();
 
-            if ($user->id !== $applicantId) {
+            if ($user->applicant_id !== $applicantId) {
                 return redirect()->back()->with('error', 'Unauthorized access.');
             }
 

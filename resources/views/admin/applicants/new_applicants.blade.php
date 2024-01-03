@@ -148,9 +148,9 @@
                                           </a>
                                       </li>
                                       <li>
-                                          <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
+                                          {{-- <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
                                               Decline
-                                          </a>
+                                          </a> --}}
                                       </li>
                                     @elseif($applicant->status === 'Under Review')
                                       <li>
@@ -320,9 +320,9 @@ $(document).ready(function() {
           }, 8000);
         } else {
           console.log('Failed to update status:', response.error);
-          $('.loader').hide();
-        }
-      },
+          }
+          $('.loader').hide(); // Move the hide loader here
+        },
       error: function(xhr, status, error) {
         console.log('Error:', error);
         $('.loader').hide();

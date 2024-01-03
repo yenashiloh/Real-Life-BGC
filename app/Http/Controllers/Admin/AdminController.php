@@ -440,5 +440,32 @@ class AdminController extends Controller
 
         return view('admin.applicants.view_applicant', compact('title', 'applicant', 'email', 'status', 'members', 'reportcardData'));
     }
+    public function fileStatus(Request $request)
+    {
+        try {
+            $applicant = Applicant::where('applicant_id', $request->applicant_id)->first();
+
+            if (!$applicant) {
+                return response()->json(['error' => 'Applicant not found'], 404);
+            }
+
+            $status = $request->status;
+            $validStatuses = ['review', 'approved', 'declined']; // Define valid statuses here
+
+            if (!in_array($status, $validStatuses)) {
+                return response()->json(['error' => 'Invalid status'], 400);
+            }
+
+            // Update the status of the applicant
+            $applicant->status = $status;
+            $applicant->save();
+
+            // Assuming you want to return a success response after updating the status
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            \Log::error('Error updating status: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to update status'], 500);
+        }
+    }
 }
 

@@ -1,6 +1,27 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>{{ $title }}</title>
 @include('admin-partials.header')
+
+<style>
+  .loader {
+       border: 4px solid rgba(0, 0, 0, 0.1);
+       border-top: 4px solid #3498db;
+       border-radius: 50%;
+       width: 40px;
+       height: 40px;
+       animation: spin 1s linear infinite;
+       position: absolute;
+       left: 50%;
+       transform: translate(-50%, -50%);
+       z-index: 9999;
+       display: none;
+     }
+     @keyframes spin {
+       0% { transform: rotate(0deg); }
+       100% { transform: rotate(360deg); }
+     }
+ 
+ </style>
 <aside id="sidebar" class="sidebar">
 
   <ul class="sidebar-nav" id="sidebar-nav">
@@ -77,6 +98,7 @@
               {{-- <button type="button" id="exportExcelBtn" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button> --}}
               
               <!-- Table with stripped rows -->
+              <div class="loader"></div>
               <table class="table datatable">
                 <thead>
                   <tr>
@@ -177,6 +199,7 @@
       var applicant_id = $(this).data('applicant-id');
       var updateRoute = $(this).data('route');
       var action = $(this).data('action');
+      $('.loader').show();
 
       if (!applicant_id || !updateRoute || !action) {
         console.log('Invalid data');
@@ -222,13 +245,15 @@
               $('.alert').remove();
             }, 8000); 
           } else {
-            console.log('Failed to update status:', response.error);
+          console.log('Failed to update status:', response.error);
           }
+          $('.loader').hide(); // Move the hide loader here
         },
-        error: function(xhr, status, error) {
-          console.log('Error:', error);
-        }
-      });
+      error: function(xhr, status, error) {
+        console.log('Error:', error);
+        $('.loader').hide();
+      }
+      }); 
     });
   });
 </script>

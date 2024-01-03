@@ -631,7 +631,7 @@
                                 <option value="8">8</option>
                                 <option value="9">9</option>
                                 <option value="10">10</option>
-                                <option value="11">11</option>
+                                {{-- <option value="11">11</option>
                                 <option value="12">12</option>
                                 <option value="13">13</option>
                                 <option value="14">14</option>
@@ -640,7 +640,7 @@
                                 <option value="17">17</option>
                                 <option value="18">18</option>
                                 <option value="19">19</option>
-                                <option value="20">20</option>
+                                <option value="20">20</option> --}}
                             </select>
                         </div>
                     </div>
@@ -676,11 +676,11 @@
 
 
             <!-- ======= STEP 5 - ACCOUNT INFORMATION ======= -->
+           
             <div class="container mt-4 mb-4" id="step5Content" style="display: none;">
                 <div class="row">
-                    <span id="step5ErrorMessage"
-                        style="display: none; color: red; text-align: center; margin-bottom: 15px;">
-                        @if ($errors->any() && $errors->has('email'))
+                    <span style="color: red; display: none;" id="step5ErrorMessage">
+                        @if ($errors->has('email'))
                             {{ $errors->first('email') }}
                         @endif
                     </span>
@@ -710,6 +710,7 @@
                     </div>
                 </div>
             </div>
+          
 
             <!-- ======= NEXT AND PREVIOUS BUTTON ======= -->
             <div class="d-flex justify-content-between mt-3">
@@ -902,7 +903,7 @@
                 }
 
                 const age = calculateAge(input.value);
-                return age < 26;
+                 return age >= 12 && age <= 25;
             }
 
             //NEXT BUTTON
@@ -1427,7 +1428,7 @@
 
                 gwaInputs.forEach(input => {
                     const gwaValue = parseFloat(input.value);
-                    if (input.value.trim() === '' || gwaValue < 88 || isNaN(gwaValue)) {
+                    if (input.value.trim() === '' || gwaValue < 88 || gwaValue > 100 || isNaN(gwaValue)) {
                         isValidGWAs = false;
                         input.classList.add('border', 'border-danger', 'is-invalid');
                     } else {
@@ -1602,6 +1603,7 @@
 
             });
 
+            
      
 
 
@@ -1621,7 +1623,9 @@
             });
 
             handleStepperNumberColors(currentIndex);
+            
         }
+
 
             const handleStepperNumberColors = (currentIndex) => {
                 elements.stepperItems.forEach((item, index) => {

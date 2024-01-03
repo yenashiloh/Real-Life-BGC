@@ -320,8 +320,8 @@
                             </td>
                             <td>{{ $requirement->status }}</td>
                             <td class="d-flex justify-content-center">
-                              <button type="button" class="btn btn-primary mx-2" style="width: 70%; margin-bottom: 5px;">Approve</button>
-                              <button type="button" class="btn btn-danger mx-2" style="width: 70%;">Decline</button>
+                              <button type="button" class="btn btn-primary mx-2 change-status" data-applicant-id="{{ $requirement->applicant_id }}" data-action="approve" style="width: 70%; margin-bottom: 5px; font-size: 13px;">Approve</button>
+                              <button type="button" class="btn btn-danger mx-2 change-status" data-applicant-id="{{ $requirement->applicant_id }}" data-action="decline" style="width: 70%; font-size: 13px;">Decline</button>
                           </td>
                         </tr>
                         @endforeach
@@ -371,6 +371,35 @@
           });
   
       });
+
+      // This script assumes jQuery is used. Make sure it's included in your project.
+$(document).ready(function() {
+    $('.change-status').on('click', function() {
+        var applicantId = $(this).data('applicant-id');
+        var action = $(this).data('action');
+
+        // AJAX request to update status
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("admin.update-status") }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                applicant_id: applicantId,
+                status: action // Assuming 'approve' or 'decline'
+            },
+            success: function(response) {
+                // Handle success response, maybe update the UI accordingly
+                console.log('Status updated successfully');
+                // Optionally, you can reload the table or update status directly in the UI
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                console.error('Error updating status:', error);
+            }
+        });
+    });
+});
+
   
       </script>
   

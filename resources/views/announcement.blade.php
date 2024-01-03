@@ -326,45 +326,42 @@
 
     <div class="row">
         
-        <div class="col-lg-10 mx-auto"> 
-            @if($announcement->isEmpty())
-                <p style="text-align: center; font-size: 25px; font-weight: normal;">No Announcement</p>
-            @else
-                @foreach($announcement as $announce)
-                    <div class="card card-margin mb-3"> 
-                        <div class="card-body pt-0">
-                            <div class="widget-49">
-                                <div class="widget-49-title-wrapper">
-                                    <div class="widget-49-meeting-info" style="margin-top: 20px; ">
-                                        <span class="widget-49-pro-title" style="font-size: 17px; text-transform: capitalize; font-weight: bold;">{{ $announce->title }}</span>
-                                        <span class="widget-49-meeting-time" style="margin-bottom:5px;">  {{ \Carbon\Carbon::parse($announce->created_at)->timezone('Asia/Manila')->isoFormat('MMMM D, YYYY, h:mm A') }} ({{ \Carbon\Carbon::parse($announce->created_at)->timezone('Asia/Manila')->diffForHumans() }})</span>
-                                    </div>
+      <div class="col-lg-10 mx-auto"> 
+        @if($announcement->isEmpty())
+            <p style="text-align: center; font-size: 25px; font-weight: normal;">No Announcement</p>
+        @else
+        @foreach($announcement->sortByDesc('created_at') as $announce)
+                <div class="card card-margin mb-3"> 
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            <div class="widget-49-title-wrapper">
+                                <div class="widget-49-meeting-info" style="margin-top: 20px; ">
+                                    <span class="widget-49-pro-title" style="font-size: 17px; text-transform: capitalize; font-weight: bold;">{{ $announce->title }}</span>
+                                    <span class="widget-49-meeting-time" style="margin-bottom:5px;">  {{ \Carbon\Carbon::parse($announce->created_at)->timezone('Asia/Manila')->isoFormat('MMMM D, YYYY, h:mm A') }} ({{ \Carbon\Carbon::parse($announce->created_at)->timezone('Asia/Manila')->diffForHumans() }})</span>
                                 </div>
-                                <div class="widget-49-meeting-points">
-                                    @if(strlen($announce->caption) > 150)
-                                        <div class="content-toggle" style="font-size: 15px; color: rgb(7, 7, 7);">
-                                            <div class="short-content">
-                                                {!! \Illuminate\Support\Str::limit($announce->caption, 200) !!}
-                                            </div>
-                                            <div class="full-content" style="display: none;">
-                                                {!! $announce->caption !!}
-                                            </div>
-                                            <a href="#" class="btn btn-sm btn-flash-border-primary read-more">Read More</a>
-                                        </div>
-                                    @else
-                                        <div class="full-content" style="font-size: 15px; color: rgb(7, 7, 7);">
-                                            {!! $announce->caption !!}
-                                        </div>
-                                    @endif
-                                </div>
-                                {{-- <div class="widget-49-meeting-action">
-                                   
-                                </div> --}}
                             </div>
+                            <div class="widget-49-meeting-points">
+                                @if($announce->caption)
+                                    <div class="full-content" style="font-size: 15px; color: rgb(7, 7, 7);">
+                                        {!! $announce->caption !!}
+                                    </div>
+                                @else
+                                    <div class="content-toggle" style="font-size: 15px; color: rgb(7, 7, 7);">
+                                        <!-- Content when caption is not available -->
+                                    </div>
+                                @endif
+                            </div>
+                            {{-- <div class="widget-49-meeting-action">
+                               
+                            </div> --}}
                         </div>
                     </div>
-                @endforeach
-            @endif
+                </div>
+            @endforeach
+        @endif
+    </div>
+    
+      
         </div>
     </div>
 
@@ -374,7 +371,7 @@
 <!-- Add this script before the closing </body> tag -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+{{-- <script>
     $(document).ready(function() {
         $(".read-more").click(function(e) {
             e.preventDefault();
@@ -387,6 +384,6 @@
             $(this).text($shortContent.is(':visible') ? 'Read More' : 'Read Less');
         });
     });
-</script>
+</script> --}}
 
 @include('partials.footer')

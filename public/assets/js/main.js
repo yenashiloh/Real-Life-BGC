@@ -682,6 +682,12 @@ document.addEventListener('input', function (event) {
     }
 });
 
+document.addEventListener('input', function (event) {
+    if (event.target && event.target.id.startsWith('monthlyIncome')) {
+        calculateTotalIncome();
+    }
+});
+
 function calculateTotalIncome() {
     const totalMonthlyIncomeField = document.getElementById('totalMonthlyIncome');
     const monthlyIncomeFields = document.querySelectorAll('[id^="monthlyIncome"]');
@@ -689,11 +695,14 @@ function calculateTotalIncome() {
     let totalIncome = 0;
 
     monthlyIncomeFields.forEach(field => {
-        const income = parseFloat(field.value) || 0;
+        const income = parseFloat(field.value.replace(/,/g, '')) || 0;
         totalIncome += income;
     });
 
-    totalMonthlyIncomeField.value = totalIncome.toFixed(2);
+    totalMonthlyIncomeField.value = totalIncome.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 }
 
 

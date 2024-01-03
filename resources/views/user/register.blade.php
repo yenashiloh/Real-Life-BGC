@@ -114,7 +114,7 @@
 
                         <div class="stepper-label">
                             <div class="stepper-desc">
-                                Monthly Household Income
+                                Household Information
                             </div>
                         </div>
                     </div>
@@ -983,7 +983,7 @@
                         step2ErrorMessage.innerText = "Please fill out all required fields.";
                     } else if (!ageValid) {
                         step2ErrorMessage.innerText =
-                            "You must be under the age of 25 to qualify for the scholarship.";
+                            "You must be between the ages of 12 and 25 to qualify for the scholarship.";
                     } else if (hasSpecialCharacters) {
                         step2ErrorMessage.innerText = "";
                     } else if (!addressFieldsValid) {

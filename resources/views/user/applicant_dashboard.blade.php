@@ -221,6 +221,102 @@
                                                     <h5 class="modal-title">Add Document</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form>
+                                                            <div class="form-group">
+                                                                <label for="documentType">Document Type</label>
+                                                                <select class="form-select form-select-solid form-control"
+                                                                    id="documentType">
+                                                                    <option value="" style="color:#444444;">Select
+                                                                        document type</option>
+                                                                    <option value="">Signed Application Form</option>
+                                                                    <option value="2">Birth Certificate</option>
+                                                                    <option value="3">Character Evaluation Forms
+                                                                    </option>
+                                                                    <option value="4">Proof of Financial Status
+                                                                    </option>
+                                                                    <option value="5">Payslip / DSWD Report / ITR
+                                                                    </option>
+                                                                    <option value="6">Two Reference Forms</option>
+                                                                    <option value="7">Home Visitation Form</option>
+                                                                    <option value="8">Report Card / Grades</option>
+                                                                    <option value="9">Prospectus</option>
+                                                                    <option value="10">Official Grading System</option>
+                                                                    <option value="11">Tuition Projection</option>
+                                                                    <option value="12">Admission Slip</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="notes">Notes</label>
+                                                                <textarea class="form-control" id="notes" rows="3"></textarea>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="fileUpload">Upload Requirements</label>
+                                                                <div class="drag-area">
+                                                                    <label for="fileUpload" class="icon"><i
+                                                                            class="fas fa-cloud-upload-alt"></i></label>
+                                                                    <input type="file" class="form-control"
+                                                                        id="fileUpload" style="display: none;">
+                                                                    <header>Drag and drop files here or click to upload
+                                                                        attachment</header>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </form>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Add Document</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Basic Modal-->
+
+                                    <div class="table-responsive">
+                                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                            <thead>
+                                                <tr class="data-tables">
+                                                    <th>#</th>
+                                                    <th style="font-size: 15px;">Document Type</th>
+                                                    <th>Notes</th>
+                                                    <th>Uploaded Document</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($reportcardData as $index => $requirement)
+                                                <tr class="data">
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $requirement->document_type }}</td>
+                                                    <td>{{ $requirement->notes }}</td>
+                                                    <td> <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $requirement->uploaded_document }}" style="text-decoration: underline; color: #444444;">
+                                                        {{ $requirement->uploaded_document }}
+                                                    </a></td>
+                                                    <td><span class="badge badge-primary" style="font-weight: medium; ">{{ $requirement->status }}</span></td>
+                                                    <td>
+                                                        <!-- Your action buttons -->
+                                                        <button type="button" class="btn" style="width: 90px; background-color: #2EB85C; color: white; font-size: 13px;" data-bs-toggle="modal" data-bs-target="#editModal"><i class="fas fa-edit"></i> Edit</button>
+                                                        <button type="button" class="btn" style="background-color: #DC3545; color: white; font-size: 13px;" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="fas fa-trash"></i> Delete</button>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!----EDIT MODAL-->
+                                    <div class="modal fade" id="editModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Edit Document</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <form>
@@ -228,16 +324,13 @@
                                                             <label for="documentType">Document Type</label>
                                                             <select class="form-select form-select-solid form-control"
                                                                 id="documentType">
-                                                                <option value="" style="color:#444444;">Select
-                                                                    document type</option>
+                                                                <option value="" style="color:#444444;">Select document type
+                                                                </option>
                                                                 <option value="">Signed Application Form</option>
                                                                 <option value="2">Birth Certificate</option>
-                                                                <option value="3">Character Evaluation Forms
-                                                                </option>
-                                                                <option value="4">Proof of Financial Status
-                                                                </option>
-                                                                <option value="5">Payslip / DSWD Report / ITR
-                                                                </option>
+                                                                <option value="3">Character Evaluation Forms</option>
+                                                                <option value="4">Proof of Financial Status</option>
+                                                                <option value="5">Payslip / DSWD Report / ITR</option>
                                                                 <option value="6">Two Reference Forms</option>
                                                                 <option value="7">Home Visitation Form</option>
                                                                 <option value="8">Report Card / Grades</option>
@@ -258,146 +351,51 @@
                                                             <div class="drag-area">
                                                                 <label for="fileUpload" class="icon"><i
                                                                         class="fas fa-cloud-upload-alt"></i></label>
-                                                                <input type="file" class="form-control"
-                                                                    id="fileUpload" style="display: none;">
-                                                                <header>Drag and drop files here or click to upload
-                                                                    attachment</header>
+                                                                <input type="file" class="form-control" id="fileUpload"
+                                                                    style="display: none;">
+                                                                <header>Drag and drop files here or click to upload attachment</header>
                                                             </div>
                                                         </div>
                                                     </form>
                                                 </div>
-                                </form>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- End Basic Modal-->
-
-                    <div class="table-responsive">
-                        <table id="example" class="table table-striped table-bordered" style="width:100%">
-                            <thead>
-                                <tr class="data-tables">
-                                    <th>#</th>
-                                    <th style=" font-size: 15px;">Document Type</th>
-                                    <th>Notes</th>
-                                    <th>Uploaded Document</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="data">
-                                    <td>1</td>
-                                    <td>Report of Grades</td>
-                                    <td>3 School Year Grades</td>
-                                    <td>Grades.pdf</td>
-                                    <td><span class="badge badge-primary" style="font-weight: medium;">For
-                                            review</span></td>
-                                    <td>
-                                        <button type="button" class="btn"
-                                            style="width: 90px; background-color: #2EB85C; color: white;  font-size: 13px;"
-                                            data-bs-toggle="modal" data-bs-target="#editModal"><i
-                                                class="fas fa-edit"></i> Edit</button>
-                                        <button type="button" class="btn"
-                                            style="background-color: #DC3545; color: white;  font-size: 13px; "
-                                            data-bs-toggle="modal" data-bs-target="#deleteModal"><i
-                                                class="fas fa-trash"></i> Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!----EDIT MODAL-->
-                    <div class="modal fade" id="editModal" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Edit Document</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="documentType">Document Type</label>
-                                            <select class="form-select form-select-solid form-control"
-                                                id="documentType">
-                                                <option value="" style="color:#444444;">Select document type
-                                                </option>
-                                                <option value="">Signed Application Form</option>
-                                                <option value="2">Birth Certificate</option>
-                                                <option value="3">Character Evaluation Forms</option>
-                                                <option value="4">Proof of Financial Status</option>
-                                                <option value="5">Payslip / DSWD Report / ITR</option>
-                                                <option value="6">Two Reference Forms</option>
-                                                <option value="7">Home Visitation Form</option>
-                                                <option value="8">Report Card / Grades</option>
-                                                <option value="9">Prospectus</option>
-                                                <option value="10">Official Grading System</option>
-                                                <option value="11">Tuition Projection</option>
-                                                <option value="12">Admission Slip</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="notes">Notes</label>
-                                            <textarea class="form-control" id="notes" rows="3"></textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="fileUpload">Upload Requirements</label>
-                                            <div class="drag-area">
-                                                <label for="fileUpload" class="icon"><i
-                                                        class="fas fa-cloud-upload-alt"></i></label>
-                                                <input type="file" class="form-control" id="fileUpload"
-                                                    style="display: none;">
-                                                <header>Drag and drop files here or click to upload attachment</header>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- End Edit Modal-->
+                                    </div><!-- End Edit Modal-->
 
-                    <!-- Delete Modal -->
-                    <div class="modal fade" id="deleteModal" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Delete Document</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Are you sure you want to delete this?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-danger">Yes, Delete</button>
+                                    <!-- Delete Modal -->
+                                    <div class="modal fade" id="deleteModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Delete Document</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to delete this?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-danger">Yes, Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form><!-- End settings Form -->
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    </form><!-- End settings Form -->
-                </div>
-            </div>
-            </div><!-- End Bordered Tabs -->
-            </div>
-            </div>
-            </div>
-        </section>
-    </main><!-- End #main -->
+                            </div><!-- End Bordered Tabs -->
+                            </div>
+                            </div>
+                            </div>
+                        </section>
+                    </main><!-- End #main -->
 
     @include('partials.user-footer')
 

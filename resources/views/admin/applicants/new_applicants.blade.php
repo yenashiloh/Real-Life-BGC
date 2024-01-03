@@ -240,10 +240,10 @@
 $(document).ready(function() {
   $(document).on('click', '.dropdown-item', function(e) {
     e.preventDefault();
-    $('.loader').show();
     var applicant_id = $(this).data('applicant-id');
     var updateRoute = $(this).data('route');
     var action = $(this).data('action');
+    $('.loader').show();
 
     console.log('Applicant ID:', applicant_id);
     console.log('Update Route:', updateRoute);
@@ -276,7 +276,6 @@ $(document).ready(function() {
 
           $('.datatable').before(alertHTML);
           $('#status-' + applicantId).text(newStatus);
-          $('.loader').hide();
 
           if (newStatus === 'Declined' || newStatus === 'Approved') {
             $('#dropdownMenuButton' + applicantId).show();
@@ -321,6 +320,7 @@ $(document).ready(function() {
           }, 8000);
         } else {
           console.log('Failed to update status:', response.error);
+          $('.loader').hide();
         }
       },
       error: function(xhr, status, error) {

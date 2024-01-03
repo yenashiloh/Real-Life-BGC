@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Notifications\StatusUpdateNotification; 
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
+use App\Models\Member;
+use App\Models\Requirement;
 
 class AdminController extends Controller
 {
@@ -433,7 +435,10 @@ class AdminController extends Controller
         $email = $applicantData ? $applicantData->email : null;
         $status = $applicantData ? $applicantData->status : null;
 
-        return view('admin.applicants.view_applicant', compact('title', 'applicant', 'email', 'status'));
+        $members = Member::where('applicant_id', $id)->get();
+        $reportcardData = Requirement::where('applicant_id', $id)->get();
+
+        return view('admin.applicants.view_applicant', compact('title', 'applicant', 'email', 'status', 'members', 'reportcardData'));
     }
 }
 

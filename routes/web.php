@@ -26,12 +26,13 @@ use App\Http\Controllers\EmailController;
 // })->name('home');
 
 // applicant
+Route::get('/announcement', [ApplicantController::class, 'announcement'])->name('announcement');
+Route::get('/contact', [ApplicantController::class, 'contact'])->name('contact');
+Route::get('/faq', [ApplicantController::class, 'faq'])->name('faq');
+
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/', [ApplicantController::class, 'index']);
-    Route::get('/announcement', [ApplicantController::class, 'announcement'])->name('announcement');
-    Route::get('/contact', [ApplicantController::class, 'contact'])->name('contact');
-    Route::get('/faq', [ApplicantController::class, 'faq'])->name('faq');
-
+  
     Route::get('/login', [ApplicantController::class, 'login'])->name('login');
     Route::post('/login', [ApplicantController::class, 'loginPost'])->name('login.post');
 
@@ -54,6 +55,8 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::post('/user/change-password', [ApplicantController::class, 'changePassword'])->name('change.password');
     Route::get('/applicant_dashboard', [ApplicantController::class, 'applicantDashboard'])->name('user.applicant_dashboard');
     Route::get('/change_password', [ApplicantController::class, 'viewChangePassword'])->name('user.change_password');
+    Route::get('/requirements', [ApplicantController::class, 'showRequirements'])->name('user.applicant_dashboard');
+
 
 });
 

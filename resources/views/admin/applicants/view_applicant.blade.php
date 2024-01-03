@@ -36,7 +36,7 @@
           </li>
 
           <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Files</button>
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#files">Files</button>
           </li>
 
         </ul>
@@ -267,81 +267,69 @@
             </form><!-- End Profile Edit Form -->
 
           </div>
-          <div class="tab-pane fade pt-3" id="profile-settings">
+          <div class="tab-pane fade " id="profile-settings">
 
-            <!-- Settings Form -->
             <form>
-
-              <div class="row mb-3">
-                <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
-                <div class="col-md-8 col-lg-9">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="changesMade" checked>
-                    <label class="form-check-label" for="changesMade">
-                      Changes made to your account
-                    </label>
+              @foreach ($members as $member)
+                  <div class="row mb-2">
+                      <div class="col-lg-4 col-md-4 label" style="margin-top: 20px; color: #0A6E57;">Household Employed {{ $loop->iteration }}</div>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="newProducts" checked>
-                    <label class="form-check-label" for="newProducts">
-                      Information on new products and services
-                    </label>
+                  <div class="row mb-2">
+                      <div class="col-lg-4 col-md-4 label">Name</div>
+                      <div class="col-lg-8 col-md-8">{{ $member->name ?? '' }}</div>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="proOffers">
-                    <label class="form-check-label" for="proOffers">
-                      Marketing and promo offers
-                    </label>
+                  <div class="row mb-2">
+                      <div class="col-lg-4 col-md-4 label">Relationship</div>
+                      <div class="col-lg-8 col-md-8">{{ $member->relationship ?? '' }}</div>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>
-                    <label class="form-check-label" for="securityNotify">
-                      Security alerts
-                    </label>
+                  <div class="row mb-2">
+                      <div class="col-lg-4 col-md-4 label">Occupation</div>
+                      <div class="col-lg-8 col-md-8">{{ $member->occupation ?? '' }}</div>
                   </div>
-                </div>
-              </div>
-
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-              </div>
-            </form><!-- End settings Form -->
-
+                  <div class="row mb-2">
+                      <div class="col-lg-4 col-md-4 label">Monthly Income</div>
+                      <div class="col-lg-8 col-md-8">{{ $member->monthly_income ?? '' }}</div>
+                  </div>
+              @endforeach
+          </form>
           </div>
 
-          <div class="tab-pane fade pt-3" id="profile-change-password">
-            <!-- Change Password Form -->
+          <div class="tab-pane fade" id="files">
             <form>
-
-              <div class="row mb-3">
-                <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                <div class="col-md-8 col-lg-9">
-                  <input name="password" type="password" class="form-control" id="currentPassword">
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                <div class="col-md-8 col-lg-9">
-                  <input name="newpassword" type="password" class="form-control" id="newPassword">
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                <div class="col-md-8 col-lg-9">
-                  <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                </div>
-              </div>
-
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Change Password</button>
-              </div>
-            </form><!-- End Change Password Form -->
-
-          </div>
-
-        </div><!-- End Bordered Tabs -->
+                <table class="table datatable">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Document Type</th>
+                            <th scope="col">Notes</th>
+                            <th scope="col">Uploaded Document</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($reportcardData as $index => $requirement)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $requirement->document_type }}</td>
+                            <td>{{ $requirement->notes }}</td>
+                            <td>
+                                <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $requirement->uploaded_document }}" style="text-decoration: underline;">
+                                    {{ $requirement->uploaded_document }}
+                                </a>
+                            </td>
+                            <td>{{ $requirement->status }}</td>
+                            <td class="d-flex justify-content-center">
+                              <button type="button" class="btn btn-primary mx-2" style="width: 70%; margin-bottom: 5px;">Approve</button>
+                              <button type="button" class="btn btn-danger mx-2" style="width: 70%;">Decline</button>
+                          </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        
              
     {{-- <h2>{{ $applicant->first_name }} {{ $applicant->last_name }}</h2> --}}
 

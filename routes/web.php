@@ -40,6 +40,7 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
 
     Route::get('/email', [EmailController::class, 'create']);
     Route::post('/email', [EmailController::class, 'sendEmail'])->name('send.email');
+    Route::get('/android_app/android_announcement', [ApplicantController::class, 'androidAnnouncement'])->name('android_app.android_announcement');
 
     
 });

@@ -91,6 +91,24 @@ class ApplicantController extends Controller
         return view('user.change_password')->with('title', $title);
     }
 
+    // public function androidAnnouncement()
+    // {
+    //     $title = 'Announcement';
+    //     return view('android_app.android_announcement')->with('title', $title);
+    // }
+
+    public function androidAnnouncement()
+    {
+        $title = 'Announcement';
+        $announcements = Announcement::all();
+
+        return view('android_app.android_announcement', [
+            'title' => $title,
+            'announcement' => $announcements
+        ]);
+    }
+
+
 
     function loginPost(Request $request)
     {

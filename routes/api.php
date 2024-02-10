@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AndroidController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::post('login', [AndroidController::class, 'login']);
+Route::post('register', [AndroidController::class, 'register']);
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('user', [AndroidController::class, 'index']);
+    Route::post('update', [AndroidController::class, 'update']);
+    Route::post('logout', [AndroidController::class, 'logout']);
 });

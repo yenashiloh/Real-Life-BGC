@@ -108,6 +108,7 @@ class ApplicantController extends Controller
         ]);
     }
 
+  
 
 
     function loginPost(Request $request)
@@ -134,6 +135,12 @@ class ApplicantController extends Controller
     {
         $title = 'Register';
         return view('user.register')->with('title', $title);
+    }
+
+    public function registration()
+    {
+        $title = 'Registration';
+        return view('user.registration')->with('title', $title);
     }
 
     function registerPost(Request $request)

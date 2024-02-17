@@ -38,6 +38,8 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/register', [ApplicantController::class, 'register'])->name('register');
     Route::post('/register', [ApplicantController::class, 'registerPost'])->name('register.post');
 
+    Route::get('/registration', [ApplicantController::class, 'registration'])->name('registration');
+
     Route::get('/email', [EmailController::class, 'create']);
     Route::post('/email', [EmailController::class, 'sendEmail'])->name('send.email');
     Route::get('/android_app/android_announcement', [ApplicantController::class, 'androidAnnouncement'])->name('android_app.android_announcement');

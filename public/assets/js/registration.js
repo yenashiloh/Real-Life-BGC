@@ -798,14 +798,19 @@ ready(function() {
 //SAVE FORM DATA
 function saveFormData() {
   var inputs = document.querySelectorAll('input:not([type="file"]), select');
+  var gwaInputs = document.querySelectorAll('.grade-input:not([type="file"])');
   var formData = {};
 
   inputs.forEach(function (input) {
-      if (input.type === "select-one") {
-          formData[input.name] = input.selectedIndex;
-      } else {
-          formData[input.name] = input.value;
-      }
+    if (input.type === "select-one") {
+      formData[input.name] = input.selectedIndex;
+    } else {
+      formData[input.name] = input.value;
+    }
+  });
+
+  gwaInputs.forEach(function (input) {
+    formData[input.name] = input.value;
   });
 
   localStorage.setItem('formData', JSON.stringify(formData));
@@ -815,27 +820,32 @@ function loadFormData() {
   var storedData = localStorage.getItem('formData');
 
   if (storedData) {
-      var formData = JSON.parse(storedData);
+    var formData = JSON.parse(storedData);
 
-      for (var key in formData) {
-          if (formData.hasOwnProperty(key)) {
-              var inputElement = document.querySelector('[name="' + key + '"]');
-              if (inputElement) {
-                  if (inputElement.type === "select-one") {
-                      inputElement.selectedIndex = formData[key];
-                  } else if (inputElement.type !== "file") {
-                      inputElement.value = formData[key];
-                  }
-              }
+    for (var key in formData) {
+      if (formData.hasOwnProperty(key)) {
+        var inputElement = document.querySelector('[name="' + key + '"]');
+        if (inputElement) {
+          if (inputElement.type === "select-one") {
+            inputElement.selectedIndex = formData[key];
+          } else if (inputElement.type !== "file") {
+            inputElement.value = formData[key];
           }
+        }
       }
+    }
   }
 }
 
+window.addEventListener('beforeunload', saveFormData);
 window.addEventListener('load', loadFormData);
 
 document.querySelectorAll('select').forEach(function (select) {
-  select.addEventListener('change', saveFormData);
+  select.addEventListener('change', function () {
+    // Reset GWA inputs when incomingGrade dropdown changes
+    resetGWAInputs();
+    saveFormData();
+  });
 });
 
 document.querySelector('[data-action="next"]').addEventListener('click', saveFormData);
@@ -878,6 +888,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+//   function resetGWAInputs() {
+//     // Reset GWA input values
+//     const gwaInputs = document.querySelectorAll('.grade-input:not([type="file"])');
+//     gwaInputs.forEach(input => {
+//         input.value = '';
+//     });
+// }
+  
   
 });
 

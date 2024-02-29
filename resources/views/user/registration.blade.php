@@ -119,7 +119,6 @@
                 </li>
               </ul>
          </div>
-
         <div class="mt-3 form__field">
           <label for="email-address">
         </div>
@@ -131,7 +130,9 @@
               DISHONESTY OF FALSIFICATION MAY BE A GROUNDS FOR MY DISQUALIFICATION</strong> from this scholarship program. I also understand that the submission of this application does 
               <strong>NOT AUTOMATICALLY QUALIFY</strong> me for the scholarship grant and that I will abide by the decision of the Real Life BGC Admins.</span> --}}
               <span>
-                I am giving my consent for the Real LIFE Foundation to collect and process my data.
+                I understand that the information I will provide will be used by Real LIFE Foundation to screen and process my application for SY 2023-2024. I give my consent to
+                Real LIFE to use the data I will
+                provide and the file attachments for the said application.
               </span>
             </label>
         </div>

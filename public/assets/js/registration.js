@@ -793,3 +793,91 @@ ready(function() {
     });
   });
 });
+
+ /****************************************************************************/
+//SAVE FORM DATA
+function saveFormData() {
+  var inputs = document.querySelectorAll('input:not([type="file"]), select');
+  var formData = {};
+
+  inputs.forEach(function (input) {
+      if (input.type === "select-one") {
+          formData[input.name] = input.selectedIndex;
+      } else {
+          formData[input.name] = input.value;
+      }
+  });
+
+  localStorage.setItem('formData', JSON.stringify(formData));
+}
+
+function loadFormData() {
+  var storedData = localStorage.getItem('formData');
+
+  if (storedData) {
+      var formData = JSON.parse(storedData);
+
+      for (var key in formData) {
+          if (formData.hasOwnProperty(key)) {
+              var inputElement = document.querySelector('[name="' + key + '"]');
+              if (inputElement) {
+                  if (inputElement.type === "select-one") {
+                      inputElement.selectedIndex = formData[key];
+                  } else if (inputElement.type !== "file") {
+                      inputElement.value = formData[key];
+                  }
+              }
+          }
+      }
+  }
+}
+
+window.addEventListener('load', loadFormData);
+
+document.querySelectorAll('select').forEach(function (select) {
+  select.addEventListener('change', saveFormData);
+});
+
+document.querySelector('[data-action="next"]').addEventListener('click', saveFormData);
+
+ /****************************************************************************/
+
+//specific drop down input field
+document.addEventListener("DOMContentLoaded", function () {
+  const incomingGradeSelect = document.getElementById("incomingGrade");
+  const gradeInputs = document.querySelectorAll('.grade-input');
+  const reportCardInput = document.getElementById("ReportCardField"); 
+
+  incomingGradeSelect.addEventListener("change", function () {
+      const selectedValue = incomingGradeSelect.value;
+
+      // Hide all grade input fields
+      gradeInputs.forEach(input => input.style.display = "none");
+
+      // Show the relevant grade input fields based on the selected option
+      if (selectedValue === "GradeSeven") {
+          showGrades(["grade3", "grade4", "grade5"]);
+      } else if (selectedValue === "GradeEight") {
+          showGrades(["grade4", "grade5", "grade6", "ReportCardField"]);
+      } else if (selectedValue === "GradeNine") {
+          showGrades(["grade5", "grade6", "grade7", "ReportCardField"]);
+      } else if (selectedValue === "GradeTen") {
+          showGrades(["grade6", "grade7", "grade8", "ReportCardField"]);
+      } else if (selectedValue === "GradeEleven") {
+          showGrades(["grade7", "grade8", "grade9", "ReportCardField"]);
+      } else if (selectedValue === "GradeTwelve") {
+          showGrades(["grade8", "grade9", "grade10", "ReportCardField"]);
+      }
+  });
+
+  function showGrades(gradesToShow) {
+    gradesToShow.forEach(gradeId => {
+      const gradeInput = document.getElementById(gradeId);
+      if (gradeInput) {
+        gradeInput.style.display = "block";
+      }
+    });
+  }
+  
+});
+

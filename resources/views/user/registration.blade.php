@@ -127,10 +127,13 @@
         <div class="mt-1 form__field">
           <label class="form__choice-wrapper">
             <input id="checkbox" type="checkbox" name="checkbox" value="Yes" required>
-            <span>I certify that, <strong>ALL</strong> answers provided will be <strong>TRUE</strong> and <strong>CORRECT</strong>. Furthermore, I acknowledge that <strong>ANY ACT OF 
+            {{-- <span>I certify that, <strong>ALL</strong> answers provided will be <strong>TRUE</strong> and <strong>CORRECT</strong>. Furthermore, I acknowledge that <strong>ANY ACT OF 
               DISHONESTY OF FALSIFICATION MAY BE A GROUNDS FOR MY DISQUALIFICATION</strong> from this scholarship program. I also understand that the submission of this application does 
-              <strong>NOT AUTOMATICALLY QUALIFY</strong> me for the scholarship grant and that I will abide by the decision of the Real Life BGC Admins.</span>
-          </label>
+              <strong>NOT AUTOMATICALLY QUALIFY</strong> me for the scholarship grant and that I will abide by the decision of the Real Life BGC Admins.</span> --}}
+              <span>
+                I am giving my consent for the Real LIFE Foundation to collect and process my data.
+              </span>
+            </label>
         </div>
         <div class="d-flex align-items-center justify-center sm:justify-end mt-4 sm:mt-5">
           <button type="button" data-action="next">Next</button>
@@ -227,23 +230,23 @@
       <h2 class="mt-3" style="font-weight: bold;">Educational Background </h2>
       <div class="sm:d-grid sm:grid-col-3">
         <div class="form__field">
-          <label for="incoming-grade">
-            Incoming Grade or Year Level
-            <span data-required="true" aria-hidden="true"></span>
-          </label>
-          <select id="incomingGrade" name="incomingGrade" autocomplete="incoming grade" required>
-            <option value="" disabled selected>Select grade or year level</option>
-            <option value="GradeSeven">Grade 7</option>
-            <option value="GradeEight">Grade 8</option>
-            <option value="GradeNine">Grade 9</option>
-            <option value="GradeTen">Grade 10</option>
-            <option value="GradeEleven">Grade 11</option>
-            <option value="GradeTwelve">Grade 12</option>
-            <option value="FirstYear">First Year College</option>
-            <option value="SecondYear">Second Year College</option>
-            <option value="ThirdYear">Third Year College</option>
-            <option value="FourthYear">Fourth Year College</option>
-          </select>
+            <label for="incoming-grade">
+                Incoming Grade or Year Level
+                <span data-required="true" aria-hidden="true"></span>
+            </label>
+            <select id="incomingGrade" name="incomingGrade" autocomplete="incoming grade" required>
+                <option value="">Select grade or year level</option>
+                <option value="GradeSeven">Grade 7</option>
+                <option value="GradeEight">Grade 8</option>
+                <option value="GradeNine">Grade 9</option>
+                <option value="GradeTen">Grade 10</option>
+                <option value="GradeEleven">Grade 11</option>
+                <option value="GradeTwelve">Grade 12</option>
+                <option value="FirstYear">First Year College</option>
+                <option value="SecondYear">Second Year College</option>
+                <option value="ThirdYear">Third Year College</option>
+                <option value="FourthYear">Fourth Year College</option>
+            </select>
         </div>
 
         <div class="form__field">
@@ -267,33 +270,27 @@
           Average):
           If grades are 5 point scale, write the equivalent. </span>
       </h1>
-      <div class="sm:d-grid sm:grid-col-3 ">
-        @for ($grade = 3; $grade <= 10; $grade++)
-            @php
-                $displayStyle = ($grade <= 6) ? '' : 'mb-3';
-                $label = "Grade $grade GWA";
-                $name = "grade{$grade}GWA";
-                $gradeType = ($grade <= 5) ? 'GradeSeven' : 'GradeEight';
-            @endphp
-    
-            <div class="mb-3 form__field" data-grade="{{ $gradeType }}">
-                <label for="gwa">{{ $label }} 
-                    <span data-required="true" aria-hidden="true"></span>
-                </label>
-                <input id="currentSchool" type="number" name="{{ $name }}" autocomplete="gwa" required>
-            </div>
-        @endfor
 
-          <div class="mb-3 form__field">
-            <label for="ReportCard">
+      <div class="sm:d-grid sm:grid-col-3">
+        @for ($i = 3; $i <= 12; $i++)
+        <div class="mb-3 form__field grade-input" id="grade{{ $i }}" style="display: none;">
+            <label for="gwa">Grade {{ $i }} GWA
+                <span data-required="true" aria-hidden="true"></span>
+            </label>
+            <input type="number" name="grade{{ $i }}GWA" autocomplete="gwa">
+        </div>
+      @endfor
+
+      <div class="mb-3 form__field"  id="ReportCardField" style="display: none;">
+          <label for="ReportCard">
               Report Card
               <span data-required="true" aria-hidden="true"></span>
               <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">PDF only</span>
-            </label>
-            <input id="ReportCard" type="file" name="ReportCard" autocomplete="report card" required style="padding">
-          </div>
-        </div>
-        
+          </label>
+          <input id="ReportCard" type="file" name="ReportCard" autocomplete="report card" required style="padding">
+      </div>
+    </div>
+      
       <div class="d-flex flex-column-reverse sm:flex-row align-items-center justify-center sm:justify-end mt-4 sm:mt-5">
         <button type="button" class="mt-1 sm:mt-0 button--simple" data-action="prev">
           Previous
@@ -390,7 +387,7 @@
       <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
       <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
       <script src="assets/vendor/php-email-form/validate.js"></script>
-  
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
       <!-- Template Main JS File -->
       <script src="assets/js/registration.js"></script>
       {{-- <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> --}}
@@ -398,44 +395,75 @@
 </body>
 </html>
 
+{{-- <script>
+function saveFormData() {
+    var inputs = document.querySelectorAll('input:not([type="file"]), select');
+    var formData = {};
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-      // Check if there's any saved form data in local storage
-      const formData = JSON.parse(localStorage.getItem('formData')) || {};
-
-      // Populate form fields with saved data
-      Object.keys(formData).forEach(key => {
-          const element = document.getElementById(key);
-          if (element) {
-              element.value = formData[key];
-          }
-      });
-
-      // Save form data to local storage on input change
-      document.getElementById('progress-form').addEventListener('input', function (event) {
-          const { id, value } = event.target;
-          formData[id] = value;
-          localStorage.setItem('formData', JSON.stringify(formData));
-      });
-
-      // Clear local storage on form submission
-      document.getElementById('progress-form').addEventListener('submit', function () {
-              localStorage.removeItem('formData');
-          });
-      });
-      
-      document.addEventListener('DOMContentLoaded', function () {
-    const incomingGradeSelect = document.getElementById('incomingGrade');
-    const gwaFields = document.querySelectorAll('.form__field[data-grade]');
-
-    incomingGradeSelect.addEventListener('change', function () {
-        const selectedGrade = incomingGradeSelect.value;
-        gwaFields.forEach(field => {
-            const fieldGrade = field.getAttribute('data-grade');
-            field.style.display = fieldGrade === selectedGrade ? 'grid' : 'none';
-        });
+    inputs.forEach(function (input) {
+        if (input.type === "select-one") {
+            formData[input.name] = input.selectedIndex;
+        } else {
+            formData[input.name] = input.value;
+        }
     });
+
+    localStorage.setItem('formData', JSON.stringify(formData));
+}
+
+function loadFormData() {
+    var storedData = localStorage.getItem('formData');
+
+    if (storedData) {
+        var formData = JSON.parse(storedData);
+
+        for (var key in formData) {
+            if (formData.hasOwnProperty(key)) {
+                var inputElement = document.querySelector('[name="' + key + '"]');
+                if (inputElement) {
+                    if (inputElement.type === "select-one") {
+                        inputElement.selectedIndex = formData[key];
+                    } else if (inputElement.type !== "file") {
+                        inputElement.value = formData[key];
+                    }
+                }
+            }
+        }
+    }
+}
+
+window.addEventListener('load', loadFormData);
+
+document.querySelectorAll('select').forEach(function (select) {
+    select.addEventListener('change', saveFormData);
 });
 
-</script>
+document.querySelector('[data-action="next"]').addEventListener('click', saveFormData);
+
+document.addEventListener("DOMContentLoaded", function () {
+        const incomingGradeSelect = document.getElementById("incomingGrade");
+
+        const gradeInputs = document.querySelectorAll('.grade-input');
+
+        incomingGradeSelect.addEventListener("change", function () {
+            const selectedValue = incomingGradeSelect.value;
+
+            gradeInputs.forEach(input => input.style.display = "none");
+
+            if (selectedValue === "GradeSeven") {
+                document.getElementById("grade3").style.display = "block";
+                document.getElementById("grade4").style.display = "block";
+                document.getElementById("grade5").style.display = "block";
+            } else if (selectedValue === "GradeEight") {
+                document.getElementById("grade4").style.display = "block";
+                document.getElementById("grade5").style.display = "block";
+                document.getElementById("grade6").style.display = "block";
+            }
+            
+            
+            // Add similar conditions for other grade levels
+        });
+    });
+
+</script> --}}
+

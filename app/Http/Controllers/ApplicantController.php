@@ -140,9 +140,11 @@ class ApplicantController extends Controller
     public function registration()
     {
         $title = 'Registration';
-        return view('user.registration')->with('title', $title);
+        $incomingGrade = request('incomingGrade');
+    
+        return view('user.registration', compact('title', 'incomingGrade'));
     }
-
+    
     function registerPost(Request $request)
     {
         $request->validate([
@@ -443,6 +445,7 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error', 'Password change failed.');
         }
     }
+    
    
 
 }

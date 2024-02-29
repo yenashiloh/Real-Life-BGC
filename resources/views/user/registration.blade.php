@@ -125,16 +125,14 @@
         {{-- <span id="error-message" style="color: red; font-size: 10px;">Please agree before proceeding.</span> --}}
         <div class="mt-1 form__field">
           <label class="form__choice-wrapper">
-            <input id="checkbox" type="checkbox" name="checkbox" value="Yes" required>
-            {{-- <span>I certify that, <strong>ALL</strong> answers provided will be <strong>TRUE</strong> and <strong>CORRECT</strong>. Furthermore, I acknowledge that <strong>ANY ACT OF 
-              DISHONESTY OF FALSIFICATION MAY BE A GROUNDS FOR MY DISQUALIFICATION</strong> from this scholarship program. I also understand that the submission of this application does 
-              <strong>NOT AUTOMATICALLY QUALIFY</strong> me for the scholarship grant and that I will abide by the decision of the Real Life BGC Admins.</span> --}}
+            <input id="checkbox" type="checkbox" name="checkbox" value="Yes" required>  <span data-required="true" aria-hidden="true">
               <span>
                 I understand that the information I will provide will be used by Real LIFE Foundation to screen and process my application for SY 2023-2024. I give my consent to
                 Real LIFE to use the data I will
                 provide and the file attachments for the said application.
-              </span>
+              </span></span>
             </label>
+            <!-- Add an element to display the error message -->
         </div>
         <div class="d-flex align-items-center justify-center sm:justify-end mt-4 sm:mt-5">
           <button type="button" data-action="next">Next</button>

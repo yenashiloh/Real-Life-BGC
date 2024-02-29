@@ -74,23 +74,33 @@ ready(function() {
   };
 
    /*****************************************************************************
-   * Expects a Node (input[type="text"] or textarea).
+   * Birthdate Validation
    */
-
    const validateDate = field => {
     const val = field.value.trim();
-  
+
     if (val === '' && field.required) {
-      return {
-        isValid: false
-      };
+        return {
+            isValid: false,
+        };
     } else {
-      // You can add additional date-specific validation logic here if needed
-      return {
-        isValid: true
-      };
+        const currentDate = new Date();
+        const selectedDate = new Date(val);
+        const ageInYears = (currentDate - selectedDate) / (365 * 24 * 60 * 60 * 1000);
+
+        if (ageInYears < 10 || ageInYears > 25) {
+            return {
+                isValid: false,
+                message: 'You must be 10 to 25 years old to qualify for the scholarship.'
+            };
+        }
+
+        return {
+            isValid: true
+        };
     }
-  };
+};
+
    
   const validateNumber = field => {
     const val = field.value.trim();
@@ -107,29 +117,29 @@ ready(function() {
     }
   };
 
-  const validateFile = (field) => {
-    const val = field.value.trim();
-    const isValid = !(val === '' && field.required);
+  // const validateFile = (field) => {
+  //   const val = field.value.trim();
+  //   const isValid = !(val === '' && field.required);
   
-    return {
-      isValid
-    };
-  };
+  //   return {
+  //     isValid
+  //   };
+  // };
   
-  const validateCheckbox = field => {
-    const val = field.value.trim();
+  // const validateCheckbox = field => {
+  //   const val = field.value.trim();
   
-    if (val === '' && field.required) {
-      return {
-        isValid: false
-      };
-    } else {
-      // You can add additional date-specific validation logic here if needed
-      return {
-        isValid: true
-      };
-    }
-  };
+  //   if (val === '' && field.required) {
+  //     return {
+  //       isValid: false
+  //     };
+  //   } else {
+  //     // You can add additional date-specific validation logic here if needed
+  //     return {
+  //       isValid: true
+  //     };
+  //   }
+  // };
 
 
   /*****************************************************************************
@@ -195,6 +205,10 @@ ready(function() {
    * Expects a Node (input[type="tel"]).
    */
 
+  const isPDFFile = (filename) => {
+    return /\.(pdf)$/i.test(filename);
+};
+
   const validatePhone = field => {
     const val = field.value.trim();
 
@@ -213,6 +227,24 @@ ready(function() {
       };
     }
   };
+
+  const validateReportCard = field => {
+    const val = field.value.trim();
+    if (val === '' && field.required) {
+      return {
+        isValid: false
+      };
+    }else if (val !== '' && !isPDFFile(val)) {
+        return {
+            isValid: false,
+            message: 'Please upload pdf file only.'
+        };
+    } else {
+        return {
+            isValid: true
+        };
+    }
+};
 
   /*****************************************************************************
    * Expects a Node (input[type="email"]).
@@ -266,7 +298,11 @@ ready(function() {
       case 'number':
         return validateNumber(field);
       case 'file':
-        return validateFile(field);
+        const validation = validateReportCard(field); 
+          // if (!validation.isValid) {
+          //   displayErrorMessage(field, validation.message);
+          // }
+        return validation;
       default:
         throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
     }
@@ -799,6 +835,7 @@ ready(function() {
 function saveFormData() {
   var inputs = document.querySelectorAll('input:not([type="file"]), select');
   var gwaInputs = document.querySelectorAll('.grade-input:not([type="file"])');
+  var fileInput = document.getElementById('ReportCard');
   var formData = {};
 
   inputs.forEach(function (input) {
@@ -808,6 +845,8 @@ function saveFormData() {
       formData[input.name] = input.value;
     }
   });
+
+  formData['ReportCard'] = fileInput.files.length > 0 ? fileInput.files[0].name : '';
 
   gwaInputs.forEach(function (input) {
     formData[input.name] = input.value;
@@ -829,7 +868,14 @@ function loadFormData() {
           if (inputElement.type === "select-one") {
             inputElement.selectedIndex = formData[key];
             inputElement.dispatchEvent(new Event('change'));
-          } else if (inputElement.type !== "file") {
+          } else if (inputElement.type === "file") {
+            if (formData[key] !== '') {
+              var file = new File([""], formData[key]);
+              var dataTransfer = new DataTransfer();
+              dataTransfer.items.add(file);
+              inputElement.files = dataTransfer.files;
+            }
+          } else {
             inputElement.value = formData[key];
           }
         }
@@ -902,6 +948,9 @@ document.getElementById('incomingGrade').addEventListener('change', function () 
       }
   }
 });
+
+
+
 
 
   

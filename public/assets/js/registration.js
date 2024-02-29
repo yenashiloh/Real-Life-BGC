@@ -828,6 +828,7 @@ function loadFormData() {
         if (inputElement) {
           if (inputElement.type === "select-one") {
             inputElement.selectedIndex = formData[key];
+            inputElement.dispatchEvent(new Event('change'));
           } else if (inputElement.type !== "file") {
             inputElement.value = formData[key];
           }
@@ -839,15 +840,6 @@ function loadFormData() {
 
 window.addEventListener('beforeunload', saveFormData);
 window.addEventListener('load', loadFormData);
-
-document.querySelectorAll('select').forEach(function (select) {
-  select.addEventListener('change', function () {
-    // Reset GWA inputs when incomingGrade dropdown changes
-    resetGWAInputs();
-    saveFormData();
-  });
-});
-
 document.querySelector('[data-action="next"]').addEventListener('click', saveFormData);
 
  /****************************************************************************/
@@ -888,15 +880,31 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-
-//   function resetGWAInputs() {
-//     // Reset GWA input values
-//     const gwaInputs = document.querySelectorAll('.grade-input:not([type="file"])');
-//     gwaInputs.forEach(input => {
-//         input.value = '';
-//     });
-// }
-  
-  
 });
+
+//reset the grade gwa
+document.getElementById('incomingGrade').addEventListener('change', function () {
+  var selectedValue = this.value;
+
+  for (var i = 3; i <= 12; i++) {
+      var gradeInput = document.getElementById('grade' + i);
+      if (gradeInput) {
+          gradeInput.style.display = 'none';
+          gradeInput.querySelector('input').value = ''; 
+      }
+  }
+
+  if (selectedValue !== '') {
+      var gradeInputId = 'grade' + (parseInt(selectedValue.replace(/\D/g, '')) || 0);
+      var selectedGradeInput = document.getElementById(gradeInputId);
+      if (selectedGradeInput) {
+          selectedGradeInput.style.display = 'block';
+      }
+  }
+});
+
+
+  
+  
+
 

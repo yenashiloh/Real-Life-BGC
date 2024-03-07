@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="assets/vendor/aos/aos.css">
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/jolty/dist/jolty.css" rel="stylesheet">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/jolty/dist/jolty.css" rel="stylesheet"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="  https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
@@ -65,24 +65,25 @@
                     <!-- Navigation for logged-in users -->
                     <nav id="navbar" class="navbar">
                         <ul>
-                            <li><a class="nav-link scrollto" href="/">Home</a></li>
-                            <li><a class="nav-link scrollto" href="/announcement">Announcement</a></li>
-                            <li><a class="nav-link scrollto" href="/contact">Contact Us</a></li>
-                            <li><a class="nav-link scrollto" href="/faq">FAQ</a></li>
+                            <li><a class="nav-link scrollto{{ request()->is('/') ? ' active' : '' }}" href="/">Home</a></li>
+                            <li><a class="nav-link scrollto{{ request()->is('announcement') ? ' active' : '' }}" href="/announcement">Announcement</a></li>
+                            <li><a class="nav-link scrollto{{ request()->is('contact') ? ' active' : '' }}" href="/contact">Contact Us</a></li>
+                            <li><a class="nav-link scrollto{{ request()->is('faq') ? ' active' : '' }}" href="/faq">FAQ</a></li>
                             <!-- Add other logged-in user links here -->
                         </ul>
                         <i class="bi bi-list mobile-nav-toggle"></i>
+                        
                     </nav><!-- .navbar -->
 
                 <div class="header-nav d-flex align-items-center">
                     <a class="nav-link nav-icon notification-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell bell-icon"></i>
-                        <span class="badge bg-primary badge-number">4</span>
+                        {{-- <span class="badge bg-primary badge-number">1</span> --}}
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications ">
                         <li class="dropdown-header">
-                            You have 4 new notifications
+                            You have 1 new notifications
                             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
                         </li>
                         <li>
@@ -92,7 +93,7 @@
                         <li class="notification-item">
                             <i class=""></i>
                             <div>
-                                <h4>Shey pempo</h4>
+                                <h4>Real LIFE BGC</h4>
                                 <p>You are now for house visitation</p>
                                 <p>30 minutes ago</p>
                             </div>
@@ -105,7 +106,7 @@
                         <li class="notification-item">
                             <i class=""></i>
                             <div>
-                                <h4>Shey Pempo</h4>
+                                <h4>Real LIFE BGC</h4>
                                 <p>You are now for interview</p>
                                 <p>December 9, 2023</p>
                             </div>
@@ -118,7 +119,7 @@
                         <li class="notification-item">
                             <i class=""></i>
                             <div>
-                                <h4>Shey Pampo</h4>
+                                <h4>Real LIFE BGC</h4>
                                 <p>You are now is under review</p>
                                 <p>November 23, 2023</p>
                             </div>
@@ -209,3 +210,18 @@
     </div><!-- End header-nav -->
 </div><!-- End container -->
 </header><!-- End Header -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+       $(document).ready(function () {
+        // Get the current URL path
+        var currentPath = window.location.pathname;
+
+        // Add the "active" class to the corresponding link
+        $('.nav-link').each(function () {
+            var linkPath = $(this).attr('href');
+            if (currentPath === linkPath) {
+                $(this).addClass('active');
+            }
+        });
+    });
+</script>

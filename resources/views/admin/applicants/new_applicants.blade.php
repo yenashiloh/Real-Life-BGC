@@ -33,7 +33,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="applicants-link">
+      <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="applicants-link">
         <i class="bi bi-menu-button-wide" ></i><span>Applicants</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
       <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
@@ -96,7 +96,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Applicants</h5>
-              {{-- <button type="button" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button> --}}
+              <button type="button" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button>
         
               <div class="loader"></div>
               <!-- Table with stripped rows -->
@@ -104,7 +104,7 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Date Apply</th>
+                    <th scope="col">Date Applied</th>
                     <th scope="col">Full Name</th>
                     <th scope="col" >Incoming Grade/Year Level</th>
                     <th scope="col" >School</th>

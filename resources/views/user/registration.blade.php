@@ -47,19 +47,19 @@
       </button>
       <button id="progress-form__tab-2" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button" role="tab" aria-controls="progress-form__panel-2" aria-selected="false" tabindex="-1" aria-disabled="true">
         <span class="d-block step" aria-hidden="true">Step 2<span class="sm:d-none">of 5</span></span>
-        Personal Information
+        Create Account
       </button>
       <button id="progress-form__tab-3" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button" role="tab" aria-controls="progress-form__panel-3" aria-selected="false" tabindex="-1" aria-disabled="true">
         <span class="d-block step" aria-hidden="true">Step 3 <span class="sm:d-none">of 5</span></span>
-        Academic Information
+        Personal Information
       </button>
       <button id="progress-form__tab-4" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button" role="tab" aria-controls="progress-form__panel-3" aria-selected="false" tabindex="-1" aria-disabled="true">
         <span class="d-block step" aria-hidden="true">Step 4 <span class="sm:d-none">of 5</span></span>
-        Household Information
+         Information Academic Information 
       </button>
       <button id="progress-form__tab-5" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button" role="tab" aria-controls="progress-form__panel-5" aria-selected="false" tabindex="-1" aria-disabled="true">
         <span class="d-block step" aria-hidden="true">Step 5 <span class="sm:d-none">of 5</span></span>
-        Create Account
+        Family Information
       </button>
     </div>
     <!-- / End Step Navigation -->
@@ -144,6 +144,45 @@
     <section id="progress-form__panel-2" role="tabpanel" aria-labelledby="progress-form__tab-2" tabindex="0" hidden>
       <div class="sm:d-grid sm:grid-col-2 sm:mt-3">
         <div class="form__field">
+          <label for="email">
+            Email
+            <span data-required="true" aria-hidden="true"></span>
+          </label>
+          <input id="email" type="email" name="email" autocomplete="email" required>
+        </div>
+    
+        <div class="form__field">
+          <label for="password">
+            Password
+            <span data-required="true" aria-hidden="true"></span>
+          </label>
+          <input id="passwordField" type="password" name="password" autocomplete="password" required>
+        </div>
+        
+        <div class="mt-3 form__field">
+          <label for="confirm_password">
+            Confirm Password
+            <span data-required="true" aria-hidden="true"></span>
+          </label>
+          <input  id="confirmPasswordField" type="password" name="confirm_password" autocomplete="contact" required>
+          <span id="passwordMatchError" class="error"></span>
+        </div>
+    
+      <div class="d-flex flex-column-reverse sm:flex-row align-items-center justify-center sm:justify-end mt-4 sm:mt-5">
+        <button type="button" class="mt-1 sm:mt-0 button--simple" data-action="prev">
+          Previous
+        </button>
+        <button type="button" data-action="next">
+          Next
+        </button>
+      </div>
+    </section>
+    <!-- / End Step 2 -->
+
+    <!-- Personal information-->
+    <section id="progress-form__panel-3" role="tabpanel" aria-labelledby="progress-form__tab-2" tabindex="0" hidden>
+      <div class="sm:d-grid sm:grid-col-2 sm:mt-3">
+        <div class="form__field">
           <label for="address">
             First Name
             <span data-required="true" aria-hidden="true"></span>
@@ -172,8 +211,9 @@
             Birthdate
             <span data-required="true" aria-hidden="true"></span>
           </label>
-          <input id="birthdate" type="date" name="birthdate" autocomplete="birthdate" required>
+          <input id="birthdate" type="date" name="birthdate" autocomplete="birthdate" required max="{{ \Carbon\Carbon::now()->toDateString() }}">
         </div>
+        
 
       <div class="mt-3 form__field">
         <label for="house-number">
@@ -217,17 +257,16 @@
         </button>
       </div>
     </section>
-    <!-- / End Step 2 -->
-
  <!-- Step 3 -->
- 
-    <section id="progress-form__panel-3" role="tabpanel" aria-labelledby="progress-form__tab-3" tabindex="0" hidden>
+
+ <!-- Step 4 -->
+    <section id="progress-form__panel-4" role="tabpanel" aria-labelledby="progress-form__tab-3" tabindex="0" hidden>
       <p style="font-weight: bold;">REMINDER: </p>
       <p>Grade Weighted Average (GWA) of at least 88% or its equivalent in the previous academic year for high school students or the previous semester for college students.</p>
       <p>Upload the Report of Card for three indicated Grade/Year Levels.</p>
       <br>
       <h2 class="mt-3" style="font-weight: bold;">Educational Background </h2>
-      <div class="sm:d-grid sm:grid-col-3">
+      <div class="sm:d-grid sm:grid-col-2">
         <div class="form__field">
             <label for="incoming-grade">
                 Incoming Grade or Year Level
@@ -250,15 +289,16 @@
 
         <div class="form__field">
           <label for="currentSchool">
-            Current School
+            Current School/University
             <span data-required="true" aria-hidden="true"></span>
+            <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">Please do not abbreviate</span>
           </label>
           <input id="currentSchool" type="text" name="currentSchool" autocomplete="current school" required>
         </div>
 
-        <div class="form__field">
+        <div class="form__field mt-3 ">
           <label for="currentProgram">
-            Current Program
+            Current Program/Course
             <span data-required="true" aria-hidden="true"></span>
           </label>
           <input id="currentProgram" type="text" name="currentProgram" autocomplete="current program" required>
@@ -299,77 +339,50 @@
         </button>
       </div>
     </section>
-  <!-- / End Step 3 -->
+  <!-- / End Step 4 -->
 
-    <!-- Step 4 -->
-    <section id="progress-form__panel-4" role="tabpanel" aria-labelledby="progress-form__tab-4" tabindex="0" hidden>
-      <div class="mt-3 form__field">
-        <label for="product-satisfaction">
-          How would you rate your level of satisfaction with the service you received?
-          <span data-required="true" aria-hidden="true"></span>
-        </label>
-        <select id="product-satisfaction" name="product-satisfaction" required>
-          <option value="" disabled selected>Please select</option>
-          <option value="Highly satisfied">Highly satisfied</option>
-          <option value="Very satisfied">Very satisfied</option>
-          <option value="Satisfied">Satisfied</option>
-          <option value="Very dissatisfied">Very dissatisfied</option>
-          <option value="Highly dissatisfied">Highly dissatisfied</option>
-        </select>
+    <!-- Step 5 -->
+    <section id="progress-form__panel-5" role="tabpanel" aria-labelledby="progress-form__tab-3" tabindex="0" hidden>
+      <div class="sm:d-grid sm:grid-col-2 sm:mt-3">
+        <div class="form__field ">
+          <label for="employed">
+            Number of Family Employed
+            <span data-required="true" aria-hidden="true"></span>
+          </label>
+          <input id="employed" type="number" name="employed" autocomplete="employed" required>
+        </div>
+    
+        <div class="form__field" id="ReportCardField">
+          <label for="ReportCard">
+            Payslip/DSWD Report/ITR 
+            <span data-required="true" aria-hidden="true"></span>
+            <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">PDF only</span>
+          </label>
+          <input id="payslip" type="file" name="payslip" autocomplete="payslip" required style="padding">
+        </div>
+    
+        <div class="form__field" id="householdInfoFields"></div>
+
+        <div class="mt-3 form__field" style="display: none;">
+          <label for="totalMonthlyIncome">
+            Total Monthly Income
+            <span data-required="true" aria-hidden="true"></span>
+          </label>
+          <input id="totalMonthlyIncomeField" type="number" name="totalMonthlyIncome" autocomplete="totalMonthlyIncome" readonly>
+        </div>
       </div>
-      <div class="mt-3 form__field">
-        <label for="product-recommendation">
-          How likely are you to recommend our products to friends or family?
-          <span data-required="true" aria-hidden="true"></span>
-        </label>
-        <select id="product-recommendation" name="product-recommendation" required>
-          <option value="" disabled selected>Please select</option>
-          <option value="Highly likely">Highly likely</option>
-          <option value="Very likely">Very likely</option>
-          <option value="Likely">Satisfied</option>
-          <option value="Very unlikely">Very unlikely</option>
-          <option value="Highly unlikely">Highly unlikely</option>
-        </select>
-      </div>
-
-      <fieldset id="product-purchase" class="mt-3 form__field">
-        <legend>
-          Which of the following products have you purchased in the past 6 months? Please check all that apply.
-        </legend>
-        <label class="form__choice-wrapper">
-          <input type="checkbox" name="product-purchase" value="A">
-          <span>Product A</span>
-        </label>
-        <label class="form__choice-wrapper">
-          <input type="checkbox" name="product-purchase" value="B">
-          <span>Product B</span>
-        </label>
-        <label class="form__choice-wrapper">
-          <input type="checkbox" name="product-purchase" value="C">
-          <span>Product C</span>
-        </label>
-      </fieldset>
-
-      <div class="mt-3 form__field">
-        <label for="product-feedback">
-          Do you have any additional feedback or comments about our products?
-        </label>
-        <textarea id="product-feedback" name="product-feedback" rows="5"></textarea>
-      </div>
-
+    
       <div class="d-flex flex-column-reverse sm:flex-row align-items-center justify-center sm:justify-end mt-4 sm:mt-5">
         <button type="button" class="mt-1 sm:mt-0 button--simple" data-action="prev">
           Previous
         </button>
-        {{-- <button type="submit">
+        <button type="submit">
           Submit
-        </button> --}}
-        <button type="button" data-action="next">
-            Next
-          </button>
+        </button>
       </div>
     </section>
-    {{-- <!-- / End Step 3 --> --}}
+    
+    {{-- <!-- / End Step 5 --> --}}
     <!-- Thank You -->
     <section id="progress-form__thank-you" hidden>
       <p>Thank you for your submission!</p>
@@ -387,6 +400,7 @@
       <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
       <script src="assets/vendor/php-email-form/validate.js"></script>
       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      
       <!-- Template Main JS File -->
       <script src="assets/js/registration.js"></script>
       {{-- <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> --}}

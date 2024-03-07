@@ -326,23 +326,23 @@
 
     <div class="row">
         
-      <div class="col-lg-10 mx-auto"> 
+      <div class="col-xl-10 mx-auto">
         @if($announcement->isEmpty())
             <p style="text-align: center; font-size: 25px; font-weight: normal;">No Announcement</p>
         @else
         @foreach($announcement->sortByDesc('created_at') as $announce)
-                <div class="card card-margin mb-3"> 
+                <div class="card card-margin" style="margin-bottom: 35px;"> 
                     <div class="card-body pt-0">
                         <div class="widget-49">
                             <div class="widget-49-title-wrapper">
                                 <div class="widget-49-meeting-info" style="margin-top: 20px; ">
-                                    <span class="widget-49-pro-title" style="font-size: 17px; text-transform: capitalize; font-weight: bold;">{{ $announce->title }}</span>
+                                    <span class="widget-49-pro-title" style="font-size: 20px; text-transform: capitalize; font-weight: bold;">{{ $announce->title }}</span>
                                     <span class="widget-49-meeting-time" style="margin-bottom:5px;">  {{ \Carbon\Carbon::parse($announce->created_at)->timezone('Asia/Manila')->isoFormat('MMMM D, YYYY, h:mm A') }} ({{ \Carbon\Carbon::parse($announce->created_at)->timezone('Asia/Manila')->diffForHumans() }})</span>
                                 </div>
                             </div>
                             <div class="widget-49-meeting-points">
                                 @if($announce->caption)
-                                    <div class="full-content" style="font-size: 15px; color: rgb(7, 7, 7);">
+                                    <div class="full-content" style="font-size: 15px; color: rgb(7, 7, 7); margin-left: 20px;"> 
                                         {!! $announce->caption !!}
                                     </div>
                                 @else
@@ -360,10 +360,10 @@
             @endforeach
         @endif
     </div>
-    
+  </div>
       
         </div>
-    </div>
+
 
 <br><br><br>
 

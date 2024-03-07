@@ -61,35 +61,35 @@ class ApplicantController extends Controller
     }
 
     public function applicantDashboard()
-    {
-        $applicantId = auth()->id();
-        $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
-        $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
-        $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
-        $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
-        $title = 'Dashboard';
-        $reportcardData = Requirement::where('applicant_id', $applicantId)->get();
-        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo' , 'reportcardData'));
-    }
+        {
+            $applicantId = auth()->id();
+            $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
+            $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
+            $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
+            $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
+            $title = 'Dashboard';
+            $reportcardData = Requirement::where('applicant_id', $applicantId)->get();
+            return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo' , 'reportcardData'));
+        }
 
 
-    public function personalDetails()
-    {
-        $applicantId = auth()->id();
-        $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
-        $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
-        $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
-        $members = Member::where('applicant_id', $applicantId)->get();
+        public function personalDetails()
+        {
+            $applicantId = auth()->id();
+            $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
+            $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
+            $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
+            $members = Member::where('applicant_id', $applicantId)->get();
 
+            $title = 'Personal Details';
+            return view('user.personal_details', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'members'));
+        }
 
-        return view('user.personal_details', compact('academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'members'));
-    }
-
-    public function viewChangePassword()
-    {
-        $title = 'Change Password';
-        return view('user.change_password')->with('title', $title);
-    }
+        public function viewChangePassword()
+        {
+            $title = 'Change Password';
+            return view('user.change_password')->with('title', $title);
+        }
 
     // public function androidAnnouncement()
     // {
@@ -108,8 +108,36 @@ class ApplicantController extends Controller
         ]);
     }
 
-  
 
+    public function store(Request $request)
+    {
+        dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'documentType' => 'required',
+            'notes' => 'required',
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Get the authenticated user's ID
+        $applicantId = auth()->id();
+
+        // Create a new Requirement instance and assign values
+        $documentData = new Requirement;
+        $documentData->applicant_id = $applicantId;
+        $documentData->document_type = $request->input('documentType');
+        $documentData->notes = $request->input('notes');
+
+        // Save the data and check for success
+        if ($documentData->save()) {
+            return redirect()->back()->with('status', 'Successfully Added!');
+        } else {
+            return redirect()->back()->with('error', 'Failed to save data!');
+        }
+    }
 
     function loginPost(Request $request)
     {
@@ -406,6 +434,7 @@ class ApplicantController extends Controller
         }
     }
 
+    //change password
     public function changePassword(Request $request)
     {
         try {
@@ -446,6 +475,4 @@ class ApplicantController extends Controller
         }
     }
     
-   
-
 }

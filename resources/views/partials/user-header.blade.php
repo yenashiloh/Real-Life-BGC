@@ -8,12 +8,13 @@
 <header id="header" class="shadow-sm d-flex align-items-center">
     <div class="container d-flex align-items-center">
         <a href="/" class="logo me-auto"><img src="assets/img/RLlogo.png" alt="" class="img-fluid"></a>
+        @if(auth()->check())
         <nav id="navbar" class="navbar order-last order-lg-0">
             <ul>
-                <li><a class="nav-link scrollto" href="/">Home</a></li>
-                <li><a class="nav-link scrollto" href="/announcement">Announcement</a></li>
-                <li><a class="nav-link scrollto" href="#contact_us.html">Contact Us</a></li>
-                <li><a class="nav-link scrollto" href="#FAQ.html">FAQ</a></li>
+                <li><a class="nav-link scrollto{{ request()->is('/') ? ' active' : '' }}" href="/">Home</a></li>
+                <li><a class="nav-link scrollto{{ request()->is('announcement') ? ' active' : '' }}" href="/announcement">Announcement</a></li>
+                <li><a class="nav-link scrollto{{ request()->is('contact') ? ' active' : '' }}" href="/contact">Contact Us</a></li>
+                <li><a class="nav-link scrollto{{ request()->is('faq') ? ' active' : '' }}" href="/faq">FAQ</a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
@@ -21,12 +22,12 @@
         <div class="header-nav d-flex align-items-center">
             <a class="nav-link nav-icon notification-icon" href="#" data-bs-toggle="dropdown">
                 <i class="bi bi-bell bell-icon"></i>
-                <span class="badge bg-primary badge-number">4</span>
+                <span class="badge bg-primary badge-number">0</span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications ">
                 <li class="dropdown-header">
-                    You have 4 new notifications
+                    You have (number )new notifications
                     <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
                 </li>
                 <li>
@@ -36,7 +37,7 @@
                 <li class="notification-item">
                     <i class=""></i>
                     <div>
-                        <h4>Shey pempo</h4>
+                        <h4>Real LIFE BGC</h4>
                         <p>You are now for house visitation</p>
                         <p>30 minutes ago</p>
                     </div>
@@ -131,9 +132,24 @@
                             </button>
                         </form>
                     </li>
-
+                    @endif
                 </ul><!-- End Profile Dropdown Items -->
             </div><!-- End Profile Nav -->
         </div><!-- End header-nav -->
     </div><!-- End container -->
 </header><!-- End Header -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+       $(document).ready(function () {
+        // Get the current URL path
+        var currentPath = window.location.pathname;
+
+        // Add the "active" class to the corresponding link
+        $('.nav-link').each(function () {
+            var linkPath = $(this).attr('href');
+            if (currentPath === linkPath) {
+                $(this).addClass('active');
+            }
+        });
+    });
+</script>

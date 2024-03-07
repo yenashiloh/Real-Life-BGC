@@ -59,6 +59,11 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::get('/change_password', [ApplicantController::class, 'viewChangePassword'])->name('user.change_password');
     Route::get('/requirements', [ApplicantController::class, 'showRequirements'])->name('user.applicant_dashboard');
 
+    Route::post('/add-requirements', [ApplicantController::class, 'store']);
+
+    Route::post('/change-applicant-status/{applicant_id}', [ApplicantController::class, 'changeStatus'])->name('change.applicant.status');
+    Route::get('/getUnreadNotificationsCount', [ApplicantController::class, 'getUnreadNotificationsCount']);
+
 
 });
 

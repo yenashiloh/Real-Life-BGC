@@ -43,10 +43,11 @@
                 <form action="{{ route('send.email') }}" class="contact100-form validate-form email-form" method="post">
                     @csrf
                         @if(session()->has('message'))
-                            <div class="alert alert-success" style="text-align: center;">
+                            <div id="successMessageContainer" class="alert alert-success" style="text-align: center;">
                                 {{ session()->get('message') }}
                             </div>
-                        @endif
+                         @endif
+                
                         <div class="row">
                             <div class="form-group col-md-6">
                               <label for="name">First Name</label>
@@ -69,9 +70,10 @@
                             <label for="name">Message</label>
                             <textarea class="form-control" name="content" rows="10" required></textarea>
                         </div>
-						<button type="submit" class="text-center">
-							Send
-						</button>
+						<button type="submit" class="text-center" id="submitBtn">
+                            <span id="submitText" style="color: white; font-size: 15px;">Send</span>
+                            <span id="loadingSpinner" style="display: none; color: white; font-size: 15px;">Loading...</span>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -80,3 +82,19 @@
     <br><br>
 
 @include('partials.footer')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('submitBtn').addEventListener('click', function () {
+            document.getElementById('submitText').style.display = 'none';
+            document.getElementById('loadingSpinner').style.display = 'inline-block';
+        });
+    });
+    $(document).ready(function () {
+        var successMessageContainer = $('#successMessageContainer');
+        if (successMessageContainer.length > 0) {
+            setTimeout(function () {
+                successMessageContainer.fadeOut('slow');
+            }, 5000); 
+        }
+    });
+</script>

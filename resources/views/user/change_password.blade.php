@@ -128,20 +128,23 @@
     @include('partials.user-header')
     <main id="main" class="main">
         <section class="section profile">
-            <div class="col-xl-12">
-                <div class="card ">
+            <div class="col-xl-11 mx-auto">
+                {{-- <div class="card ">
                     <div class="card-body pt-3">
                         <ul class="nav nav-tabs nav-tabs-bordered">
 
                             <li class="nav-item">
                                 <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview"
-                                    style="font-size: 19px; cursor: auto;">Change Password</button>
+                                    style="font-size: 19px; cursor: auto;">Dashboard</button>
                             </li>
 
-                        </ul>
+                        </ul> --}}
                         <div class="tab-content pt-1">
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                                <br>
+                                {{-- <h5 style="font-weight: bold;"> Welcome, {{ $personalInfo->first_name ?? '' }}! </h5> --}}
+                                <h5 style="font-weight: bold; font-size: 25px;">Change Password</h5>
                                 <br>
 
                                 <form action="{{ route('change.password') }}" method="POST">
@@ -170,7 +173,7 @@
                                     <div class="row mb-3">
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
                                             Password</label>
-                                        <div class="col-md-8 col-lg-9">
+                                        <div class="col-md-8 col-lg-6">
                                             <input name="current_password" type="password" class="form-control"
                                                 id="currentPassword" required>
                                         </div>
@@ -179,7 +182,7 @@
                                     <div class="row mb-3">
                                         <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
                                             Password</label>
-                                        <div class="col-md-8 col-lg-9">
+                                        <div class="col-md-8 col-lg-6">
                                             <input name="new_password" type="password" class="form-control"
                                                 id="newPassword" required>
                                         </div>
@@ -188,14 +191,14 @@
                                     <div class="row mb-3">
                                         <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
                                             Password</label>
-                                        <div class="col-md-8 col-lg-9">
+                                        <div class="col-md-8 col-lg-6">
                                             <input name="renew_password" type="password" class="form-control"
                                                 id="renewPassword" required>
                                         </div>
                                     </div>
 
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-primary">Change Password</button>
+                                        <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Change Password</button>
                                     </div>
                                 </form><!-- End settings Form -->
                             </div>

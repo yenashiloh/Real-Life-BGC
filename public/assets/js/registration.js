@@ -110,13 +110,69 @@ ready(function() {
         isValid: false
       };
     } else {
-      // You can add additional date-specific validation logic here if needed
+      
       return {
         isValid: true
       };
     }
   };
 
+  const validatePassword = field => {
+    const val = field.value.trim();
+
+    if (val === '' && field.required) {
+        return {
+            isValid: false,
+        };
+    }
+
+    // Check for lowercase letter
+    const hasLowercase = /[a-z]/.test(val);
+
+    // Check for capital letter
+    const hasUppercase = /[A-Z]/.test(val);
+
+    // Check for number
+    const hasNumber = /\d/.test(val);
+
+    // Check for minimum length of 8 characters
+    const hasMinLength = val.length >= 8;
+
+    if (!(hasLowercase && hasUppercase && hasNumber && hasMinLength)) {
+        return {
+            isValid: false,
+            message: 'Requires one lowercase letter, one capital letter, one number, and a minimum of 8 characters.'
+        };
+    }
+
+    return {
+        isValid: true
+    };
+};
+
+// const validateNumber = field => {
+//   const val = field.value.trim();
+
+//   if (val === '' && field.required) {
+//       return {
+//           isValid: false,
+//           message: 'This field is required.'
+//       };
+//   } else {
+//       const numericVal = parseFloat(val);
+
+//       if (isNaN(numericVal) || numericVal < 88 || numericVal > 100) {
+//           return {
+//               isValid: false,
+//               message: 'GWA must be 88% to100% to qualify the scholarship'
+//           };
+//       }
+
+//       return {
+//           isValid: true
+//       };
+//   }
+// };
   // const validateFile = (field) => {
   //   const val = field.value.trim();
   //   const isValid = !(val === '' && field.required);
@@ -297,6 +353,8 @@ ready(function() {
       return validateDate(field);
       case 'number':
         return validateNumber(field);
+      case 'password':
+        return validatePassword(field);
       case 'file':
         const validation = validateReportCard(field); 
           // if (!validation.isValid) {
@@ -743,25 +801,25 @@ ready(function() {
 
   /****************************************************************************/
 
-  function handleError(error) {
-    const submitButton = progressForm.querySelector('[type="submit"]');
+  // function handleError(error) {
+  //   const submitButton = progressForm.querySelector('[type="submit"]');
 
-    if (progressForm.contains(submitButton)) {
-      const errorText = document.createElement('p');
+  //   if (progressForm.contains(submitButton)) {
+  //     const errorText = document.createElement('p');
 
-      // Reset the state of the submit button
-      submitButton.removeAttribute('disabled');
-      submitButton.textContent = 'Submit';
+  //     // Reset the state of the submit button
+  //     submitButton.removeAttribute('disabled');
+  //     submitButton.textContent = 'Submit';
 
-      // Display an error message for the user
-      errorText.classList.add('m-0', 'form__error-text');
-      errorText.textContent = `Sorry, your submission could not be processed.
-        Please try again. If the issue persists, please contact our support
-        team. Error message: ${error}`;
+  //     // Display an error message for the user
+  //     errorText.classList.add('m-0', 'form__error-text');
+  //     errorText.textContent = `Sorry, your submission could not be processed.
+  //       Please try again. If the issue persists, please contact our support
+  //       team. Error message: ${error}`;
 
-      submitButton.parentElement.prepend(errorText);
-    }
-  }
+  //     submitButton.parentElement.prepend(errorText);
+  //   }
+  // }
 
   /****************************************************************************/
 
@@ -902,7 +960,6 @@ document.addEventListener("DOMContentLoaded", function () {
       // Hide all grade input fields
       gradeInputs.forEach(input => input.style.display = "none");
 
-      // Show the relevant grade input fields based on the selected option
       if (selectedValue === "GradeSeven") {
           showGrades(["grade3", "grade4", "grade5"]);
       } else if (selectedValue === "GradeEight") {
@@ -948,6 +1005,130 @@ document.getElementById('incomingGrade').addEventListener('change', function () 
       }
   }
 });
+
+ /****************************************************************************/
+
+//Monthly Household 
+
+// document.addEventListener('DOMContentLoaded', function () {
+//   const elements = {
+//       householdSelect: document.getElementById('householdSelect'),
+//       householdInfoFields: document.getElementById('householdInfoFields'),
+//       householdSections: document.getElementById('householdSections'),
+//       totalMonthlyIncomeField: document.getElementById('totalMonthlyIncomeField'),
+//   };
+
+//   elements.householdSelect.addEventListener('change', function () {
+//       const selectedValue = parseInt(elements.householdSelect.value);
+
+//       elements.householdSections.innerHTML = "";
+
+//       if (selectedValue >= 1 && selectedValue <= 10) {
+//           elements.totalMonthlyIncomeField.style.display = 'block';
+
+//           for (let i = 1; i <= selectedValue; i++) {
+//               const div = document.createElement("div");
+//               div.classList.add("household-section");
+
+//               div.innerHTML = `
+//                   <h5 style="font-weight: bold; margin-top: 20px;">Family ${i}</h5>
+//                   <div class="form__field">
+//                       <label for="name${i}">Name
+//                           <span data-required="true" aria-hidden="true"></span>
+//                       </label>
+//                       <input id="name${i}" type="text" name="name${i}" autocomplete="name" required>
+//                   </div>
+
+//                   <div class="form__field">
+//                       <label for="relationship${i}">Relationship
+//                           <span data-required="true" aria-hidden="true"></span>
+//                       </label>
+//                       <input id="relationship${i}" type="text" name="relationship${i}" autocomplete="relationship" required>
+//                   </div>
+
+//                   <div class="form__field mt-3">
+//                       <label for="occupation${i}">Occupation
+//                           <span data-required="true" aria-hidden="true"></span>
+//                       </label>
+//                       <input id="occupation${i}" type="text" name="occupation${i}" autocomplete="occupation" required>
+//                   </div>
+
+//                   <div class="form__field mt-3">
+//                       <label for="monthlyIncome${i}">Monthly Income
+//                           <span data-required="true" aria-hidden="true"></span>
+//                       </label>
+//                       <input id="monthlyIncome${i}" type="number" name="monthlyIncome${i}" autocomplete="name" required>
+//                   </div>
+//               `;
+//               elements.householdSections.appendChild(div);
+//           }
+//       } else {
+//           elements.totalMonthlyIncomeField.style.display = 'none';
+//       }
+//   });
+// });
+
+// document.addEventListener('input', function (event) {
+//   if (event.target && event.target.id.startsWith('monthlyIncome')) {
+//       calculateTotalIncome();
+//   }
+// });
+
+// function calculateTotalIncome() {
+//   const totalMonthlyIncomeField = document.getElementById('totalMonthlyIncomeField');
+//   const monthlyIncomeFields = document.querySelectorAll('[id^="monthlyIncome"]');
+
+//   let totalIncome = 0;
+
+//   monthlyIncomeFields.forEach(field => {
+//       const income = parseFloat(field.value.replace(/,/g, '')) || 0;
+//       totalIncome += income;
+//   });
+
+//   totalMonthlyIncomeField.value = totalIncome.toLocaleString('en-US', {
+//       minimumFractionDigits: 2,
+//       maximumFractionDigits: 2
+//   });
+// }
+
+$(document).ready(function () {
+  $("#employed").on("input", function () {
+      var numFamilyMembers = $(this).val();
+      $("#householdInfoFields").empty(); // Clear existing fields
+
+      for (var i = 1; i <= numFamilyMembers; i++) {
+          var dynamicFields = `
+              <h2>Family Member${i}</h2> 
+              <div class="form__field mt-3">
+                  <label for="name${i}">Name
+                      <span data-required="true" aria-hidden="true"></span>
+                  </label>
+                  <input id="name${i}" type="text" name="name${i}" autocomplete="name" required>
+              </div>
+              <div class="form__field mt-3">
+                  <label for="relationship${i}">Relationship
+                      <span data-required="true" aria-hidden="true"></span>
+                  </label>
+                  <input id="relationship${i}" type="text" name="relationship${i}" autocomplete="relationship" required>
+              </div>
+              <div class="form__field mt-3">
+                  <label for="occupation${i}">Occupation
+                      <span data-required="true" aria-hidden="true"></span>
+                  </label>
+                  <input id="occupation${i}" type="text" name="occupation${i}" autocomplete="occupation" required>
+              </div>
+              <div class="form__field mt-3">
+                  <label for="monthlyIncome${i}">Monthly Income
+                      <span data-required="true" aria-hidden="true"></span>
+                  </label>
+                  <input id="monthlyIncome${i}" type="number" name="monthlyIncome${i}" autocomplete="name" required>
+              </div>
+          `;
+          $("#householdInfoFields").append(dynamicFields);
+      }
+  });
+});
+
 
 
 

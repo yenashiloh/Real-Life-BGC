@@ -298,7 +298,7 @@
 
 			// Monthly Household
 			householdSelect: document.getElementById('householdSelect'),
-			householdInfoFields: document.getElementById('householdInfoFields'),
+			// householdInfoFields: document.getElementById('householdInfoFields'),
 			householdSections: document.getElementById('householdSections'),
 			totalMonthlyIncomeLabel: document.querySelector('label[for="totalMonthlyIncome"]'),
 			totalMonthlyIncomeField: document.getElementById('totalMonthlyIncomeField')
@@ -640,7 +640,7 @@
 					div.classList.add("household-section");
 
 					div.innerHTML = `
-									<h5 style="font-weight: bold; margin-top: 20px;">Household Employed ${i}</h5>
+									<h5 style="font-weight: bold; margin-top: 20px;">Family Member Employed ${i}</h5>
 									<div class="row">
 											<div class="col-md-6">
 													<div class="form-group">

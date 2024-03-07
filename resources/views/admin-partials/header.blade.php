@@ -44,6 +44,66 @@
   </div><!-- End Logo -->
 
   <nav class="header-nav ms-auto">
+    <div class="header-nav d-flex align-items-center">
+        <a class="nav-link nav-icon notification-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell bell-icon"></i>
+            <span class="badge bg-primary badge-number">1</span>
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications ">
+            <li class="dropdown-header">
+                You have 1 new notifications
+                <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+                <i class=""></i>
+                <div>
+                    <h4>Real LIFE BGC</h4>
+                    <p>You are now for house visitation</p>
+                    <p>30 minutes ago</p>
+                </div>
+            </li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+                <i class=""></i>
+                <div>
+                    <h4>Real LIFE BGC</h4>
+                    <p>You are now for interview</p>
+                    <p>December 9, 2023</p>
+                </div>
+            </li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+                <i class=""></i>
+                <div>
+                    <h4>Real LIFE BGC</h4>
+                    <p>You are now is under review</p>
+                    <p>November 23, 2023</p>
+                </div>
+            </li>
+
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+                <a href="#">Show all notifications</a>
+            </li>
+
+        </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
       <ul class="d-flex align-items-center">
           <li class="nav-item dropdown pe-3">
               <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -89,5 +149,6 @@
               </ul><!-- End Profile Dropdown Items -->
           </li><!-- End Profile Nav -->
       </ul>
+      
   </nav><!-- End Icons Navigation -->
 </header><!-- End Header -->

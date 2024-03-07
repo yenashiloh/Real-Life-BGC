@@ -288,7 +288,7 @@
                   </div>
                   <div class="row mb-2">
                       <div class="col-lg-4 col-md-4 label">Monthly Income</div>
-                      <div class="col-lg-8 col-md-8">{{ $member->monthly_income ?? '' }}</div>
+                      <div class="col-lg-8 col-md-8">{{ number_format($member->monthly_income ?? 0, 2) }}</div>
                   </div>
               @endforeach
           </form>

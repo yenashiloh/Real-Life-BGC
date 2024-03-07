@@ -33,7 +33,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="applicants-link">
+      <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="applicants-link">
         <i class="bi bi-menu-button-wide" ></i><span>Applicants</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
       <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
@@ -108,7 +108,7 @@
                     <th scope="col" >Incoming Grade/Year Level</th>
                     <th scope="col" >School</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Action</th>
+              
                   </tr>
                 </thead>
                 <tbody>
@@ -127,7 +127,7 @@
                             {{ $applicant->status }}
                           </span>
                       </td>
-                      <td>
+                      {{-- <td>
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton{{ $applicant->applicant_id }}" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 13px; height: 33px;">
                               Action
@@ -160,7 +160,7 @@
                          </a>
                            </div>
                           </div>
-                      </td>
+                      </td> --}}
                   </tr>
                   @php
                   $count++; 
@@ -183,7 +183,7 @@
 </html>
 
 
-<script>
+{{-- <script>
   $(document).ready(function() {
     function updateApplicantsCount() {
       var count = $('tbody tr').length;
@@ -257,7 +257,7 @@
     });
   });
 </script>
-
+ --}}
 
 
 

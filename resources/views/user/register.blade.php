@@ -36,7 +36,7 @@
 
 </head>
 
-<body>
+<body >
     {{-- <!-- ======= Header ======= -->
     <header id="header" class=" shadow-sm d-flex align-items-center">
         <div class="container d-flex align-items-center">
@@ -58,8 +58,8 @@
         </div>
     </header> --}}
 
-    <div class="registration-container">
-
+    <div class="registration-container" >
+        <div class="mx-auto container" >
         <!-- ======= STEP REGISTRATION ======= -->
         <h2 class="registration">SCREENING FORM</h2>
         <span style="text-align: center;  display: block;">Please fill out all the forms</span>
@@ -73,7 +73,7 @@
 
                         <div class="stepper-label">
                             <div class="stepper-desc">
-                                Terms and Conditions
+                                Eligibility, Qualifications & Requirements
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
 
                         <div class="stepper-label">
                             <div class="stepper-desc">
-                                Household Information
+                                Family Information
                             </div>
                         </div>
                     </div>
@@ -143,48 +143,79 @@
             <!-- ======= STEP 1 ======= -->
             <div class="container mt-5 step-content active" id="step1Content">
                 <div class="row">
-                    <div class="col-lg-12 mx-auto">
+                    <div class="col-xl-10 mx-auto">
                         <div class="card">
                             <div class="card-body m-3 terms-and-conditions">
-                                <h4 class="termscondition">Terms and Conditions</h4>
+                                <h4 class="termscondition" style="text-transform: uppercase;">Eligibility, Qualifications & Requirements</h4>
                                 <br>
                                 <div class="contentterms">
-                                    <p>Welcome to the Realife Foundation's Scholarship Program website. By using this
-                                        website,
-                                        you agree to comply with and be bound by the following terms and conditions:</p>
-                                    <p>1. Our website provides a platform for scholarship applications. By using our
-                                        services,
-                                        you agree to provide accurate and truthful information in your application.</p>
-                                    <p>2. We may collect personal information such as name, contact information,
-                                        academic
-                                        records, and other details necessary for scholarship applications.</p>
-                                    <p>3. The information collected is used solely for the purpose of evaluating
-                                        scholarship
-                                        applications and will not be shared with third parties without your consent
-                                        unless
-                                        required by law.</p>
-                                    <p>4. We implement appropriate security measures to protect against unauthorized
-                                        access,
-                                        alteration, disclosure, or destruction of your personal information.</p>
-                                    <p>5. Reserve the right to modify this Privacy Policy at any time. Any changes will
-                                        be
-                                        effective upon posting the updated Privacy Policy on the Website.</p>
-                                    <p>By using this website, you acknowledge that you have read and agree to these
-                                        terms
-                                        and
-                                        conditions. If you do not agree, please refrain from using the website.</p>
+                                    <p style="font-weight: bold; ">To be eligible to receive the Real LIFE scholarship, applicants must:</p>
+                                    <ul>
+                                        <li>
+                                            Be a Filipino citizen
+                                        </li>
+                                        <li>
+                                            Have a grade weighted average (GWA) of at least 88% or its equivalent in the previous academic year for high school students or the previous semester for college students
+                                        </li>
+                                        <li>
+                                            Have a combined monthly household income of no more than 20,000 PHP
+                                        </li>
+                                        <li>
+                                            Not be married, have children, or be older than 25 years of age
+                                        </li>
+                                        <li>
+                                            Be enrolled at a school recognized by the Department of Education (DepEd) or Commission on Higher Education (CHED)
+                                        </li>
+                                        <li>
+                                            For high school applicants, be currently studying or willing to transfer to a public school
+                                        </li>
+                                        <li>
+                                            For college applicants, have tuition fees of not more than 15,000 PHP per semester
+                                        </li>
+                                        <li>
+                                            Be willing to undergo our character formation and leadership development programs
+                                        </li>
+                                    </ul>
+                                     <br>
+                                    <p style="font-weight: bold;">Requirements Upon Application:</p>
+                                      <ul>
+                                        <li>
+                                          Official Copy of Grades for three (3) School Years
+                                        </li><br>
+                                      </ul>
+                                    
+                                        <p><b>Proof of Financial Status</b> (submit <u><b>ANY</b></u> of the following)</p>
+                                        <ul>
+                                        <li>
+                                          2022 Income Tax Return (ITR)
+                                        </li>               
+                                        <li>
+                                          Payslip for the past 3 months of household members who contribute financialliy
+                                        </li>
+                                        <li>
+                                          Filled out Proof of Employment form (for those without payslip)
+                                        </li>
+                                        <li>
+                                          DSWD Case Report
+                                        </li>
+                                        <li>
+                                          Certificate of Non-Filling of Tax Return (if other options are not available)
+                                        </li>
+                                      </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="form-check mt-3">
                             <input class="form-check-input" type="checkbox" id="agreeCheckbox">
                             <label class="form-check-label" for="agreeCheckbox" style="font-size: 14px;">
-                                I agree to these Terms and Conditions <span
+                                I understand that the information I will provide will be used by Real LIFE Foundation to screen and process my application for SY 2023-2024. I give my consent to
+                                Real LIFE to use the data I will
+                                provide and the file attachments for the said application. <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span>
                             </label>
                             <span id="error-message" style="display: none; color: red; font-size: 10px;">
                                 <i class="fas fa-exclamation-circle"></i>
-                                You need to agree to the terms and conditions to proceed to the next step.
+                                Please ensure the checkbox is checked to proceed with your application.
                             </span>
                         </div>
                     </div>
@@ -193,7 +224,7 @@
 
             <!-- ======= STEP 2 ======= -->
             <div class="container mt-4 mb-4" id="step2Content" style="display: none;">
-                <div class="row">
+                <div class="row col-xl-10 mx-auto">
                     <span id="step2ErrorMessage"
                         style="display: none; color: red; text-align: center; margin-bottom: 15px;"></span>
                     <div class="col-md-6">
@@ -284,22 +315,27 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary next-button-step2" id="nextButtonStep2">Next</button>
+                <button type="button" class="btn btn-primary next-button-step2" id="nextButtonStep2" style="margin-right: 9%;">Next</button>
             </div>
 
 
             <!-- ======= STEP 3 CONTENT ======= -->
             <div class="container" id="step3Content" style="display: none;">
-                <div class="row">
+                <div class="row col-xl-10 mx-auto">
+                    <p style="font-weight: bold; margin-top: 30px;">REMINDER: </p>
+                    <ul style="margin-left: 40px;">
+                        <li>Grade Weighted Average (GWA) of at least 88% or its equivalent in the previous academic year for high school students or the previous semester for college students.</li>
+                        <li>Upload the Report of Card for three indicated Grade/Year Levels.</li>
+                    </ul>
                     <span id="step3ErrorMessage"
-                        style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all
+                        style="display: none; color: red; text-align: center; margin-bottom: 15px; margint-top: 20px;">Please fill out all
                         required fields.</span>
                     <span id="step3PdfErrorMessage"
-                        style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please upload a PDF
-                        file
-                        only.</span>
-
-                    <div class="col-md-4">
+                        style="display: none; color: red; text-align: center; margin-bottom: 15px; margin-top: 20px;">Please upload a PDF file only.</span>
+                    <h4 class="acedemic-info" style="font-weight: bold; margin-top: 30px;">
+                        Academic Information
+                    </h4>
+                        <div class="col-md-4">
                         <label class="form-label">Incoming Grade or Year <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label></label>
                         <select class="form-select form-select-solid form-control-long" name="incomingGrade"
@@ -330,12 +366,11 @@
                         <input type="text" class="form-control form-control-solid form-control-long"
                             name="currentProgram" placeholder="" value="" />
                     </div>
-
                 </div>
                 <br>
-
+                <br>
                 <!-- ======= STEP 3 GRADES ======= -->
-                <div class="row">
+                <div class="row col-xl-10 mx-auto">
                     <h4 class="grades" id="gradesText" style="display: none; font-weight: bold;">
                         Grades <span style="color: red; font-size: 10px; font-weight: normal;">*GWA (General Weighted
                             Average):
@@ -541,8 +576,7 @@
 
                     <div class="col-md-4 mb-3" id="reportCard" style="display: none;">
                         <label class="form-label">Report Card <span style="color: red; font-size: 10px;">*Upload PDF
-                                for Three
-                                Indicated Grade/Year Levels</span></label>
+                             Only</span></label>
                         <input type="file" id="reportCardFile" class="form-control" name="ReportCard"
                             accept=".pdf">
                     </div>
@@ -551,15 +585,12 @@
 
                 <!-- ======= STEP 3 - SCHOOL APPLICATION & CHOICE COURSE ======= -->
 
-                <div class="row">
-
+                <div class="row col-xl-10 mx-auto">
                     <h4 class="grades" id="schoolApplicationText" style="display: none; font-weight: bold;">
                         School Application<span style="color: red; font-size: 10px; font-weight: normal;"> *Enter
                             Preferred
                             School and Course </span>
                     </h4>
-
-
                     <div class="col-md-4 mb-3" id="schoolChoice1" style="display: none;">
                         <label class="form-label">First Choice School <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
@@ -580,7 +611,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row col-xl-10 mx-auto">
                     <div class="col-md-4" id="courseChoice1" style="display: none;">
                         <label class="form-label">First Choice Course <span
                                 style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
@@ -600,13 +631,22 @@
                             name="courseChoice3" placeholder=" " value="" />
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary next-button-3" id="nextButtonStep3">Next</button>
+                <button type="button" class="btn btn-primary next-button-3" id="nextButtonStep3" style="margin-right: 9%;">Next</button>
             </div>
 
 
             <!-- ======= STEP 4 - MONTHLY HOUSEHOLD ======= -->
-            <div class="container mt-4 mb-3" id="step4Content" style="display: none;">
-                <div class="row">
+            <div class="container mt-4 mb-3" id="step4Content" style="display: none;">   
+                <div class="row col-xl-10 mx-auto">
+                    <p style="font-weight: bold; margin-top: 30px;">PROOF OF FINANCIAL STATUS</p>
+                    <p>Submit <u><strong>ANY</strong></u> of the following: </p>
+                    <ul style="margin-left: 40px;">
+                        <li>2022 Income Tax Return (ITR)</li>
+                        <li>Payslip for the past 3 months of household members who contribute financialliy.</li>
+                        <li>Filled out Proof of Employment form (for those without payslip)</li>
+                        <li>DSWD Case Report</li>
+                        <li>Certificate of Non-Filling of Income Tax Return (if other options are not available)</li>
+                    </ul>
                     <span id="step4ErrorMessage"
                         style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please fill out all
                         required fields.</span>
@@ -614,13 +654,15 @@
                         style="display: none; color: red; text-align: center; margin-bottom: 15px;">Please upload a PDF
                         file
                         only.</span>
+                    <h4 class="acedemic-info" style="font-weight: bold; margin-top: 30px;">
+                        Family Information
+                    </h4>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <label for="householdSelect">Number of Household Employed <span
+                            <label for="householdSelect">Number of Family Employed <span
                                     style="color: red; font-size: 12px; font-weight: normal;">*</span></label>
                             <select class="form-select form-select-solid form-control-long" name="householdMembers"
                                 id="householdSelect">
-
                                 <option value="" style="color:#444444;">Select a number </option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -632,15 +674,13 @@
                                 <option value="8">8</option>
                                 <option value="9">9</option>
                                 <option value="10">10</option>
-                                
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="form-group">
                             <label for="payslip">Payslip/DSWD Report/ITR <span
-                                    style="color: red; font-size: 12px; font-weight: normal;">*Upload the pdf of
-                                    Payslip/DSWD Report/ITR </span></label>
+                                    style="color: red; font-size: 12px; font-weight: normal;">*Upload PDF Only </span></label>
                             <div class="input-group">
                                 <input type="file" class="form-control" name="payslip" id="payslip"
                                     placeholder="" accept=".pdf">
@@ -648,29 +688,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row col-xl-10 mx-auto">
                     <div id="householdSections">
                     </div>
-                    <div class="col-md-12 mb-3" id="householdInfoFields">
+                    <div>
                     </div>
                 </div>
-                <div class="row">
+                <br>
+                <div class="row col-xl-10 mx-auto">
                     <div class="col-md-6 mb-3">
                         <div class="form-group" id="totalMonthlyIncomeField" style="display: none;">
-                            <label for="totalMonthlyIncome" style="font-weight: bold;">Total Monthly Household
-                                Income</label>
+                            <label for="totalMonthlyIncome"><strong>Total Monthly Household
+                                Income</strong></label>
                             <input type="text" class="form-control" id="totalMonthlyIncome" required disabled>
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary next-button-4" id="nextButtonStep4">Next</button>
+                <button type="button" class="btn btn-primary next-button-4" id="nextButtonStep4" style="margin-right: 9%;">Next</button>
             </div>
 
 
             <!-- ======= STEP 5 - ACCOUNT INFORMATION ======= -->
            
             <div class="container mt-4 mb-4" id="step5Content" style="display: none;">
-                <div class="row">
+                <div class="row col-xl-10 mx-auto">
                     <span style="color: red; display: none;" id="step5ErrorMessage">
                         @if ($errors->has('email'))
                             {{ $errors->first('email') }}
@@ -701,14 +742,18 @@
                         </div>
                     </div>
                 </div>
+                <button type="submit" class="btn submit-button" id="submitButton"
+                data-kt-stepper-action="submit" style="display:none;   margin-right: 9%; ">
+                Submit
+            </button>
             </div>
           
 
             <!-- ======= NEXT AND PREVIOUS BUTTON ======= -->
-            <div class="d-flex justify-content-between mt-3">
+            <div class="d-flex justify-content-between mt-3 ">
                 <div>
                     <button type="button" class="btn btn-secondary  custom-margin-right previous-button"
-                        id="previousButton" data-kt-stepper-action="previous" style="display: none;">
+                        id="previousButton" data-kt-stepper-action="previous" style="display: none; margin-left: 125%;">
                         Previous
                     </button>
                 </div>
@@ -719,15 +764,15 @@
                     </button>
                 </div>
                 <div>
-                    <button type="submit" class="btn submit-button" id="submitButton"
-                        data-kt-stepper-action="submit" style="display:none;">
+                    {{-- <button type="submit" class="btn submit-button" id="submitButton"
+                        data-kt-stepper-action="submit" style="display:none; margin-right: 80%;">
                         Submit
-                    </button>
+                    </button> --}}
                 </div>
             </div>
-            <x-messages />
         </form>
     </div>
+</div>
 
 
     {{-- <!-- Assuming there's an element with class 'submission-message' to display the submission message -->
@@ -1439,7 +1484,7 @@
 
                     if (anyBelow88) {
                         step3ErrorMessage.textContent =
-                            "To qualify, your Grade Weighted Average (GWA) should be between 88 to 100. Please ensure that the provided GWA meets this requirement before proceeding to the next step.";
+                            "The Grade Weighted Average (GWA) should fall within the range of 88 to 100. Please confirm that the provided GWA meets this requirement before proceeding to the next step.";
                         step3ErrorMessage.style.fontSize = '14px';
                         step3ErrorMessage.style.display = 'block';
                     } else {

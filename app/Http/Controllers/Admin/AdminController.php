@@ -20,6 +20,7 @@ use App\Models\ApplicantsAcademicInformationGrade;
 use App\Models\Member;
 use App\Models\Requirement;
 
+
 class AdminController extends Controller
 {
     

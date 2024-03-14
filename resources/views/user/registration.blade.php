@@ -125,7 +125,8 @@
         {{-- <span id="error-message" style="color: red; font-size: 10px;">Please agree before proceeding.</span> --}}
         <div class="mt-1 form__field">
           <label class="form__choice-wrapper">
-            <input id="checkbox" type="checkbox" name="checkbox" value="Yes" required>  <span data-required="true" aria-hidden="true">
+            <input  type="checkbox" name="checkbox" value="Yes" required> 
+             {{-- <span data-required="true" aria-hidden="true"> --}}
               <span>
                 I understand that the information I will provide will be used by Real LIFE Foundation to screen and process my application for SY 2023-2024. I give my consent to
                 Real LIFE to use the data I will
@@ -311,7 +312,7 @@
       </h1>
 
       <div class="sm:d-grid sm:grid-col-3">
-        @for ($i = 3; $i <= 12; $i++)
+        @for ($i = 3; $i <= 10; $i++)
         <div class="mb-3 form__field grade-input" id="grade{{ $i }}" style="display: none;">
             <label for="gwa">Grade {{ $i }} GWA
                 <span data-required="true" aria-hidden="true"></span>
@@ -320,6 +321,52 @@
         </div>
       @endfor
 
+      <!-------GRADE 11 SEMESTERS------>
+        <div class="form__field" style="display: none;">
+          <label for="grade11Semesters">
+              Grade 11 Semesters Completed
+              <span data-required="true" aria-hidden="true"></span>
+          </label>
+          <select id="grade11SemSelect" name="grade11Semester" autocomplete="grade 11 sem" required>
+              <option value="">Select grade or year level</option>
+              <option value="TwoSem">Two Semesters</option>
+              <option value="ThreeSem">Three Semesters</option>
+          </select>
+      </div>
+
+      @for ($j = 1; $j <= 3; $j++)
+      <div class="form__field" id="grade11{{ $j }}SemGWA" style="display: none;">
+          <label for="gwa">Grade 11 {{ $j == 1 ? 'First' : ($j == 2 ? 'Second' : 'Third') }} Sem GWA
+              <span data-required="true" aria-hidden="true"></span>
+          </label>
+          <input type="number" name="grade11{{ $j }}SemGWA" autocomplete="gwa">
+      </div>
+      @endfor
+
+      <!-------GRADE 12 SEMESTERS------>
+      <div class="form__field" style="display: none;">
+        <label for="grade12Semesters">
+            Grade 12 Semesters Completed
+            <span data-required="true" aria-hidden="true"></span>
+        </label>
+        <select id="grade12SemSelect" name="grade12Semester" autocomplete="grade 12 sem" required>
+            <option value="">Select grade or year level</option>
+            <option value="TwoSem">Two Semesters</option>
+            <option value="ThreeSem">Three Semesters</option>
+        </select>
+    </div>
+
+    @for ($j = 1; $j <= 3; $j++)
+    <div class="form__field" id="grade12{{ $j }}SemGWA" style="display: none;">
+        <label for="gwa">Grade 12 {{ $j == 1 ? 'First' : ($j == 2 ? 'Second' : 'Third') }} Sem GWA
+            <span data-required="true" aria-hidden="true"></span>
+        </label>
+        <input type="number" name="grade12{{ $j }}SemGWA" autocomplete="gwa">
+    </div>
+    @endfor
+
+    <!-------FIRST YEAR COLLEGE ------>
+    
       <div class="mb-3 form__field"  id="ReportCardField" style="display: none;">
           <label for="ReportCard">
               Report Card

@@ -1,168 +1,116 @@
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<title>{{ $title }}</title>
-@include('admin-partials.header')
-<aside id="sidebar" class="sidebar">
-
-  <ul class="sidebar-nav" id="sidebar-nav">
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="/dashboard" id="dashboard-link">
-        <i class="bi bi-grid"></i>
-        <span>Dashboard</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="applicants-link">
-        <i class="bi bi-menu-button-wide" ></i><span>Applicants</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-        <li>
-          <a href="{{ route('admin.applicants.new_applicants') }}" >
-            <i class="bi bi-circle"></i><span>All Applicants </span>
-          </a>
-        </li>
-        <li>
-          <a href="{{ route('admin.applicants.approved_applicants') }}" class="active">
-            <i class="bi bi-circle"></i><span>Approved Applicants</span>
-          </a>
-        </li>
-        <li>
-          <a href="{{ route('admin.applicants.declined_applicants') }}">
-            <i class="bi bi-circle"></i><span>Declined Applicants</span>
-          </a>
-        </li>
-      </ul>
-    </li><!-- End Components Nav -->
-
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="{{ route('admin.announcement.admin-announcement') }}" id="announcement-link">
-        <i class="bi bi-journal-text"></i><span>Announcement</span></i>
-      </a>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Approved Applicants</title>
+    @include('admin-partials.admin-header')
+    <style>
+      .table-responsive td {
+      max-width: 250px; 
+      white-space: normal;
+    }
+    </style>
+  </head>
+  <body>
+    @include('admin-partials.admin-sidebar')
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper">
+        <div class="page-header">
+          <h3 class="page-title">Approved Applicants</h3>
+        </div>
     
-    </li><!-- End Forms Nav -->
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="{{ route('admin.registration') }}" id="createaccount-link">
-        <i class="bi bi-person-plus"></i><span>Create Account</span></i>
-      </a>
-      
-    </li><!-- End Charts Nav -->
-
-    <li class="nav-item">
-      <a class="nav-link collapsed"  href="{{ route('admin.admin-logout') }}" id="signout-link">
-        <i class="bi bi-box-arrow-in-right"></i><span>Sign out</span></i>
-      </a>
-    </li><!-- End Icons Nav -->
-</aside><!-- End Sidebar-->
-<main id="main" class="main">
-
-    <div class="pagetitle">
-      <h1>Approved Applicants</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Applicants</li>
-          <li class="breadcrumb-item active">Approved Applicants</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
-
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Approved Applicants</h5>
-              <button type="button" id="exportExcelBtn" class="btn btn-secondary" style="font-size: 12px; width: 120px; margin-bottom: 10px;">Export as Excel</button>
-              
-              <!-- Table with stripped rows -->
-              <table class="table datatable">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Date Applied</th>
-                    <th scope="col">Full Name</th>
-                    <th scope="col" >Incoming Grade/Year Level</th>
-                    <th scope="col" >School</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @php
-                  $count = 1; 
-                @endphp
-                @foreach($applicantsData as $applicant)
-                  <tr>
-                    <th scope="row">{{ $count }}</th> 
-                      <td>{{ \Carbon\Carbon::parse($applicant->created_at)->format('F d, Y') }}</td>
-                      <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
-                      <td>{{ $applicant->incoming_grade_year }}</td>
-                      <td>{{ $applicant->current_school }}</td>
-                      <td>
-                        <span id="status-{{ $applicant->applicant_id }}" class="badge status-declined" style="font-weight: normal;">
+        <div class="row">
+          <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;">
+                  Export as Excel
+                </button>
+                <div class="loader"></div>
+                <!-- Table with stripped rows -->
+                <div class="table-responsive">
+                  <table class="table table-striped datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date Applied</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Incoming Grade/Year Level</th>
+                        <th scope="col">School</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @php
+                      $count = 1;
+                      @endphp
+                      @foreach($applicantsData as $applicant)
+                      <tr>
+                        <th scope="row">{{ $count }}</th>
+                        <td>{{ \Carbon\Carbon::parse($applicant->created_at)->format('F d, Y') }}</td>
+                        <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                        <td>{{ $applicant->incoming_grade_year }}</td>
+                        <td>{{ $applicant->current_school }}</td>
+                        <td>
+                          <span id="status-{{ $applicant->applicant_id }}" class="badge badge-success p-2" >
                             {{ $applicant->status }}
                           </span>
-                      </td>
-                      <td><div class="view-button">
-                        <a href="{{ route('admin.view_applicant', ['id' => $applicant->applicant_id]) }}" class="btn btn-secondary" style="font-size: 13px; margin-top: 5px; width: 77px; height: 31px;">
-                       View
-                   </a>
-                     </div></td>
-                      {{-- <td>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton{{ $applicant->applicant_id }}" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 13px; height: 33px;">
-                              Action
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $applicant->applicant_id }}">
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                  Under Review
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                  Shortlisted
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                  For Interview
-                                </a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}">
-                                  For House Visitation
-                                </a>
-                              </li>
-                            </ul> --}}
-                            {{-- <div class="view-button">
-                              <button class="btn btn-secondary" style="font-size: 13px; margin-top: 5px; width: 77px; height: 31px;">View</button>
-                            </div> --}}
-                          {{-- </div>
-                      </td> --}}
-                  </tr>
-                  @php
-                  $count++; 
-                  @endphp
-                  @endforeach
-                </tbody>
-              </table>
+                        </td>
+                        <td>
+                          <div class="view-button">
+                            <a href="{{ route('admin.view_applicant', ['id' => $applicant->applicant_id]) }}"
+                              class="btn btn-dark btn-fw p-2" >
+                              View
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                      @php
+                      $count++;
+                      @endphp
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+    
+        
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="../assets-new-admin/vendors/js/vendor.bundle.base.js"></script>
+  
+    <script src="../assets-new-admin/js/off-canvas.js"></script>
+    <script src="../assets-new-admin/js/misc.js"></script>
+      <!-- Vendor JS Files -->
+    <script src="../assets-admin/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="../assets-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  </main><!-- End #main -->
-      
-  @include('admin-partials.footer')
-
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</body>
+    <script src="../assets-admin/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="../assets-admin/vendor/tinymce/tinymce.min.js"></script>
+    <script src="../assets-admin/vendor/php-email-form/validate.js"></script>
+    <script src="../assets-admin/tinymce/tinymce.min.js"></script>
+  
+  
+    <script src="../assets-admin/vendor/chart.js/chart.umd.js"></script>
+    <script src="../assets-admin/vendor/echarts/echarts.min.js"></script>
+    <script src="../assets-admin/vendor/quill/quill.min.js"></script>
+    
+    <!-- Template Main JS File -->
+    <script src="../assets-admin/js/main.js"></script>
+    
+    <!-- endinject -->
+  </body>
 </html>
-
 
 <script>
   $(document).ready(function() {

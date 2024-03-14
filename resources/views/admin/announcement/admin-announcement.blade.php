@@ -1,121 +1,102 @@
-<title>{{ $title }}</title>
-  @include('admin-partials.header')
-  <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="/dashboard" id="dashboard-link">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="applicants-link">
-          <i class="bi bi-menu-button-wide" ></i><span>Applicants</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{ route('admin.applicants.new_applicants') }}">
-              <i class="bi bi-circle"></i><span>All Applicants</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ route('admin.applicants.approved_applicants') }}">
-              <i class="bi bi-circle"></i><span>Approved Applicants</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ route('admin.applicants.declined_applicants') }}">
-              <i class="bi bi-circle"></i><span>Declined Applicants</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Components Nav -->
-
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Announcement</title>
   
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.announcement.admin-announcement') }}" id="announcement-link">
-          <i class="bi bi-journal-text"></i><span>Announcement</span></i>
-        </a>
-      
-      </li><!-- End Forms Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('admin.registration') }}" id="createaccount-link">
-          <i class="bi bi-person-plus"></i><span>Create Account</span></i>
-        </a>
-        
-      </li><!-- End Charts Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed"  href="{{ route('admin.admin-logout') }}" id="signout-link">
-          <i class="bi bi-box-arrow-in-right"></i><span>Sign out</span></i>
-        </a>
-      </li><!-- End Icons Nav -->
-  </aside><!-- End Sidebar-->
-
-  <main id="main" class="main">
-
-    <div class="pagetitle">
-      <h1>Announcement</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Announcement</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Add Announcement</h5>
-              <button type="button" class="btn btn-primary" style="font-size: 12px; width: 120px; margin-bottom: 10px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Add</button>
-              <table class="table datatable">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Content</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @php
-                      $count = 1;
-                  @endphp
-                  @foreach($announcements as $announcement)
-                  <tr>
-                      <th scope="row">{{ $count++ }}</th>
-                      <td>{{ $announcement->title }}</td> 
-                      <td>{!! html_entity_decode(strip_tags($announcement->caption)) !!}</td>
-                      <td>
-                          <div>
-                            <button type="button" onclick="location.href='{{ route('admin.announcement.edit-announcement', ['id' => $announcement->id]) }}'" class="btn" style="font-size: 12px; width: 80px; margin-bottom: 5px; background-color: #2EB85C; color: #fff;">Edit</button>
-                          </div>
-                          <div>
-                              <form action="{{ route('delete.announcement', ['id' => $announcement->id]) }}" method="post" id="deleteForm_{{ $announcement->id }}">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" onclick="confirmDelete('{{ $announcement->id }}')" class="btn" style="font-size: 12px; width: 80px; background-color: #E55353; color: #fff;">Delete</button>
-                             </form>
-                          </div>
-                      </td>
-                  </tr>
-                  @endforeach
-              </tbody>
-              </table>
+    @include('admin-partials.admin-header')
+    <style>
+      .table-responsive td {
+        max-width: 750px; 
+        white-space: normal;
+        margin-bottom: 10px; /* Adjust the value based on the amount of space you want */
+        padding-bottom: 10px;
+    }
+ 
+    </style>
+  </head>
+  <body>
+    @include('admin-partials.admin-sidebar')
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title">Announcement </h3>  
             </div>
-          </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Add</button>
+                <br>
+                <table class="table datatable table-responsive">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Title</th>
+                      <th scope="col">Content</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @php
+                        $count = 1;
+                    @endphp
+                    @foreach($announcements as $announcement)
+                    <tr>
+                        <th scope="row">{{ $count++ }}</th>
+                        <td>{{ $announcement->title }}</td> 
+                        <td class="announcement-caption">{!! html_entity_decode(strip_tags($announcement->caption)) !!}</td>
+                        <td>
+                            <div>
+                              <button type="button" onclick="location.href='{{ route('admin.announcement.edit-announcement', ['id' => $announcement->id]) }}'" class="btn btn-primary p-2 btn-fw" >Edit</button>
+                            </div>
+                            <div>
+                                <form action="{{ route('delete.announcement', ['id' => $announcement->id]) }}" method="post" id="deleteForm_{{ $announcement->id }}">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button type="button" onclick="confirmDelete('{{ $announcement->id }}')" class="btn btn-danger p-2 btn-fw mt-1">Delete</button>
+                              </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+                </table>
+              </div>
+            </div>
 
+          </div>
         </div>
-      </div>
-    </section>
-  </main><!-- End #main -->
-     
-  @include('admin-partials.footer')
+
+         <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="../assets-new-admin/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="../assets-new-admin/js/off-canvas.js"></script>
+    <script src="../assets-new-admin/js/misc.js"></script>
+      <!-- Vendor JS Files -->
+  <script src="../assets-admin/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="../assets-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script src="../assets-admin/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="../assets-admin/vendor/tinymce/tinymce.min.js"></script>
+  <script src="../assets-admin/vendor/php-email-form/validate.js"></script>
+  <script src="../assets-admin/tinymce/tinymce.min.js"></script>
+ 
+  <script src="../assets-admin/vendor/chart.js/chart.umd.js"></script>
+  <script src="../assets-admin/vendor/echarts/echarts.min.js"></script>
+  <script src="../assets-admin/vendor/quill/quill.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="../assets-admin/js/main.js"></script>
+    
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     function confirmDelete(id) {

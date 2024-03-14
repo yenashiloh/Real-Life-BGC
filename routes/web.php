@@ -71,7 +71,16 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
 //admin
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
+    Route::get('/dashboard-new', [AdminController::class, 'new_dashboard'])->name('admin.dashboard-new');
     Route::post('/admin-login', [AdminController::class, 'adminloginPost'])->name('admin.login.post');
+    Route::get('/dashboard-new', [AdminController::class, 'totalApplicants'])->name('dashboard');
+    Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
+
+        //DATA APPLICANTS 
+        Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
+        Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
+
+        
 });
 
 Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
@@ -94,12 +103,12 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
 
     //TOTAL FOR DASHBOARD
     // Route::get('/dashboard', [AdminController::class, 'totalDeclined'])->name('total_declined');
-    Route::get('/dashboard', [AdminController::class, 'totalApplicants'])->name('dashboard');
-    Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
+    // Route::get('/dashboard-new', [AdminController::class, 'totalApplicants'])->name('dashboard');
+    // Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
 
-    //DATA APPLICANTS 
-    Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
-    Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
+    // //DATA APPLICANTS 
+    // Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
+    // Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
 
     //DECLINED APPLICANTS
     Route::get('/applicants/declined_applicants', [AdminController::class, 'showDeclinedApplicants'])->name('admin.applicants.declined_applicants');

@@ -222,21 +222,28 @@ ready(function() {
    */
 
   const validateGroup = fieldset => {
+    if (!fieldset) {
+      return {
+        isValid: false,
+        message: 'Fieldset element not found.'
+      };
+    }
+  
     const choices = fieldset.querySelectorAll('input[type="radio"], input[type="checkbox"]');
-
+  
     let isRequired = false
       , isChecked  = false;
-
+  
     for (const choice of choices) {
       if (choice.required) {
         isRequired = true;
       }
-
+  
       if (choice.checked) {
         isChecked = true;
       }
     }
-
+  
     if (!isChecked && isRequired) {
       return {
         isValid: false,
@@ -248,7 +255,7 @@ ready(function() {
       };
     }
   };
-
+  
   /*****************************************************************************
    * Expects a Node (input[type="radio"] or input[type="checkbox"]).
    */
@@ -972,8 +979,45 @@ document.addEventListener("DOMContentLoaded", function () {
           showGrades(["grade7", "grade8", "grade9", "ReportCardField"]);
       } else if (selectedValue === "GradeTwelve") {
           showGrades(["grade8", "grade9", "grade10", "ReportCardField"]);
-      }
+      }else if (selectedValue === "FirstYear") {
+        showGrades(["grade9", "grade10", "grade11SemSelect","ReportCardField"]);
+      }else if (selectedValue === "SecondYear") {
+        showGrades(["grade10", "grade11SemSelect", "grade12SemSelect", "ReportCardField"]);
+    }
   });
+  
+  //semesters
+  const gradeSemesters = {
+    "grade11SemSelect": {
+        "inputs": document.querySelectorAll("[id^=grade11][id$=SemGWA]")
+    },
+    "grade12SemSelect": {
+        "inputs": document.querySelectorAll("[id^=grade12][id$=SemGWA]")
+    }
+};
+
+for (const selectId in gradeSemesters) {
+    const selectElement = document.getElementById(selectId);
+    const inputs = gradeSemesters[selectId].inputs;
+
+    selectElement.addEventListener("change", function () {
+        const selectedValue = selectElement.value;
+
+        // Hide all semester input fields
+        inputs.forEach(input => input.style.display = "none");
+
+        if (selectedValue === "TwoSem" || selectedValue === "ThreeSem") {
+            const semesterCount = selectedValue === "TwoSem" ? 2 : 3;
+            for (let i = 1; i <= semesterCount; i++) {
+                const inputId = selectId.includes("grade11") ? `grade11${i}SemGWA` : `grade12${i}SemGWA`;
+                const inputElement = document.getElementById(inputId);
+                if (inputElement) {
+                    inputElement.style.display = "block";
+                }
+            }
+        }
+    });
+  }
 
   function showGrades(gradesToShow) {
     gradesToShow.forEach(gradeId => {
@@ -983,13 +1027,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+  
 });
 
 //reset the grade gwa
 document.getElementById('incomingGrade').addEventListener('change', function () {
   var selectedValue = this.value;
 
-  for (var i = 3; i <= 12; i++) {
+  for (var i = 3; i <= 10; i++) {
       var gradeInput = document.getElementById('grade' + i);
       if (gradeInput) {
           gradeInput.style.display = 'none';
@@ -1091,43 +1136,43 @@ document.getElementById('incomingGrade').addEventListener('change', function () 
 //   });
 // }
 
-$(document).ready(function () {
-  $("#employed").on("input", function () {
-      var numFamilyMembers = $(this).val();
-      $("#householdInfoFields").empty(); // Clear existing fields
+// $(document).ready(function () {
+//   $("#employed").on("input", function () {
+//       var numFamilyMembers = $(this).val();
+//       $("#householdInfoFields").empty(); // Clear existing fields
 
-      for (var i = 1; i <= numFamilyMembers; i++) {
-          var dynamicFields = `
-              <h2>Family Member${i}</h2> 
-              <div class="form__field mt-3">
-                  <label for="name${i}">Name
-                      <span data-required="true" aria-hidden="true"></span>
-                  </label>
-                  <input id="name${i}" type="text" name="name${i}" autocomplete="name" required>
-              </div>
-              <div class="form__field mt-3">
-                  <label for="relationship${i}">Relationship
-                      <span data-required="true" aria-hidden="true"></span>
-                  </label>
-                  <input id="relationship${i}" type="text" name="relationship${i}" autocomplete="relationship" required>
-              </div>
-              <div class="form__field mt-3">
-                  <label for="occupation${i}">Occupation
-                      <span data-required="true" aria-hidden="true"></span>
-                  </label>
-                  <input id="occupation${i}" type="text" name="occupation${i}" autocomplete="occupation" required>
-              </div>
-              <div class="form__field mt-3">
-                  <label for="monthlyIncome${i}">Monthly Income
-                      <span data-required="true" aria-hidden="true"></span>
-                  </label>
-                  <input id="monthlyIncome${i}" type="number" name="monthlyIncome${i}" autocomplete="name" required>
-              </div>
-          `;
-          $("#householdInfoFields").append(dynamicFields);
-      }
-  });
-});
+//       for (var i = 1; i <= numFamilyMembers; i++) {
+//           var dynamicFields = `
+//               <h2>Family Member${i}</h2> 
+//               <div class="form__field mt-3">
+//                   <label for="name${i}">Name
+//                       <span data-required="true" aria-hidden="true"></span>
+//                   </label>
+//                   <input id="name${i}" type="text" name="name${i}" autocomplete="name" required>
+//               </div>
+//               <div class="form__field mt-3">
+//                   <label for="relationship${i}">Relationship
+//                       <span data-required="true" aria-hidden="true"></span>
+//                   </label>
+//                   <input id="relationship${i}" type="text" name="relationship${i}" autocomplete="relationship" required>
+//               </div>
+//               <div class="form__field mt-3">
+//                   <label for="occupation${i}">Occupation
+//                       <span data-required="true" aria-hidden="true"></span>
+//                   </label>
+//                   <input id="occupation${i}" type="text" name="occupation${i}" autocomplete="occupation" required>
+//               </div>
+//               <div class="form__field mt-3">
+//                   <label for="monthlyIncome${i}">Monthly Income
+//                       <span data-required="true" aria-hidden="true"></span>
+//                   </label>
+//                   <input id="monthlyIncome${i}" type="number" name="monthlyIncome${i}" autocomplete="name" required>
+//               </div>
+//           `;
+//           $("#householdInfoFields").append(dynamicFields);
+//       }
+//   });
+// });
 
 
 

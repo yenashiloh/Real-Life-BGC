@@ -55,6 +55,13 @@ class AdminController extends Controller
         
     }
 
+    public function new_dashboard()
+    {
+        $title = 'Dashboard';
+        return view('admin.dashboard-new', ['title' => $title]);
+        
+    }
+
     //admin profile
     public function adminProfile()
     {
@@ -258,20 +265,36 @@ class AdminController extends Controller
         }
     }
  
-    //dashboard total
-    public function totalApplicants()
-    {
-        $totalApplicants = Applicant::count();
-        $totalShortlisted = Applicant::where('status', 'Shortlisted')->count();
-        $totalForInterview = Applicant::where('status', 'For Interview')->count();
-        $totalHouseVisitation = Applicant::where('status', 'For House Visitation')->count();
-        $totalDeclined = Applicant::where('status', 'Declined')->count();
-        $totalApproved = Applicant::where('status', 'Approved')->count();
-        $title = 'Dashboard'; 
-        
-        return view('admin.dashboard', compact('totalApplicants', 'totalShortlisted', 'totalForInterview', 'totalHouseVisitation','totalDeclined', 'totalApproved', 'title'));
-    }
-    
+ //dashboard total
+public function totalApplicants()
+{
+    $totalApplicants = Applicant::count();
+    $totalShortlisted = Applicant::where('status', 'Shortlisted')->count();
+    $totalForInterview = Applicant::where('status', 'For Interview')->count();
+    $totalHouseVisitation = Applicant::where('status', 'For House Visitation')->count();
+    $totalDeclined = Applicant::where('status', 'Declined')->count();
+    $totalApproved = Applicant::where('status', 'Approved')->count();
+    $title = 'Dashboard'; 
+    $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
+
+    $applicantsData = ApplicantsPersonalInformation::select(
+        'applicants_personal_information.first_name',
+        'applicants_personal_information.last_name',
+        'applicants_academic_information.incoming_grade_year',
+        'applicants_academic_information.current_school',
+        'applicants.status',
+        'applicants.created_at',
+        'applicants.applicant_id'
+    )
+    ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
+    ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
+    ->whereIn('applicants.status', $validStatuses)
+    ->get();
+
+    // Pass the data to the view
+    return view('admin.dashboard-new', compact('totalApplicants', 'totalShortlisted', 'totalForInterview', 'totalHouseVisitation','totalDeclined', 'totalApproved', 'title', 'applicantsData'));
+}
+
     //bar chart - incoming grade/yr level
     public function getApplicantsByGradeYear()
     {

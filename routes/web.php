@@ -16,13 +16,6 @@ use App\Http\Controllers\EmailController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('user.login');
-// });
-
-// Route::get('/home', function () {
-//     return view('admin.admin-registration');
-// })->name('home');
 
 // applicant
 Route::get('/announcement', [ApplicantController::class, 'announcement'])->name('announcement')->middleware('PreventBackHistory');
@@ -64,7 +57,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::post('/change-applicant-status/{applicant_id}', [ApplicantController::class, 'changeStatus'])->name('change.applicant.status');
     Route::get('/getUnreadNotificationsCount', [ApplicantController::class, 'getUnreadNotificationsCount']);
 
-
+    Route::post('/applicant_dashboard', [ApplicantController::class, 'uploadRequirements'])->name('applicant_dashboard.requirements');
 });
 
 
@@ -114,7 +107,7 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/applicants/declined_applicants', [AdminController::class, 'showDeclinedApplicants'])->name('admin.applicants.declined_applicants');
     Route::get('/applicants-declined', [AdminController::class, 'getDeclinedData'])->name('declined.data');
     
-    Route::post('/applicants/new-pplicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
+    Route::post('/applicants/new-applicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
 
     //APPROVED DECLINED APPLICANTS
     Route::get('/applicants/approved_applicants', [AdminController::class, 'showApprovedApplicants'])->name('admin.applicants.approved_applicants');
@@ -124,7 +117,8 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/applicants/{id}', [AdminController::class, 'viewApplicant'])->name('admin.view_applicant');
 
     //FILE UPDATE STATUS
-    Route::post('/applicants/update-status', [AdminController::class, 'fileStatus'])->name('admin.update-status');
+    
+    Route::post('/applicants/{requirement_id}', [AdminController::class, 'fileStatus'])->name('requirements.file-status');
 
     //LOGOUT
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');

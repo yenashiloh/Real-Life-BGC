@@ -57,7 +57,7 @@
                         <td>{{ $applicant->incoming_grade_year }}</td>
                         <td>{{ $applicant->current_school }}</td>
                         <td>
-                          <span id="status-{{ $applicant->applicant_id }}" class="badge badge-success p-2" >
+                          <span id="status-{{ $applicant->applicant_id }}" class="badge badge-success" >
                             {{ $applicant->status }}
                           </span>
                         </td>

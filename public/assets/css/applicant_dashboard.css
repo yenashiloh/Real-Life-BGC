@@ -1,0 +1,82 @@
+.vertical-center {
+    min-height: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.clickable-icon {
+    cursor: pointer;
+    font-size: 24px;
+    color: #71BF44;
+}
+
+.clickable-icon:hover {
+    color: #518630;
+}
+
+.form-select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.drag-area {
+    border: 2px dashed #DEE2E6;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.drag-area .icon {
+    font-size: 40px;
+    color: black;
+}
+
+.drag-area header {
+    font-size: 10px;
+    margin: 17x 0;
+    color: #444;
+}
+
+.drag-area span {
+    font-size: 14px;
+    color: #777;
+}
+
+.drag-area button {
+    padding: 8px 15px;
+    margin-top: 15px;
+    background-color: #2980b9;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.drag-area input[type="file"] {
+    display: none;
+}
+
+.status-column {
+    width: 30px !important;
+}
+
+.data {
+    font-size: 14px;
+}
+
+.data-tables {
+    font-size: 15px;
+}
+#submitForm {
+background-color: #71BF44;
+color: white; /* Set text color to white */
+border: none; /* Remove default button border */
+}
+
+#submitForm:hover {
+background-color: #017358;
+
+}

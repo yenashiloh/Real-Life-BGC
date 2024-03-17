@@ -17,6 +17,12 @@
     <link rel="stylesheet" href="../assets-new-admin/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="../assets-admin/img/RLlogo1.png" />
+    <style>
+      .table-responsive td {
+      max-width: 250px; 
+      white-space: normal;
+    }
+    </style>
   </head>
   <body>
      @include('admin-partials.admin-sidebar')

@@ -1,82 +1,4 @@
     @include('partials.header')
-
-
-    <style>
-        .vertical-center {
-            min-height: 100%;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
-
-        .clickable-icon {
-            cursor: pointer;
-            font-size: 24px;
-            color: #71BF44;
-        }
-
-        .clickable-icon:hover {
-            color: #518630;
-        }
-
-        .form-select {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-
-        .drag-area {
-            border: 2px dashed #DEE2E6;
-            border-radius: 5px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .drag-area .icon {
-            font-size: 40px;
-            color: black;
-        }
-
-        .drag-area header {
-            font-size: 10px;
-            margin: 17x 0;
-            color: #444;
-        }
-
-        .drag-area span {
-            font-size: 14px;
-            color: #777;
-        }
-
-        .drag-area button {
-            padding: 8px 15px;
-            margin-top: 15px;
-            background-color: #2980b9;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .drag-area input[type="file"] {
-            display: none;
-        }
-
-        .status-column {
-            width: 30px !important;
-        }
-
-        .data {
-            font-size: 14px;
-        }
-
-        .data-tables {
-            font-size: 15px;
-        }
-        
-    </style>
-
     <body>
         @php
             $personalInfo = auth()
@@ -105,7 +27,7 @@
                                     <h5 style="font-weight: bold; font-size: 25px;">Dashboard</h5>
                                     <br>
                                     <div class="row mb-1">
-                                        <div class="col-lg-3 col-md-4 label ">Status</div>
+                                        <div class="col-lg-3 col-md-4 label" style="color:#151515;">Status</div>
                                         <div class="col-lg-9 col-md-8">
                                             @php
                                                 $status = auth()->user()->status;
@@ -140,25 +62,25 @@
                                     </div>
 
                                     <div class="row mb-1">
-                                        <div class="col-lg-3 col-md-4 label">Full Name</div>
+                                        <div class="col-lg-3 col-md-4 label" style="color:#151515;">Full Name</div>
                                         <div class="col-lg-9 col-md-8">
                                             {{ $personalInfo->first_name ?? '' }} {{ $personalInfo->last_name ?? '' }}
                                         </div>
                                     </div>
 
                                     <div class="row mb-1 mb-1">
-                                        <div class="col-lg-3 col-md-4 label">Email Address</div>
+                                        <div class="col-lg-3 col-md-4 label" style="color:#151515;">Email Address</div>
                                         <div class="col-lg-9 col-md-8">{{ auth()->user()->email }}</div>
                                     </div>
 
                                     <div class="row mb-1 mb-1">
-                                        <div class="col-lg-3 col-md-4 label">Incoming Grade</div>
+                                        <div class="col-lg-3 col-md-4 label" style="color:#151515;">Incoming Grade</div>
                                         <div class="col-lg-9 col-md-8">{{ $academicInfoData->incoming_grade_year ?? '' }}
                                         </div>
                                     </div>
 
                                     <div class="row mb-1 mb-1">
-                                        <div class="col-lg-3 col-md-4 label">Current School</div>
+                                        <div class="col-lg-3 col-md-4 label" style="color:#151515;">Current School</div>
                                         <div class="col-lg-9 col-md-8">{{ $academicInfoData->current_school ?? '' }}</div>
                                     </div>
                                     <form>
@@ -173,8 +95,12 @@
                                     <br>
                                 
                                     <!-- ADD DOCUMENTS -->
+                                    <div class="alert alert-success" id="successMessage" style="display: none; text-align: center;">
+                                        Upload Successfully!
+                                    </div>
+                                    
                                     <div class="modal fade" id="basicModal" tabindex="-1">
-                                        <form action="{{ url('add-requirements') }}" method="POST">
+                                        <form id="uploadForm" action="{{ route('applicant_dashboard.requirements') }}" method="POST">
                                             @csrf
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -182,49 +108,47 @@
                                                         <h5 class="modal-title">Add Document</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                        <div class="modal-body">
-                                                            <!-- Document Type -->
-                                                            <div class="form-group">
-                                                                <label for="documentType">Document Type</label>
-                                                                <select class="form-select form-select-solid form-control" id="documentType" name="documentType">
-                                                                    <option value="" style="color: #444444;">Select document type</option>
-                                                                        <option value="Signed Application Form">Signed Application Form</option>
-                                                                        <option value="Birth Certificate">Birth Certificate</option>
-                                                                        <option value="Character Evaluation Forms">Character Evaluation Forms</option>
-                                                                        <option value="Proof of Financial Status">Proof of Financial Status</option>
-                                                                        <option value="Payslip / DSWD Report / ITR">Payslip / DSWD Report / ITR</option>
-                                                                        <option value="Two Reference Forms">Two Reference Forms</option>
-                                                                        <option value="Home Visitation Form">Home Visitation Form</option>
-                                                                        <option value="Report Card / Grades">Report Card / Grades</option>
-                                                                        <option value="Prospectus">Prospectus</option>
-                                                                        <option value="Official Grading System">Official Grading System</option>
-                                                                        <option value="Tuition Projection">Tuition Projection</option>
-                                                                        <option value="Admission Slip">Admission Slip</option>
-                                                                    </select>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <label for="notes">Notes</label>
-                                                                    <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
-                                                                </div>
-                                                            </div>
-{{-- 
-                                                                <div>
+                                                    <div class="modal-body">
+                                                        <!-- Document Type -->
+                                                        <div class="form-group">
+                                                            <label for="documentType">Document Type</label>
+                                                            <select class="form-select form-select-solid form-control" id="documentType" name="documentType">
+                                                                <option value="" style="color: #d60606; font-style: italic;">Select document type</option>
+                                                                <option value="Signed Application Form">Signed Application Form</option>
+                                                                <option value="Birth Certificate">Birth Certificate</option>
+                                                                <option value="Character Evaluation Forms">Character Evaluation Forms</option>
+                                                                <option value="Proof of Financial Status">Proof of Financial Status</option>
+                                                                <option value="Payslip / DSWD Report / ITR">Payslip / DSWD Report / ITR</option>
+                                                                <option value="Two Reference Forms">Two Reference Forms</option>
+                                                                <option value="Home Visitation Form">Home Visitation Form</option>
+                                                                <option value="Report Card / Grades">Report Card / Grades</option>
+                                                                <option value="Prospectus">Prospectus</option>
+                                                                <option value="Official Grading System">Official Grading System</option>
+                                                                <option value="Tuition Projection">Tuition Projection</option>
+                                                                <option value="Admission Slip">Admission Slip</option>
+                                                            </select>
+                                                        </div>
+                                    
+                                                        <div class="form-group">
+                                                            <label for="notes">Notes <span style="  font-style: italic; color:#151515;">(Optional)</span></label>
+                                                            <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                                                        </div>
+                                                                {{-- <div>
                                                                 <input type="file" id="fileUpload" name="fileUpload">
-                                                            </div> --}}
-                                              
-                                                                {{-- <div class="form-group">
-                                                                    <label for="fileUpload">Upload Requirements</label>
-                                                                    <div class="drag-area">
-                                                                        <label for="fileUpload" class="icon"><i class="fas fa-cloud-upload-alt" style="cursor: pointer;"></i></label>
-                                                                        <input type="file" class="form-control" id="fileUpload" name="fileUpload" style="display: none;">
-                                                                        <header>Drag and drop files here or click to upload attachment</header>
-                                                                    </div>
-                                                                </div>
-                                                            </div> --}}
+                                                            </div>
+                                                        </div> --}}
+                                                        <div class="form-group">
+                                                            <label for="fileUpload">Document Proof</label>
+                                                            <div class="drag-area">
+                                                                <label for="fileUpload" class="icon"><i class="fas fa-cloud-upload-alt" style="cursor: pointer;"></i></label>
+                                                                <input type="file" class="form-control" id="fileUpload" name="fileUpload" style="display: none;">
+                                                                <header id="fileUploadLabel">Drag and drop files here or click to upload attachment</header>
+                                                            </div>
+                                                        </div>
+                                                        </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                                <button type="button" id="submitForm" class="btn btn-primary" disabled>Submit</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -233,9 +157,9 @@
                                             
                                         <!----DISPLAY TABLE-->
                                         <div class="table-responsive">
-                                            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                            <table id="example" class="table table-striped table-bordered">
                                                 <thead>
-                                                    <tr class="data-tables">
+                                                    <tr class="data-tables" >
                                                         <th>#</th>
                                                         <th style="font-size: 15px;">Document Type</th>
                                                         <th>Notes</th>
@@ -250,12 +174,32 @@
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $requirement->document_type }}</td>
                                                         <td>{{ $requirement->notes }}</td>
-                                                        <td> <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $requirement->uploaded_document }}" style="text-decoration: underline; color: #1e2482;">
-                                                            {{ $requirement->uploaded_document }}
-                                                        </a></td>
-                                                        <td><span class="badge badge-primary" style="font-size: 11px; background-color: #CFE2FF; color: #052C92;  font-family: Poppins; font-weight: normal;">{{ $requirement->status }}</span></td>
+                                                        <td>  <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $requirement->uploaded_document }}" style="text-decoration: underline; color: #1e2482;">
+                                                            {{ basename($requirement->uploaded_document) }}
+                                                            </a>
+                                                        </td>
                                                         <td>
-                                                            <button type="button" class="btn" style="width: 85px; background-color: #2EB85C; color: white; font-size: 12px; height:30px;" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+                                                            @php
+                                                            $status = $requirement->status;
+                                                            $badgeClass = '';
+                                                            
+                                                            switch ($status) {
+                                                                case 'Approved':
+                                                                    $badgeClass = 'badge-success';
+                                                                    break;
+                                                                case 'Declined':
+                                                                    $badgeClass = 'badge-danger';
+                                                                    break;
+                                                                default:
+                                                                    $badgeClass = 'badge-primary';
+                                                            }
+                                                            @endphp
+                                                        
+                                                            <span class="badge {{ $badgeClass }}">{{ $status }}</span>
+                                                        </td>
+                                                        
+                                                        <td>
+                                                            <button type="button" class="btn" style="width: 85px; background-color:#71BF44;  color: white; font-size: 13px; height:30px;" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -320,20 +264,13 @@
                                                 </div>
                                             </div>
                                         </div><!-- End Edit Modal-->
-                                    </form><!-- End settings Form -->
+                                    </div>
                                 </div>
-                            </div>
-                        </div><!-- End Bordered Tabs -->
-                    </div>
-                                {{-- </div>
-                                </div> --}}
-            </section>
-        </main><!-- End #main -->
-
-
+                            </div><!-- End Bordered Tabs -->
+                        </div>
+                    </section>
+                </main><!-- End #main -->
         @include('partials.user-footer')
-
-        
+        <script src="assets/js/applicant_dashboard.js"></script>
     </body>
-
     </html>

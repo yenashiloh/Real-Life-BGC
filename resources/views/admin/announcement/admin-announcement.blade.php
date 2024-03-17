@@ -30,7 +30,7 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Add</button>
+                <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Create</button>
                 <br>
                 <table class="table datatable table-responsive">
                   <thead>

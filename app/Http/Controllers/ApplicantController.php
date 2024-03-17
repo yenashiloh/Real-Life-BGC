@@ -108,36 +108,38 @@ class ApplicantController extends Controller
         ]);
     }
 
+    public function uploadRequirements(Request $request)
+{
+    // Validate the request data
+    $request->validate([
+        'documentType' => 'required',
+        'notes' => 'nullable',
+        'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:10240',
+    ]);
 
-    public function store(Request $request)
-    {
-        dd($request->all());
-        $validator = Validator::make($request->all(), [
-            'documentType' => 'required',
-            'notes' => 'required',
-        ]);
+    // Store the file
+    $file = $request->file('fileUpload');
+    $filename = time() . '_' . $file->getClientOriginalName();
+    $file->storeAs('uploads', $filename);
 
-        // Check if validation fails
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+    // Save the uploaded document details to the database
+    $requirement = new Requirement();
+    $requirement->applicant_id = auth()->id();
+    $requirement->document_type = $request->documentType;
+    $requirement->notes = $request->notes;
+    $requirement->uploaded_document = $filename;
+    $requirement->status = 'For Review';
 
-        // Get the authenticated user's ID
-        $applicantId = auth()->id();
-
-        // Create a new Requirement instance and assign values
-        $documentData = new Requirement;
-        $documentData->applicant_id = $applicantId;
-        $documentData->document_type = $request->input('documentType');
-        $documentData->notes = $request->input('notes');
-
-        // Save the data and check for success
-        if ($documentData->save()) {
-            return redirect()->back()->with('status', 'Successfully Added!');
-        } else {
-            return redirect()->back()->with('error', 'Failed to save data!');
-        }
+    // Attempt to save the requirement
+    try {
+        $requirement->save();
+        return response()->json(['success' => 'Document uploaded successfully']);
+    } catch (\Exception $e) {
+        // Log any errors that occur during saving
+        \Log::error('Error saving requirement: ' . $e->getMessage());
+        return response()->json(['error' => 'An error occurred while saving the document. Please try again later.'], 500);
     }
+}
 
     function loginPost(Request $request)
     {

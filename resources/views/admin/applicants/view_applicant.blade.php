@@ -264,8 +264,8 @@
                     </form><!-- End Profile Edit Form -->
         
                   </div>
+
                   <div class="tab-pane fade " id="profile-settings">
-        
                     <form>
                       @foreach ($members as $member)
                           <div class="row mb-2">
@@ -294,8 +294,8 @@
                   <div class="tab-pane fade" id="files">
                     <form>
                         <table class="table datatable table-responsive">
+                          <div class="alert alert-success" role="alert" style="text-align:center; display: none;" id="successMessage"></div>
                             <thead>
-                              <br>
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Document Type</th>
@@ -312,32 +312,37 @@
                                     <td>{{ $requirement->document_type }}</td>
                                     <td>{{ $requirement->notes }}</td>
                                     <td>
-                                        <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $requirement->uploaded_document }}" style="text-decoration: underline;">
-                                            {{ $requirement->uploaded_document }}
-                                        </a>
+                                      <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $requirement->uploaded_document }}" style="text-decoration: underline;">
+                                        {{ basename($requirement->uploaded_document) }}
+                                    </a>
+                                    
                                     </td>
-                                    <td>{{ $requirement->status }}</td>
-                                    <td class="d-flex justify-content-center">
-                                      <div class="approve"></div>
-                                        <button type="button" class="btn btn-primary p-2 btn-fw change-status" data-applicant-id="{{ $requirement->applicant_id }}" data-action="approve" >Approve</button>
-                                      </div>
-                                      <div class="decline">
-                                      <button type="button" class="btn btn-danger p-2 mt-1 btn-fw change-status" data-applicant-id="{{ $requirement->applicant_id }}" data-action="decline" >Decline</button>
-                                    </div>
+                                    <td id="status-{{ $requirement->id }}" class="status-{{ $requirement->id }}">
+                                      @if($requirement->status == 'Approved')
+                                          <span class="badge badge-success">{{ $requirement->status }}</span>
+                                      @elseif($requirement->status == 'Declined')
+                                          <span class="badge badge-danger">{{ $requirement->status }}</span>
+                                       @elseif($requirement->status == 'For Review')
+                                          <span class="badge badge-warning">{{ $requirement->status }}</span>
+                                      @else
+                                          {{ $requirement->status }}
+                                      @endif
+                                  </td>                           
+                                  <td class="d-flex justify-content-center">
+                                      <button type="button" class="btn btn-primary p-2 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Approved" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Approve</button>
+                                      <button type="button" class="btn btn-danger p-2 mt-1 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Declined" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Decline</button>                                      
                                   </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
+                              </tr>
+                              @endforeach
+                          </tbody>
                         </table>
-                      </form>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         
-
-    
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="../assets-new-admin/vendors/js/vendor.bundle.base.js"></script>
@@ -365,7 +370,11 @@
     
     
     <script>
-
+        $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
       document.addEventListener('DOMContentLoaded', function () {
           let lastTab = sessionStorage.getItem('lastTab');
           if (lastTab) {
@@ -376,7 +385,7 @@
               }
           }
   
-   
+
       let tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
       tabLinks.forEach(function (tabLink) {
           tabLink.addEventListener('shown.bs.tab', function (event) {
@@ -387,36 +396,41 @@
   
       });
 
-      // This script assumes jQuery is used. Make sure it's included in your project.
-$(document).ready(function() {
-    $('.change-status').on('click', function() {
-        var applicantId = $(this).data('applicant-id');
-        var action = $(this).data('action');
+      $('.change-status').on('click', function() {
+    var requirementId = $(this).data('requirement-id');
+    var action = $(this).data('action');
+    var updateRoute = $(this).data('route');
+    var newStatus = action;
+    
+    $.ajax({
+        type: 'POST',
+        url: updateRoute,
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            requirement_id: requirementId,
+            status: action
+        },
+        success: function(response) {
+            console.log('Status updated successfully:', response);
+            localStorage.setItem('successMessage', 'Status Change Successfully!');
 
-        // AJAX request to update status
-        $.ajax({
-            type: 'POST',
-            url: '{{ route("admin.update-status") }}',
-            data: {
-                _token: '{{ csrf_token() }}',
-                applicant_id: applicantId,
-                status: action // Assuming 'approve' or 'decline'
-            },
-            success: function(response) {
-                // Handle success response, maybe update the UI accordingly
-                console.log('Status updated successfully');
-                // Optionally, you can reload the table or update status directly in the UI
-            },
-            error: function(xhr, status, error) {
-                // Handle error response
-                console.error('Error updating status:', error);
-            }
-        });
+            window.location.reload();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating status:', error);
+        }
     });
 });
 
-  
-      </script>
+$(document).ready(function() {
+    var successMessage = localStorage.getItem('successMessage');
+    if (successMessage) {
+        $('#successMessage').text(successMessage).fadeIn().delay(4000).fadeOut();
+        localStorage.removeItem('successMessage'); 
+    }
+});
+
+ </script>
   
 </body>
 </html>

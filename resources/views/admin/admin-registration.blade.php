@@ -315,11 +315,6 @@
             <input type="password" name="password_confirmation" class="form-control" id="confirm_password" required>
             <div class="invalid-feedback">Please, confirm your password</div>
           </div>
-          <div class="col-md-6">
-            <label for="yourConfirmPassword" class="form-label">Profile Picture</label>
-            <input type="file" name="profile" class="form-control" id="profile" required>
-            <div class="invalid-feedback">Please, upload profile picture</div>
-          </div>
           <div class="text-center mt-4">
             <button class="btn btn-primary" style="width: 200px;" type="submit">Create Account</button>
         </div>        

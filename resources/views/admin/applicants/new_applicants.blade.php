@@ -27,7 +27,10 @@
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;" >Export as Excel</button>
+              <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;">
+                <i class="icon-cloud-download" style="margin-right:5px;"></i>Export Excel
+              </button>
+              
                 <div class="loader"></div>
                 <!-- Table with stripped rows -->
                 <div class="table-responsive">
@@ -62,7 +65,7 @@
                                         @elseif($applicant->status === 'For Interview') badge-dark
                                         @elseif($applicant->status === 'For House Visitation') badge-success
                                         @endif
-                                        p-2" >
+                                        " >
                                         {{ $applicant->status }}
                                     </span>
                                 </td>
@@ -230,7 +233,6 @@ $(document).ready(function() {
 
           badgeElement.removeClass('badge-primary badge-secondary badge-warning badge-dark badge-success');
 
-          // Add new badge class based on the updated status
           switch (newStatus) {
               case 'New Applicant':
                   badgeElement.addClass('badge-primary');
@@ -248,7 +250,6 @@ $(document).ready(function() {
                   badgeElement.addClass('badge-success');
                   break;
               default:
-                  // Add a default badge class if needed
                   badgeElement.addClass('badge-secondary');
                   break;
           }
@@ -297,7 +298,7 @@ $(document).ready(function() {
         } else {
           console.log('Failed to update status:', response.error);
           }
-          $('.loader').hide(); // Move the hide loader here
+          $('.loader').hide(); 
         },
       error: function(xhr, status, error) {
         console.log('Error:', error);

@@ -18,6 +18,7 @@ use App\Notifications\StatusUpdateNotification;
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
 use App\Models\Member;
+use App\Models\Notification;
 use App\Models\Requirement;
 
 
@@ -486,5 +487,30 @@ public function totalApplicants()
             return response()->json(['error' => 'Failed to update status'], 500);
         }
     }
+
+    public function showNotifications()
+    {
+        // Fetch unread notifications
+        $notifications = Notification::where('status', 'unread')
+            ->orderBy('created_at', 'desc')
+            ->get(['id', 'applicant_id', 'applicant_name', 'message', 'status', 'created_at', 'updated_at']);
+
+        // Return the unread notifications
+        return $notifications;
+    }
+    public function fetchNotificationCount()
+    {
+        try {
+            $count = Notification::where('status', 'unread')->count();
+            return response()->json(['count' => $count]);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching notification count: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
+        }
+    }
+    
+    
 }    
+
+    
 

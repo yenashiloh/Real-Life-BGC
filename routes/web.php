@@ -66,12 +66,12 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
     Route::get('/dashboard-new', [AdminController::class, 'new_dashboard'])->name('admin.dashboard-new');
     Route::post('/admin-login', [AdminController::class, 'adminloginPost'])->name('admin.login.post');
-    Route::get('/dashboard-new', [AdminController::class, 'totalApplicants'])->name('dashboard');
-    Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
+    // Route::get('/dashboard-new', [AdminController::class, 'totalApplicants'])->name('dashboard');
+    // Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
 
         //DATA APPLICANTS 
-        Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
-        Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
+        // Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
+        // Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
 
         
 });
@@ -96,17 +96,18 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
 
     //TOTAL FOR DASHBOARD
     // Route::get('/dashboard', [AdminController::class, 'totalDeclined'])->name('total_declined');
-    // Route::get('/dashboard-new', [AdminController::class, 'totalApplicants'])->name('dashboard');
-    // Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
+    Route::get('/dashboard-new', [AdminController::class, 'totalApplicants'])->name('dashboard');
+    Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
 
     // //DATA APPLICANTS 
-    // Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
-    // Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
+    Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
+    Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
 
     //DECLINED APPLICANTS
     Route::get('/applicants/declined_applicants', [AdminController::class, 'showDeclinedApplicants'])->name('admin.applicants.declined_applicants');
     Route::get('/applicants-declined', [AdminController::class, 'getDeclinedData'])->name('declined.data');
-    
+
+    //UPDATE STATUS
     Route::post('/applicants/new-applicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
 
     //APPROVED DECLINED APPLICANTS
@@ -117,13 +118,17 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/applicants/{id}', [AdminController::class, 'viewApplicant'])->name('admin.view_applicant');
 
     //FILE UPDATE STATUS
-    
     Route::post('/applicants/{requirement_id}', [AdminController::class, 'fileStatus'])->name('requirements.file-status');
 
     //LOGOUT
     Route::get('/admin/admin-logout', [AdminController::class, 'logout'])->name('admin.admin-logout');
     Route::get('/export-declined-applicants', 'AdminController@exportDeclinedApplicants')->name('export.declined.applicants');
+    
+    //NOTIFICATION
+    // Route::get('/admin-partials/admin-sidebar/', [AdminController::class, 'getNotificationCount'])->name('get.notification.count');
+    Route::get('/fetch-notification-count', [AdminController::class, 'fetchNotificationCount'])->name('fetch-notification-count');
 
-    // Route::post('/applicants/new-applicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
+
+
 
 });

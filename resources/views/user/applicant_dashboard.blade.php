@@ -111,7 +111,7 @@
                                                     <div class="modal-body">
                                                         <!-- Document Type -->
                                                         <div class="form-group">
-                                                            <label for="documentType">Document Type</label>
+                                                            <label for="documentType">Document Type  <span style="color: red;">*</span></label>
                                                             <select class="form-select form-select-solid form-control" id="documentType" name="documentType">
                                                                 <option value="" style="color: #d60606; font-style: italic;">Select document type</option>
                                                                 <option value="Signed Application Form">Signed Application Form</option>
@@ -138,10 +138,10 @@
                                                             </div>
                                                         </div> --}}
                                                         <div class="form-group">
-                                                            <label for="fileUpload">Document Proof</label>
+                                                            <label for="fileUpload">Document Proof <span style="color: red;">*</span></label>
                                                             <div class="drag-area">
                                                                 <label for="fileUpload" class="icon"><i class="fas fa-cloud-upload-alt" style="cursor: pointer;"></i></label>
-                                                                <input type="file" class="form-control" id="fileUpload" name="fileUpload" style="display: none;">
+                                                                <input type="file" class="form-control" id="fileUpload" name="fileUpload" style="display: none;" accept=".pdf">
                                                                 <header id="fileUploadLabel">Drag and drop files here or click to upload attachment</header>
                                                             </div>
                                                         </div>
@@ -196,10 +196,9 @@
                                                             @endphp
                                                         
                                                             <span class="badge {{ $badgeClass }}">{{ $status }}</span>
-                                                        </td>
-                                                        
+                                                        </td>   
                                                         <td>
-                                                            <button type="button" class="btn" style="width: 85px; background-color:#71BF44;  color: white; font-size: 13px; height:30px;" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+                                                            <button type="button" class="btn edit-button" style="width: 85px; background-color:#71BF44;  color: white; font-size: 13px; height:30px;" data-bs-toggle="modal" data-bs-target="#editModal" data-requirement-id="{{ $requirement->id }}">Edit</button>
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -217,31 +216,32 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
+                                                        <input type="hidden" id="selectedDocumentType" name="selectedDocumentType">
+                                                        
                                                         <form>
                                                             <div class="form-group">
                                                                 <label for="documentType">Document Type</label>
-                                                                <select class="form-select form-select-solid form-control"
-                                                                    id="documentType">
-                                                                    <option value="" style="color:#444444;">Select document type
-                                                                    </option>
-                                                                    <option value="">Signed Application Form</option>
-                                                                    <option value="2">Birth Certificate</option>
-                                                                    <option value="3">Character Evaluation Forms</option>
-                                                                    <option value="4">Proof of Financial Status</option>
-                                                                    <option value="5">Payslip / DSWD Report / ITR</option>
-                                                                    <option value="6">Two Reference Forms</option>
-                                                                    <option value="7">Home Visitation Form</option>
-                                                                    <option value="8">Report Card / Grades</option>
-                                                                    <option value="9">Prospectus</option>
-                                                                    <option value="10">Official Grading System</option>
-                                                                    <option value="11">Tuition Projection</option>
-                                                                    <option value="12">Admission Slip</option>
-                                                                </select>
+                                                                {{-- <select class="form-select form-select-solid form-control" id="documentType">
+                                                                    <option value="">Select document type</option>
+                                                                    <option value="1" {{ $requirement->document_type}}>Signed Application Form</option>
+                                                                    <option value="2" {{ $requirement->document_type}}>Birth Certificate</option>
+                                                                    <option value="3" {{ $requirement->document_type }}>Character Evaluation Forms</option>
+                                                                    <option value="4" {{ $requirement->document_type }}>Proof of Financial Status</option>
+                                                                    <option value="5" {{ $requirement->document_type }}>Payslip / DSWD Report / ITR</option>
+                                                                    <option value="6" {{ $requirement->document_type }}>Two Reference Forms</option>
+                                                                    <option value="7" {{ $requirement->document_type}}>Home Visitation Form</option>
+                                                                    <option value="8" {{ $requirement->document_type}}>Report Card / Grades</option>
+                                                                    <option value="9" {{ $requirement->document_type }}>Prospectus</option>
+                                                                    <option value="10" {{ $requirement->document_type }}>Official Grading System</option>
+                                                                    <option value="11" {{ $requirement->document_type }}>Tuition Projection</option>
+                                                                    <option value="12" {{ $requirement->document_type }}>Admission Slip</option>
+                                                                </select> --}}
                                                             </div>
+                                                            
 
                                                             <div class="form-group">
                                                                 <label for="notes">Notes</label>
-                                                                <textarea class="form-control" id="notes" rows="3"></textarea>
+                                                                <textarea class="form-control" id="notes" rows="3">{{ $requirement->notes }}</textarea>
                                                             </div>
 
                                                             <div class="form-group">
@@ -251,7 +251,7 @@
                                                                             class="fas fa-cloud-upload-alt"></i></label>
                                                                     <input type="file" class="form-control" id="fileUpload"
                                                                         style="display: none;">
-                                                                    <header>Drag and drop files here or click to upload attachment</header>
+                                                                    <header>{{ $requirement->uploaded_document }}</header>
                                                                 </div>
                                                             </div>
                                                         </form>

@@ -14,6 +14,7 @@ use App\Models\ApplicantsAcademicInformationGrade;
 use App\Models\Household;
 use App\Models\Member;
 use App\Models\Requirement;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -108,38 +109,46 @@ class ApplicantController extends Controller
         ]);
     }
 
+    //UPLOAD REQUIREMENTS AND NOTIFICATIONS(ADMIN)
     public function uploadRequirements(Request $request)
-{
-    // Validate the request data
-    $request->validate([
-        'documentType' => 'required',
-        'notes' => 'nullable',
-        'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:10240',
-    ]);
+    {
+        $request->validate([
+            'documentType' => 'required',
+            'notes' => 'nullable',
+            'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:10240',
+        ]);
+    
+        $file = $request->file('fileUpload');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->storeAs('uploads', $filename);
+    
+        $requirement = new Requirement();
+        $requirement->applicant_id = auth()->id();
+        $requirement->document_type = $request->documentType;
+        $requirement->notes = $request->notes;
+        $requirement->uploaded_document = $filename;
+        $requirement->status = 'For Review';
+    
+        try {
+            $requirement->save();
+    
+            $applicantInfo = ApplicantsPersonalInformation::where('applicant_id', auth()->id())->first();
+            $firstName = $applicantInfo->first_name;
+            $lastName = $applicantInfo->last_name;
 
-    // Store the file
-    $file = $request->file('fileUpload');
-    $filename = time() . '_' . $file->getClientOriginalName();
-    $file->storeAs('uploads', $filename);
-
-    // Save the uploaded document details to the database
-    $requirement = new Requirement();
-    $requirement->applicant_id = auth()->id();
-    $requirement->document_type = $request->documentType;
-    $requirement->notes = $request->notes;
-    $requirement->uploaded_document = $filename;
-    $requirement->status = 'For Review';
-
-    // Attempt to save the requirement
-    try {
-        $requirement->save();
-        return response()->json(['success' => 'Document uploaded successfully']);
-    } catch (\Exception $e) {
-        // Log any errors that occur during saving
-        \Log::error('Error saving requirement: ' . $e->getMessage());
-        return response()->json(['error' => 'An error occurred while saving the document. Please try again later.'], 500);
+            $requirement = new Requirement();
+            $notification = new Notification();
+            $notification->applicant_id = auth()->id();
+            $notification->applicant_name = "$firstName $lastName";
+            $notification->message = "Submitted {$request->documentType}";
+            $notification->save();
+            
+            return response()->json(['success' => 'Document uploaded successfully']);
+        } catch (\Exception $e) {
+            \Log::error('Error saving requirement: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while saving the document. Please try again later.'], 500);
+        }
     }
-}
 
     function loginPost(Request $request)
     {

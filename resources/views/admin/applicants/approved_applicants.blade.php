@@ -15,7 +15,7 @@
     </style>
   </head>
   <body>
-    @include('admin-partials.admin-sidebar')
+    @include('admin-partials.admin-sidebar', ['notifications' => app()->make(\App\Http\Controllers\Admin\AdminController::class)->showNotifications()])
     <!-- partial -->
     <div class="main-panel">
       <div class="content-wrapper">

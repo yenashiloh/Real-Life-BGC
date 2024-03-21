@@ -11,68 +11,54 @@
         <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Welcome, {{ Session::get('adminFirstName') }}!</h5>
         <ul class="navbar-nav navbar-nav-right ml-auto">
           <form class="search-form d-none d-md-block" action="#" id="applicants-search-form">
-            <i class="icon-magnifier"></i>
-            <input type="search" class="form-control" id="searchInput" placeholder="Search Here" title="Search here">
+              <i class="icon-magnifier"></i>
+              <input type="search" class="form-control" id="searchInput" placeholder="Search Here" title="Search here">
           </form>
-          {{-- <li class="nav-item"><a href="#" class="nav-link"><i class="icon-basket-loaded"></i></a></li> --}}
-          {{-- <li class="nav-item"><a href="#" class="nav-link"><i class="icon-chart"></i></a></li> --}}
           <li class="nav-item dropdown">
-            <a class="nav-link count-indicator message-dropdown" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <i class="icon-bell"></i>
-              <span class="count">7</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
-              <a class="dropdown-item py-3">
-                <p class="mb-0 font-weight-medium float-left">You have 7 notificatons </p>
-                {{-- <span class="badge badge-pill badge-primary float-right">View all</span> --}}
+              <a class="nav-link count-indicator message-dropdown" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                  <i class="icon-bell"></i>
+                  <span id="notificationCount" class="count">{{ \App\Models\Notification::where('status', 'unread')->count() }}</span>
               </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  {{-- <img src="images/faces/face10.jpg" alt="image" class="img-sm profile-pic"> --}}
-                </div>
-                <div class="preview-item-content flex-grow py-2">
-                  <p class="preview-subject ellipsis font-weight-medium text-dark">Marian Garner </p>
-                  <p class="font-weight-light small-text"> The meeting is cancelled </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  {{-- <img src="images/faces/face12.jpg" alt="image" class="img-sm profile-pic"> --}}
-                </div>
-                <div class="preview-item-content flex-grow py-2">
-                  <p class="preview-subject ellipsis font-weight-medium text-dark">David Grey </p>
-                  <p class="font-weight-light small-text"> The meeting is cancelled </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  {{-- <img src="images/faces/face1.jpg" alt="image" class="img-sm profile-pic"> --}}
-                </div>
-                <div class="preview-item-content flex-grow py-2">
-                  <p class="preview-subject ellipsis font-weight-medium text-dark">Travis Jenkins </p>
-                  <p class="font-weight-light small-text"> The meeting is cancelled </p>
-                </div>
-              </a>
-            </div>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
+                  <a class="dropdown-item py-3">
+                      <p class="mb-0 font-weight-medium float-left">You have <span class="count">{{ \App\Models\Notification::where('status', 'unread')->count() }}</span> notifications</p>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  @foreach($notifications as $notification)
+                      <a href="/applicants/{{ $notification->applicant_id }}" class="dropdown-item preview-item" data-notification-id="{{ $notification->id }}">
+                          <div class="preview-thumbnail">
+                              <img src="../assets-new-admin/images/faces/face23.png" alt="image" class="img-sm profile-pic">
+                          </div>
+                          <div class="preview-item-content flex-grow py-2">
+                              <p class="preview-subject ellipsis font-weight-medium text-dark">{{ $notification->applicant_name }}</p>
+                              <p class="font-weight-light small-text">{{ $notification->message }}</p>
+                              <span></span>
+                              <p class="font-weight-light" style="font-size:12px; font-style: italic;">
+                                  @if($notification->created_at->gt(now()->subDay()))
+                                      {{ $notification->created_at->diffForHumans() }}
+                                  @else
+                                      {{ $notification->created_at->format('F d, Y \a\t g:iA') }}
+                                  @endif
+                              </p>
+                          </div>
+                      </a>
+                      <hr style=" margin:0;">
+                  @endforeach
+              </div>
           </li>
           <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
-            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle ml-2" src="../assets-new-admin/images/faces/face22.png" alt="Profile image"> <span class="font-weight-normal">{{ Session::get('adminFirstName') }} {{ Session::get('adminLastName') }}</span></a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-              <div class="dropdown-header text-center">
-                {{-- <img class="img-md rounded-circle" src="../assets-new-admin/images/faces/face22.pg" alt="Profile image"> --}}
-                <p class="mb-1 mt-3" style="font-weight: bold; color: black;">{{ Session::get('adminFirstName') }} {{ Session::get('adminLastName') }}</p>
-                <p class="font-weight-light text-muted mb-0">{{ Session::get('adminEmail') }} </p>
+              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                  <img class="img-xs rounded-circle ml-2" src="../assets-new-admin/images/faces/face22.png" alt="Profile image"> <span class="font-weight-normal">{{ Session::get('adminFirstName') }} {{ Session::get('adminLastName') }}</span></a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                  <div class="dropdown-header text-center">
+                      <p class="mb-1 mt-3" style="font-weight: bold; color: black;">{{ Session::get('adminFirstName') }} {{ Session::get('adminLastName') }}</p>
+                      <p class="font-weight-light text-muted mb-0">{{ Session::get('adminEmail') }} </p>
+                  </div>
+                  <a href="/admin-profile" class="dropdown-item"><i class="dropdown-item-icon icon-user text-primary"></i> My Profile</a>
+                  <a class="dropdown-item" href="{{ route('admin.admin-logout') }}"><i class="dropdown-item-icon icon-power text-primary"></i>Sign Out</a>
               </div>
-              <a href="/admin-profile" class="dropdown-item"><i class="dropdown-item-icon icon-user text-primary"></i> My Profile</a>
-              {{-- <a class="dropdown-item"><i class="dropdown-item-icon icon-speech text-primary"></i> Messages</a>
-              <a class="dropdown-item"><i class="dropdown-item-icon icon-energy text-primary"></i> Activity</a>
-              <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i> FAQ</a> --}}
-              <a class="dropdown-item" href="{{ route('admin.admin-logout') }}"><i class="dropdown-item-icon icon-power text-primary"></i>Sign Out</a>
-            </div>
           </li>
-        </ul>
+      </ul>      
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="icon-menu"></span>
         </button>
@@ -154,3 +140,55 @@
           </li>
         </ul>
       </nav>
+
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery library if not already included -->
+
+      {{-- <script>
+        $(document).ready(function() {
+          // Retrieve notification count from localStorage if available
+          var notificationCount = localStorage.getItem('notificationCount');
+          if (notificationCount !== null) {
+            $('#notificationCount').text(notificationCount);
+          }
+      
+          $('#messageDropdown').on('click', function() {
+            // Reset the notification count to zero
+            $('#notificationCount').text('0');
+            // Update localStorage with the new count
+            localStorage.setItem('notificationCount', '0');
+          });
+        });
+      </script> --}}
+      <script>
+        $(document).ready(function() {
+    // Function to fetch notification count from the server
+    function fetchNotificationCount() {
+        $.ajax({
+            url: '/fetch-notification-count', // Endpoint to fetch notification count
+            type: 'GET',
+            success: function(response) {
+                $('#notificationCount').text(response.count); // Update notification count
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching notification count:', error);
+            }
+        });
+    }
+
+    // Fetch notification count initially when the page loads
+    fetchNotificationCount();
+
+    // Fetch notification count every 10 seconds (adjust interval as needed)
+    setInterval(fetchNotificationCount, 10000); // 10 seconds interval
+
+    // Handle click event on notification dropdown to reset count
+    $('#messageDropdown').on('click', function() {
+        // Reset the notification count to zero on the client side
+        $('#notificationCount').text('0');
+        // Send request to server to mark notifications as read if needed
+        // (You can implement this functionality in a separate AJAX call)
+    });
+});
+
+      </script>
+      

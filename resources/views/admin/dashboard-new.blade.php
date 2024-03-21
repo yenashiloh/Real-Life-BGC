@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="../assets-new-admin/vendors/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="../assets-new-admin/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="../assets-new-admin/vendors/css/vendor.bundle.base.css">
+    <link href="../assets-admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="../assets-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="../assets-new-admin/vendors/daterangepicker/daterangepicker.css">
@@ -25,31 +27,38 @@
     </style>
   </head>
   <body>
-     @include('admin-partials.admin-sidebar')
+
+    @include('admin-partials.admin-sidebar', ['notifications' => app()->make(\App\Http\Controllers\Admin\AdminController::class)->showNotifications()])
+
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
-            <!-- Quick Action Toolbar Starts-->
-            <div class="row quick-action-toolbar">
-              <div class="col-md-12 grid-margin">
-                  <div class="card">
-                      <div class="card-header d-block d-md-flex">
-                          <h5 class="mb-0">Quick Actions</h5>
-                      </div>
-                      <div class="d-md-flex row m-0 quick-action-btns" role="group" aria-label="Quick action buttons">
-                          <div class="col-sm-6 col-md-4 p-3 text-center btn-wrapper">
-                              <a href="{{ route('admin.announcement.add-announcement') }}" class="btn px-0"> <i class="icon-screen-tablet mr-2"></i> Add Announcement</a>
+              <!-- Quick Action Toolbar Starts-->
+              <div class="row quick-action-toolbar">
+                  <div class="col-md-12 grid-margin">
+                      <div class="card">
+                          <div class="card-header d-flex justify-content-between align-items-center">
+                              <h5 class="mb-0">Quick Actions</h5>
+                              <!-- Inserted switch to the right -->
+                              <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">On/Off the Application</label>
+                            </div>
                           </div>
-                          <div class="col-sm-6 col-md-4 p-3 text-center btn-wrapper">
-                            <a href="{{ route('admin.registration') }}" class="btn px-0"><i class="icon-user-follow mr-2"></i>Create Account</a>
-                        </div>                        
-                          <div class="col-sm-6 col-md-4 p-3 text-center btn-wrapper">
-                              <button type="button" class="btn px-0"><i class="icon-layers mr-2"></i>Create Content</button>
+                          <div class="d-md-flex row m-0 quick-action-btns" role="group" aria-label="Quick action buttons">
+                              <div class="col-sm-6 col-md-4 p-3 text-center btn-wrapper">
+                                  <a href="{{ route('admin.announcement.add-announcement') }}" class="btn px-0"> <i class="icon-screen-tablet mr-2"></i> Add Announcement</a>
+                              </div>
+                              <div class="col-sm-6 col-md-4 p-3 text-center btn-wrapper">
+                                  <a href="{{ route('admin.registration') }}" class="btn px-0"><i class="icon-user-follow mr-2"></i>Create Account</a>
+                              </div>
+                              <div class="col-sm-6 col-md-4 p-3 text-center btn-wrapper">
+                                  <button type="button" class="btn px-0"><i class="icon-layers mr-2"></i>Create Content</button>
+                              </div>
                           </div>
                       </div>
                   </div>
               </div>
-          </div>
           
       <div class="row">
         <div class="col-md-12 grid-margin">

@@ -106,7 +106,9 @@
                                 @endif
 
                                 {{-- PERSONAL INFORMATION --}}
+                                <br><br><br>
                                 <div class="row mb-3">
+                                   
                                     <h5 class="card-title" style="font-weight: bold;  color: #212529;">Personal
                                         Information</h5>
                                     <div class="col-md-6 form__field">

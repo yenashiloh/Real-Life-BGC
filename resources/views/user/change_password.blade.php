@@ -125,7 +125,7 @@
             ->personalInformation()
             ->first();
     @endphp
-    @include('partials.user-header')
+    @include('partials.header')
     <main id="main" class="main">
         <section class="section profile">
             <div class="col-xl-11 mx-auto">
@@ -142,7 +142,7 @@
                         <div class="tab-content pt-1">
 
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                <br>
+                                <br><br><br>
                                 {{-- <h5 style="font-weight: bold;"> Welcome, {{ $personalInfo->first_name ?? '' }}! </h5> --}}
                                 <h5 style="font-weight: bold; font-size: 25px;">Change Password</h5>
                                 <br>

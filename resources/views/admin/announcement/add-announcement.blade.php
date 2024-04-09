@@ -17,7 +17,7 @@
         padding-bottom: 10px;
     }
  
-    </style>
+    </style>  
   </head>
   <body>
     @include('admin-partials.admin-sidebar', ['notifications' => app()->make(\App\Http\Controllers\Admin\AdminController::class)->showNotifications()])

@@ -2,7 +2,7 @@
 <!-- ======= Contact Section ======= -->
 <section id="contact" class="contact">
     <div class="container">
-
+        
         <div class="section-title">
             <h2>Contact Us</h2>
             <br>
@@ -80,8 +80,8 @@
         </div>
     </section><!-- End Contact Section -->
     <br><br>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-@include('partials.footer')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('submitBtn').addEventListener('click', function () {

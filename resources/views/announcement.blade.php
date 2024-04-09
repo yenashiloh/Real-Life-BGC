@@ -340,17 +340,17 @@
                                     <span class="widget-49-meeting-time" style="margin-bottom:5px;">  {{ \Carbon\Carbon::parse($announce->created_at)->timezone('Asia/Manila')->isoFormat('MMMM D, YYYY, h:mm A') }} ({{ \Carbon\Carbon::parse($announce->created_at)->timezone('Asia/Manila')->diffForHumans() }})</span>
                                 </div>
                             </div>
-                            <div class="widget-49-meeting-points">
-                                @if($announce->caption)
-                                    <div class="full-content" style="font-size: 15px; color: rgb(7, 7, 7); margin-left: 20px;"> 
-                                        {!! $announce->caption !!}
-                                    </div>
-                                @else
-                                    <div class="content-toggle" style="font-size: 15px; color: rgb(7, 7, 7);">
-                                        <!-- Content when caption is not available -->
-                                    </div>
-                                @endif
-                            </div>
+                                <div class="widget-49-meeting-points">
+                                    @if($announce->caption)
+                                        <div class="full-content" style="font-size: 15px; color: rgb(7, 7, 7); margin-left: 20px;"> 
+                                            {!! $announce->caption !!}
+                                        </div>
+                                    @else
+                                        <div class="content-toggle" style="font-size: 15px; color: rgb(7, 7, 7);">
+                                            <!-- Content when caption is not available -->
+                                        </div>
+                                    @endif
+                                </div>
                             {{-- <div class="widget-49-meeting-action">
                                
                             </div> --}}

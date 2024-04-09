@@ -27,9 +27,10 @@
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-              <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;">
+              <a href="{{ route('export.applicants') }}" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;">
                 <i class="icon-cloud-download" style="margin-right:5px;"></i>Export Excel
-              </button>
+            </a>
+            
               
                 <div class="loader"></div>
                 <!-- Table with stripped rows -->
@@ -191,22 +192,29 @@
 });
 
 $(document).ready(function() {
-  $(document).on('click', '.dropdown-item', function(e) {
-    e.preventDefault();
-    var applicant_id = $(this).data('applicant-id');
-    var updateRoute = $(this).data('route');
-    var action = $(this).data('action');
-    $('.loader').show();
+    $(document).on('click', '.dropdown-item', function(e) {
+      var action = $(this).data('action');
+      
+      if (action) {
+        e.preventDefault();
+      }
 
-    console.log('Applicant ID:', applicant_id);
-    console.log('Update Route:', updateRoute);
-    console.log('Action:', action);
+      var applicant_id = $(this).data('applicant-id');
+      var updateRoute = $(this).data('route');
+      
+      if (action) {
+        $('.loader').show();
+      }
 
-    if (!applicant_id || !updateRoute || !action) {
-      console.log('Invalid data');
-      return;
-    }
-    $('.alert').remove();
+      console.log('Applicant ID:', applicant_id);
+      console.log('Update Route:', updateRoute);
+      console.log('Action:', action);
+
+      if (!applicant_id || !updateRoute || !action) {
+        console.log('Invalid data');
+        return;
+      }
+      $('.alert').remove();
 
     $.ajax({
       type: 'POST',
@@ -294,17 +302,17 @@ $(document).ready(function() {
              $('#dropdownMenuButton' + applicantId).next('.dropdown-menu').html(dropdownContent);
             }
             setTimeout(function() {
-            $('.alert').remove();
-          }, 8000);
-        } else {
-          console.log('Failed to update status:', response.error);
+              $('.alert').remove();
+            }, 8000);
+          } else {
+            console.log('Failed to update status:', response.error);
           }
           $('.loader').hide(); 
         },
-      error: function(xhr, status, error) {
-        console.log('Error:', error);
-        $('.loader').hide();
-      }
+        error: function(xhr, status, error) {
+          console.log('Error:', error);
+          $('.loader').hide();
+        } 
       }); 
     });
   });

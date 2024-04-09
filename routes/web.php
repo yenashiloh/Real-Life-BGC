@@ -64,7 +64,6 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
 //admin
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
-    Route::get('/dashboard-new', [AdminController::class, 'new_dashboard'])->name('admin.dashboard-new');
     Route::post('/admin-login', [AdminController::class, 'adminloginPost'])->name('admin.login.post');
     // Route::get('/dashboard-new', [AdminController::class, 'totalApplicants'])->name('dashboard');
     // Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
@@ -96,7 +95,8 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
 
     //TOTAL FOR DASHBOARD
     // Route::get('/dashboard', [AdminController::class, 'totalDeclined'])->name('total_declined');
-    Route::get('/dashboard-new', [AdminController::class, 'totalApplicants'])->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'new_dashboard'])->name('admin.dashboard-new');
+    Route::get('/dashboard', [AdminController::class, 'totalApplicants'])->name('dashboard');
     Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
 
     // //DATA APPLICANTS 
@@ -127,8 +127,12 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     //NOTIFICATION
     // Route::get('/admin-partials/admin-sidebar/', [AdminController::class, 'getNotificationCount'])->name('get.notification.count');
     Route::get('/fetch-notification-count', [AdminController::class, 'fetchNotificationCount'])->name('fetch-notification-count');
+    Route::post('/mark-notifications-as-read', [AdminController::class, 'markNotificationsAsRead'])->name('mark-notifications-as-read');
 
+    //EXPORT EXCEL
+    Route::get('/export', [AdminController::class, 'exportData'])->name('export.applicants');
 
-
-
+    //EMAIL
+    Route::get('/email/email', [EmailController::class, 'emailShow'])->name('admin.email.email');
+    Route::post('/email/email', [EmailController::class, 'saveUnderReviewContent'])->name('admin.save-under-review-content');
 });

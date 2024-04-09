@@ -3,9 +3,9 @@
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex align-items-center">
         <a class="navbar-brand brand-logo" href="index.html">
-          <h4 style="color: white;">Real LIFE Foundation</h4>
+        <h4 style="color: white;">Real LIFE Foundation</h4>
         </a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><h4 style="color: white;">Real LIFE Foundation</h4></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
         <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Welcome, {{ Session::get('adminFirstName') }}!</h5>
@@ -89,7 +89,7 @@
             <span class="nav-link">Dashboard</span>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/dashboard-new">
+            <a class="nav-link" href="/dashboard">
               <span class="menu-title">Dashboard</span>
               <i class="icon-screen-desktop menu-icon"></i>
             </a>
@@ -125,11 +125,17 @@
               <i class="icon-check menu-icon"></i>
             </a>
           </li>
-          <li class="nav-item nav-category"><span class="nav-link">Content Management</span></li>
+          <li class="nav-item nav-category"><span class="nav-link">Content </span></li>
           <li class="nav-item">
             <a class="nav-link"  href="{{ route('admin.announcement.admin-announcement') }}">
               <span class="menu-title">Announcement</span>
               <i class="icon-screen-tablet menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href="{{ route('admin.email.email') }}">
+              <span class="menu-title">Email</span>
+              <i class=" icon-envelope-open menu-icon"></i>
             </a>
           </li>
           <li class="nav-item">
@@ -143,24 +149,9 @@
 
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery library if not already included -->
 
-      {{-- <script>
-        $(document).ready(function() {
-          // Retrieve notification count from localStorage if available
-          var notificationCount = localStorage.getItem('notificationCount');
-          if (notificationCount !== null) {
-            $('#notificationCount').text(notificationCount);
-          }
-      
-          $('#messageDropdown').on('click', function() {
-            // Reset the notification count to zero
-            $('#notificationCount').text('0');
-            // Update localStorage with the new count
-            localStorage.setItem('notificationCount', '0');
-          });
-        });
-      </script> --}}
+
       <script>
-        $(document).ready(function() {
+  $(document).ready(function() {
     // Function to fetch notification count from the server
     function fetchNotificationCount() {
         $.ajax({
@@ -186,7 +177,19 @@
         // Reset the notification count to zero on the client side
         $('#notificationCount').text('0');
         // Send request to server to mark notifications as read if needed
-        // (You can implement this functionality in a separate AJAX call)
+        $.ajax({
+            url: '/mark-notifications-as-read', // Endpoint to mark notifications as read
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+            },
+            success: function(response) {
+                // Optionally, you can perform additional actions after marking notifications as read
+            },
+            error: function(xhr, status, error) {
+                console.error('Error marking notifications as read:', error);
+            }
+        });
     });
 });
 

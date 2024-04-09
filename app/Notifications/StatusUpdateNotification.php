@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Applicant;
+use App\Models\ContentEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -22,7 +23,9 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
     public function build()
     {
         $status = $this->applicant->status;
-
+        if ($status === 'New Applicant') {
+            return null;
+        }
         switch ($status) {
             case 'Under Review':
                 return $this->sendUnderReviewEmail();
@@ -38,19 +41,22 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
                 return $this->sendDefaultEmail();
         }
     }
-
+    
     private function sendUnderReviewEmail()
     {
+        $underReviewContent = ContentEmail::first()->under_review ?? ''; 
+
         $applicant = $this->applicant->load('applicants_personal_information');
         $firstName = $applicant->applicants_personal_information->first_name ?? '';
 
         return $this->subject('Real LIFE Scholarship Application')
-            ->view('emails.applicant-under-review', ['
-            applicant' => $this->applicant,
-            'firstName' =>$firstName
-        ]);
+            ->view('emails.applicant-under-review', [
+                'applicant' => $this->applicant,
+                'firstName' => $firstName,
+                'underReviewContent' => $underReviewContent
+            ]);
     }
-
+    
     private function sendShortlistedEmail()
     {
         $applicant = $this->applicant->load('applicants_personal_information');

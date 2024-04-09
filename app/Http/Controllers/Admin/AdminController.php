@@ -20,6 +20,10 @@ use App\Models\ApplicantsAcademicInformationGrade;
 use App\Models\Member;
 use App\Models\Notification;
 use App\Models\Requirement;
+use App\Exports\ApplicantsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 
 
 class AdminController extends Controller
@@ -56,12 +60,6 @@ class AdminController extends Controller
         
     }
 
-    public function new_dashboard()
-    {
-        $title = 'Dashboard';
-        return view('admin.dashboard-new', ['title' => $title]);
-        
-    }
 
     //admin profile
     public function adminProfile()
@@ -293,7 +291,7 @@ public function totalApplicants()
     ->get();
 
     // Pass the data to the view
-    return view('admin.dashboard-new', compact('totalApplicants', 'totalShortlisted', 'totalForInterview', 'totalHouseVisitation','totalDeclined', 'totalApproved', 'title', 'applicantsData'));
+    return view('admin.dashboard', compact('totalApplicants', 'totalShortlisted', 'totalForInterview', 'totalHouseVisitation','totalDeclined', 'totalApproved', 'title', 'applicantsData'));
 }
 
     //bar chart - incoming grade/yr level
@@ -488,28 +486,53 @@ public function totalApplicants()
         }
     }
 
-    public function showNotifications()
-    {
-        // Fetch unread notifications
-        $notifications = Notification::where('status', 'unread')
-            ->orderBy('created_at', 'desc')
-            ->get(['id', 'applicant_id', 'applicant_name', 'message', 'status', 'created_at', 'updated_at']);
+    //notification
+   // Controller methods
 
-        // Return the unread notifications
-        return $notifications;
+public function showNotifications()
+{
+    $notifications = Notification::where('status', 'unread')
+        ->orderBy('created_at', 'desc')
+        ->get(['id', 'applicant_id', 'applicant_name', 'message', 'status', 'created_at', 'updated_at']);
+
+    return $notifications;
+}
+
+public function fetchNotificationCount()
+{
+    try {
+        $count = Notification::where('status', 'unread')->count();
+        return response()->json(['count' => $count]);
+    } catch (\Exception $e) {
+        \Log::error('Error fetching notification count: ' . $e->getMessage());
+        return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
     }
-    public function fetchNotificationCount()
+}
+
+public function markNotificationsAsRead()
+{
+    try {
+        // Update the status of unread notifications to "read"
+        Notification::where('status', 'unread')->update(['status' => 'read']);
+        
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        \Log::error('Error marking notifications as read: ' . $e->getMessage());
+        return response()->json(['error' => 'Failed to mark notifications as read'], 500);
+    }
+}
+
+ 
+
+    
+    //export excel
+    public function exportData()
     {
-        try {
-            $count = Notification::where('status', 'unread')->count();
-            return response()->json(['count' => $count]);
-        } catch (\Exception $e) {
-            \Log::error('Error fetching notification count: ' . $e->getMessage());
-            return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
-        }
+        $export = new ApplicantsExport();
+        $fileName = 'applicants.xlsx'; 
+
+        return Excel::download($export, $fileName);
     }
-    
-    
 }    
 
     

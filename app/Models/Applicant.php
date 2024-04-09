@@ -60,4 +60,9 @@ class Applicant extends Authenticatable
     {
         return $this->hasOne(Requirement::class, 'applicant_id', 'applicant_id');
     }
+
+    public function contentEmail()
+    {
+        return $this->hasOne(ContentEmail::class, 'applicant_id', 'applicant_id');
+    }
 }

@@ -3,6 +3,7 @@
 <!-- ======= FAQ Section ======= -->
 <section id="contact" class="contact">
     <div class="container">
+        <br><br><br>
         <div class="section-title">
             <h2>FREQUENTLY ASKED QUESTIONS</h2>
         </div>

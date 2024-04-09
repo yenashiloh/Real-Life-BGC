@@ -22,7 +22,7 @@
                             <div class="tab-content pt-1">
 
                                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                    <br>
+                                    <br><br><br>
                                     {{-- <h5 style="font-weight: bold;"> Welcome, {{ $personalInfo->first_name ?? '' }}! </h5> --}}
                                     <h5 style="font-weight: bold; font-size: 25px;">Dashboard</h5>
                                     <br>

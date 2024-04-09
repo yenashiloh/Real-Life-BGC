@@ -13044,7 +13044,7 @@ dl {
   color: #ffffff;
   padding: 12px 30px;
   background-image: -webkit-gradient(linear, right top, left top, from(#D4EDDA), to(#C4F3CF));
-  background-image: linear-gradient(to left, #A8C896, #71BF44);
+  background-image: linear-gradient(to left, #71BF44, #71BF44);
   border: 0;
   border-radius: 0; }
   .quick-action-toolbar .card .card-header h5 {

@@ -135,4 +135,12 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     //EMAIL
     Route::get('/email/email', [EmailController::class, 'emailShow'])->name('admin.email.email');
     Route::post('/email/email', [EmailController::class, 'saveUnderReviewContent'])->name('admin.save-under-review-content');
+
+    // Route::get('/filterApplicantsByYear', [AdminController::class, ' filterApplicantsByYear'])->name(' filterApplicantsByYear');
+    Route::get('/get-data-for-year', [AdminController::class, 'getDataForYear'])->name('get-data-for-year');
+    Route::get('/get-graph-data-for-year', [AdminController::class, 'getGraphDataForYear'])->name('get-graph-data-for-year');
+    // Route::get('/get-data-for-year', 'AdminController@getDataForYear');
+
+
+
 });

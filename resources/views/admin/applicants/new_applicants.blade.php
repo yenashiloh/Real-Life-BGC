@@ -60,16 +60,16 @@
                                 <td>{{ $applicant->incoming_grade_year }}</td>
                                 <td>{{ $applicant->current_school }}</td>
                                 <td>
-                                    <span id="status-{{ $applicant->applicant_id }}" class="badge
-                                        @if($applicant->status === 'New Applicant') badge-primary
-                                        @elseif($applicant->status === 'Under Review') badge-secondary
-                                        @elseif($applicant->status === 'Shortlisted') badge-warning
-                                        @elseif($applicant->status === 'For Interview') badge-dark
-                                        @elseif($applicant->status === 'For House Visitation') badge-success
-                                        @endif
-                                        " >
-                                        {{ $applicant->status }}
-                                    </span>
+                                  <span id="status-{{ $applicant->applicant_id }}" class="badge
+                                    @if($applicant->status === 'New Applicant') badge-primary
+                                    @elseif($applicant->status === 'Under Review') badge-secondary
+                                    @elseif($applicant->status === 'Shortlisted') badge-warning
+                                    @elseif($applicant->status === 'For Interview') badge-dark
+                                    @elseif($applicant->status === 'For House Visitation') badge-success
+                                    @endif
+                                    p-2" style="font-weight: normal;">
+                                    {{ $applicant->status }}
+                                </span>
                                 </td>
                                 <td>
                                <div class="dropdown">

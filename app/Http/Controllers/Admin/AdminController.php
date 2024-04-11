@@ -264,35 +264,47 @@ class AdminController extends Controller
         }
     }
  
- //dashboard total
-public function totalApplicants()
-{
-    $totalApplicants = Applicant::count();
-    $totalShortlisted = Applicant::where('status', 'Shortlisted')->count();
-    $totalForInterview = Applicant::where('status', 'For Interview')->count();
-    $totalHouseVisitation = Applicant::where('status', 'For House Visitation')->count();
-    $totalDeclined = Applicant::where('status', 'Declined')->count();
-    $totalApproved = Applicant::where('status', 'Approved')->count();
-    $title = 'Dashboard'; 
-    $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
+    // dashboard total
+    public function totalApplicants()
+    {
+        $totalApplicants = Applicant::count();
+        $totalShortlisted = Applicant::where('status', 'Shortlisted')->count();
+        $totalForInterview = Applicant::where('status', 'For Interview')->count();
+        $totalHouseVisitation = Applicant::where('status', 'For House Visitation')->count();
+        $totalDeclined = Applicant::where('status', 'Declined')->count();
+        $totalApproved = Applicant::where('status', 'Approved')->count();
+        $title = 'Dashboard'; 
+        $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
+    
+        $applicantsData = ApplicantsPersonalInformation::select(
+            'applicants_personal_information.first_name',
+            'applicants_personal_information.last_name',
+            'applicants_academic_information.incoming_grade_year',
+            'applicants_academic_information.current_school',
+            'applicants.status',
+            'applicants.created_at',
+            'applicants.applicant_id'
+        )
+        ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
+        ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
+        ->whereIn('applicants.status', $validStatuses)
+        ->get();
+    
+        $years = $this->getDistinctYears();
+    
+        // Pass the data to the view
+        return view('admin.dashboard', compact('totalApplicants', 'totalShortlisted', 'totalForInterview', 'totalHouseVisitation','totalDeclined', 'totalApproved', 'title', 'applicantsData', 'years'));
+    }
+ 
+    public function getDistinctYears()
+    {
+        $years = Applicant::selectRaw('YEAR(created_at) as year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
 
-    $applicantsData = ApplicantsPersonalInformation::select(
-        'applicants_personal_information.first_name',
-        'applicants_personal_information.last_name',
-        'applicants_academic_information.incoming_grade_year',
-        'applicants_academic_information.current_school',
-        'applicants.status',
-        'applicants.created_at',
-        'applicants.applicant_id'
-    )
-    ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
-    ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
-    ->whereIn('applicants.status', $validStatuses)
-    ->get();
-
-    // Pass the data to the view
-    return view('admin.dashboard', compact('totalApplicants', 'totalShortlisted', 'totalForInterview', 'totalHouseVisitation','totalDeclined', 'totalApproved', 'title', 'applicantsData'));
-}
+        return $years;
+    }
 
     //bar chart - incoming grade/yr level
     public function getApplicantsByGradeYear()
@@ -377,7 +389,7 @@ public function totalApplicants()
         }
     }
 
-    
+    //Declined Applicants
     public function showDeclinedApplicants()
     {
         $title = 'Declined Applicants';
@@ -487,44 +499,38 @@ public function totalApplicants()
     }
 
     //notification
-   // Controller methods
+    public function showNotifications()
+    {
+        $notifications = Notification::where('status', 'unread')
+            ->orderBy('created_at', 'desc')
+            ->get(['id', 'applicant_id', 'applicant_name', 'message', 'status', 'created_at', 'updated_at']);
 
-public function showNotifications()
-{
-    $notifications = Notification::where('status', 'unread')
-        ->orderBy('created_at', 'desc')
-        ->get(['id', 'applicant_id', 'applicant_name', 'message', 'status', 'created_at', 'updated_at']);
-
-    return $notifications;
-}
-
-public function fetchNotificationCount()
-{
-    try {
-        $count = Notification::where('status', 'unread')->count();
-        return response()->json(['count' => $count]);
-    } catch (\Exception $e) {
-        \Log::error('Error fetching notification count: ' . $e->getMessage());
-        return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
+        return $notifications;
     }
-}
 
-public function markNotificationsAsRead()
-{
-    try {
-        // Update the status of unread notifications to "read"
-        Notification::where('status', 'unread')->update(['status' => 'read']);
-        
-        return response()->json(['success' => true]);
-    } catch (\Exception $e) {
-        \Log::error('Error marking notifications as read: ' . $e->getMessage());
-        return response()->json(['error' => 'Failed to mark notifications as read'], 500);
+    public function fetchNotificationCount()
+    {
+        try {
+            $count = Notification::where('status', 'unread')->count();
+            return response()->json(['count' => $count]);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching notification count: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
+        }
     }
-}
 
- 
+    public function markNotificationsAsRead()
+    {
+        try {
+            Notification::where('status', 'unread')->update(['status' => 'read']);
+            
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            \Log::error('Error marking notifications as read: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to mark notifications as read'], 500);
+        }
+    }
 
-    
     //export excel
     public function exportData()
     {
@@ -533,7 +539,70 @@ public function markNotificationsAsRead()
 
         return Excel::download($export, $fileName);
     }
+
+    public function getDataForYear(Request $request)
+    {
+        $selectedYear = $request->input('year');
+        $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
+        
+        $totalApplicants = ApplicantsPersonalInformation::selectRaw('COUNT(*) as total')
+            ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
+            ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
+            ->whereIn('applicants.status', $validStatuses)
+            ->whereYear('applicants.created_at', $selectedYear)
+            ->count();
+        
+        $totalShortlisted = Applicant::where('status', 'Shortlisted')
+            ->whereYear('created_at', $selectedYear)
+            ->count();
+
+        $totalForInterview = Applicant::where('status', 'For Interview')
+            ->whereYear('created_at', $selectedYear)
+            ->count();
+
+        $totalHouseVisitation = Applicant::where('status', 'For House Visitation')
+            ->whereYear('created_at', $selectedYear)
+            ->count();
+
+        $totalDeclined = Applicant::where('status', 'Declined')
+            ->whereYear('created_at', $selectedYear)
+            ->count();
+
+        $totalApproved = Applicant::where('status', 'Approved')
+            ->whereYear('created_at', $selectedYear)
+            ->count();
+
+        return response()->json([
+            'totalApplicants' => $totalApplicants,
+            'totalShortlisted' => $totalShortlisted,
+            'totalForInterview' => $totalForInterview,
+            'totalHouseVisitation' => $totalHouseVisitation,
+            'totalDeclined' => $totalDeclined,
+            'totalApproved' => $totalApproved,
+        ]);
+    }
+
+    public function getGraphDataForYear(Request $request)
+    {
+        $selectedYear = $request->input('year');
+        
+        $graphData = ApplicantsAcademicInformation::selectRaw('incoming_grade_year as label, count(*) as count')
+            ->join('applicants_personal_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
+            ->whereYear('applicants.created_at', $selectedYear)
+            ->groupBy('incoming_grade_year')
+            ->get();
+
+        $labels = $graphData->pluck('label');
+        $counts = $graphData->pluck('count');
+
+        return response()->json([
+            'labels' => $labels,
+            'counts' => $counts,
+        ]);
+    }
 }    
+
 
     
 

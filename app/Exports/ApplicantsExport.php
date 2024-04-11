@@ -24,7 +24,7 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithStyles
     public function collection()
     {
         return Applicant::select(
-            'applicants.created_at',
+            // 'applicants.created_at',
             'personal_info.first_name',
             'personal_info.last_name',
             'applicants.email',
@@ -44,7 +44,6 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithStyles
         ->join('applicants_academic_information as academic_info', 'applicants.applicant_id', '=', 'academic_info.applicant_id')
         ->get()
         ->map(function ($item) {
-            $item->created_at = Carbon::parse($item->created_at)->format('F d, Y H:i:s');
             $item->birthday = Carbon::parse($item->birthday)->format('F d, Y');
             return $item;
         });
@@ -53,7 +52,6 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithStyles
     public function headings(): array
     {
         return [
-            'Date Applied',
             'First Name',
             'Last Name',
             'Email',
@@ -65,15 +63,15 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithStyles
             'Municipality',
             'Incoming Grade',
             'Current School',
-            'Current Program',
-            'Status',
+            'Current Course/Program',
+            'Status'
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
        
-        $sheet->getStyle('A1:M1')->applyFromArray([
+        $sheet->getStyle('A1:Z1')->applyFromArray([
             'font' => ['bold' => true],
         ]);
 

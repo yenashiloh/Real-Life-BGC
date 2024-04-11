@@ -177,9 +177,9 @@
            <div class="col-12 grid-margin stretch-card">
              <div class="card">
                <div class="card-body">
-                 <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;">
-                   Export as Excel
-                 </button>
+                <a href="" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;">
+                  <i class="icon-cloud-download" style="margin-right:5px;"></i>Export Excel
+                </a>
                  <div class="loader"></div>
                  <!-- Table with stripped rows -->
                  <div class="table-responsive">

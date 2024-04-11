@@ -9,14 +9,14 @@ function ready(fn) {
   }
 }
 
-ready(function() {
+ready(function () {
 
   // Global Constants
 
   const progressForm = document.getElementById('progress-form');
 
-  const tabItems  = progressForm.querySelectorAll('[role="tab"]')
-      , tabPanels = progressForm.querySelectorAll('[role="tabpanel"]');
+  const tabItems = progressForm.querySelectorAll('[role="tab"]')
+    , tabPanels = progressForm.querySelectorAll('[role="tabpanel"]');
 
   let currentStep = 0;
 
@@ -73,44 +73,44 @@ ready(function() {
     }
   };
 
-   /*****************************************************************************
-   * Birthdate Validation
-   */
-   const validateDate = field => {
+  /*****************************************************************************
+  * Birthdate Validation
+  */
+  const validateDate = field => {
     const val = field.value.trim();
 
     if (val === '' && field.required) {
-        return {
-            isValid: false,
-        };
+      return {
+        isValid: false,
+      };
     } else {
-        const currentDate = new Date();
-        const selectedDate = new Date(val);
-        const ageInYears = (currentDate - selectedDate) / (365 * 24 * 60 * 60 * 1000);
+      const currentDate = new Date();
+      const selectedDate = new Date(val);
+      const ageInYears = (currentDate - selectedDate) / (365 * 24 * 60 * 60 * 1000);
 
-        if (ageInYears < 10 || ageInYears > 25) {
-            return {
-                isValid: false,
-                message: 'You must be 10 to 25 years old to qualify for the scholarship.'
-            };
-        }
-
+      if (ageInYears < 10 || ageInYears > 25) {
         return {
-            isValid: true
+          isValid: false,
+          message: 'You must be 10 to 25 years old to qualify for the scholarship.'
         };
-    }
-};
+      }
 
-   
+      return {
+        isValid: true
+      };
+    }
+  };
+
+
   const validateNumber = field => {
     const val = field.value.trim();
-  
+
     if (val === '' && field.required) {
       return {
         isValid: false
       };
     } else {
-      
+
       return {
         isValid: true
       };
@@ -121,9 +121,9 @@ ready(function() {
     const val = field.value.trim();
 
     if (val === '' && field.required) {
-        return {
-            isValid: false,
-        };
+      return {
+        isValid: false,
+      };
     }
 
     // Check for lowercase letter
@@ -139,62 +139,86 @@ ready(function() {
     const hasMinLength = val.length >= 8;
 
     if (!(hasLowercase && hasUppercase && hasNumber && hasMinLength)) {
-        return {
-            isValid: false,
-            message: 'Requires one lowercase letter, one capital letter, one number, and a minimum of 8 characters.'
-        };
+      return {
+        isValid: false,
+        message: 'Requires one lowercase letter, one capital letter, one number, and a minimum of 8 characters.'
+      };
     }
 
     return {
-        isValid: true
+      isValid: true
     };
-};
+  };
 
-// const validateNumber = field => {
-//   const val = field.value.trim();
+  const validateConfirmPassword = field => {
+    const val = field.value.trim();
+    const passwordField = document.getElementById('passwordField');
+    const password = passwordField.value.trim();
 
-//   if (val === '' && field.required) {
-//       return {
-//           isValid: false,
-//           message: 'This field is required.'
-//       };
-//   } else {
-//       const numericVal = parseFloat(val);
+    if (val === '' && field.required) {
+      return {
+        isValid: false,
+        message: 'Please confirm your password.'
+      };
+    }
 
-//       if (isNaN(numericVal) || numericVal < 88 || numericVal > 100) {
-//           return {
-//               isValid: false,
-//               message: 'GWA must be 88% to100% to qualify the scholarship'
-//           };
-//       }
+    if (val !== password) {
+      return {
+        isValid: false,
+        message: 'Password doesn\'t match.'
+      };
+    }
 
-//       return {
-//           isValid: true
-//       };
-//   }
-// };
+    return {
+      isValid: true
+    };
+  };
+
+
+
+  // const validateNumber = field => {
+  //   const val = field.value.trim();
+
+  //   if (val === '' && field.required) {
+  //       return {
+  //           isValid: false,
+  //           message: 'This field is required.'
+  //       };
+  //   } else {
+  //       const numericVal = parseFloat(val);
+
+  //       if (isNaN(numericVal) || numericVal < 88 || numericVal > 100) {
+  //           return {
+  //               isValid: false,
+  //               message: 'GWA must be 88% to100% to qualify the scholarship'
+  //           };
+  //       }
+
+  //       return {
+  //           isValid: true
+  //       };
+  //   }
+  // };
   // const validateFile = (field) => {
   //   const val = field.value.trim();
   //   const isValid = !(val === '' && field.required);
-  
+
   //   return {
   //     isValid
   //   };
   // };
-  
-  // const validateCheckbox = field => {
-  //   const val = field.value.trim();
-  
-  //   if (val === '' && field.required) {
-  //     return {
-  //       isValid: false
-  //     };
-  //   } else {
-  //     // You can add additional date-specific validation logic here if needed
-  //     return {
-  //       isValid: true
-  //     };
-  //   }
+
+  //   const validateCheckbox = field => {
+  //     if (field.checked) {
+  //         return {
+  //             isValid: true
+  //         };
+  //     } else {
+  //         return {
+  //             isValid: false,
+  //             message: 'please check the box to proceed.'
+  //         };
+  //     }
   // };
 
 
@@ -228,22 +252,22 @@ ready(function() {
         message: 'Fieldset element not found.'
       };
     }
-  
+
     const choices = fieldset.querySelectorAll('input[type="radio"], input[type="checkbox"]');
-  
+
     let isRequired = false
-      , isChecked  = false;
-  
+      , isChecked = false;
+
     for (const choice of choices) {
       if (choice.required) {
         isRequired = true;
       }
-  
+
       if (choice.checked) {
         isChecked = true;
       }
     }
-  
+
     if (!isChecked && isRequired) {
       return {
         isValid: false,
@@ -255,7 +279,7 @@ ready(function() {
       };
     }
   };
-  
+
   /*****************************************************************************
    * Expects a Node (input[type="radio"] or input[type="checkbox"]).
    */
@@ -270,7 +294,7 @@ ready(function() {
 
   const isPDFFile = (filename) => {
     return /\.(pdf)$/i.test(filename);
-};
+  };
 
   const validatePhone = field => {
     const val = field.value.trim();
@@ -297,17 +321,17 @@ ready(function() {
       return {
         isValid: false
       };
-    }else if (val !== '' && !isPDFFile(val)) {
-        return {
-            isValid: false,
-            message: 'Please upload pdf file only.'
-        };
+    } else if (val !== '' && !isPDFFile(val)) {
+      return {
+        isValid: false,
+        message: 'Please upload pdf file only.'
+      };
     } else {
-        return {
-            isValid: true
-        };
+      return {
+        isValid: true
+      };
     }
-};
+  };
 
   /*****************************************************************************
    * Expects a Node (input[type="email"]).
@@ -341,9 +365,15 @@ ready(function() {
    */
 
   const getValidationData = field => {
-    switch (field.type) {
-      case 'text':
-      case 'textarea':
+    switch (field.id) {
+      case 'firstname':
+      case 'houseNumber':
+      case 'street':
+      case 'barangay':
+      case 'municipality':
+      case 'currentSchool':
+      case 'currentProgram':
+      case 'lastname':
         return validateText(field);
       case 'select-one':
         return validateSelect(field);
@@ -352,21 +382,23 @@ ready(function() {
       case 'radio':
       case 'checkbox':
         return validateChoice(field);
-      case 'tel':
+      case 'contact':
         return validatePhone(field);
       case 'email':
         return validateEmail(field);
-      case 'date':
-      return validateDate(field);
+      case 'birthdate':
+        return validateDate(field);
       case 'number':
         return validateNumber(field);
-      case 'password':
+      case 'passwordField':
         return validatePassword(field);
+      case 'confirmPasswordField':
+        return validateConfirmPassword(field);
       case 'file':
-        const validation = validateReportCard(field); 
-          // if (!validation.isValid) {
-          //   displayErrorMessage(field, validation.message);
-          // }
+        const validation = validateReportCard(field);
+        // if (!validation.isValid) {
+        //   displayErrorMessage(field, validation.message);
+        // }
         return validation;
       default:
         throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
@@ -410,7 +442,7 @@ ready(function() {
   // Form Error and Success
 
   const FIELD_PARENT_CLASS = 'form__field'
-      , FIELD_ERROR_CLASS  = 'form__error-text';
+    , FIELD_ERROR_CLASS = 'form__error-text';
 
   /*****************************************************************************
    * Expects a Node (fieldset) that contains any number of radio or checkbox
@@ -446,7 +478,7 @@ ready(function() {
     const fieldParent = field.closest(`.${FIELD_PARENT_CLASS}`);
 
     if (progressForm.contains(fieldParent)) {
-      let fieldError   = fieldParent.querySelector(`.${FIELD_ERROR_CLASS}`)
+      let fieldError = fieldParent.querySelector(`.${FIELD_ERROR_CLASS}`)
         , fieldErrorId = '';
 
       if (!fieldParent.contains(fieldError)) {
@@ -551,8 +583,8 @@ ready(function() {
    */
 
   function activateTab(index) {
-    const thisTab   = tabItems[index]
-        , thisPanel = tabPanels[index];
+    const thisTab = tabItems[index]
+      , thisPanel = tabPanels[index];
 
     // Close all other tabs
     deactivateTabs();
@@ -591,10 +623,10 @@ ready(function() {
      * Otherwise, activate the tab at the beginning/end of the list.
      */
 
-    const targetPrev  = target.previousElementSibling
-        , targetNext  = target.nextElementSibling
-        , targetFirst = target.parentElement.firstElementChild
-        , targetLast  = target.parentElement.lastElementChild;
+    const targetPrev = target.previousElementSibling
+      , targetNext = target.nextElementSibling
+      , targetFirst = target.parentElement.firstElementChild
+      , targetLast = target.parentElement.lastElementChild;
 
     const isDisabled = node => node.hasAttribute('aria-disabled');
 
@@ -627,7 +659,7 @@ ready(function() {
 
   function handleProgress(isComplete) {
     const currentTab = tabItems[currentStep]
-        , nextTab    = tabItems[currentStep + 1];
+      , nextTab = tabItems[currentStep + 1];
 
     if (isComplete) {
       currentTab.setAttribute('data-complete', 'true');
@@ -837,7 +869,7 @@ ready(function() {
 
     // Get the API endpoint using the form action attribute
     const form = e.currentTarget
-        , API  = new URL(form.action);
+      , API = new URL(form.action);
 
     validateStep(currentStep).then(() => {
 
@@ -845,9 +877,9 @@ ready(function() {
       disableSubmit();
 
       // Prepare the data
-      const formData   = new FormData(form)
-          , formTime   = new Date().getTime()
-          , formFields = [];
+      const formData = new FormData(form)
+        , formTime = new Date().getTime()
+        , formFields = [];
 
       // Format the data entries
       for (const [name, value] of formData) {
@@ -869,17 +901,17 @@ ready(function() {
           }
         };
       })
-      .then(data => postData(API, data))
-      .then(response => {
-        setTimeout(() => {
-          handleSuccess(response)
-        }, 5000); // An artificial delay to show the state of the submit button
-      })
-      .catch(error => {
-        setTimeout(() => {
-          handleError(error)
-        }, 5000); // An artificial delay to show the state of the submit button
-      });
+        .then(data => postData(API, data))
+        .then(response => {
+          setTimeout(() => {
+            handleSuccess(response)
+          }, 5000); // An artificial delay to show the state of the submit button
+        })
+        .catch(error => {
+          setTimeout(() => {
+            handleError(error)
+          }, 5000); // An artificial delay to show the state of the submit button
+        });
 
     }).catch(invalidFields => {
 
@@ -895,7 +927,7 @@ ready(function() {
   });
 });
 
- /****************************************************************************/
+/****************************************************************************/
 //SAVE FORM DATA
 function saveFormData() {
   var inputs = document.querySelectorAll('input:not([type="file"]), select');
@@ -953,69 +985,69 @@ window.addEventListener('beforeunload', saveFormData);
 window.addEventListener('load', loadFormData);
 document.querySelector('[data-action="next"]').addEventListener('click', saveFormData);
 
- /****************************************************************************/
+/****************************************************************************/
 
 //specific drop down input field
 document.addEventListener("DOMContentLoaded", function () {
   const incomingGradeSelect = document.getElementById("incomingGrade");
   const gradeInputs = document.querySelectorAll('.grade-input');
-  const reportCardInput = document.getElementById("ReportCardField"); 
+  const reportCardInput = document.getElementById("ReportCardField");
 
   incomingGradeSelect.addEventListener("change", function () {
-      const selectedValue = incomingGradeSelect.value;
+    const selectedValue = incomingGradeSelect.value;
 
-      // Hide all grade input fields
-      gradeInputs.forEach(input => input.style.display = "none");
+    // Hide all grade input fields
+    gradeInputs.forEach(input => input.style.display = "none");
 
-      if (selectedValue === "GradeSeven") {
-          showGrades(["grade3", "grade4", "grade5"]);
-      } else if (selectedValue === "GradeEight") {
-          showGrades(["grade4", "grade5", "grade6", "ReportCardField"]);
-      } else if (selectedValue === "GradeNine") {
-          showGrades(["grade5", "grade6", "grade7", "ReportCardField"]);
-      } else if (selectedValue === "GradeTen") {
-          showGrades(["grade6", "grade7", "grade8", "ReportCardField"]);
-      } else if (selectedValue === "GradeEleven") {
-          showGrades(["grade7", "grade8", "grade9", "ReportCardField"]);
-      } else if (selectedValue === "GradeTwelve") {
-          showGrades(["grade8", "grade9", "grade10", "ReportCardField"]);
-      }else if (selectedValue === "FirstYear") {
-        showGrades(["grade9", "grade10", "grade11SemSelect","ReportCardField"]);
-      }else if (selectedValue === "SecondYear") {
-        showGrades(["grade10", "grade11SemSelect", "grade12SemSelect", "ReportCardField"]);
+    if (selectedValue === "GradeSeven") {
+      showGrades(["grade3", "grade4", "grade5"]);
+    } else if (selectedValue === "GradeEight") {
+      showGrades(["grade4", "grade5", "grade6", "ReportCardField"]);
+    } else if (selectedValue === "GradeNine") {
+      showGrades(["grade5", "grade6", "grade7", "ReportCardField"]);
+    } else if (selectedValue === "GradeTen") {
+      showGrades(["grade6", "grade7", "grade8", "ReportCardField"]);
+    } else if (selectedValue === "GradeEleven") {
+      showGrades(["grade7", "grade8", "grade9", "ReportCardField"]);
+    } else if (selectedValue === "GradeTwelve") {
+      showGrades(["grade8", "grade9", "grade10", "ReportCardField"]);
+    } else if (selectedValue === "FirstYear") {
+      showGrades(["grade9", "grade10", "grade11SemSelect", "ReportCardField"]);
+    } else if (selectedValue === "SecondYear") {
+      showGrades(["grade10", "grade11SemSelect", "grade12SemSelect", "ReportCardField"]);
     }
   });
-  
+
   //semesters
   const gradeSemesters = {
     "grade11SemSelect": {
-        "inputs": document.querySelectorAll("[id^=grade11][id$=SemGWA]")
+      "inputs": document.querySelectorAll("[id^=grade11][id$=SemGWA]")
     },
     "grade12SemSelect": {
-        "inputs": document.querySelectorAll("[id^=grade12][id$=SemGWA]")
+      "inputs": document.querySelectorAll("[id^=grade12][id$=SemGWA]")
     }
-};
+  };
 
-for (const selectId in gradeSemesters) {
+  for (const selectId in gradeSemesters) {
     const selectElement = document.getElementById(selectId);
     const inputs = gradeSemesters[selectId].inputs;
 
     selectElement.addEventListener("change", function () {
-        const selectedValue = selectElement.value;
+      const selectedValue = selectElement.value;
 
-        // Hide all semester input fields
-        inputs.forEach(input => input.style.display = "none");
+      // Hide all semester input fields
+      inputs.forEach(input => input.style.display = "none");
 
-        if (selectedValue === "TwoSem" || selectedValue === "ThreeSem") {
-            const semesterCount = selectedValue === "TwoSem" ? 2 : 3;
-            for (let i = 1; i <= semesterCount; i++) {
-                const inputId = selectId.includes("grade11") ? `grade11${i}SemGWA` : `grade12${i}SemGWA`;
-                const inputElement = document.getElementById(inputId);
-                if (inputElement) {
-                    inputElement.style.display = "block";
-                }
-            }
+      if (selectedValue === "TwoSem" || selectedValue === "ThreeSem") {
+        const semesterCount = selectedValue === "TwoSem" ? 2 : 3;
+        for (let i = 1; i <= semesterCount; i++) {
+          const inputId = selectId.includes("grade11") ? `grade11${i}SemGWA` : `grade12${i}SemGWA`;
+          const inputElement = document.getElementById(inputId);
+          if (inputElement) {
+            inputElement.style.display = "block";
+          }
         }
+      }
     });
   }
 
@@ -1027,7 +1059,7 @@ for (const selectId in gradeSemesters) {
       }
     });
   }
-  
+
 });
 
 //reset the grade gwa
@@ -1035,23 +1067,23 @@ document.getElementById('incomingGrade').addEventListener('change', function () 
   var selectedValue = this.value;
 
   for (var i = 3; i <= 10; i++) {
-      var gradeInput = document.getElementById('grade' + i);
-      if (gradeInput) {
-          gradeInput.style.display = 'none';
-          gradeInput.querySelector('input').value = ''; 
-      }
+    var gradeInput = document.getElementById('grade' + i);
+    if (gradeInput) {
+      gradeInput.style.display = 'none';
+      gradeInput.querySelector('input').value = '';
+    }
   }
 
   if (selectedValue !== '') {
-      var gradeInputId = 'grade' + (parseInt(selectedValue.replace(/\D/g, '')) || 0);
-      var selectedGradeInput = document.getElementById(gradeInputId);
-      if (selectedGradeInput) {
-          selectedGradeInput.style.display = 'block';
-      }
+    var gradeInputId = 'grade' + (parseInt(selectedValue.replace(/\D/g, '')) || 0);
+    var selectedGradeInput = document.getElementById(gradeInputId);
+    if (selectedGradeInput) {
+      selectedGradeInput.style.display = 'block';
+    }
   }
 });
 
- /****************************************************************************/
+/****************************************************************************/
 
 //Monthly Household 
 
@@ -1179,7 +1211,7 @@ document.getElementById('incomingGrade').addEventListener('change', function () 
 
 
 
-  
-  
+
+
 
 

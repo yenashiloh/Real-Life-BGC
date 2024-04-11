@@ -125,7 +125,7 @@
         {{-- <span id="error-message" style="color: red; font-size: 10px;">Please agree before proceeding.</span> --}}
         <div class="mt-1 form__field">
           <label class="form__choice-wrapper">
-            <input  type="checkbox" name="checkbox" value="Yes" required> 
+            <input id="checkboxForm" type="checkbox" name="checkbox" value="Yes" required> 
              {{-- <span data-required="true" aria-hidden="true"> --}}
               <span>
                 I understand that the information I will provide will be used by Real LIFE Foundation to screen and process my application for SY 2023-2024. I give my consent to

@@ -41,6 +41,12 @@
        0% { transform: rotate(0deg); }
        100% { transform: rotate(360deg); }
      }
-
-
+     .dropdown-item:hover {
+    background-color: #007bff; 
+    color: #fff; 
+    }
+    .table-responsive td {
+      max-width: 250px; 
+      white-space: normal;
+    }
  </style>

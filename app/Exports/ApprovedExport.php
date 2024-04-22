@@ -16,7 +16,7 @@ use App\Models\Member;
 use Illuminate\Support\Carbon;
 
 
-class ApplicantsExport implements FromCollection, WithHeadings, WithStyles
+class ApprovedExport implements FromCollection, WithHeadings, WithStyles
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -41,7 +41,7 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithStyles
     )
     ->join('applicants_personal_information as personal_info', 'applicants.applicant_id', '=', 'personal_info.applicant_id')
     ->join('applicants_academic_information as academic_info', 'applicants.applicant_id', '=', 'academic_info.applicant_id')
-    ->whereNotIn('applicants.status', ['Approved', 'Declined'])
+    ->whereNotIn('applicants.status', ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined'])
     ->get()
     ->map(function ($item) {
         $item->birthday = Carbon::parse($item->birthday)->format('F d, Y');

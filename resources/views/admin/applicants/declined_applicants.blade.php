@@ -174,14 +174,18 @@
          </div>
      
          <div class="row">
-           <div class="col-12 grid-margin stretch-card">
-             <div class="card">
-               <div class="card-body">
-                <a href="" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;">
-                  <i class="icon-cloud-download" style="margin-right:5px;"></i>Export Excel
-                </a>
-                 <div class="loader"></div>
-                 <!-- Table with stripped rows -->
+          <div class="col-12 grid-margin stretch-card">
+              <div class="card">
+                  <div class="card-body">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-success dropdown-toggle btn-hover-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export Record
+                      </button>
+                      <div class="dropdown-menu">
+                          <a class="dropdown-item " href="{{ route('export.declined.applicants', ['format' => 'csv']) }}">CSV</a>
+                          <a class="dropdown-item " href="{{ route('export.declined.applicants', ['format' => 'excel']) }}">Excel</a>
+                      </div>
+                  </div>
                  <div class="table-responsive">
                    <table class="table table-striped datatable">
                      <thead>
@@ -207,7 +211,7 @@
                         <td>{{ $applicant->incoming_grade_year }}</td>
                         <td>{{ $applicant->current_school }}</td>
                         <td>
-                          <span id="status-{{ $applicant->applicant_id }}" class="badge badge-danger">
+                          <span id="status-{{ $applicant->applicant_id }}" class="badge badge-danger p-2" style="font-weight: normal;">
                               {{ $applicant->status }}
                             </span>
                         </td>
@@ -261,4 +265,142 @@
      <!-- endinject -->
    </body>
  </html>
+ <script>
+  $.ajaxSetup({
+headers: {
+'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+}
+});
+
+$(document).ready(function() {
+$(document).on('click', '.dropdown-item', function(e) {
+var action = $(this).data('action');
+
+if (action) {
+  e.preventDefault();
+}
+
+var applicant_id = $(this).data('applicant-id');
+var updateRoute = $(this).data('route');
+
+if (action) {
+  $('.loader').show();
+}
+
+console.log('Applicant ID:', applicant_id);
+console.log('Update Route:', updateRoute);
+console.log('Action:', action);
+
+if (!applicant_id || !updateRoute || !action) {
+  console.log('Invalid data');
+  return;
+}
+$('.alert').remove();
+
+$.ajax({
+type: 'POST',
+url: updateRoute,
+data: {
+  _token: $('meta[name="csrf-token"]').attr('content'),
+  applicant_id: applicant_id,
+  status: action
+},
+success: function(response) {
+  console.log('Success:', response);
+  if (response.success) {
+    console.log('Status updated successfully');
+    var applicantId = applicant_id;
+    var newStatus = action;
+    var badgeElement = $('#status-' + applicant_id);
+    var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(2)').text(); 
+    var alertHTML = '<div class="alert alert-success" role="alert" style="text-align:center;">' +
+      '<strong>' + applicantFullName + ' is ' + newStatus + '</strong>' +
+      '</div>';
+
+    $('.datatable').before(alertHTML);
+    $('#status-' + applicantId).text(newStatus);
+    badgeElement.text(newStatus);
+
+    badgeElement.removeClass('badge-primary badge-secondary badge-warning badge-dark badge-success');
+
+    switch (newStatus) {
+        case 'New Applicant':
+            badgeElement.addClass('badge-primary');
+            break;
+        case 'Under Review':
+            badgeElement.addClass('badge-secondary');
+            break;
+        case 'Shortlisted':
+            badgeElement.addClass('badge-warning');
+            break;
+        case 'For Interview':
+            badgeElement.addClass('badge-dark');
+            break;
+        case 'For House Visitation':
+            badgeElement.addClass('badge-success');
+            break;
+        default:
+            badgeElement.addClass('badge-secondary');
+            break;
+    }
+
+    if (newStatus === 'Declined' || newStatus === 'Approved') {
+      $('#dropdownMenuButton' + applicantId).show();
+      $('#dropdownMenuButton' + applicantId).closest('.dropdown').find('.view-button').show();
+      $('#status-' + applicantId).closest('tr').remove();
+    } else {
+      var dropdownContent = '';
+      switch (newStatus) {
+        case 'New Applicant':
+          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Under Review</a></li>' +
+            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
+            $('#status-' + applicantId).addClass('badge status-new-applicant');
+          break;
+        case 'Under Review':
+          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve for Shortlisted</a></li>' +
+            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline for Shorlisted</a></li>';
+            $('#status-' + applicantId).addClass('badge status-under-review');                
+          break;
+        case 'Shortlisted':
+          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve for Interview</a></li>' +
+            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
+            $('#status-' + applicantId).addClass('badge status-shortlisted');
+          break;
+        case 'For Interview':
+          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve for House Visitation</a></li>' +
+            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
+            $('#status-' + applicantId).addClass('badge status-interview');
+          break;
+        case 'For House Visitation':
+          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Approved" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve Scholarship</a></li>' +
+            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline Scholarship</a></li>';
+           $('#status-' + applicantId).addClass('badge status-housevisit');
+          break;
+        default:
+          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Default Action" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Default Action</a></li>';
+          break;
+      }
+       $('#dropdownMenuButton' + applicantId).next('.dropdown-menu').html(dropdownContent);
+      }
+      setTimeout(function() {
+        $('.alert').remove();
+      }, 8000);
+    } else {
+      console.log('Failed to update status:', response.error);
+    }
+    $('.loader').hide(); 
+  },
+  error: function(xhr, status, error) {
+    console.log('Error:', error);
+    $('.loader').hide();
+  } 
+}); 
+});
+});
+
+const datatables = select('.datatable', true)
+datatables.forEach(datatable => {
+new simpleDatatables.DataTable(datatable);
+})
+</script>
  

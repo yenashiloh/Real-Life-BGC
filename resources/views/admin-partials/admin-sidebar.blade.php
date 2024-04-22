@@ -1,3 +1,19 @@
+<style>
+  .dropdown-menu.notification-dropdown {
+    max-height: 400px; 
+    overflow-y: auto;
+}
+  .notification:hover {
+      background-color: #dddddd; /* Primary color */
+      color: #000000; /* Text color */
+  }
+
+  .notif:hover {
+      background-color: #ffffff; /* Primary color */
+      color: #000000; /* Text color */
+  }
+</style>
+
 <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -19,32 +35,32 @@
                   <i class="icon-bell"></i>
                   <span id="notificationCount" class="count">{{ \App\Models\Notification::where('status', 'unread')->count() }}</span>
               </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
-                  <a class="dropdown-item py-3">
-                      <p class="mb-0 font-weight-medium float-left">You have <span class="count">{{ \App\Models\Notification::where('status', 'unread')->count() }}</span> notifications</p>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  @foreach($notifications as $notification)
-                      <a href="/applicants/{{ $notification->applicant_id }}" class="dropdown-item preview-item" data-notification-id="{{ $notification->id }}">
-                          <div class="preview-thumbnail">
-                              <img src="../assets-new-admin/images/faces/face23.png" alt="image" class="img-sm profile-pic">
-                          </div>
-                          <div class="preview-item-content flex-grow py-2">
-                              <p class="preview-subject ellipsis font-weight-medium text-dark">{{ $notification->applicant_name }}</p>
-                              <p class="font-weight-light small-text">{{ $notification->message }}</p>
-                              <span></span>
-                              <p class="font-weight-light" style="font-size:12px; font-style: italic;">
-                                  @if($notification->created_at->gt(now()->subDay()))
-                                      {{ $notification->created_at->diffForHumans() }}
-                                  @else
-                                      {{ $notification->created_at->format('F d, Y \a\t g:iA') }}
-                                  @endif
-                              </p>
-                          </div>
-                      </a>
-                      <hr style=" margin:0;">
-                  @endforeach
-              </div>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown" style="max-height: 450px; overflow-y: auto;">
+                <a class="dropdown-item py-3">
+                    <p class="mb-0 font-weight-medium float-left">Notifications</p>
+                </a>
+                <div class="dropdown-divider"></div>
+                @foreach($notifications as $notification)
+                    <a href="/applicants/{{ $notification->applicant_id }}" class="dropdown-item preview-item" data-notification-id="{{ $notification->id }}">
+                        <div class="preview-thumbnail">
+                            <img src="../assets-new-admin/images/faces/face23.png" alt="image" class="img-sm profile-pic">
+                        </div>
+                        <div class="preview-item-content flex-grow py-2">
+                            <p class="preview-subject ellipsis font-weight-medium text-dark">{{ $notification->applicant_name }}</p>
+                            <p class="font-weight-light small-text">{{ $notification->message }}</p>
+                            <span></span>
+                            <p class="font-weight-light" style="font-size:12px; font-style: italic;">
+                                @if($notification->created_at->gt(now()->subDay()))
+                                    {{ $notification->created_at->diffForHumans() }}
+                                @else
+                                    {{ $notification->created_at->format('F d, Y \a\t g:iA') }}
+                                @endif
+                            </p>
+                        </div>
+                    </a>
+                    <hr style="margin: 0;">
+                @endforeach
+            </div>            
           </li>
           <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
               <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
@@ -113,7 +129,7 @@
               <i class="icon-user-unfollow menu-icon"></i>
             </a>
           </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a class="nav-link" href="pages/charts/chartist.html">
               <span class="menu-title">Scheduling</span>
               <i class="icon-calendar menu-icon"></i>
@@ -124,7 +140,7 @@
               <span class="menu-title">Checklist</span>
               <i class="icon-check menu-icon"></i>
             </a>
-          </li>
+          </li> --}}
           <li class="nav-item nav-category"><span class="nav-link">Content </span></li>
           <li class="nav-item">
             <a class="nav-link"  href="{{ route('admin.announcement.admin-announcement') }}">
@@ -150,7 +166,7 @@
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery library if not already included -->
 
 
-      <script>
+      {{-- <script>
   $(document).ready(function() {
     // Function to fetch notification count from the server
     function fetchNotificationCount() {
@@ -193,5 +209,5 @@
     });
 });
 
-      </script>
+      </script> --}}
       

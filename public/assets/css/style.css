@@ -194,7 +194,7 @@ h6 {
 }
 
 .header-nav .notifications .notification-item i {
-  margin: 0 20px 0 10px;
+  /* margin: 0 20px 0 10px; */
   font-size: 24px;
 }
 
@@ -1798,4 +1798,8 @@ section {
 
 .profile .profile-edit img {
   max-width: 120px;
+}
+.notifications-container {
+  max-height: 300px; /* Adjust the height as needed */
+  overflow-y: auto; /* Enable vertical scrollbar */
 }

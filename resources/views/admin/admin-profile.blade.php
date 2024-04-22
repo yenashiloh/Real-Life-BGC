@@ -285,9 +285,9 @@
                           @csrf 
                           <div class="row mb-3" id="profileSuccessAlert">
                             @if(session('profileSuccess'))
-                                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 0 auto; text-align: center; margin-bottom: 10px; width: 400px;">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" style=" text-align: center;">
                                     {{ session('profileSuccess') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                   
                                 </div>
                             @endif
                         </div>
@@ -295,28 +295,28 @@
                           <div class="row mb-3">
                             <label for="fullName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                             <div class="col-md-8 col-lg-9">
-                              <input name="firstName" type="text" class="form-control" id="firstName" value="{{ Session::get('adminFirstName') }}">
+                              <input name="firstName" type="text" class="form-control" id="firstName" value="{{ Session::get('adminFirstName') }}" required>
                             </div>
                           </div>
       
                           <div class="row mb-3">
                             <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                             <div class="col-md-8 col-lg-9">
-                              <input name="lastName" type="text" class="form-control" id="lastName" value="{{ Session::get('adminLastName') }}">
+                              <input name="lastName" type="text" class="form-control" id="lastName" value="{{ Session::get('adminLastName') }}" required>
                             </div>
                           </div>
       
                           <div class="row mb-3">
                             <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                             <div class="col-md-8 col-lg-9">
-                              <input name="email" type="text" class="form-control" id="email" value="{{ Session::get('adminEmail') }}">
+                              <input name="email" type="text" class="form-control" id="email" value="{{ Session::get('adminEmail') }}" required>
                             </div>
                           </div>
       
                           <div class="row mb-3">
                             <label for="contactNumber" class="col-md-4 col-lg-3 col-form-label">Contact Number</label>
                             <div class="col-md-8 col-lg-9">
-                              <input name="contactNumber" type="text" class="form-control" id="contactNumber" value="{{ Session::get('adminContactNumber') }}">
+                              <input name="contactNumber" type="text" class="form-control" id="contactNumber" value="{{ Session::get('adminContactNumber') }}" required>
                             </div>
                           </div>
       
@@ -407,7 +407,6 @@
             <script src="../assets-admin/vendor/php-email-form/validate.js"></script>
             <script src="../assets-admin/tinymce/tinymce.min.js"></script>
           
-          
             <script src="../assets-admin/vendor/chart.js/chart.umd.js"></script>
             <script src="../assets-admin/vendor/echarts/echarts.min.js"></script>
             <script src="../assets-admin/vendor/quill/quill.min.js"></script>
@@ -415,7 +414,7 @@
             <!-- Template Main JS File -->
             <script src="../assets-admin/js/main.js"></script>
 
-    <script>
+    {{-- <script>
 
     document.addEventListener('DOMContentLoaded', function () {
         let lastTab = sessionStorage.getItem('lastTab');
@@ -446,7 +445,7 @@
               this.parentNode.style.display = 'none';
           });
       });
-    </script>
+    </script> --}}
       
 </body>
 

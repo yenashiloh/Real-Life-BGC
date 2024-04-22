@@ -13,9 +13,11 @@ use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
 use App\Models\Household;
 use App\Models\Member;
+use App\Models\NotificationApplicant;
 use App\Models\Requirement;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 
 class ApplicantController extends Controller
@@ -486,4 +488,37 @@ class ApplicantController extends Controller
         }
     }
     
+    // public function showNotifications()
+    // {
+    //     $notifications = NotificationApplicant::orderBy('created_at', 'desc')
+    //         ->get(['id', 'applicant_id', 'admin_name', 'message', 'status', 'created_at', 'updated_at']);
+    
+    //     return $notifications;
+    // }
+
+    public function fetchNotificationCount()
+    {
+        try {
+            $count = NotificationApplicant::where('status', 'unread')->count();
+            return response()->json(['count' => $count]);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching notification count: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
+        }
+    }
+
+    public function markNotificationsAsRead()
+    {
+        try {
+            // Mark notifications as read without affecting the count
+            NotificationApplicant::where('status', 'unread')->update(['status' => 'read']);
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            \Log::error('Error marking notifications as read: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to mark notifications as read'], 500);
+        }
+    }
+    
+        
+
 }

@@ -12,7 +12,20 @@
       max-width: 300px; 
       white-space: normal;
   }
+    .custom-btn {
+          background-color: #71BF44;
+          border-color: #71BF44;
+          color: white;
+      }
 
+    .custom-btn:hover {
+        background-color: #518630;
+        border-color: #518630;
+        color: white;
+    }
+    .custom-checkbox .form-check-input {
+        border-color: black;
+    }
     </style>
   </head>
   <body>
@@ -30,25 +43,29 @@
                 <ul class="nav nav-tabs nav-tabs-bordered">
         
                   <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Personal Information</button>
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#personal-info">Personal Information</button>
                   </li>
         
                   <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Academic Information</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#academic-info">Academic Information</button>
                   </li>
         
                   <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Household Information</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#household">Household Information</button>
                   </li>
         
                   <li class="nav-item">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#files">Files</button>
                   </li>
+
+                  <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#checklist">Monitoring Checklist</button>
+                  </li>
         
                 </ul>
                 <div class="tab-content pt-2">
         
-                  <div class="tab-pane fade show active profile-overview" id="profile-overview" style="margin-top: 20px;">
+                  <div class="tab-pane fade show active profile-overview" id="personal-info" style="margin-top: 20px;">
         
                     <div class="row mb-2">
                       <div class="col-lg-3 col-md-4 label ">Status</div>
@@ -135,7 +152,7 @@
         
                   </div>
         
-                  <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                  <div class="tab-pane fade profile-edit pt-3" id="academic-info">
         
                     <form>
                       <div class="row mb-2">
@@ -265,7 +282,7 @@
         
                   </div>
 
-                  <div class="tab-pane fade " id="profile-settings">
+                  <div class="tab-pane fade " id="household">
                     <form>
                       @foreach ($members as $member)
                           <div class="row mb-2">
@@ -317,7 +334,7 @@
                                     </a>
                                     
                                     </td>
-                                    <td id="status-{{ $requirement->id }}" class="status-{{ $requirement->id }}">
+                                    <td id="status-{{ $requirement->id }}" class="badge p-2 status-{{ $requirement->id }}" >
                                       @if($requirement->status == 'Approved')
                                           <span class="badge badge-success">{{ $requirement->status }}</span>
                                       @elseif($requirement->status == 'Declined')
@@ -327,6 +344,7 @@
                                       @else
                                           {{ $requirement->status }}
                                       @endif
+                                      
                                   </td>                           
                                   <td class="d-flex justify-content-center">
                                       <button type="button" class="btn btn-primary p-2 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Approved" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Approve</button>
@@ -338,18 +356,100 @@
                         </table>
                     </form>
                   </div>
+
+                  <div class="tab-pane fade" id="checklist">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-check form-check-inline custom-checkbox ms-2">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                <label class="form-check-label" for="flexCheckDefault1">
+                                    Signed Application Form
+                                </label>
+                            </div>
+                            
+                               <div class="form-check form-check-inline custom-checkbox ms-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
+                                    <label class="form-check-label" for="flexCheckDefault2">
+                                        Birth Certificate
+                                    </label>
+                                </div>
+                               <div class="form-check form-check-inline custom-checkbox ms-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
+                                    <label class="form-check-label" for="flexCheckDefault3">
+                                        Character Evaluation Forms
+                                    </label>
+                                </div>
+                               <div class="form-check form-check-inline custom-checkbox ms-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
+                                    <label class="form-check-label" for="flexCheckDefault4">
+                                        Proof of Financial Status
+                                    </label>
+                                </div>
+                               <div class="form-check form-check-inline custom-checkbox ms-2">
+                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault5">
+                                  <label class="form-check-label" for="flexCheckDefault5">
+                                      Payslip/ DSWD Report/ ITR
+                                  </label>
+                              </div>
+                             <div class="form-check form-check-inline custom-checkbox ms-2">
+                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault6">
+                                  <label class="form-check-label" for="flexCheckDefault6">
+                                      Two References Form
+                                  </label>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                               <div class="form-check form-check-inline custom-checkbox ms-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault7">
+                                    <label class="form-check-label" for="flexCheckDefault7">
+                                        Home Visitation Form
+                                    </label>
+                                </div>
+                               <div class="form-check form-check-inline custom-checkbox ms-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault8">
+                                    <label class="form-check-label" for="flexCheckDefault8">
+                                        Report Card/ Grades
+                                    </label>
+                                </div>
+                               <div class="form-check form-check-inline custom-checkbox ms-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault9">
+                                    <label class="form-check-label" for="flexCheckDefault9">
+                                        Prospectus
+                                    </label>
+                                </div>
+                               <div class="form-check form-check-inline custom-checkbox ms-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault10">
+                                    <label class="form-check-label" for="flexCheckDefault10">
+                                        Official Grading System
+                                    </label>
+                                </div>
+                               <div class="form-check form-check-inline custom-checkbox ms-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault10">
+                                    <label class="form-check-label" for="flexCheckDefault10">
+                                        Tuition Projection
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline custom-checkbox ms-2">
+                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault10">
+                                  <label class="form-check-label" for="flexCheckDefault10">
+                                      Admission Slip
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="mt-4 text-center mt-3">
+                          <button class="btn custom-btn">Notify</button>
+                      </div>
+                  </div>                
                 </div>
               </div>
             </div>
           </div>
         
-    <!-- container-scroller -->
-    <!-- plugins:js -->
+
     <script src="../assets-new-admin/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
+
     <script src="../assets-new-admin/js/off-canvas.js"></script>
     <script src="../assets-new-admin/js/misc.js"></script>
       <!-- Vendor JS Files -->
@@ -367,8 +467,9 @@
 
   <!-- Template Main JS File -->
   <script src="../assets-admin/js/main.js"></script>
+  <script src="../assets-admin/js/view_applicant.js"></script>
     
-    
+{{--     
     <script>
         $.ajaxSetup({
       headers: {
@@ -430,7 +531,7 @@ $(document).ready(function() {
     }
 });
 
- </script>
+ </script> --}}
   
 </body>
 </html>

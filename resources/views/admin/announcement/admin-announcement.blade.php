@@ -15,6 +15,19 @@
         margin-bottom: 10px; /* Adjust the value based on the amount of space you want */
         padding-bottom: 10px;
     }
+    .dropdown-item:hover {
+    background-color: #007bff; /* Primary color */
+    color: #fff; /* Text color */
+  }
+    .text-gray {
+        color: gray;
+        font-size: 14px;
+        
+    }
+  .published-unpublished{
+    color: gray;
+    font-size: 14px;
+  }
  
     </style>
   </head>
@@ -26,12 +39,56 @@
             <div class="page-header">
               <h3 class="page-title">Announcement </h3>  
             </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="card">
-              <div class="card-body">
-                <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Create</button>
-                <br>
+            <div class="row">
+
+              <div class="col-lg-12">
+                  <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 20px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Create</button>
+                  {{-- <div class="row">
+                    @if(session('success'))
+                    <div id="successAlert"  class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center;">
+                        {{ session('success') }}
+                    </div>
+                    @endif --}}
+                      @foreach($announcements as $announcement)
+                          <div class="col-md-12 mb-4">
+                              <div class="card position-relative">
+                                  <div class="position-absolute top-4 end-0 margin-right-6 btn-group dropleft">
+                                    
+                                      <i class="bi bi-three-dots" style="cursor: pointer; margin-right: 10px; margin-top: 10px;" onclick="toggleDropdownMenu('dropdownMenu{{ $announcement->id }}')"></i>
+                                      <span style="position: absolute; left: -98px; top: 10px;">
+                                        @if($announcement->published)
+                                            <span class="published-unpublished ">Published</span>
+                                        @else
+                                            <span class="published-unpublished">Unpublished</span>
+                                        @endif
+                                    </span>
+                                      <div id="dropdownMenu{{ $announcement->id }}" class="dropdown-menu drop-left" style="display: none; border: 1px solid black;">
+                                          <a class="dropdown-item" href="{{ route('admin.announcement.edit-announcement', ['id' => $announcement->id]) }}">Edit</a>
+                                          <form action="{{ route('delete.announcement', ['id' => $announcement->id]) }}" method="post" id="deleteForm_{{ $announcement->id }}">
+                                              @csrf
+                                              @method('DELETE')
+                                              <button type="button" onclick="confirmDelete('{{ $announcement->id }}')" class="dropdown-item">Delete</button>
+                                          </form>
+                                          <a class="dropdown-item" href="{{ route('admin.announcement.publish', ['id' => $announcement->id]) }}">Publish</a>
+                                          <a class="dropdown-item" href="{{ route('admin.announcement.unpublish', ['id' => $announcement->id]) }}">Unpublish</a>
+                                      </div>
+                                    </div>
+            
+                                  <div class="card-body">
+                                      <h5 class="card-title mb-0">{{ $announcement->title }}</h5> 
+                                      <span class="widget-49-meeting-time text-gray">
+                                          {{ \Carbon\Carbon::parse($announcement->created_at)->timezone('Asia/Manila')->isoFormat('MMMM D, YYYY, h:mm A') }}
+                                          {{-- ({{ \Carbon\Carbon::parse($announcement->created_at)->timezone('Asia/Manila')->diffForHumans() }}) --}}
+                                      </span>
+                                      <p class="card-text announcement-caption mt-2">{!! ($announcement->caption) !!}</p>
+                                  </div>
+                              </div>
+                          </div>
+                      @endforeach
+                  </div>
+              </div>
+          </div>
+           {{-- <br>
                 <table class="table datatable table-responsive">
                   <thead>
                     <tr>
@@ -65,7 +122,7 @@
                     </tr>
                     @endforeach
                 </tbody>
-                </table>
+                </table> --}}
               </div>
             </div>
 
@@ -121,6 +178,20 @@
             }
         });
     }
+
+    /*************************/
+    function toggleDropdownMenu(id) {
+        var dropdownMenu = document.getElementById(id);
+        if (dropdownMenu.style.display === "none") {
+            dropdownMenu.style.display = "block";
+        } else {
+            dropdownMenu.style.display = "none";
+        }
+    }
+    /********************************/
+    setTimeout(function() {
+            $('#successAlert').alert('close');
+        }, 3000); 
 </script>
 </body>
 </html>

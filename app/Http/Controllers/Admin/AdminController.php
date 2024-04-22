@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;    
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
 use Illuminate\Support\Facades\Validator;
@@ -19,9 +19,14 @@ use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
 use App\Models\Member;
 use App\Models\Notification;
+use App\Models\NotificationApplicant;
 use App\Models\Requirement;
 use App\Exports\ApplicantsExport;
+use App\Exports\ApprovedExport;
+use App\Exports\DeclinedExport;
 use Maatwebsite\Excel\Facades\Excel;
+
+
 
 
 
@@ -180,6 +185,7 @@ class AdminController extends Controller
     {
         $title = 'Announcement';
         $announcements = Announcement::select('id', 'title', 'caption')->get();
+        $announcements = Announcement::orderBy('created_at', 'desc')->get();
         return view('admin.announcement.admin-announcement', compact('title', 'announcements'));
     }
     
@@ -476,21 +482,38 @@ class AdminController extends Controller
         return view('admin.applicants.view_applicant', compact('title', 'applicant', 'email', 'status', 'members', 'reportcardData'));
     }
 
-    //status for uploaded documents
+    //status for uploaded documents and applicant notifications
     public function fileStatus(Request $request, $requirement_id)
     {
         try {
             $status = $request->status;
             $validStatuses = ['For Review', 'Approved', 'Declined'];
-    
+
             if (!in_array($status, $validStatuses)) {
                 return response()->json(['error' => 'Invalid status'], 400);
             }
-    
+
             $requirement = Requirement::findOrFail($requirement_id);
             $requirement->status = $status;
             $requirement->save();
-    
+
+            $applicant_id = $requirement->applicant_id;
+
+            if (!$applicant_id) {
+                return response()->json(['error' => 'Applicant ID not found for the requirement'], 400);
+            }
+
+            $document_type = $requirement->document_type;
+            $message = "$status your $document_type";
+
+            $notification = NotificationApplicant::create([
+                'applicant_id' => $applicant_id,
+                'admin_name' => 'Real LIFE BGC', 
+                'message' => $message,
+                'status' => 'unread', 
+            ]);
+            
+
             return response()->json(['status' => $requirement->status]);
         } catch (\Exception $e) {
             \Log::error('Error updating status: ' . $e->getMessage());
@@ -498,16 +521,16 @@ class AdminController extends Controller
         }
     }
 
-    //notification
+    //show notification
     public function showNotifications()
     {
-        $notifications = Notification::where('status', 'unread')
-            ->orderBy('created_at', 'desc')
+        $notifications = Notification::orderBy('created_at', 'desc')
             ->get(['id', 'applicant_id', 'applicant_name', 'message', 'status', 'created_at', 'updated_at']);
-
+    
         return $notifications;
     }
-
+    
+    
     public function fetchNotificationCount()
     {
         try {
@@ -531,19 +554,61 @@ class AdminController extends Controller
         }
     }
 
-    //export excel
-    public function exportData()
+    //export all applicants
+    public function exportData(Request $request)
     {
+        $format = $request->get('format', 'excel');
         $export = new ApplicantsExport();
-        $fileName = 'applicants.xlsx'; 
-
-        return Excel::download($export, $fileName);
+    
+        if ($format === 'csv') {
+            $fileName = 'applicants.csv';
+            return Excel::download($export, $fileName, \Maatwebsite\Excel\Excel::CSV);
+        } elseif ($format === 'excel') {
+            $fileName = 'applicants.xlsx';
+            return Excel::download($export, $fileName);
+        } else {
+            return redirect()->back()->with('error', 'Invalid export format specified.');
+        }
     }
+
+      //export status declined
+    public function exportDeclined(Request $request)
+    {
+        $format = $request->get('format', 'excel');
+        $export = new DeclinedExport();
+    
+        if ($format === 'csv') {
+            $fileName = 'applicants.csv';
+            return Excel::download($export, $fileName, \Maatwebsite\Excel\Excel::CSV);
+        } elseif ($format === 'excel') {
+            $fileName = 'applicants.xlsx';
+            return Excel::download($export, $fileName);
+        } else {
+            return redirect()->back()->with('error', 'Invalid export format specified.');
+        }
+    }
+
+    //export status approved
+     public function exportApproved(Request $request)
+     {
+         $format = $request->get('format', 'excel');
+         $export = new ApprovedExport();
+     
+         if ($format === 'csv') {
+             $fileName = 'applicants.csv';
+             return Excel::download($export, $fileName, \Maatwebsite\Excel\Excel::CSV);
+         } elseif ($format === 'excel') {
+             $fileName = 'applicants.xlsx';
+             return Excel::download($export, $fileName);
+         } else {
+             return redirect()->back()->with('error', 'Invalid export format specified.');
+         }
+     }
 
     public function getDataForYear(Request $request)
     {
         $selectedYear = $request->input('year');
-        $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
+        $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined', 'Approved'];
         
         $totalApplicants = ApplicantsPersonalInformation::selectRaw('COUNT(*) as total')
             ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
@@ -552,26 +617,26 @@ class AdminController extends Controller
             ->whereYear('applicants.created_at', $selectedYear)
             ->count();
         
-        $totalShortlisted = Applicant::where('status', 'Shortlisted')
+        $totalShortlisted = Applicant::whereIn('status', ['Shortlisted', 'New Applicant', 'Under Review'])
             ->whereYear('created_at', $selectedYear)
             ->count();
-
-        $totalForInterview = Applicant::where('status', 'For Interview')
+    
+        $totalForInterview = Applicant::whereIn('status', ['For Interview', 'New Applicant', 'Under Review'])
             ->whereYear('created_at', $selectedYear)
             ->count();
-
-        $totalHouseVisitation = Applicant::where('status', 'For House Visitation')
+    
+        $totalHouseVisitation = Applicant::whereIn('status', ['For House Visitation', 'New Applicant', 'Under Review'])
             ->whereYear('created_at', $selectedYear)
             ->count();
-
+    
         $totalDeclined = Applicant::where('status', 'Declined')
             ->whereYear('created_at', $selectedYear)
             ->count();
-
+    
         $totalApproved = Applicant::where('status', 'Approved')
             ->whereYear('created_at', $selectedYear)
             ->count();
-
+    
         return response()->json([
             'totalApplicants' => $totalApplicants,
             'totalShortlisted' => $totalShortlisted,
@@ -585,23 +650,44 @@ class AdminController extends Controller
     public function getGraphDataForYear(Request $request)
     {
         $selectedYear = $request->input('year');
-        
+            
         $graphData = ApplicantsAcademicInformation::selectRaw('incoming_grade_year as label, count(*) as count')
             ->join('applicants_personal_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
             ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
             ->whereYear('applicants.created_at', $selectedYear)
             ->groupBy('incoming_grade_year')
             ->get();
-
-        $labels = $graphData->pluck('label');
-        $counts = $graphData->pluck('count');
-
+    
+            $labels = $graphData->pluck('label');
+            $counts = $graphData->pluck('count');
+    
         return response()->json([
             'labels' => $labels,
             'counts' => $counts,
         ]);
     }
+
+        // Controller method to publish announcement
+    public function publishAnnouncement($id)
+        {
+            $announcement = Announcement::findOrFail($id);
+            $announcement->published = true;
+            $announcement->save();
+        
+            return redirect()->back()->with('success', 'Announcement published successfully!');
+        }
+        
+        public function unpublishAnnouncement($id)
+        {
+            $announcement = Announcement::findOrFail($id);
+            $announcement->published = false;
+            $announcement->save();
+        
+        return redirect()->back()->with('success', 'Announcement unpublished successfully!');
+    }
+        
 }    
+
 
 
     

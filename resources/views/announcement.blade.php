@@ -330,7 +330,7 @@
         @if($announcement->isEmpty())
             <p style="text-align: center; font-size: 25px; font-weight: normal;">No Announcement</p>
         @else
-        @foreach($announcement->sortByDesc('created_at') as $announce)
+        @foreach($announcement->where('published', true)->sortByDesc('created_at') as $announce)
                 <div class="card card-margin" style="margin-bottom: 35px;"> 
                     <div class="card-body pt-0">
                         <div class="widget-49">

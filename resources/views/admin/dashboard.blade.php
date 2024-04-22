@@ -72,7 +72,7 @@
                               <h5 class="font-weight-semibold">Report Summary</h5>  
                               <div class="dropdown ml-auto mb-2">
                                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:rgb(3, 3, 3);">
-                                      Filter
+                                      Filter on Reports
                                   </button>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     @foreach ($years as $year)
@@ -360,27 +360,39 @@
       }
 
       // Function to fetch graph data for the selected year
-      function fetchGraphDataForYear(year) {
-          // Make an AJAX request to fetch graph data for the selected year
-          $.ajax({
-              url: '/get-graph-data-for-year',
-              type: 'GET',
-              data: {year: year},
-              success: function(data) {
-                  // Destroy the existing chart instance if it exists
-                  if (chartInstance) {
-                      chartInstance.destroy();
-                  }
+    // Function to fetch graph data for the selected year
+// Function to fetch graph data for the selected year
+function fetchGraphDataForYear(year) {
+    // Make an AJAX request to fetch graph data for the selected year
+    $.ajax({
+        url: '/get-graph-data-for-year',
+        type: 'GET',
+        data: {year: year},
+        success: function(data) {
+            // Filter out labels with count 0
+            var filteredLabels = [];
+            var filteredCounts = [];
+            for (var i = 0; i < data.labels.length; i++) {
+                if (data.counts[i] !== 0) {
+                    filteredLabels.push(data.labels[i]);
+                    filteredCounts.push(data.counts[i]);
+                }
+            }
 
-                  // Create a new chart with the received data
-                  createChart(data.labels, data.counts);
-              },
-              error: function(xhr, status, error) {
-                  // Handle errors
-                  console.error(xhr.responseText);
-              }
-          });
-      }
+            // Destroy the existing chart instance if it exists
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Create a new chart with the filtered data
+            createChart(filteredLabels, filteredCounts);
+        },
+        error: function(xhr, status, error) {
+            // Handle errors
+            console.error(xhr.responseText);
+        }
+    });
+}
 
       // Function to create the chart
       function createChart(labels, counts) {
@@ -422,8 +434,6 @@
       }
   });
 </script>
-
-
 
 
 

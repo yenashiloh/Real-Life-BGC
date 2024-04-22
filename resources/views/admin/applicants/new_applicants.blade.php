@@ -7,12 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>All Applicants</title>
     @include('admin-partials.admin-header')
-    <style>
-      .table-responsive td {
-      max-width: 250px; 
-      white-space: normal;
-    }
-    </style>
+
   </head>
   <body>
     @include('admin-partials.admin-sidebar', ['notifications' => app()->make(\App\Http\Controllers\Admin\AdminController::class)->showNotifications()])
@@ -24,13 +19,18 @@
               
             </div>
         <div class="row">
-    <div class="col-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-              <a href="{{ route('export.applicants') }}" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 10px;">
-                <i class="icon-cloud-download" style="margin-right:5px;"></i>Export Excel
-            </a>
-            
+          <div class="col-12 grid-margin stretch-card">
+              <div class="card">
+                  <div class="card-body">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-success dropdown-toggle btn-hover-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Export Record
+                      </button>
+                      <div class="dropdown-menu">
+                          <a class="dropdown-item " href="{{ route('export.applicants', ['format' => 'csv']) }}">CSV</a>
+                          <a class="dropdown-item " href="{{ route('export.applicants', ['format' => 'excel']) }}">Excel</a>
+                      </div>
+                  </div>
               
                 <div class="loader"></div>
                 <!-- Table with stripped rows -->
@@ -79,7 +79,7 @@
                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $applicant->applicant_id }}" >
                                       @if($applicant->status === 'New Applicant')
                                           <li>
-                                              <a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
+                                              <a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                   Under Review
                                               </a>
                                           </li>
@@ -90,45 +90,45 @@
                                          </li>
                                         @elseif($applicant->status === 'Under Review')
                                           <li>
-                                              <a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
+                                              <a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                   Shortlisted
                                               </a>
                                           </li>
                                           <li>
-                                              <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: red;">
+                                              <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                   Decline Shorlist
                                               </a>
                                           </li>
                                         @elseif($applicant->status === 'Shortlisted')
                                           <li>
-                                              <a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
+                                              <a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                   Approve for Interview
                                               </a>
                                           </li>
                                           <li>
-                                              <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: red;">
+                                              <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                   Decline for Interview
                                               </a>
                                           </li>
                                         @elseif($applicant->status === 'For Interview')
                                           <li>
-                                              <a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
+                                              <a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                  Approve for House Visitation
                                               </a>
                                           </li>
                                           <li>
-                                              <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: red;">
+                                              <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                   Decline for House Visitation
                                               </a>
                                           </li>
                                         @elseif($applicant->status === 'For House Visitation')
                                           <li>
-                                              <a class="dropdown-item" href="#" data-action="Approved" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: blue;">
+                                              <a class="dropdown-item" href="#" data-action="Approved" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                   Approve Scholarship
                                               </a>
                                           </li>
                                           <li>
-                                              <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" style="color: red;">
+                                              <a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                 Decline Scholarship
                                               </a>
                                           </li>

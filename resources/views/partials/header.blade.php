@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ $title }}</title>
     <meta content="" name="description">
@@ -46,8 +46,8 @@
     <link href="assets/css/faq.css" rel="stylesheet">
      <link href="assets/css/applicant_dashboard.css" rel="stylesheet">
     <style type="text/scss">
+    
     </style>
-
 </head>
 
 <body>
@@ -76,62 +76,53 @@
                         
                     </nav><!-- .navbar -->
 
-                <div class="header-nav d-flex align-items-center">
-                    <a class="nav-link nav-icon notification-icon" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-bell bell-icon"></i>
-                        {{-- <span class="badge bg-primary badge-number">1</span> --}}
-                    </a>
-
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications ">
-                        <li class="dropdown-header">
-                            You have 1 new notifications
-                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class=""></i>
-                            <div>
-                                <h4>Real LIFE BGC</h4>
-                                <p>You are now for house visitation</p>
-                                <p>30 minutes ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class=""></i>
-                            <div>
-                                <h4>Real LIFE BGC</h4>
-                                <p>You are now for interview</p>
-                                <p>December 9, 2023</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class=""></i>
-                            <div>
-                                <h4>Real LIFE BGC</h4>
-                                <p>You are now is under review</p>
-                                <p>November 23, 2023</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="dropdown-footer">
+                    <div class="header-nav d-flex align-items-center">
+                        <a class="nav-link nav-icon notification-icon" id="messageDropdown" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-bell bell-icon"></i>
+                            <span class="badge bg-danger badge-number count" id="notificationCount" style="display: none;"></span>
+                        </a>
+                    
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" aria-labelledby="messageDropdown">
+                            <li class="dropdown-header" style="font-weight: medium; color:#151515; font-weight: 500; font-size: 17px;">
+                                Notifications
+                                {{-- <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a> --}}
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <div class="notifications-container">
+                                @if(isset($notifications) && count($notifications) > 0)
+                                @foreach ($notifications as $notification)
+                                <a href="/applicant_dashboard" class="dropdown-item preview-item notification" data-notification-id="{{ $notification->id }}">
+                                    <li class="notification-item">
+                                        <i></i>
+                                        <div>
+                                            <h4 style="margin: 0%">{{ $notification->admin_name }}</h4>
+                                            <p>{{ $notification->message }}</p>
+                                            <p>
+                                                @if($notification->created_at->gt(now()->subDay()))
+                                                    {{ $notification->created_at->diffForHumans() }}
+                                                @else
+                                                    <em>{{ $notification->created_at->format('F d, Y \a\t g:iA') }}</em>
+                                                @endif
+                                            </p>
+                                        </div>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                    </li>
+                                @endforeach
+                                @else
+                                <li class="notification-item">
+                                    <div>
+                                        <p style="text-align: center;">No notifications</p>
+                                    </div>
+                                </li>
+                                @endif
+                       
+                        {{-- <li class="dropdown-footer">
                             <a href="#">Show all notifications</a>
-                        </li>
+                        </li> --}}
 
                     </ul><!-- End Notification Dropdown Items -->
 
@@ -212,7 +203,10 @@
 </div><!-- End container -->
 </header><!-- End Header -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+<script src="assets/js/applicant_notification.js"></script>
+
+{{-- <script>
        $(document).ready(function () {
         // Get the current URL path
         var currentPath = window.location.pathname;
@@ -225,4 +219,51 @@
             }
         });
     });
-</script>
+   
+   
+function fetchNotificationCount() {
+    $.ajax({
+        url: '/applicant-fetch-notification-count', // Endpoint to fetch notification count
+        type: 'GET',
+        success: function(response) {
+            var count = response.count;
+            // Update notification count
+            if (count === 0) {
+                // If count is zero, remove the badge
+                $('#notificationCount').removeClass('badge bg-danger badge-number').text('');
+            } else {
+                // If count is greater than zero, update the badge with the count
+                $('#notificationCount').addClass('badge bg-danger badge-number').text(count);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching notification count:', error);
+        }
+    });
+}
+
+// Fetch notification count initially when the page loads
+fetchNotificationCount();
+
+// Fetch notification count every 10 seconds (adjust interval as needed)
+setInterval(fetchNotificationCount, 10000); // 10 seconds interval
+
+// Handle click event on notification dropdown to reset count
+$('#messageDropdown').on('click', function() {
+    // Send request to server to mark notifications as read
+    $.ajax({
+        url: '/applicant-mark-notifications-as-read', // Endpoint to mark notifications as read
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Include CSRF token
+        },
+        success: function(response) {
+            // Update notification count to zero on the client side
+            $('#notificationCount').removeClass('badge bg-danger badge-number').text('');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error marking notifications as read:', error);
+        }
+    });
+});
+</script> --}}

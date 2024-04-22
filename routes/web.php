@@ -44,8 +44,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::get('/personal-details', [ApplicantController::class, 'personalDetails'])->name('user.profile');
     Route::post('/logout', [ApplicantController::class, 'logout']);
 
-    Route::post('/update-personal-details', [ApplicantController::class, 'updatePersonalDetails'])
-    ->name('update_personal_details');
+    Route::post('/update-personal-details', [ApplicantController::class, 'updatePersonalDetails'])->name('update_personal_details');
 
     Route::post('/user/change-password', [ApplicantController::class, 'changePassword'])->name('change.password');
     Route::get('/applicant_dashboard', [ApplicantController::class, 'applicantDashboard'])->name('user.applicant_dashboard');
@@ -58,6 +57,11 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::get('/getUnreadNotificationsCount', [ApplicantController::class, 'getUnreadNotificationsCount']);
 
     Route::post('/applicant_dashboard', [ApplicantController::class, 'uploadRequirements'])->name('applicant_dashboard.requirements');
+
+    //NOTIFICATION
+    Route::get('/notifications.show', [ApplicantController::class, 'showApplicantNotifications'])->name('notifications.show');
+    Route::get('/applicant-fetch-notification-count', [ApplicantController::class, 'fetchNotificationCount'])->name('applicant-fetch-notification-count');
+    Route::post('/applicant-mark-notifications-as-read', [ApplicantController::class, 'markNotificationsAsRead'])->name('applicant-mark-notifications-as-read');
 });
 
 
@@ -65,13 +69,6 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/admin-login', [AdminController::class, 'adminloginPost'])->name('admin.login.post');
-    // Route::get('/dashboard-new', [AdminController::class, 'totalApplicants'])->name('dashboard');
-    // Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
-
-        //DATA APPLICANTS 
-        // Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
-        // Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
-
         
 });
 
@@ -93,8 +90,10 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::match(['post', 'put'], '/announcement/update-announcement/{id}', [AdminController::class, 'updateAnnouncement'])->name('admin.update-announcement');
     Route::get('/announcement/{id}', [AdminController::class, 'showEditAnnouncement'])->name('admin.announcement.edit-announcement');
 
+    Route::get('/announcement/publish/{id}', [AdminController::class, 'publishAnnouncement'])->name('admin.announcement.publish');
+    Route::get('/announcement/unpublish/{id}', [AdminController::class, 'unpublishAnnouncement'])->name('admin.announcement.unpublish');
+    
     //TOTAL FOR DASHBOARD
-    // Route::get('/dashboard', [AdminController::class, 'totalDeclined'])->name('total_declined');
     Route::get('/dashboard', [AdminController::class, 'new_dashboard'])->name('admin.dashboard-new');
     Route::get('/dashboard', [AdminController::class, 'totalApplicants'])->name('dashboard');
     Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
@@ -125,12 +124,13 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/export-declined-applicants', 'AdminController@exportDeclinedApplicants')->name('export.declined.applicants');
     
     //NOTIFICATION
-    // Route::get('/admin-partials/admin-sidebar/', [AdminController::class, 'getNotificationCount'])->name('get.notification.count');
     Route::get('/fetch-notification-count', [AdminController::class, 'fetchNotificationCount'])->name('fetch-notification-count');
     Route::post('/mark-notifications-as-read', [AdminController::class, 'markNotificationsAsRead'])->name('mark-notifications-as-read');
 
     //EXPORT EXCEL
     Route::get('/export', [AdminController::class, 'exportData'])->name('export.applicants');
+    Route::get('/export.approved.applicants', [AdminController::class, 'exportApproved'])->name('export.approved.applicants');
+    Route::get('/export.declined.applicants', [AdminController::class, 'exportDeclined'])->name('export.declined.applicants');
 
     //EMAIL
     Route::get('/email/email', [EmailController::class, 'emailShow'])->name('admin.email.email');
@@ -139,8 +139,4 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     // Route::get('/filterApplicantsByYear', [AdminController::class, ' filterApplicantsByYear'])->name(' filterApplicantsByYear');
     Route::get('/get-data-for-year', [AdminController::class, 'getDataForYear'])->name('get-data-for-year');
     Route::get('/get-graph-data-for-year', [AdminController::class, 'getGraphDataForYear'])->name('get-graph-data-for-year');
-    // Route::get('/get-data-for-year', 'AdminController@getDataForYear');
-
-
-
 });

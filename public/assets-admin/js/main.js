@@ -305,4 +305,29 @@
 
  /************************************************************************/
 
- 
+ document.addEventListener('DOMContentLoaded', function () {
+  let lastTab = sessionStorage.getItem('lastTab');
+  if (lastTab) {
+      let tabLink = document.querySelector(`[data-bs-target="${lastTab}"]`);
+      if (tabLink) {
+          let tab = new bootstrap.Tab(tabLink);
+          tab.show();
+      }
+  }
+
+
+let tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
+tabLinks.forEach(function (tabLink) {
+  tabLink.addEventListener('shown.bs.tab', function (event) {
+      let activeTab = event.target.getAttribute('data-bs-target');
+      sessionStorage.setItem('lastTab', activeTab);
+      });
+  });
+
+});
+
+document.querySelectorAll('.alert .btn-close').forEach(function(closeBtn) {
+    closeBtn.addEventListener('click', function() {
+        this.parentNode.style.display = 'none';
+    });
+});

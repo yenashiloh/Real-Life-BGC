@@ -18,4 +18,11 @@ class Requirement extends Model
         'uploaded_document',
         'status'
     ];
+    
+    public function applicant()
+{
+    return $this->belongsTo(ApplicantsPersonalInformation::class, 'applicant_id');
 }
+
+}
+

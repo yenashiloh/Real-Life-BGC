@@ -18,7 +18,9 @@
         </head>
         <body>
             <p>Dear {{ $firstName }},</p>
-            <p class="under">{!! nl2br(strip_tags($underReviewContent, '<strong><br>e&nbsp;')) !!}</p>
+            <p class="under">{!! preg_replace('/(?<!\n)\n(?!\n)/', '<br>', preg_replace('/\n{2,}/', '<br><br>', nl2br(strip_tags($underReviewContent, '<strong><p><br><u>e&nbsp;')))) !!}</p>
+
+
 
     </body>
     </html>

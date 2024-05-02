@@ -18,17 +18,17 @@
     .dropdown-item:hover {
     background-color: #007bff; /* Primary color */
     color: #fff; /* Text color */
-  }
-    .text-gray {
-        color: gray;
-        font-size: 14px;
-        
     }
-  .published-unpublished{
-    color: gray;
-    font-size: 14px;
-  }
- 
+      .text-gray {
+          color: gray;
+          font-size: 14px;
+          
+      }
+    .published-unpublished{
+      color: gray;
+      font-size: 14px;
+    }
+  
     </style>
   </head>
   <body>

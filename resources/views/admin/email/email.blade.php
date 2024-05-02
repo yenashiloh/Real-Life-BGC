@@ -12,6 +12,12 @@
       max-width: 250px; 
       white-space: normal;
     }
+    .alert-success {
+        transition: opacity 0.5s ease-in-out;
+    }
+    .alert-danger {
+        transition: opacity 0.5s ease-in-out;
+    }
     </style>
   </head>
   <body>
@@ -22,6 +28,53 @@
         <div class="page-header">
           <h3 class="page-title">Email Content  </h3>
         </div>
+        @if(session('success'))
+        <div id="successMessage" class="alert alert-success mt-3 fade-in-out" role="alert" style="text-align: center">
+            {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                var successMessage = document.getElementById('successMessage');
+                successMessage.style.opacity = '0';
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 500);
+            }, 3000);
+        </script>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger mt-3">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    {{-- @if(session('success'))
+    <div id="successMessageShortlisted" class="alert alert-success mt-3 fade-in-out" role="alert" style="text-align: center">
+        {{ session('success') }}
+    </div>
+    <script>
+        setTimeout(function() {
+            var successMessage = document.getElementById('successMessageShortlisted');
+            successMessage.style.opacity = '0';
+            setTimeout(function() {
+                successMessage.style.display = 'none';
+            }, 500);
+        }, 3000);
+    </script>
+@endif
+      @if ($errors->any())
+          <div class="alert alert-danger mt-3">
+              <ul>
+                  @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                  @endforeach
+              </ul>
+          </div>
+      @endif --}}
         <div class="row">
           <div class="col-xl-12 " >
           </div>
@@ -50,88 +103,99 @@
                   </li>
 
                   <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#decline">Decline</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#decline">Declined</button>
                   </li>
   
                 </ul>
 
+                <!----------------UNDER REVIEW--------------------->
                 <div class="tab-content">
-                    <div class="tab-pane fade show active under-review" id="under-review">
-                      @if(session('success'))
-                      <div class="alert alert-success mt-3" role="alert" style="text-align: center" >
-                          {{ session('success') }}
-                      </div>
-                      @endif
-          
-                      @if ($errors->any())
-                      <div class="alert alert-danger mt-3">
-                              @foreach ($errors->all() as $error)
-                                  {{ $error }}
-                              @endforeach
-                          </ul>
-                      </div>
-                      @endif
-                      <form method="POST" action="{{ route('admin.save-under-review-content') }}" id="emailContentForm">
-                        @csrf
-                        <div class="form-group">
-                            <br>
-                            <h6 class="pt-2">Email Content for Under Review</h6>
-                            <textarea class="tinymce-editor" name="under_review">{{ $under_review_data }}</textarea>
-
-                            <div class="text-center mt-3">
-                                <button id="submitButton" class="btn btn-primary btn-fw" type="submit">Submit</button>
-                            </div>
-                    </div>
+                  <div class="tab-pane fade show active under-review" id="under-review">
+                      <form method="POST" action="{{ route('admin.email.save-under-review-content') }}" id="emailContentForm">
+                          @csrf
+                          <br>
+                          <h6 class="pt-2">Email Content for Under Review</h6>
+                          <div class="quill-editor-default" id="editor-container" style="height: 300px;">
+                              {!! $under_review_data !!}
+                          </div>
+                          <input type="hidden" name="under_review" id="under_review_input">
+                          <div class="text-center mt-3">
+                              <button id="submitButton" class="btn btn-primary btn-fw" type="submit">Submit</button>
+                          </div>
+                      </form>
                   </div>
-                </form>
-
-                <div class="tab-pane fade shortlisted pt-3" id="shortlisted">
-                    <div class="form-group">
-                        <h6 class="pt-2">Email Content for Shortlisted</h6>
-                            <textarea class="tinymce-editor" name="announcement_caption"></textarea>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+              
+                  <!----------------SHORTLISTED--------------------->
+                  <div class="tab-pane fade shortlisted" id="shortlisted">
+                      <form method="POST" action="{{ route('admin.email.save-shortlisted-content') }}" id="shortlistedForm">
+                          @csrf
+                          <br>
+                          <h6 class="pt-2">Email Content for Shortlisted</h6>
+                          <div class="quill-editor-default-shortlisted" id="shortlisted-editor-container" style="height: 300px;">
+                                {!! $shortlisted_data !!}
                         </div>
-                    </div>
-                </div>
-  
-    
-                <div class="tab-pane fade pt-3" id="interview">
-                    <div class="form-group">
-                        <h6 class="pt-2">Email Content for Interview</h6>
-                            <textarea class="tinymce-editor" name="announcement_caption"></textarea>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                          <input type="hidden" name="shortlisted" id="shortlisted_input">
+                          <div class="text-center mt-3">
+                              <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                          </div>
+                      </form>
+                  </div>
+        
+                  <!----------------FOR INTERVIEW--------------------->
+                  <div class="tab-pane fade" id="interview">
+                    <form method="POST" action="{{ route('admin.email.save-interview-content') }}" id="interviewForm">
+                        @csrf
+                        <br>
+                      <div class="form-group">
+                          <h6 class="pt-2">Email Content for Interview</h6>
+                          <div class="quill-editor-default-interview" id="interview-editor-container" style="height: 300px;">
+                            {!! $interview_data !!}
+                          </div>
+                          <input type="hidden" name="interview" id="interview_input">
+                          <div class="text-center mt-3">
+                              <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                          </div>
+                      </div>
+                    </form>
+                  </div>
+              
+                  <!----------------HOUSE VISITATION-------------------->
+                  <div class="tab-pane fade" id="house-visitation">
+                    <form method="POST" action="{{ route('admin.email.save-house-visitation-content') }}" id="housevisitationForm">
+                        @csrf
+                        <br>
+                        <div class="form-group">
+                            <h6 class="pt-2">Email Content for House Visitation</h6>
+                            <div class="quill-editor-default-house-visitation" id="house-visitation-editor-container" style="height: 300px;">
+                                {!! $house_visitation_data !!}
+                            </div>
+                            <input type="hidden" name="house_visitation" id="house-visitation-input">
+                            <div class="text-center mt-3">
+                                <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade pt-3" id="house-visitation">
-                    <div class="form-group">
-                        <h6 class="pt-2">Email Content for House Visitation</h6>
-                            <textarea class="tinymce-editor" name="announcement_caption"></textarea>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                    </form>                    
+                  </div>
+              
+                    <!----------------DECLINED-------------------->
+                  <div class="tab-pane fade" id="decline">
+                    <form method="POST" action="{{ route('admin.email.save-decline-content') }}" id="declineForm">
+                        @csrf
+                        <br>
+                        <div class="form-group">
+                            <h6 class="pt-2">Email Content for Declined</h6>
+                            <div class="quill-editor-default-decline" id="decline-editor-container" style="height: 300px;">
+                                {!! $decline_data !!}
+                            </div>
+                            <input type="hidden" name="decline" id="decline-input">
+                            <div class="text-center mt-3">
+                                <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade pt-3" id="decline">
-                    <div class="form-group">
-                        <h6 class="pt-2">Email Content for Decline</h6>
-                            <textarea class="tinymce-editor" name="announcement_caption"></textarea>
-                        <div class="text-center mt-3">
-                            <button class="btn btn-primary btn-fw" type="submit">Submit</button>
-                        </div>
-                    </div>
-                </div>
-                </div><!-- End Bordered Tabs -->
-  
-              </div>
-            </div>
-  
-          </div>
-        </div>
+                    </form>                    
+                  </div>
+              </div><!-- End tab-content -->
+              
         <script src="../assets-new-admin/vendors/js/vendor.bundle.base.js"></script>
 
         <script src="../assets-new-admin/js/off-canvas.js"></script>
@@ -178,29 +242,86 @@ tabLinks.forEach(function (tabLink) {
 
 //*********************************************************//
 document.addEventListener('DOMContentLoaded', function () {
-    // Check if there's content in local storage
-    var underReviewContent = localStorage.getItem('under_review_content');
-    var submitButton = document.getElementById('submitButton');
-    var textarea = document.querySelector('.tinymce-editor');
+    // Check if there's content in local storage for Under Review tab
+    // var underReviewContent = localStorage.getItem('under_review_content');
+    // var submitButton = document.getElementById('submitButton');
+    // var textarea = document.querySelector('.quill-editor-default');
 
-    if (underReviewContent) {
+    // if (underReviewContent) {
+    //     // Content exists, change button text to 'Save Changes'
+    //     submitButton.innerText = 'Save Changes';
+    //     // Fill the textarea with existing content
+    //     textarea.value = underReviewContent;
+    // }
+
+    // // Submit button click event for Under Review tab
+    // document.getElementById('emailContentForm').addEventListener('submit', function (event) {
+    //     var underReviewContent = textarea.value;
+    //     if (underReviewContent) {
+    //         // Content exists, change button text to 'Save Changes'
+    //         submitButton.innerText = 'Save Changes';
+    //         // Store content in local storage
+    //         localStorage.setItem('under_review_content', underReviewContent);
+    //     }
+    // });
+
+    // Check if there's content in local storage for Shortlisted tab
+    var shortlistedContent = localStorage.getItem('shortlisted_content');
+    var submitButtonShortlisted = document.querySelector('#shortlistedForm button[type="submit"]');
+    var textareaShortlisted = document.querySelector('.quill-editor-default-shortlisted');
+
+    if (shortlistedContent) {
         // Content exists, change button text to 'Save Changes'
-        submitButton.innerText = 'Save Changes';
+        submitButtonShortlisted.innerText = 'Save Changes';
         // Fill the textarea with existing content
-        textarea.value = underReviewContent;
+        textareaShortlisted.value = shortlistedContent;
     }
 
-    // Submit button click event
-    document.getElementById('emailContentForm').addEventListener('submit', function (event) {
-        var underReviewContent = textarea.value;
-        if (underReviewContent) {
+    // Submit button click event for Shortlisted tab
+    document.getElementById('shortlistedForm').addEventListener('submit', function (event) {
+        var shortlistedContent = textareaShortlisted.value;
+        if (shortlistedContent) {
             // Content exists, change button text to 'Save Changes'
-            submitButton.innerText = 'Save Changes';
+            submitButtonShortlisted.innerText = 'Save Changes';
             // Store content in local storage
-            localStorage.setItem('under_review_content', underReviewContent);
+            localStorage.setItem('shortlisted_content', shortlistedContent);
         }
     });
 });
+
+    // Initialize Quill editor for the interview tab
+    var interviewEditor = new Quill('#interview-editor-container', {
+        theme: 'snow' // You can customize the theme if needed
+    });
+    
+    // Listen for changes in the editor content
+    interviewEditor.on('text-change', function(delta, oldDelta, source) {
+        document.getElementById('interview_input').value = interviewEditor.root.innerHTML;
+    });
+
+    var housevisitationEditor = new Quill('#house-visitation-editor-container', {
+    theme: 'snow' // You can customize the theme if needed
+});
+
+housevisitationEditor.on('text-change', function(delta, oldDelta, source) {
+    // Get the HTML content of the editor
+    var htmlContent = housevisitationEditor.root.innerHTML;
+    // Set the value of the hidden input field
+    document.getElementById('house-visitation-input').value = htmlContent;
+});
+
+var declineEditor = new Quill('#decline-editor-container', {
+    theme: 'snow' // You can customize the theme if needed
+});
+
+declineEditor.on('text-change', function(delta, oldDelta, source) {
+    // Get the HTML content of the editor
+    var htmlContent = declineEditor.root.innerHTML;
+    // Set the value of the hidden input field
+    document.getElementById('decline-input').value = htmlContent;
+});
+
+
 
 </script>
   

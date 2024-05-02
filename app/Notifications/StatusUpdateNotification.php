@@ -59,26 +59,30 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
     
     private function sendShortlistedEmail()
     {
+        $shortlistedContent = ContentEmail::first()->shortlisted ?? ''; 
+
         $applicant = $this->applicant->load('applicants_personal_information');
         $firstName = $applicant->applicants_personal_information->first_name ?? '';
 
         return $this->subject('Real LIFE Scholarship Application')
             ->view('emails.applicant-shortlisted', [
                 'applicant' => $this->applicant,
-                'firstName' =>$firstName
-            ]);
-                
+                'firstName' =>$firstName,
+                'shortlistedContent' => $shortlistedContent
+            ]);     
     }
 
     private function sendForInterviewEmail()
     {
+        $interviewContent = ContentEmail::first()->interview ?? ''; 
         $applicant = $this->applicant->load('applicants_personal_information');
         $firstName = $applicant->applicants_personal_information->first_name ?? '';
 
         return $this->subject('Real LIFE Scholarship Application')
             ->view('emails.applicant-for-interview', [
                 'applicant' => $this->applicant,
-                'firstName' =>$firstName
+                'firstName' =>$firstName,
+                'interviewContent' => $interviewContent
         ]);
     }
 
@@ -88,6 +92,7 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
             return null; 
         }
 
+        $houseVisitationContent = ContentEmail::first()->house_visitation ?? ''; 
         $applicant = $this->applicant->load('applicants_personal_information');
 
         $firstName = $applicant->applicants_personal_information->first_name ?? '';
@@ -96,20 +101,23 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
         return $this->subject('Real LIFE Scholarship Application')
             ->view('emails.applicant-for-house-visitation', [
                 'applicant' => $applicant,
-                'firstName' => $firstName
+                'firstName' => $firstName,
+                'houseVisitationContent' => $houseVisitationContent
             ]);
     }
 
 
     private function sendDefaultEmail()
     {
+        $declineContent = ContentEmail::first()->decline ?? ''; 
         $applicant = $this->applicant->load('applicants_personal_information');
         $firstName = $applicant->applicants_personal_information->first_name ?? '';
 
         return $this->subject('Real LIFE Scholarship Application')
             ->view('emails.applicant-status-update', [
                 'applicant' => $applicant,
-                'firstName' => $firstName
+                'firstName' => $firstName,
+                'declineContent' => $declineContent
             ]);
             
     }

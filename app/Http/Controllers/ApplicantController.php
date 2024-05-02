@@ -169,7 +169,7 @@ class ApplicantController extends Controller
         if (Auth::attempt($credentials)) {
             return redirect()->intended(route('user.home'));
         }
-        return redirect(route('login'))->with("error", "Login details are not valid");
+        return redirect(route('login'))->with("error", "Incorrect email address/password. Please try again.");
     }
 
     public function register()
@@ -497,27 +497,40 @@ class ApplicantController extends Controller
     // }
 
     public function fetchNotificationCount()
-    {
-        try {
-            $count = NotificationApplicant::where('status', 'unread')->count();
-            return response()->json(['count' => $count]);
-        } catch (\Exception $e) {
-            \Log::error('Error fetching notification count: ' . $e->getMessage());
-            return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
-        }
-    }
+{
+    try {
+        // Get the authenticated applicant's ID
+        $applicantId = Auth::id();
 
-    public function markNotificationsAsRead()
-    {
-        try {
-            // Mark notifications as read without affecting the count
-            NotificationApplicant::where('status', 'unread')->update(['status' => 'read']);
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            \Log::error('Error marking notifications as read: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to mark notifications as read'], 500);
-        }
+        // Count unread notifications for the authenticated applicant
+        $count = NotificationApplicant::where('applicant_id', $applicantId)
+            ->where('status', 'unread')
+            ->count();
+
+        return response()->json(['count' => $count]);
+    } catch (\Exception $e) {
+        \Log::error('Error fetching notification count: ' . $e->getMessage());
+        return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
     }
+}
+
+public function markNotificationsAsRead()
+{
+    try {
+        // Get the authenticated applicant's ID
+        $applicantId = Auth::id();
+
+        // Mark all unread notifications as read for the authenticated applicant
+        NotificationApplicant::where('applicant_id', $applicantId)
+            ->where('status', 'unread')
+            ->update(['status' => 'read']);
+
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        \Log::error('Error marking notifications as read: ' . $e->getMessage());
+        return response()->json(['error' => 'Failed to mark notifications as read'], 500);
+    }
+}
     
         
 

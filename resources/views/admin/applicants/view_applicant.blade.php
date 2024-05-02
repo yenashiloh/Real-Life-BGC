@@ -9,7 +9,7 @@
     @include('admin-partials.admin-header')
     <style>
         .table-responsive td {
-      max-width: 300px; 
+      max-width: 500px; 
       white-space: normal;
   }
     .custom-btn {
@@ -323,35 +323,37 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($reportcardData as $index => $requirement)
-                                <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $requirement->document_type }}</td>
-                                    <td>{{ $requirement->notes }}</td>
-                                    <td>
+                              @foreach($reportcardData as $index => $requirement)
+                              <tr>
+                                  <td>{{ $index + 1 }}</td>
+                                  <td>{{ $requirement->document_type }}</td>
+                                  <td>{{ $requirement->notes }}</td>
+                                  <td>
                                       <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $requirement->uploaded_document }}" style="text-decoration: underline;">
-                                        {{ basename($requirement->uploaded_document) }}
-                                    </a>
-                                    
-                                    </td>
-                                    <td id="status-{{ $requirement->id }}" class="badge p-2 status-{{ $requirement->id }}" >
+                                          {{ basename($requirement->uploaded_document) }}
+                                      </a>
+                                  </td>
+                                  <td id="status-{{ $requirement->id }}" class="badge p-2 status-{{ $requirement->id }}" >
                                       @if($requirement->status == 'Approved')
                                           <span class="badge badge-success">{{ $requirement->status }}</span>
                                       @elseif($requirement->status == 'Declined')
                                           <span class="badge badge-danger">{{ $requirement->status }}</span>
-                                       @elseif($requirement->status == 'For Review')
+                                      @elseif($requirement->status == 'For Review')
                                           <span class="badge badge-warning">{{ $requirement->status }}</span>
                                       @else
                                           {{ $requirement->status }}
                                       @endif
-                                      
                                   </td>                           
                                   <td class="d-flex justify-content-center">
-                                      <button type="button" class="btn btn-primary p-2 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Approved" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Approve</button>
-                                      <button type="button" class="btn btn-danger p-2 mt-1 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Declined" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Decline</button>                                      
+                                      {{-- Conditionally render buttons based on requirement status --}}
+                                      @if($requirement->status != 'Approved' && $requirement->status != 'Declined')
+                                          <button type="button" class="btn btn-primary p-2 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Approved" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Approve</button>
+                                          <button type="button" class="btn btn-danger p-2 mt-1 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Declined" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Decline</button>
+                                      @endif
                                   </td>
                               </tr>
                               @endforeach
+                              
                           </tbody>
                         </table>
                     </form>

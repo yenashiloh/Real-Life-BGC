@@ -91,35 +91,36 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <div class="notifications-container">
-                                @if(isset($notifications) && count($notifications) > 0)
-                                @foreach ($notifications as $notification)
-                                <a href="/applicant_dashboard" class="dropdown-item preview-item notification" data-notification-id="{{ $notification->id }}">
-                                    <li class="notification-item">
-                                        <i></i>
-                                        <div>
-                                            <h4 style="margin: 0%">{{ $notification->admin_name }}</h4>
-                                            <p>{{ $notification->message }}</p>
-                                            <p>
-                                                @if($notification->created_at->gt(now()->subDay()))
-                                                    {{ $notification->created_at->diffForHumans() }}
-                                                @else
-                                                    <em>{{ $notification->created_at->format('F d, Y \a\t g:iA') }}</em>
-                                                @endif
-                                            </p>
-                                        </div>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                    </li>
-                                @endforeach
+                                @if(isset($applicantNotifications) && count($applicantNotifications) > 0)
+                                    @foreach ($applicantNotifications as $notification)
+                                        <a href="/applicant_dashboard" class="dropdown-item preview-item notification" data-notification-id="{{ $notification->id }}">
+                                            <li class="notification-item">
+                                                <i></i>
+                                                <div>
+                                                    <h4 style="margin: 0%">{{ $notification->admin_name }}</h4>
+                                                    <p>{{ $notification->message }}</p>
+                                                    <p>
+                                                        @if($notification->created_at->gt(now()->subDay()))
+                                                            {{ $notification->created_at->diffForHumans() }}
+                                                        @else
+                                                            <em>{{ $notification->created_at->format('F d, Y \a\t g:iA') }}</em>
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </li>
+                                        </a>
+                                    @endforeach
                                 @else
-                                <li class="notification-item">
-                                    <div>
-                                        <p style="text-align: center;">No notifications</p>
-                                    </div>
-                                </li>
+                                    <li class="notification-item">
+                                        <div>
+                                            <p style="text-align: center;">No notifications</p>
+                                        </div>
+                                    </li>
                                 @endif
-                       
+                        
+                            
+                         
+                            
                         {{-- <li class="dropdown-footer">
                             <a href="#">Show all notifications</a>
                         </li> --}}

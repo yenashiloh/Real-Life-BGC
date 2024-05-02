@@ -65,4 +65,10 @@ class Applicant extends Authenticatable
     {
         return $this->hasOne(ContentEmail::class, 'applicant_id', 'applicant_id');
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(NotificationApplicant::class, 'applicant_id', 'applicant_id');
+    }
+    
 }

@@ -26,13 +26,6 @@
 <body>
     <p>Dear {{ $firstName }},</p>
 
-    <p class="paragraph1">We are excited to inform you that you have successfully passed the initial screening for the Real Life Scholarship Program, and we would like to invite you to the next phase of the selection process: <strong>the panel interview</strong>.</p>
-
-    <p class="paragraph2">The panel interview will provide us with the opportunity to get to know you better and understand how you 
-        would be an ideal fit for the scholarship program. Kindly await the email containing the interview schedule.</p>
-  
-
-    <p class="warm">Warm regards,</p>
-    <p class="real">Real LIFE BGC</p>
+    <p class="under">{!! preg_replace('/(?<!\n)\n(?!\n)/', '<br>', preg_replace('/\n{2,}/', '<br><br>', nl2br(strip_tags($interviewContent, '<strong><p><br><u>e&nbsp;')))) !!}</p>
 </body>
 </html>

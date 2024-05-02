@@ -46,16 +46,16 @@
                     <h5 class="card-title text-center pb-0 fs-4">Admin</h5>
                     <p class="text-center small">Enter your email & password to login</p>
                   </div>
-                @if(session('success'))
-                    <div class="alert" style="text-align: center; color: green;">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if(session('danger'))
-                    <div class="alert" style="text-align: center; color: red;">
-                        {{ session('danger') }}
-                    </div>
-                @endif
+                  @if(session('success'))
+                  <div class="alert" style="text-align: center; color: green;">
+                      {{ session('success') }}
+                  </div>
+              @endif
+              @if(session('danger'))
+                  <div class="alert" style="text-align: center; color: red;">
+                      {{ session('danger') }}
+                  </div>
+              @endif
                 <form action="{{ route('admin.login') }}" method="POST" class="row g-3 needs-validation login" novalidate>
                   @csrf 
                   <div class="col-12">
@@ -100,6 +100,34 @@
 
   <!-- Template Main JS File -->
   <script src="assets-admin/js/main.js"></script>
+
+  <script>
+    // Get the input fields
+    const emailInput = document.getElementById('yourEmail');
+    const passwordInput = document.getElementById('yourPassword');
+
+    // Remove success or error messages when the user starts typing
+    emailInput.addEventListener('input', () => {
+        removeMessages();
+    });
+
+    passwordInput.addEventListener('input', () => {
+        removeMessages();
+    });
+
+    function removeMessages() {
+        const successMessage = document.querySelector('.alert[style="text-align: center; color: green;"]');
+        const errorMessage = document.querySelector('.alert[style="text-align: center; color: red;"]');
+
+        if (successMessage) {
+            successMessage.style.display = 'none';
+        }
+
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+    }
+</script>
 
 </body>
 

@@ -113,11 +113,11 @@
   /**
    * Initiate quill editors
    */
-  if (select('.quill-editor-default')) {
-    new Quill('.quill-editor-default', {
-      theme: 'snow'
-    });
-  }
+  // if (select('.quill-editor-default')) {
+  //   new Quill('.quill-editor-default', {
+  //     theme: 'snow'
+  //   });
+  // }
 
   if (select('.quill-editor-bubble')) {
     new Quill('.quill-editor-bubble', {
@@ -330,4 +330,31 @@ document.querySelectorAll('.alert .btn-close').forEach(function(closeBtn) {
     closeBtn.addEventListener('click', function() {
         this.parentNode.style.display = 'none';
     });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (document.querySelector('.quill-editor-default')) {
+      var quill = new Quill('#editor-container', {
+          theme: 'snow'
+      });
+
+      // When form is submitted, update the hidden input with Quill content
+      document.getElementById('emailContentForm').addEventListener('submit', function (event) {
+          var quillHtml = document.querySelector('.quill-editor-default .ql-editor').innerHTML;
+          document.getElementById('under_review_input').value = quillHtml;
+      });
+  }
+
+  if (document.querySelector('.quill-editor-default-shortlisted')) {
+      var quill_shortlisted = new Quill('#shortlisted-editor-container', {
+          theme: 'snow'
+      });
+
+      // When form is submitted, update the hidden input with Quill content for shortlisted tab
+      document.getElementById('shortlistedForm').addEventListener('submit', function (event) {
+          var quillHtml_shortlisted = document.querySelector('.quill-editor-default-shortlisted .ql-editor').innerHTML;
+          document.getElementById('shortlisted_input').value = quillHtml_shortlisted;
+      });
+  }
 });

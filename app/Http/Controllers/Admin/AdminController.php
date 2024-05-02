@@ -88,6 +88,7 @@ class AdminController extends Controller
         return view('admin.admin-registration', ['title' => $title]);
     }
 
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -115,6 +116,12 @@ class AdminController extends Controller
         return redirect()->route('admin.registration')->with('success', 'Create Account Successfully!');
     }
     
+    public function showUploadedFiles()
+    {
+        $title = 'Create Account';
+        return view('admin.uploaded-files', ['title' => $title]);
+    }
+
     //update profile 
     public function updateProfile(Request $request)
     {
@@ -269,7 +276,7 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Failed to delete the announcement.');
         }
     }
- 
+
     // dashboard total
     public function totalApplicants()
     {
@@ -333,8 +340,16 @@ class AdminController extends Controller
     public function showNewApplicants()
     {
         $title = 'New Applicants';
+    
+        // Fetch distinct years from the created_at column of applicants
+        $availableYears = Applicant::selectRaw('YEAR(created_at) as year')
+            ->distinct()
+            ->orderBy('year', 'desc') // Optionally order by year in descending order
+            ->pluck('year');
+    
         $applicantsData = $this->getApplicantsData();
-        return view('admin.applicants.new_applicants', compact('title', 'applicantsData'));
+    
+        return view('admin.applicants.new_applicants', compact('title', 'applicantsData', 'availableYears'));
     }
     
     public function getApplicantsData()
@@ -513,7 +528,6 @@ class AdminController extends Controller
                 'status' => 'unread', 
             ]);
             
-
             return response()->json(['status' => $requirement->status]);
         } catch (\Exception $e) {
             \Log::error('Error updating status: ' . $e->getMessage());
@@ -530,7 +544,7 @@ class AdminController extends Controller
         return $notifications;
     }
     
-    
+    // fetch notification
     public function fetchNotificationCount()
     {
         try {
@@ -545,8 +559,8 @@ class AdminController extends Controller
     public function markNotificationsAsRead()
     {
         try {
+            // Update status of unread notifications to 'read'
             Notification::where('status', 'unread')->update(['status' => 'read']);
-            
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             \Log::error('Error marking notifications as read: ' . $e->getMessage());
@@ -667,7 +681,28 @@ class AdminController extends Controller
         ]);
     }
 
-        // Controller method to publish announcement
+    // public function getDataForApplicantYear(Request $request)
+    // {
+    //     $selectedYear = $request->input('year');
+    //     $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined', 'Approved'];
+    
+    //     $applicantsData = ApplicantsPersonalInformation::select(
+    //         'applicants_personal_information.*', // Select all columns from applicants_personal_information
+    //         'applicants_academic_information.*', // Select all columns from applicants_academic_information
+    //         'applicants.*' // Select all columns from applicants
+    //     )
+    //     ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
+    //     ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
+    //     ->whereIn('applicants.status', $validStatuses)
+    //     ->whereYear('applicants.created_at', $selectedYear)
+    //     ->get();
+    
+    //     return response()->json([
+    //         'applicantsData' => $applicantsData,
+    //     ]);
+    // }
+    
+    // Controller method to publish announcement
     public function publishAnnouncement($id)
         {
             $announcement = Announcement::findOrFail($id);

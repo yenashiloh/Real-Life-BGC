@@ -40,6 +40,11 @@
                     <p class="mb-0 font-weight-medium float-left">Notifications</p>
                 </a>
                 <div class="dropdown-divider"></div>
+                @if($notifications->isEmpty())
+                <div class="preview-item-content flex-grow py-2">
+                <p class="font-weight-light small-text text-center">No notifications</p>
+              </div>
+            @else
                 @foreach($notifications as $notification)
                     <a href="/applicants/{{ $notification->applicant_id }}" class="dropdown-item preview-item" data-notification-id="{{ $notification->id }}">
                         <div class="preview-thumbnail">
@@ -60,6 +65,8 @@
                     </a>
                     <hr style="margin: 0;">
                 @endforeach
+            @endif
+            
             </div>            
           </li>
           <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
@@ -129,6 +136,12 @@
               <i class="icon-user-unfollow menu-icon"></i>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.uploaded-files') }}">
+              <span class="menu-title">Uploaded Files</span>
+              <i class="icon-notebook menu-icon"></i>
+            </a>
+          </li>
           {{-- <li class="nav-item">
             <a class="nav-link" href="pages/charts/chartist.html">
               <span class="menu-title">Scheduling</span>
@@ -166,7 +179,7 @@
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery library if not already included -->
 
 
-      {{-- <script>
+      <script>
   $(document).ready(function() {
     // Function to fetch notification count from the server
     function fetchNotificationCount() {
@@ -209,5 +222,5 @@
     });
 });
 
-      </script> --}}
+      </script>
       

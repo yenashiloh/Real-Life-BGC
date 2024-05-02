@@ -16,14 +16,6 @@
 </head>
 <body>
     <p>Dear {{ $firstName }},</p>
-
-    <p>We are thrilled to inform you that you have successfully cleared the panel interview phase of the Real Life Scholarship Program. As a result, we would like to invite you to the next step in our selection process: <strong>house visitation</strong>.</p>
-    
-    <p>This visitation is an essential part of our evaluation, as it allows us to gain a deeper understanding of your living environment, support systems, and overall suitability for the Real Life Scholarship Program. Please make sure that your parent/s or guardian is present on the day.</p>
-    
-    <p class="paragraph2">During the house visitation, a representative from our team will meet with you at your home. Kindly await the email containing the house visitation schedule.</p>
-
-    <p class="warm">Warm regards,</p>
-    <p class="warm" style="margin-top: -10px;">Real LIFE BGC</p>
+    <p class="under">{!! preg_replace('/(?<!\n)\n(?!\n)/', '<br>', preg_replace('/\n{2,}/', '<br><br>', nl2br(strip_tags($houseVisitationContent, '<strong><p><br><u>e&nbsp;')))) !!}</p>
 </body>
 </html>

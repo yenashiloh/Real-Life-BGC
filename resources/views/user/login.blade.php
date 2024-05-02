@@ -50,17 +50,27 @@
                     
                     <p class="text-center small" style="margin-top: 10px; font-size: 15px;">Enter your email & password
                         to login</p>
-                    <form action="{{ route('login.post') }}" method="POST" autocomplete="">
+                    <form action="{{ route('login.post') }}" method="POST">
                         @csrf
+                        @if(session('error'))
+                            <div class="text-center" id="errorMessage"  style="color: red; font-size: 12px;">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                        @if(session('success'))
+                        <div class="alert text-center" style="color: green; font-size: 12px;">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                         <div class="input-field">
-                            <input type="email" placeholder="Enter your email" name="email" required>
+                            <input type="email" id="emailInput" placeholder="Enter your email" name="email" required>
                             <i class="uil uil-envelope icon"></i>
                         </div>
                         <div class="input-field">
-                            <input type="password" class="password" placeholder="Enter your password" name="password"
+                            <input type="password" id="passwordInput" class="password" placeholder="Enter your password" name="password"
                                 required>
                             <i class="uil uil-lock icon"></i>
-                            <i class="uil uil-eye-slash showHidePw"></i>
+                            {{-- <i class="uil uil-eye-slash showHidePw"></i> --}}
                         </div>
 
                         <div class="checkbox-text">
@@ -77,7 +87,7 @@
                         </div>
                     </form>
                     <div class="login-signup">
-                        <x-messages />
+                        {{-- <x-messages /> --}}
                         <span class="text">You want to apply?
                             <a href="/register" class="text signup-link">Apply Now</a>
                         </span>
@@ -90,37 +100,75 @@
 </main><!-- End #main -->
 
     <script>
-        const container = document.querySelector(".container"),
-            pwShowHide = document.querySelectorAll(".showHidePw"),
-            pwFields = document.querySelectorAll(".password"),
-            signUp = document.querySelector(".signup-link"),
-            login = document.querySelector(".login-link");
+        // const container = document.querySelector(".container"),
+        //     pwShowHide = document.querySelectorAll(".showHidePw"),
+        //     pwFields = document.querySelectorAll(".password"),
+        //     signUp = document.querySelector(".signup-link"),
+        //     login = document.querySelector(".login-link");
 
-        pwShowHide.forEach(eyeIcon => {
-            eyeIcon.addEventListener("click", () => {
-                pwFields.forEach(pwField => {
-                    if (pwField.type === "password") {
-                        pwField.type = "text";
+        // pwShowHide.forEach(eyeIcon => {
+        //     eyeIcon.addEventListener("click", () => {
+        //         pwFields.forEach(pwField => {
+        //             if (pwField.type === "password") {
+        //                 pwField.type = "text";
 
-                        pwShowHide.forEach(icon => {
-                            icon.classList.replace("uil-eye-slash", "uil-eye");
-                        })
-                    } else {
-                        pwField.type = "password";
+        //                 pwShowHide.forEach(icon => {
+        //                     icon.classList.replace("uil-eye-slash", "uil-eye");
+        //                 })
+        //             } else {
+        //                 pwField.type = "password";
 
-                        pwShowHide.forEach(icon => {
-                            icon.classList.replace("uil-eye", "uil-eye-slash");
-                        })
-                    }
-                })
-            })
-        })
-        signUp.addEventListener("click", () => {
-            container.classList.add("active");
+        //                 pwShowHide.forEach(icon => {
+        //                     icon.classList.replace("uil-eye", "uil-eye-slash");
+        //                 })
+        //             }
+        //         })
+        //     })
+        // })
+        // signUp.addEventListener("click", () => {
+        //     container.classList.add("active");
+        // });
+        // login.addEventListener("click", () => {
+        //     container.classList.remove("active");
+        // });
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const errorMessage = document.getElementById('errorMessage');
+    const rememberMeCheckbox = document.getElementById('logCheck');
+
+    // Check if "Remember Me" is checked and populate email input from localStorage
+    if (rememberMeCheckbox && rememberMeCheckbox.checked) {
+        const storedEmail = localStorage.getItem('rememberedEmail');
+        if (storedEmail) {
+            emailInput.value = storedEmail;
+        }
+    }
+
+    // Add event listener to clear error message when typing in email or password fields
+    if (emailInput && passwordInput && errorMessage) {
+        emailInput.addEventListener('input', clearErrorMessage);
+        passwordInput.addEventListener('input', clearErrorMessage);
+    }
+
+    function clearErrorMessage() {
+        // Hide the error message when user starts typing in the input fields
+        errorMessage.style.display = 'none';
+    }
+
+    // Save or remove email in localStorage based on "Remember Me" checkbox
+    if (rememberMeCheckbox) {
+        rememberMeCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                localStorage.setItem('rememberedEmail', emailInput.value);
+            } else {
+                localStorage.removeItem('rememberedEmail');
+            }
         });
-        login.addEventListener("click", () => {
-            container.classList.remove("active");
-        });
+    }
+});
+
     </script>
 </body>
 

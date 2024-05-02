@@ -37,4 +37,8 @@ class ApplicantsPersonalInformation extends Model
     {
         return $this->hasMany(ApplicantsAcademicInformationGrade::class, 'applicant_id');
     }
+    public function applicant()
+    {
+        return $this->belongsTo(Applicant::class, 'applicant_id', 'applicant_id');
+    }
 }

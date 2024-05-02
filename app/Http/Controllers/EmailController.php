@@ -62,45 +62,143 @@ class EmailController extends Controller
 
       //email page
       public function emailShow()
-      {
-          $title = 'Email';
-          
-          // Fetch the latest content from the database
-          $contentEmail = ContentEmail::first();
-          $under_review_data = $contentEmail ? $contentEmail->under_review : '';
-          
-          return view('admin.email.email', compact('title', 'under_review_data'));
-      }
-      
+    {
+        $title = 'Email';
 
+        $contentEmail = ContentEmail::first();
+        $under_review_data = $contentEmail ? $contentEmail->under_review : '';
+        $shortlisted_data = $contentEmail ? $contentEmail->shortlisted : ''; 
+        $interview_data = $contentEmail ? $contentEmail->interview : ''; 
+        $house_visitation_data = $contentEmail ? $contentEmail->house_visitation : ''; 
+        $decline_data = $contentEmail ? $contentEmail->decline : ''; 
+        
+        return view('admin.email.email', compact('title', 'under_review_data', 'shortlisted_data', 'interview_data', 'house_visitation_data', 'decline_data')); 
+    }
+
+    //under review email content 
       public function saveUnderReviewContent(Request $request)
       {
           $validator = Validator::make($request->all(), [
-              'under_review' => 'required', // aligning with the name attribute in the form
+              'under_review' => 'required', 
           ]);
       
           if ($validator->fails()) {
               return redirect()->back()->withErrors($validator)->withInput();
           }
       
-          // Check if there is an existing record in the database
           $content_email = ContentEmail::first();
       
           if ($content_email) {
-              // Update the existing record
               $content_email->under_review = $request->input('under_review');
               $content_email->save();
           } else {
-              // Create a new record
               $content_email = new ContentEmail();
               $content_email->under_review = $request->input('under_review');
               $content_email->save();
           }
       
           $request->session()->flash('success', 'Under Review Content Saved Successfully!');
-          // Pass the submitted data back to the view
           return redirect()->route('admin.email.email')->with('under_review_data', $request->input('under_review'));
       }
-      
-      
+
+      //shortlisted email content 
+      public function saveShortlistedContent(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'shortlisted' => 'required', 
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $content_email = ContentEmail::first();
+
+        if ($content_email) {
+            $content_email->shortlisted = $request->input('shortlisted');
+            $content_email->save();
+        } else {
+            $content_email = new ContentEmail();
+            $content_email->shortlisted = $request->input('shortlisted');
+            $content_email->save();
+        }
+
+        $request->session()->flash('success', 'Shortlisted Content Saved Successfully!');
+        return redirect()->route('admin.email.email')->with('shortlisted_data', $request->input('shortlisted'));
+    }
+
+    //For interview email content
+    public function saveInterviewContent(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'interview' => 'required', 
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $content_email = ContentEmail::first();
+
+        if ($content_email) {
+            $content_email->interview = $request->input('interview');
+            $content_email->save();
+        } else {
+            $content_email = new ContentEmail();
+            $content_email->interview = $request->input('interview');
+            $content_email->save();
+        }
+        $request->session()->flash('success', 'Interview Content Saved Successfully!');
+        return redirect()->route('admin.email.email')->with('interview_data', $request->input('interview'));
+    }
+
+     //For interview email content
+     public function saveHouseVisitationContent(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+             'house_visitation' => 'required', 
+         ]);
+ 
+         if ($validator->fails()) {
+             return redirect()->back()->withErrors($validator)->withInput();
+         }
+ 
+         $content_email = ContentEmail::first();
+ 
+         if ($content_email) {
+             $content_email->house_visitation = $request->input('house_visitation');
+             $content_email->save();
+         } else {
+             $content_email = new ContentEmail();
+             $content_email->house_visitation = $request->input('house_visitation');
+             $content_email->save();
+         }
+         $request->session()->flash('success', 'House Visitation Content Saved Successfully!');
+         return redirect()->route('admin.email.email')->with('house_visitation_data', $request->input('house_visitation'));
+     }
+
+      //For declined email content
+      public function saveDeclineContent(Request $request)
+      {
+          $validator = Validator::make($request->all(), [
+              'decline' => 'required', 
+          ]);
+  
+          if ($validator->fails()) {
+              return redirect()->back()->withErrors($validator)->withInput();
+          }
+  
+          $content_email = ContentEmail::first();
+  
+          if ($content_email) {
+              $content_email->decline = $request->input('decline');
+              $content_email->save();
+          } else {
+              $content_email = new ContentEmail();
+              $content_email->decline = $request->input('decline');
+              $content_email->save();
+          }
+          $request->session()->flash('success', 'Declined Content Saved Successfully!');
+          return redirect()->route('admin.email.email')->with('decline_data', $request->input('decline'));
+      }
   }

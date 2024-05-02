@@ -31,7 +31,7 @@
                           <a class="dropdown-item " href="{{ route('export.applicants', ['format' => 'excel']) }}">Excel</a>
                       </div>
                   </div>
-              
+            
                 <div class="loader"></div>
                 <!-- Table with stripped rows -->
                 <div class="table-responsive">
@@ -48,7 +48,7 @@
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="applicant-table">
                             @php
                             $count = 1;
                             @endphp
@@ -323,3 +323,62 @@ $(document).ready(function() {
   })
 </script>
 
+{{-- <script>
+ function applyYearFilter(selectedYear) {
+    // Make an AJAX call to fetch data for the selected year
+    $.ajax({
+        url: '{{ route("get-data-for-applicant-year") }}',
+        type: 'GET',
+        data: { year: selectedYear },
+        success: function(response) {
+            // Clear existing table rows
+            $('#applicant-table tbody').empty();
+
+            // Loop through the fetched data and append rows to the table
+            response.applicantsData.forEach(function(applicant, index) {
+                var statusBadgeClass = getStatusBadgeClass(applicant.status);
+                var formattedDate = formatDate(applicant.created_at);
+                var row = '<tr>' +
+                            '<td>' + (index + 1) + '</td>' +
+                            '<td>' + formattedDate + '</td>' +
+                            '<td>' + applicant.first_name + ' ' + applicant.last_name + '</td>' +
+                            '<td>' + applicant.incoming_grade_year + '</td>' +
+                            '<td>' + applicant.current_school + '</td>' +
+                            '<td><span class="badge ' + statusBadgeClass + ' p-2" style="font-weight: normal;">' + applicant.status + '</span></td>' +
+                            '<td> Action Buttons Here </td>' +
+                          '</tr>';
+                $('#applicant-table tbody').append(row);
+            });
+        },
+        error: function(error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+// Helper function to format date (e.g., January 01, 2024)
+function formatDate(dateString) {
+    var date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
+}
+
+// Helper function to get badge class based on status
+function getStatusBadgeClass(status) {
+    switch(status) {
+        case 'New Applicant':
+            return 'badge-primary';
+        case 'Under Review':
+            return 'badge-secondary';
+        case 'Shortlisted':
+            return 'badge-warning';
+        case 'For Interview':
+            return 'badge-dark';
+        case 'For House Visitation':
+            return 'badge-success';
+        default:
+            return 'badge-primary'; // Default badge color
+    }
+}
+
+
+</script> --}}

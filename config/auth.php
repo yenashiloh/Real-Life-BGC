@@ -75,6 +75,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\Applicant::class,
+            App\Providers\ViewComposerServiceProvider::class,
         ],
 
         // 'users' => [

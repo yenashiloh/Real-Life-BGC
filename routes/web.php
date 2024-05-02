@@ -132,11 +132,24 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/export.approved.applicants', [AdminController::class, 'exportApproved'])->name('export.approved.applicants');
     Route::get('/export.declined.applicants', [AdminController::class, 'exportDeclined'])->name('export.declined.applicants');
 
-    //EMAIL
+    //EMAIL CONTENT
     Route::get('/email/email', [EmailController::class, 'emailShow'])->name('admin.email.email');
-    Route::post('/email/email', [EmailController::class, 'saveUnderReviewContent'])->name('admin.save-under-review-content');
+    Route::prefix('/email')->name('admin.email.')->group(function () {
+        Route::post('/save-under-review-content', [EmailController::class, 'saveUnderReviewContent'])->name('save-under-review-content');
+        Route::post('/save-shortlisted-content', [EmailController::class, 'saveShortlistedContent'])->name('save-shortlisted-content');
+        Route::post('/save-interview-content', [EmailController::class, 'saveInterviewContent'])->name('save-interview-content');
+        Route::post('/save-house-visitation-content', [EmailController::class, 'saveHouseVisitationContent'])->name('save-house-visitation-content');
+        Route::post('/save-decline-content', [EmailController::class, 'saveDeclineContent'])->name('save-decline-content');
 
-    // Route::get('/filterApplicantsByYear', [AdminController::class, ' filterApplicantsByYear'])->name(' filterApplicantsByYear');
+    });
+
+    //REPORT SUMMARY - DASHBOARD
     Route::get('/get-data-for-year', [AdminController::class, 'getDataForYear'])->name('get-data-for-year');
     Route::get('/get-graph-data-for-year', [AdminController::class, 'getGraphDataForYear'])->name('get-graph-data-for-year');
+
+    //UPLOADED FILES
+    Route::get('/uploaded-files', [AdminController::class, 'showUploadedFiles'])->name('admin.uploaded-files');
+
+    Route::get('/get-data-for-applicant-year', [AdminController::class, 'getDataForApplicantYear'])->name('get-data-for-applicant-year');
+
 });

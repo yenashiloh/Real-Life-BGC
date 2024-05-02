@@ -16,9 +16,8 @@ fetchNotificationCount();
 // Fetch notification count every 10 seconds (adjust interval as needed)
 setInterval(fetchNotificationCount, 10000); // 10 seconds interval
 
-// Handle click event on notification dropdown to reset count
+// Handle click event on notification dropdown to mark notifications as read
 $('#messageDropdown').on('click', function() {
-    // Send request to server to mark notifications as read
     $.ajax({
         url: '/applicant-mark-notifications-as-read', // Endpoint to mark notifications as read
         type: 'POST',
@@ -36,7 +35,6 @@ $('#messageDropdown').on('click', function() {
         }
     });
 });
-
 
 function fetchNotificationCount() {
 $.ajax({

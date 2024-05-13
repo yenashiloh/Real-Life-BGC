@@ -114,53 +114,43 @@ class ApplicantController extends Controller
     }
 
         //UPLOAD REQUIREMENTS AND NOTIFICATIONS(ADMIN)
-        public function uploadRequirements(Request $request)
-        {
-            $request->validate([
-                'documentType' => 'required',
-                'notes' => 'nullable',
-                'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:102400', // Max 10MB for file size
+    public function uploadRequirements(Request $request)
+    {
+         $request->validate([
+            'documentType' => 'required',
+            'notes' => 'nullable',
+            'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:102400', 
             ]);
 
             try {
-                // Retrieve the uploaded file from the request
                 $file = $request->file('fileUpload');
 
-                // Generate a unique filename using the original filename and current timestamp
                 $filename = time() . '_' . $file->getClientOriginalName();
 
-                // Store the file in the 'public/uploads' directory
                 $filePath = $file->storeAs('public/uploads', $filename);
 
-                // Create a new Requirement instance and populate the fields
                 $requirement = new Requirement();
                 $requirement->applicant_id = auth()->id();
                 $requirement->document_type = $request->documentType;
                 $requirement->notes = $request->notes;
-                $requirement->uploaded_document = $filePath; // Store full file path in the database
+                $requirement->uploaded_document = $filePath; 
 
-                // Set the status of the requirement
                 $requirement->status = 'For Review';
 
-                // Save the requirement to the database
                 $requirement->save();
 
-                // Retrieve applicant information
                 $applicantInfo = ApplicantsPersonalInformation::where('applicant_id', auth()->id())->first();
                 $firstName = $applicantInfo->first_name;
                 $lastName = $applicantInfo->last_name;
 
-                // Create a new Notification instance for the applicant
                 $notification = new Notification();
                 $notification->applicant_id = auth()->id();
                 $notification->applicant_name = "$firstName $lastName";
                 $notification->message = "Submitted {$request->documentType}";
                 $notification->save();
 
-                // Return a JSON response indicating successful document upload
                 return response()->json(['success' => 'Document uploaded successfully']);
             } catch (\Exception $e) {
-                // Log any errors that occur during the process
                 \Log::error('Error saving requirement: ' . $e->getMessage());
                 return response()->json(['error' => 'An error occurred while saving the document. Please try again later.'], 500);
             }
@@ -441,9 +431,8 @@ class ApplicantController extends Controller
 
         if (isset($householdMembersData) && is_array($householdMembersData)) {
             foreach ($householdMembersData as $key => $name) {
-                // Adjust the 'Member' model and table name according to your application
                 Member::updateOrCreate(
-                    ['members_id' => auth()->id(), 'members_id' => $key + 1], // Assuming the household member ID starts from 1
+                    ['members_id' => auth()->id(), 'members_id' => $key + 1], 
                     [
                         'name' => $request->input("name.$key") ?? null,
                         'relationship' => $request->input("relationship.$key") ?? null,
@@ -502,14 +491,6 @@ class ApplicantController extends Controller
         }
     }
     
-    // public function showNotifications()
-    // {
-    //     $notifications = NotificationApplicant::orderBy('created_at', 'desc')
-    //         ->get(['id', 'applicant_id', 'admin_name', 'message', 'status', 'created_at', 'updated_at']);
-    
-    //     return $notifications;
-    // }
-
     public function fetchNotificationCount()
     {
         try {
@@ -542,9 +523,9 @@ class ApplicantController extends Controller
     }
     
         //update documents uploaded
-        public function update(Request $request, $id)
-        {
-            try {
+    public function update(Request $request, $id)
+    {
+        try {
                 $request->validate([
                     'documentType' => 'required|string',
                     'notes' => 'nullable|string',
@@ -558,16 +539,13 @@ class ApplicantController extends Controller
                 if ($request->hasFile('uploaded_document')) {
                     $uploadedFile = $request->file('uploaded_document');
     
-                    // Generate a unique filename based on original filename
                     $originalFileName = $uploadedFile->getClientOriginalName();
                     $uploadedFilePath = $uploadedFile->storeAs('public/uploads', $originalFileName);
     
-                    // Delete existing file if it exists
                     if ($document->uploaded_document) {
                         Storage::delete($document->uploaded_document);
                     }
     
-                    // Update uploaded document path in the database
                     $document->uploaded_document = $uploadedFilePath;
                 }
     

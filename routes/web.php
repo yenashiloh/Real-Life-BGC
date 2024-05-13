@@ -62,6 +62,10 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::get('/notifications.show', [ApplicantController::class, 'showApplicantNotifications'])->name('notifications.show');
     Route::get('/applicant-fetch-notification-count', [ApplicantController::class, 'fetchNotificationCount'])->name('applicant-fetch-notification-count');
     Route::post('/applicant-mark-notifications-as-read', [ApplicantController::class, 'markNotificationsAsRead'])->name('applicant-mark-notifications-as-read');
+
+    Route::post('/documents/{id}', [ApplicantController::class, 'update'])->name('update_document');
+    Route::get('/documents/{id}', [ApplicantController::class, 'showEdit'])->name('show_document');
+
 });
 
 
@@ -114,7 +118,13 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/applicants-approved', [AdminController::class, 'getApprovedData'])->name('approved.data');
 
     //VIEW DATA OF APPLICANTS
-    Route::get('/applicants/{id}', [AdminController::class, 'viewApplicant'])->name('admin.view_applicant');
+    Route::group(['prefix' => '/applicants'], function() {
+        Route::get('/{id}', [AdminController::class, 'viewApplicant'])->name('admin.view_applicant');
+        Route::post('/{id}/notify', [EmailController::class, 'notifyApplicant'])->name('notify.applicant');
+        Route::get('/{id}/approved-documents', [AdminController::class, 'getApprovedDocuments'])->name('applicants.approved_documents');
+    });
+    
+    
 
     //FILE UPDATE STATUS
     Route::post('/applicants/{requirement_id}', [AdminController::class, 'fileStatus'])->name('requirements.file-status');
@@ -151,5 +161,9 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/uploaded-files', [AdminController::class, 'showUploadedFiles'])->name('admin.uploaded-files');
 
     Route::get('/get-data-for-applicant-year', [AdminController::class, 'getDataForApplicantYear'])->name('get-data-for-applicant-year');
+
+    // Route::get('/api/approved-documents', 'AdminController@getApprovedDocuments');
+
+
 
 });

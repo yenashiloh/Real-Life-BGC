@@ -1,4 +1,5 @@
     @include('partials.header')
+    
     <body>
         @php
             $personalInfo = auth()
@@ -98,6 +99,7 @@
                                     <div class="alert alert-success" id="successMessage" style="display: none; text-align: center;">
                                         Upload Successfully!
                                     </div>
+                                    <div id="successEditMessage" class="alert alert-success" style="display: none; text-align: center;">Edit Successfully!</div>
                                     
                                     <div class="modal fade" id="basicModal" tabindex="-1">
                                         <form id="uploadForm" action="{{ route('applicant_dashboard.requirements') }}" method="POST">
@@ -120,7 +122,9 @@
                                                                 <option value="Proof of Financial Status">Proof of Financial Status</option>
                                                                 <option value="Payslip / DSWD Report / ITR">Payslip / DSWD Report / ITR</option>
                                                                 <option value="Two Reference Forms">Two Reference Forms</option>
-                                                                <option value="Home Visitation Form">Home Visitation Form</option>
+                                                                @if($status === "For House Visitation")
+                                                                    <option value="Home Visitation Form">Home Visitation Form</option>
+                                                                @endif
                                                                 <option value="Report Card / Grades">Report Card / Grades</option>
                                                                 <option value="Prospectus">Prospectus</option>
                                                                 <option value="Official Grading System">Official Grading System</option>
@@ -174,9 +178,15 @@
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $requirement->document_type }}</td>
                                                         <td>{{ $requirement->notes }}</td>
-                                                        <td>  <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $requirement->uploaded_document }}" style="text-decoration: underline; color: #1e2482;">
-                                                            {{ basename($requirement->uploaded_document) }}
+                                                        <td> 
+                                                            @if(Storage::exists($requirement->uploaded_document))
+                                                            <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ basename($requirement->uploaded_document) }}" style="text-decoration: underline; color: #1e2482;">
+                                                                {{ basename($requirement->uploaded_document) }}
                                                             </a>
+                                                        @else
+                                                            File not found
+                                                        @endif
+                                                        
                                                         </td>
                                                         <td>
                                                             @php
@@ -198,7 +208,11 @@
                                                             <span class="badge {{ $badgeClass }}">{{ $status }}</span>
                                                         </td>   
                                                         <td>
-                                                            <button type="button" class="btn edit-button" style="width: 85px; background-color:#71BF44;  color: white; font-size: 13px; height:30px;" data-bs-toggle="modal" data-bs-target="#editModal" data-requirement-id="{{ $requirement->id }}">Edit</button>
+                                                            @if ($requirement->status !== 'Approved' && $requirement->status !== 'Declined')
+                                                                <button type="button" class="btn edit-button" data-requirement-id="{{ $requirement->id }}">
+                                                                    Edit
+                                                                </button>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -206,64 +220,59 @@
                                             </table>
                                         </div>
 
-                                        <!----EDIT MODAL-->
+                                       <!-- Edit Document Modal -->
                                         <div class="modal fade" id="editModal" tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Edit Document</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <input type="hidden" id="selectedDocumentType" name="selectedDocumentType">
-                                                        
-                                                        <form>
+                                            <form id="editForm" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit Document</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <!-- Document Type -->
                                                             <div class="form-group">
-                                                                <label for="documentType">Document Type</label>
-                                                                {{-- <select class="form-select form-select-solid form-control" id="documentType">
-                                                                    <option value="">Select document type</option>
-                                                                    <option value="1" {{ $requirement->document_type}}>Signed Application Form</option>
-                                                                    <option value="2" {{ $requirement->document_type}}>Birth Certificate</option>
-                                                                    <option value="3" {{ $requirement->document_type }}>Character Evaluation Forms</option>
-                                                                    <option value="4" {{ $requirement->document_type }}>Proof of Financial Status</option>
-                                                                    <option value="5" {{ $requirement->document_type }}>Payslip / DSWD Report / ITR</option>
-                                                                    <option value="6" {{ $requirement->document_type }}>Two Reference Forms</option>
-                                                                    <option value="7" {{ $requirement->document_type}}>Home Visitation Form</option>
-                                                                    <option value="8" {{ $requirement->document_type}}>Report Card / Grades</option>
-                                                                    <option value="9" {{ $requirement->document_type }}>Prospectus</option>
-                                                                    <option value="10" {{ $requirement->document_type }}>Official Grading System</option>
-                                                                    <option value="11" {{ $requirement->document_type }}>Tuition Projection</option>
-                                                                    <option value="12" {{ $requirement->document_type }}>Admission Slip</option>
-                                                                </select> --}}
+                                                                <label for="editDocumentType">Document Type <span style="color: red;">*</span></label>
+                                                                <select class="form-select form-select-solid form-control" id="editDocumentType" name="documentType">
+                                                                    <option value="" style="color: #d60606; font-style: italic;">Select document type</option>
+                                                                    <option value="Signed Application Form">Signed Application Form</option>
+                                                                    <option value="Birth Certificate">Birth Certificate</option>
+                                                                    <option value="Character Evaluation Forms">Character Evaluation Forms</option>
+                                                                    <option value="Proof of Financial Status">Proof of Financial Status</option>
+                                                                    <option value="Payslip / DSWD Report / ITR">Payslip / DSWD Report / ITR</option>
+                                                                    <option value="Two Reference Forms">Two Reference Forms</option>
+                                                                    <option value="Home Visitation Form">Home Visitation Form</option>
+                                                                    <option value="Report Card / Grades">Report Card / Grades</option>
+                                                                    <option value="Prospectus">Prospectus</option>
+                                                                    <option value="Official Grading System">Official Grading System</option>
+                                                                    <option value="Tuition Projection">Tuition Projection</option>
+                                                                    <option value="Admission Slip">Admission Slip</option>
+                                                                </select>
                                                             </div>
-                                                            
-
                                                             <div class="form-group">
-                                                                <label for="notes">Notes</label>
-                                                                <textarea class="form-control" id="notes" rows="3">{{ $requirement->notes }}</textarea>
+                                                                <label for="editNotes">Notes <span style="font-style: italic; color:#151515;">(Optional)</span></label>
+                                                                <textarea class="form-control" id="editNotes" name="notes" rows="3"></textarea>
                                                             </div>
-
+                                                            <input type="hidden" id="editRequirementId" name="requirementId">
                                                             <div class="form-group">
-                                                                <label for="fileUpload">Upload Requirements</label>
+                                                                <label for="editFiles">Document Proof <span style="color: red;">*</span></label>
                                                                 <div class="drag-area">
-                                                                    <label for="fileUpload" class="icon"><i
-                                                                            class="fas fa-cloud-upload-alt"></i></label>
-                                                                    <input type="file" class="form-control" id="fileUpload"
-                                                                        style="display: none;">
-                                                                    <header>{{ $requirement->uploaded_document }}</header>
+                                                                    <label for="editFiles" class="icon"><i class="fas fa-cloud-upload-alt" style="cursor: pointer;"></i></label>
+                                                                    <input type="file" class="form-control" id="editFiles" name="uploaded_document" accept=".pdf">
+                                                                    <header id="fileEditLabel">Drag and drop files here or click to upload attachment</header>
                                                                 </div>
                                                             </div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                        </div>
+                                                        
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary" id="submitEditForm">Save Changes</button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div><!-- End Edit Modal-->
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div><!-- End Bordered Tabs -->
@@ -271,6 +280,11 @@
                     </section>
                 </main><!-- End #main -->
         @include('partials.user-footer')
+        
         <script src="assets/js/applicant_dashboard.js"></script>
+        <script src="assets/js/edit_documents.js"></script>
     </body>
     </html>
+
+ 
+   

@@ -80,3 +80,15 @@ border: none; /* Remove default button border */
 background-color: #017358;
 
 }
+#submitEditForm {
+    background-color: #71BF44; /* Set the desired background color */
+    border-color: #71BF44; /* Set the border color to match */
+}
+#submitEditForm:hover {
+    background-color: #017358;
+}
+
+select#documentType option:hover {
+    background-color: #017358; /* Change background color on hover */
+    color: #ffffff; /* Change text color on hover */
+}

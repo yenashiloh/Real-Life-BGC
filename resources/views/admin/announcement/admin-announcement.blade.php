@@ -42,7 +42,7 @@
             <div class="row">
 
               <div class="col-lg-12">
-                  <button type="button" class="btn btn-success btn-fw" style="font-size: 12px; margin-bottom: 20px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Create</button>
+                  <button type="button" class="btn custom-btn btn-fw" style="font-size: 12px; margin-bottom: 20px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Create</button>
                   {{-- <div class="row">
                     @if(session('success'))
                     <div id="successAlert"  class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center;">

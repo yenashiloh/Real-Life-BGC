@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>View</title>
     @include('admin-partials.admin-header')
     <style>
@@ -156,6 +157,7 @@
         
                     <form>
                       <div class="row mb-2">
+                        
                         <div class="col-lg-4 col-md-4 label">Incoming Grade</div>
                         <div class="col-lg-7 col-md-8">{{ $applicant->academicInformation->incoming_grade_year }}</div>
                       </div>
@@ -276,11 +278,8 @@
                           @endif
                       @endforeach
                   @endforeach
-        
-        
-                    </form><!-- End Profile Edit Form -->
-        
-                  </div>
+               </form><!-- End Profile Edit Form -->
+            </div>
 
                   <div class="tab-pane fade " id="household">
                     <form>
@@ -329,7 +328,7 @@
                                   <td>{{ $requirement->document_type }}</td>
                                   <td>{{ $requirement->notes }}</td>
                                   <td>
-                                      <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $requirement->uploaded_document }}" style="text-decoration: underline;">
+                                      <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ basename($requirement->uploaded_document) }}" style="text-decoration: underline;">
                                           {{ basename($requirement->uploaded_document) }}
                                       </a>
                                   </td>
@@ -358,97 +357,38 @@
                         </table>
                     </form>
                   </div>
-
+                  
                   <div class="tab-pane fade" id="checklist">
+                    <div class="mt-4" id="alertContainer">
+                      <div id="successAlert" class="alert alert-success d-none" role="alert">
+                          Notification sent successfully!
+                      </div>
+                      <div id="errorAlert" class="alert alert-danger d-none" role="alert">
+                          Failed to send notification. Please try again.
+                      </div>
+                  </div>
                     <div class="container">
                         <div class="row">
                             <div class="col-md-6">
-                              <div class="form-check form-check-inline custom-checkbox ms-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
-                                <label class="form-check-label" for="flexCheckDefault1">
-                                    Signed Application Form
-                                </label>
-                            </div>
-                            
-                               <div class="form-check form-check-inline custom-checkbox ms-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
-                                    <label class="form-check-label" for="flexCheckDefault2">
-                                        Birth Certificate
-                                    </label>
-                                </div>
-                               <div class="form-check form-check-inline custom-checkbox ms-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
-                                    <label class="form-check-label" for="flexCheckDefault3">
-                                        Character Evaluation Forms
-                                    </label>
-                                </div>
-                               <div class="form-check form-check-inline custom-checkbox ms-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
-                                    <label class="form-check-label" for="flexCheckDefault4">
-                                        Proof of Financial Status
-                                    </label>
-                                </div>
-                               <div class="form-check form-check-inline custom-checkbox ms-2">
-                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault5">
-                                  <label class="form-check-label" for="flexCheckDefault5">
-                                      Payslip/ DSWD Report/ ITR
-                                  </label>
-                              </div>
-                             <div class="form-check form-check-inline custom-checkbox ms-2">
-                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault6">
-                                  <label class="form-check-label" for="flexCheckDefault6">
-                                      Two References Form
-                                  </label>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                               <div class="form-check form-check-inline custom-checkbox ms-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault7">
-                                    <label class="form-check-label" for="flexCheckDefault7">
-                                        Home Visitation Form
-                                    </label>
-                                </div>
-                               <div class="form-check form-check-inline custom-checkbox ms-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault8">
-                                    <label class="form-check-label" for="flexCheckDefault8">
-                                        Report Card/ Grades
-                                    </label>
-                                </div>
-                               <div class="form-check form-check-inline custom-checkbox ms-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault9">
-                                    <label class="form-check-label" for="flexCheckDefault9">
-                                        Prospectus
-                                    </label>
-                                </div>
-                               <div class="form-check form-check-inline custom-checkbox ms-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault10">
-                                    <label class="form-check-label" for="flexCheckDefault10">
-                                        Official Grading System
-                                    </label>
-                                </div>
-                               <div class="form-check form-check-inline custom-checkbox ms-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault10">
-                                    <label class="form-check-label" for="flexCheckDefault10">
-                                        Tuition Projection
-                                    </label>
-                                </div>
+                                @foreach($documentTypes as $index => $docType)
                                 <div class="form-check form-check-inline custom-checkbox ms-2">
-                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault10">
-                                  <label class="form-check-label" for="flexCheckDefault10">
-                                      Admission Slip
-                                  </label>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="mt-4 text-center mt-3">
-                          <button class="btn custom-btn">Notify</button>
-                      </div>
-                  </div>                
+                                    <input class="form-check-input" type="checkbox" name="document_types[]" value="{{ $docType }}" id="flexCheckDefault{{ $index + 1 }}">
+                                    <label class="form-check-label" for="flexCheckDefault{{ $index + 1 }}">
+                                        {{ $docType }}
+                                    </label>
+                                </div>
+                            @endforeach
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center mt-3">
+                          <button type="button" id="notifyBtn" class="btn custom-btn">Notify</button>
+                        </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        
+          
 
     <script src="../assets-new-admin/vendors/js/vendor.bundle.base.js"></script>
 
@@ -469,71 +409,11 @@
 
   <!-- Template Main JS File -->
   <script src="../assets-admin/js/main.js"></script>
+  <script src="../assets-admin/js/checklist.js"></script>
   <script src="../assets-admin/js/view_applicant.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     
-{{--     
-    <script>
-        $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-      document.addEventListener('DOMContentLoaded', function () {
-          let lastTab = sessionStorage.getItem('lastTab');
-          if (lastTab) {
-              let tabLink = document.querySelector(`[data-bs-target="${lastTab}"]`);
-              if (tabLink) {
-                  let tab = new bootstrap.Tab(tabLink);
-                  tab.show();
-              }
-          }
-  
 
-      let tabLinks = document.querySelectorAll('[data-bs-toggle="tab"]');
-      tabLinks.forEach(function (tabLink) {
-          tabLink.addEventListener('shown.bs.tab', function (event) {
-              let activeTab = event.target.getAttribute('data-bs-target');
-              sessionStorage.setItem('lastTab', activeTab);
-              });
-          });
-  
-      });
-
-      $('.change-status').on('click', function() {
-    var requirementId = $(this).data('requirement-id');
-    var action = $(this).data('action');
-    var updateRoute = $(this).data('route');
-    var newStatus = action;
-    
-    $.ajax({
-        type: 'POST',
-        url: updateRoute,
-        data: {
-            _token: $('meta[name="csrf-token"]').attr('content'),
-            requirement_id: requirementId,
-            status: action
-        },
-        success: function(response) {
-            console.log('Status updated successfully:', response);
-            localStorage.setItem('successMessage', 'Status Change Successfully!');
-
-            window.location.reload();
-        },
-        error: function(xhr, status, error) {
-            console.error('Error updating status:', error);
-        }
-    });
-});
-
-$(document).ready(function() {
-    var successMessage = localStorage.getItem('successMessage');
-    if (successMessage) {
-        $('#successMessage').text(successMessage).fadeIn().delay(4000).fadeOut();
-        localStorage.removeItem('successMessage'); 
-    }
-});
-
- </script> --}}
-  
 </body>
 </html>

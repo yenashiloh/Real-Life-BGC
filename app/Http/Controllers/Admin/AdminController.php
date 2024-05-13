@@ -304,8 +304,7 @@ class AdminController extends Controller
         ->get();
     
         $years = $this->getDistinctYears();
-    
-        // Pass the data to the view
+
         return view('admin.dashboard', compact('totalApplicants', 'totalShortlisted', 'totalForInterview', 'totalHouseVisitation','totalDeclined', 'totalApproved', 'title', 'applicantsData', 'years'));
     }
  
@@ -341,10 +340,9 @@ class AdminController extends Controller
     {
         $title = 'New Applicants';
     
-        // Fetch distinct years from the created_at column of applicants
         $availableYears = Applicant::selectRaw('YEAR(created_at) as year')
             ->distinct()
-            ->orderBy('year', 'desc') // Optionally order by year in descending order
+            ->orderBy('year', 'desc')
             ->pluck('year');
     
         $applicantsData = $this->getApplicantsData();
@@ -352,11 +350,11 @@ class AdminController extends Controller
         return view('admin.applicants.new_applicants', compact('title', 'applicantsData', 'availableYears'));
     }
     
-    public function getApplicantsData()
+    public function getApplicantsData($selectedYear = null)
     {
         $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
     
-        $applicantsData = ApplicantsPersonalInformation::select(
+        $query = ApplicantsPersonalInformation::select(
             'applicants_personal_information.first_name',
             'applicants_personal_information.last_name',
             'applicants_academic_information.incoming_grade_year',
@@ -367,13 +365,37 @@ class AdminController extends Controller
         )
         ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')
         ->join('applicants', 'applicants_personal_information.applicant_id', '=', 'applicants.applicant_id')
-        ->whereIn('applicants.status', $validStatuses)
-        ->get();
-        
+        ->whereIn('applicants.status', $validStatuses);
+
+        if ($selectedYear) {
+            $query->whereYear('applicants.created_at', '=', $selectedYear);
+        }
+    
+        $applicantsData = $query->get();
     
         return $applicantsData;
     }
     
+    public function getApplicants(Request $request)
+    {
+        // Get selected year from request
+        $selectedYear = $request->input('year_filter');
+
+        // Fetch applicants data based on the selected year
+        $applicantsData = $this->getApplicantsData($selectedYear);
+
+        // Get distinct years of application from the fetched data
+        $availableYears = Applicants::selectRaw('YEAR(created_at) as year')
+                                    ->distinct()
+                                    ->orderByDesc('year')
+                                    ->pluck('year');
+
+        return view('admin.applicants.new_applicants', [
+            'applicantsData' => $applicantsData,
+            'availableYears' => $availableYears,
+        ]);
+}
+
     public function updateStatus(Request $request)
     {
         try {
@@ -472,20 +494,21 @@ class AdminController extends Controller
     public function viewApplicant($id)
     {
         $title = 'Applicant Details';
+        logger()->info("Received applicant_id: " . $id); 
 
         $applicant = ApplicantsPersonalInformation::with([
             'academicInformation',
             'choices',
             'grades'
-        ])->find($id);
+        ])->where('applicant_id', $id)->first();
 
         if (!$applicant) {
             return redirect()->back()->with('error', 'Applicant not found.');
         }
 
         $applicantData = DB::table('applicants')
-            ->where('applicant_id', $id) 
-            ->select('email', 'status') 
+            ->where('applicant_id', $id)
+            ->select('email', 'status')
             ->first();
 
         $email = $applicantData ? $applicantData->email : null;
@@ -494,7 +517,38 @@ class AdminController extends Controller
         $members = Member::where('applicant_id', $id)->get();
         $reportcardData = Requirement::where('applicant_id', $id)->get();
 
-        return view('admin.applicants.view_applicant', compact('title', 'applicant', 'email', 'status', 'members', 'reportcardData'));
+        $documentTypes = [
+            "Signed Application Form",
+            "Birth Certificate",
+            "Character Evaluation Forms",
+            "Proof of Financial Status",
+            "Payslip / DSWD Report / ITR",
+            "Two References Form",
+            "Home Visitation Form",
+            "Report Card / Grades",
+            "Prospectus",
+            "Official Grading System",
+            "Tuition Projection",
+            "Admission Slip"
+        ];
+
+        return view('admin.applicants.view_applicant', compact(
+            'title', 'applicant', 'email', 'status', 'members', 'reportcardData', 'documentTypes', 'id'));
+    }
+
+    // Checked document type
+    public function getApprovedDocuments($id)
+    {
+        try {
+            $approvedDocuments = Requirement::where('applicant_id', $id)
+                ->where('status', 'Approved')
+                ->pluck('document_type') 
+                ->toArray();
+
+            return response()->json($approvedDocuments);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch approved documents'], 500);
+        }
     }
 
     //status for uploaded documents and applicant notifications
@@ -631,15 +685,15 @@ class AdminController extends Controller
             ->whereYear('applicants.created_at', $selectedYear)
             ->count();
         
-        $totalShortlisted = Applicant::whereIn('status', ['Shortlisted', 'New Applicant', 'Under Review'])
+        $totalShortlisted = Applicant::whereIn('status', ['Shortlisted'])
             ->whereYear('created_at', $selectedYear)
             ->count();
     
-        $totalForInterview = Applicant::whereIn('status', ['For Interview', 'New Applicant', 'Under Review'])
+        $totalForInterview = Applicant::whereIn('status', ['For Interview'])
             ->whereYear('created_at', $selectedYear)
             ->count();
     
-        $totalHouseVisitation = Applicant::whereIn('status', ['For House Visitation', 'New Applicant', 'Under Review'])
+        $totalHouseVisitation = Applicant::whereIn('status', ['For House Visitation', ])
             ->whereYear('created_at', $selectedYear)
             ->count();
     

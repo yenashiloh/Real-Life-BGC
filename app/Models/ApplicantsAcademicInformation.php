@@ -18,6 +18,11 @@ class ApplicantsAcademicInformation extends Model
         'current_course_program_grade',
         'current_school'
     ];
+    
+    public function personalInformation()
+    {
+        return $this->hasOne(ApplicantsPersonalInformation::class, 'applicant_id', 'applicant_id');
+    }
 
     public function academicInformation() {
         return $this->hasOne(ApplicantsAcademicInformation::class, 'applicant_id');

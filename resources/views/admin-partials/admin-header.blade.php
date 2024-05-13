@@ -4,15 +4,14 @@
 <link rel="stylesheet" href="../assets-new-admin/vendors/css/vendor.bundle.base.css">
 <link href="../assets-admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
 <link href="../assets-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11"> --}}
 
-
+<!-- Include SweetAlert JS -->
 <link href="../assets-admin/vendor/quill/quill.snow.css" rel="stylesheet">
 <link href="../assets-admin/vendor/quill/quill.bubble.css" rel="stylesheet">
 <link href="../assets-admin/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="../assets-admin/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-
-
-    <link href="../assets-admin/vendor/simple-datatables/style.css" rel="stylesheet">  
+<link href="../assets-admin/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+<link href="../assets-admin/vendor/simple-datatables/style.css" rel="stylesheet">  
 <!-- endinject -->
 
 <!-- End plugin css for this page -->
@@ -20,6 +19,7 @@
 <!-- endinject -->
 <!-- Layout styles -->
 <link rel="stylesheet" href="../assets-new-admin/css/style.css">
+<link rel="stylesheet" href="../assets-new-admin/css/data_table.css">
 <!-- End layout styles -->
 <link rel="shortcut icon" href="../assets-admin/img/RLlogo1.png" />
 
@@ -41,12 +41,26 @@
        0% { transform: rotate(0deg); }
        100% { transform: rotate(360deg); }
      }
-     .dropdown-item:hover {
+     .dropdown-blue:hover {
     background-color: #007bff; 
     color: #fff; 
     }
     .table-responsive td {
       max-width: 250px; 
       white-space: normal;
+    }
+    .custom-btn {
+          background-color: #71BF44;
+          border-color: #71BF44;
+          color: white;
+      }
+
+    .custom-btn:hover {
+        background-color: #518630;
+        border-color: #518630;
+        color: white;
+    }
+    .custom-checkbox .form-check-input {
+        border-color: black;
     }
  </style>

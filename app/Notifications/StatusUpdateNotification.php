@@ -47,7 +47,7 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
         $underReviewContent = ContentEmail::first()->under_review ?? ''; 
 
         $applicant = $this->applicant->load('applicants_personal_information');
-        $firstName = $applicant->applicants_personal_information->first_name ?? '';
+        $this->firstName = $applicant->applicants_personal_information->first_name ?? '';
 
         return $this->subject('Real LIFE Scholarship Application')
             ->view('emails.applicant-under-review', [

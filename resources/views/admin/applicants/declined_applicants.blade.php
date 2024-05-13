@@ -178,12 +178,12 @@
               <div class="card">
                   <div class="card-body">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-success dropdown-toggle btn-hover-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <button type="button" class="btn custom-btn dropdown-toggle btn-hover-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Export Record
                       </button>
                       <div class="dropdown-menu">
-                          <a class="dropdown-item " href="{{ route('export.declined.applicants', ['format' => 'csv']) }}">CSV</a>
-                          <a class="dropdown-item " href="{{ route('export.declined.applicants', ['format' => 'excel']) }}">Excel</a>
+                          <a class="dropdown-item dropdown-blue" href="{{ route('export.declined.applicants', ['format' => 'csv']) }}">CSV</a>
+                          <a class="dropdown-item dropdown-blue" href="{{ route('export.declined.applicants', ['format' => 'excel']) }}">Excel</a>
                       </div>
                   </div>
                  <div class="table-responsive">

@@ -1,0 +1,62 @@
+.dataTables_wrapper .dataTables_paginate {
+    float: right; /* Align pagination to the right */
+    margin-top: 10px; /* Add top margin for spacing */
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    margin-left: 5px; /* Add left margin between pagination buttons */
+}
+/* Custom styles for DataTables table */
+.table-striped.datatable {
+    border-collapse: collapse; /* Collapse borders for better styling */
+    width: 100%; /* Ensure table fills its container */
+}
+
+/* Style for table header (first row) */
+.table-striped.datatable thead th {
+    border-bottom: 1px solid #dcdcdc; /* Add bottom border to table header */
+    padding: 10px; /* Add padding to table header cells */
+}
+
+/* Style for table body rows */
+.table-striped.datatable tbody tr {
+    border-top: 1px solid #dcdcdc; /* Add top border to table body rows */
+    border-bottom: 1px solid #dcdcdc; /* Add bottom border to table body rows */
+}
+
+/* Remove top border from the first table body row */
+.table-striped.datatable tbody tr:first-child {
+    border-top: none; /* Remove top border from the first table body row */
+}
+
+/* Style for table footer (last row) */
+.table-striped.datatable tfoot td {
+    border-top: 1px solid #dcdcdc; /* Add top border to table footer */
+    padding: 10px; /* Add padding to table footer cells */
+}
+/* Custom styles for DataTables sorting icons */
+.dataTables_wrapper .dataTable thead th {
+    position: relative;
+    padding-right: 30px; /* Add padding to accommodate sorting icon */
+}
+
+.dataTables_wrapper .dataTable thead .sorting::before,
+.dataTables_wrapper .dataTable thead .sorting_asc::before,
+.dataTables_wrapper .dataTable thead .sorting_desc::before {
+    content: ""; /* Ensure content is empty */
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Adjust margin-right as needed */
+    transform: translateY(-50%);
+    border-width: 0 4px 4px;
+    border-style: solid;
+    border-color: #333 transparent transparent;
+    pointer-events: none;
+}
+
+/* Adjust margin-right for sorting icons */
+.dataTables_wrapper .dataTable thead .sorting::before,
+.dataTables_wrapper .dataTable thead .sorting_asc::before,
+.dataTables_wrapper .dataTable thead .sorting_desc::before {
+    margin-right: 10px; /* Add margin-right to separate icon from text */
+}

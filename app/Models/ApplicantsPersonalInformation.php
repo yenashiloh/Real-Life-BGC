@@ -24,21 +24,24 @@ class ApplicantsPersonalInformation extends Model
         'municipality'
     ];
 
-    public function academicInformation() {
-        return $this->hasOne(ApplicantsAcademicInformation::class, 'applicant_id');
+    public function academicInformation()
+    {
+        return $this->hasOne(ApplicantsAcademicInformation::class, 'applicant_id', 'applicant_id');
     }
 
     public function choices()
     {
-        return $this->hasMany(ApplicantsAcademicInformationChoice::class, 'applicant_id');
+        return $this->hasMany(ApplicantsAcademicInformationChoice::class,'applicant_id',  'applicant_id');
     }
 
     public function grades()
     {
-        return $this->hasMany(ApplicantsAcademicInformationGrade::class, 'applicant_id');
+        return $this->hasMany(ApplicantsAcademicInformationGrade::class, 'applicant_id', 'applicant_id');
     }
+
     public function applicant()
     {
         return $this->belongsTo(Applicant::class, 'applicant_id', 'applicant_id');
-    }
+    } 
+    
 }

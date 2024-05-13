@@ -120,7 +120,7 @@
                           </div>
                           <input type="hidden" name="under_review" id="under_review_input">
                           <div class="text-center mt-3">
-                              <button id="submitButton" class="btn btn-primary btn-fw" type="submit">Submit</button>
+                              <button id="submitButton" class="btn custom-btn btn-fw" type="submit">Submit</button>
                           </div>
                       </form>
                   </div>
@@ -136,7 +136,7 @@
                         </div>
                           <input type="hidden" name="shortlisted" id="shortlisted_input">
                           <div class="text-center mt-3">
-                              <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                              <button class="btn custom-btn btn-fw" type="submit">Submit</button>
                           </div>
                       </form>
                   </div>
@@ -153,7 +153,7 @@
                           </div>
                           <input type="hidden" name="interview" id="interview_input">
                           <div class="text-center mt-3">
-                              <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                              <button class="btn custom-btn btn-fw" type="submit">Submit</button>
                           </div>
                       </div>
                     </form>
@@ -171,7 +171,7 @@
                             </div>
                             <input type="hidden" name="house_visitation" id="house-visitation-input">
                             <div class="text-center mt-3">
-                                <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                                <button class="btn custom-btn btn-fw" type="submit">Submit</button>
                             </div>
                         </div>
                     </form>                    
@@ -189,7 +189,7 @@
                             </div>
                             <input type="hidden" name="decline" id="decline-input">
                             <div class="text-center mt-3">
-                                <button class="btn btn-primary btn-fw" type="submit">Submit</button>
+                                <button class="btn custom-btn btn-fw" type="submit">Submit</button>
                             </div>
                         </div>
                     </form>                    

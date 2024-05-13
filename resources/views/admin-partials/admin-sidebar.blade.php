@@ -26,14 +26,19 @@
       <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
         <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Welcome, {{ Session::get('adminFirstName') }}!</h5>
         <ul class="navbar-nav navbar-nav-right ml-auto">
-          <form class="search-form d-none d-md-block" action="#" id="applicants-search-form">
+          {{-- <form class="search-form d-none d-md-block" action="#" id="applicants-search-form">
               <i class="icon-magnifier"></i>
               <input type="search" class="form-control" id="searchInput" placeholder="Search Here" title="Search here">
-          </form>
+          </form> --}}
           <li class="nav-item dropdown">
               <a class="nav-link count-indicator message-dropdown" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                   <i class="icon-bell"></i>
-                  <span id="notificationCount" class="count">{{ \App\Models\Notification::where('status', 'unread')->count() }}</span>
+                  @php
+                  $unreadCount = \App\Models\Notification::where('status', 'unread')->count();
+              @endphp
+              @if ($unreadCount > 0)
+                  <span id="notificationCount" class="count">{{ $unreadCount }}</span>
+              @endif
               </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown" style="max-height: 450px; overflow-y: auto;">
                 <a class="dropdown-item py-3">

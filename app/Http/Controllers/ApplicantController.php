@@ -18,6 +18,8 @@ use App\Models\Requirement;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class ApplicantController extends Controller
@@ -111,46 +113,58 @@ class ApplicantController extends Controller
         ]);
     }
 
-    //UPLOAD REQUIREMENTS AND NOTIFICATIONS(ADMIN)
-    public function uploadRequirements(Request $request)
-    {
-        $request->validate([
-            'documentType' => 'required',
-            'notes' => 'nullable',
-            'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:10240',
-        ]);
-    
-        $file = $request->file('fileUpload');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('uploads', $filename);
-    
-        $requirement = new Requirement();
-        $requirement->applicant_id = auth()->id();
-        $requirement->document_type = $request->documentType;
-        $requirement->notes = $request->notes;
-        $requirement->uploaded_document = $filename;
-        $requirement->status = 'For Review';
-    
-        try {
-            $requirement->save();
-    
-            $applicantInfo = ApplicantsPersonalInformation::where('applicant_id', auth()->id())->first();
-            $firstName = $applicantInfo->first_name;
-            $lastName = $applicantInfo->last_name;
+        //UPLOAD REQUIREMENTS AND NOTIFICATIONS(ADMIN)
+        public function uploadRequirements(Request $request)
+        {
+            $request->validate([
+                'documentType' => 'required',
+                'notes' => 'nullable',
+                'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:102400', // Max 10MB for file size
+            ]);
 
-            $requirement = new Requirement();
-            $notification = new Notification();
-            $notification->applicant_id = auth()->id();
-            $notification->applicant_name = "$firstName $lastName";
-            $notification->message = "Submitted {$request->documentType}";
-            $notification->save();
-            
-            return response()->json(['success' => 'Document uploaded successfully']);
-        } catch (\Exception $e) {
-            \Log::error('Error saving requirement: ' . $e->getMessage());
-            return response()->json(['error' => 'An error occurred while saving the document. Please try again later.'], 500);
+            try {
+                // Retrieve the uploaded file from the request
+                $file = $request->file('fileUpload');
+
+                // Generate a unique filename using the original filename and current timestamp
+                $filename = time() . '_' . $file->getClientOriginalName();
+
+                // Store the file in the 'public/uploads' directory
+                $filePath = $file->storeAs('public/uploads', $filename);
+
+                // Create a new Requirement instance and populate the fields
+                $requirement = new Requirement();
+                $requirement->applicant_id = auth()->id();
+                $requirement->document_type = $request->documentType;
+                $requirement->notes = $request->notes;
+                $requirement->uploaded_document = $filePath; // Store full file path in the database
+
+                // Set the status of the requirement
+                $requirement->status = 'For Review';
+
+                // Save the requirement to the database
+                $requirement->save();
+
+                // Retrieve applicant information
+                $applicantInfo = ApplicantsPersonalInformation::where('applicant_id', auth()->id())->first();
+                $firstName = $applicantInfo->first_name;
+                $lastName = $applicantInfo->last_name;
+
+                // Create a new Notification instance for the applicant
+                $notification = new Notification();
+                $notification->applicant_id = auth()->id();
+                $notification->applicant_name = "$firstName $lastName";
+                $notification->message = "Submitted {$request->documentType}";
+                $notification->save();
+
+                // Return a JSON response indicating successful document upload
+                return response()->json(['success' => 'Document uploaded successfully']);
+            } catch (\Exception $e) {
+                // Log any errors that occur during the process
+                \Log::error('Error saving requirement: ' . $e->getMessage());
+                return response()->json(['error' => 'An error occurred while saving the document. Please try again later.'], 500);
+            }
         }
-    }
 
     function loginPost(Request $request)
     {
@@ -161,7 +175,7 @@ class ApplicantController extends Controller
 
         // if(auth()->attempt($credentials)){
         //     $request->session()->regenerate();
-        //     return redirect(route('user.home'));
+        //     return redirect(route('user.home'));+
         // }
 
         $credentials = $request->only('email', 'password');
@@ -302,7 +316,7 @@ class ApplicantController extends Controller
             Household::create([
                 'applicant_id' => $applicant->applicant_id,
                 'total_members' => $request->input('householdMembers'),
-                // 'payslip_path' => $request->file('payslip')->store('payslips', 'public'),
+                'payslip_path' => $request->file('payslip')->store('payslips', 'public'),
             ]);
 
             for ($i = 1; $i <= $request->input('householdMembers'); $i++) {
@@ -323,7 +337,7 @@ class ApplicantController extends Controller
 
             $reportcardData = [
                 'applicant_id' => $applicant->applicant_id,
-                'document_type' => 'Report of Grades',
+                'document_type' => 'Report Card / Grades',
                 'uploaded_document' => $reportcardFile->storeAs('ReportCards', $fileName, 'public'),
                 'status' => 'For Review',
             ];
@@ -497,41 +511,83 @@ class ApplicantController extends Controller
     // }
 
     public function fetchNotificationCount()
-{
-    try {
-        // Get the authenticated applicant's ID
-        $applicantId = Auth::id();
+    {
+        try {
+            $applicantId = Auth::id();
+            $count = NotificationApplicant::where('applicant_id', $applicantId)
+                ->where('status', 'unread')
+                ->count();
 
-        // Count unread notifications for the authenticated applicant
-        $count = NotificationApplicant::where('applicant_id', $applicantId)
-            ->where('status', 'unread')
-            ->count();
-
-        return response()->json(['count' => $count]);
-    } catch (\Exception $e) {
-        \Log::error('Error fetching notification count: ' . $e->getMessage());
-        return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
+            return response()->json(['count' => $count]);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching notification count: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while fetching notification count.'], 500);
+        }
     }
-}
 
-public function markNotificationsAsRead()
-{
-    try {
-        // Get the authenticated applicant's ID
-        $applicantId = Auth::id();
+    public function markNotificationsAsRead()
+    {
+        try {
+            $applicantId = Auth::id();
 
-        // Mark all unread notifications as read for the authenticated applicant
-        NotificationApplicant::where('applicant_id', $applicantId)
-            ->where('status', 'unread')
-            ->update(['status' => 'read']);
+            NotificationApplicant::where('applicant_id', $applicantId)
+                ->where('status', 'unread')
+                ->update(['status' => 'read']);
 
-        return response()->json(['success' => true]);
-    } catch (\Exception $e) {
-        \Log::error('Error marking notifications as read: ' . $e->getMessage());
-        return response()->json(['error' => 'Failed to mark notifications as read'], 500);
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            \Log::error('Error marking notifications as read: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to mark notifications as read'], 500);
+        }
     }
-}
     
+        //update documents uploaded
+        public function update(Request $request, $id)
+        {
+            try {
+                $request->validate([
+                    'documentType' => 'required|string',
+                    'notes' => 'nullable|string',
+                    'uploaded_document' => 'file|mimes:pdf|max:102400', 
+                ]);
+    
+                $document = Requirement::findOrFail($id);
+                $document->document_type = $request->input('documentType');
+                $document->notes = $request->input('notes');
+    
+                if ($request->hasFile('uploaded_document')) {
+                    $uploadedFile = $request->file('uploaded_document');
+    
+                    // Generate a unique filename based on original filename
+                    $originalFileName = $uploadedFile->getClientOriginalName();
+                    $uploadedFilePath = $uploadedFile->storeAs('public/uploads', $originalFileName);
+    
+                    // Delete existing file if it exists
+                    if ($document->uploaded_document) {
+                        Storage::delete($document->uploaded_document);
+                    }
+    
+                    // Update uploaded document path in the database
+                    $document->uploaded_document = $uploadedFilePath;
+                }
+    
+                $document->save();
+    
+                return response()->json(['message' => 'Document updated successfully'], 200);
+            } catch (\Exception $e) {
+                return response()->json(['message' => 'Failed to update document', 'error' => $e->getMessage()], 500);
+            }
+        }
         
+        
+    public function showEdit($id)
+    {
+        $document = Requirement::find($id);
 
+        if (!$document) {
+            return response()->json(['error' => 'Document not found'], 404);
+        }
+
+        return response()->json($document);
+    }
 }

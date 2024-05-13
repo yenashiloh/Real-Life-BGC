@@ -71,7 +71,7 @@
                             console.log("AJAX request successful:", response); // Handle success response
         
                             // Store success message in session storage
-                            sessionStorage.setItem('successMessage', 'Changes saved successfully.');
+                            sessionStorage.setItem('successMessage', 'Add successfully!');
         
                             // Reload the page
                             location.reload();
@@ -90,3 +90,5 @@
                     $('#fileUploadLabel').text(fileName); // Update the header with the filename
                 });
             });
+
+            

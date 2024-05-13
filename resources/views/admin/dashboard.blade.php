@@ -12,14 +12,10 @@
     <link rel="stylesheet" href="../assets-new-admin/vendors/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="../assets-new-admin/vendors/css/vendor.bundle.base.css">
     <link href="../assets-admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-<link href="../assets-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
+    <link href="../assets-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets-new-admin/vendors/daterangepicker/daterangepicker.css">
     <link rel="stylesheet" href="../assets-new-admin/vendors/chartist/chartist.min.css">
-    <!-- End plugin css for this page -->
     <link rel="stylesheet" href="../assets-new-admin/css/style.css">
-    <!-- End layout styles -->
     <link rel="shortcut icon" href="../assets-admin/img/RLlogo1.png" />
     <style>
       .table-responsive td {
@@ -222,7 +218,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
               <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
@@ -276,7 +272,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> --}}
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
           

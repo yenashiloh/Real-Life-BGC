@@ -63,7 +63,7 @@
                   <textarea class="tinymce-editor" name="announcement_caption">
                 </textarea>
                 <div class="text-center mt-3">
-                  <button class="btn btn-primary btn-fw" type="submit">Add Announcement</button>
+                  <button class="btn btn-fw custom-btn" type="submit">Add Announcement</button>
                 </div>
               </div>
             </div>

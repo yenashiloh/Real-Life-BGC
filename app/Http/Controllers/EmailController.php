@@ -23,6 +23,9 @@ use App\Models\Member;
 use App\Models\Notification;
 use App\Models\Requirement;
 use App\Models\ContentEmail;
+use App\Mail\IncompleteRequirementsNotification;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 class EmailController extends Controller
 {
@@ -201,4 +204,41 @@ class EmailController extends Controller
           $request->session()->flash('success', 'Declined Content Saved Successfully!');
           return redirect()->route('admin.email.email')->with('decline_data', $request->input('decline'));
       }
-  }
+
+
+      public function notifyApplicant(Request $request, $applicantId)
+{
+    try {
+        // Retrieve the applicant's personal information
+        $applicantPersonalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->firstOrFail();
+
+        // Retrieve the associated applicant
+        $applicant = $applicantPersonalInfo->applicant;
+
+        if (!$applicant) {
+            throw new ModelNotFoundException('Applicant not found for applicant_id: ' . $applicantId);
+        }
+
+        // Retrieve applicant's email and first name
+        $email = $applicant->email;
+        $firstName = $applicant->applicants_personal_information->first_name ?? ''; // Get the first name
+
+        // Gather unchecked document types
+        $uncheckedDocumentTypes = $request->input('document_types');
+
+        // Customize the email subject
+        $subject = 'Incomplete Requirements';
+
+        // Send email notification
+        Mail::to($email)->send(new IncompleteRequirementsNotification($uncheckedDocumentTypes, $firstName, $subject));
+
+        return response()->json(['message' => 'Notification sent successfully'], 200);
+    } catch (ModelNotFoundException $e) {
+        Log::error('Applicant not found: ' . $e->getMessage());
+        return response()->json(['message' => 'Applicant not found'], 404);
+    } catch (\Exception $e) {
+        Log::error('Failed to send notification: ' . $e->getMessage());
+        return response()->json(['message' => 'Failed to send notification', 'error' => $e->getMessage()], 500);
+    }
+}
+}

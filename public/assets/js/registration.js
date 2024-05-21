@@ -91,7 +91,7 @@ ready(function () {
       if (ageInYears < 10 || ageInYears > 25) {
         return {
           isValid: false,
-          message: 'You must be 10 to 25 years old to qualify for the scholarship.'
+          message: 'Should not be more than 25 years of age upon admission'
         };
       }
 
@@ -101,21 +101,56 @@ ready(function () {
     }
   };
 
-
-  const validateNumber = field => {
+  const validateNumber = (field) => {
     const val = field.value.trim();
-
+  
     if (val === '' && field.required) {
       return {
-        isValid: false
+        isValid: false,
+        message: 'Please complete this required field.'
       };
     } else {
-
-      return {
-        isValid: true
-      };
+      // Perform number validation logic here if needed
+      return { isValid: true };
     }
   };
+  
+  const validateNumberRange = (field, min, max) => {
+    const value = parseFloat(field.value);
+    if (isNaN(value) || value < min || value > max) {
+      return {
+        isValid: false,
+        message: `To qualify for the scholarship, your GWA must be equivalent to at least 88%.`
+      };
+    }
+    return { isValid: true };
+  };
+
+  const validateLatestAverage = (field, minPercentage) => {
+    const value = parseFloat(field.value);
+    if (isNaN(value) || value < minPercentage || value > 100) {
+      return {
+        isValid: false,
+        message: `To qualify for the scholarship, your General Average must be at least ${minPercentage}%.`
+      };
+    }
+    return { isValid: true };
+  };
+
+  // const validateNumber = field => {
+  //   const val = field.value.trim();
+
+  //   if (val === '' && field.required) {
+  //     return {
+  //       isValid: false
+  //     };
+  //   } else {
+
+  //     return {
+  //       isValid: true
+  //     };
+  //   }
+  // };
 
   const validatePassword = field => {
     const val = field.value.trim();
@@ -364,47 +399,75 @@ ready(function () {
    * the user to complete the field.
    */
 
-  const getValidationData = field => {
-    switch (field.id) {
-      case 'firstname':
-      case 'houseNumber':
-      case 'street':
-      case 'barangay':
-      case 'municipality':
-      case 'currentSchool':
-      case 'currentProgram':
-      case 'lastname':
-        return validateText(field);
-      case 'select-one':
-        return validateSelect(field);
-      case 'fieldset':
-        return validateGroup(field);
-      case 'radio':
-      case 'checkbox':
-        return validateChoice(field);
-      case 'contact':
-        return validatePhone(field);
-      case 'email':
-        return validateEmail(field);
-      case 'birthdate':
-        return validateDate(field);
-      case 'number':
-        return validateNumber(field);
-      case 'passwordField':
-        return validatePassword(field);
-      case 'confirmPasswordField':
-        return validateConfirmPassword(field);
-      case 'file':
-        const validation = validateReportCard(field);
-        // if (!validation.isValid) {
-        //   displayErrorMessage(field, validation.message);
-        // }
-        return validation;
-      default:
-        throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
-    }
-  };
-
+  const getValidationData = (field) => {
+  switch (field.tagName.toLowerCase()) {
+    case 'input':
+    case 'textarea':
+      switch (field.type) {
+        case 'text':
+        case 'number':
+        case 'email':
+          if (field.name === 'latestAverage') {
+            // Get the selected grade level
+            const selectedGrade = document.getElementById('incomingGrade').value;
+            // Only validate if the selected grade is Grade 7 to 10
+            if (selectedGrade === 'GradeSeven' || selectedGrade === 'GradeEight' || selectedGrade === 'GradeNine' || selectedGrade === 'GradeTen') {
+              if (field.value.trim() === '') {
+                return {
+                  isValid: false,
+                  message: 'Please complete this required field.'
+                };
+              }
+              return validateLatestAverage(field, 88, 100);
+            } else {
+              return { isValid: true }; // Skip validation for other grades
+            }
+          }   
+          if (field.name === 'equivalentGrade') {
+            // Get the selected grade level
+            const selectedGrade = document.getElementById('incomingGrade').value;
+            // Only validate the number range if the selected grade is Grade 12 or higher
+            if (selectedGrade === 'GradeTwelve' || selectedGrade === 'FirstYear' || selectedGrade === 'SecondYear' || selectedGrade === 'ThirdYear') {
+              if (field.value.trim() === '') {
+                return {
+                  isValid: false,
+                  message: 'Please complete this required field.'
+                };
+              }
+              return validateNumberRange(field, 88, 100);
+            } else {
+              return { isValid: true }; // Skip validation for lower grades
+            }
+          }
+          return validateNumber(field);
+        case 'password':
+          if (field.id === 'passwordField') {
+            return validatePassword(field);
+          } else if (field.id === 'confirmPasswordField') {
+            return validateConfirmPassword(field);
+          } else {
+            throw new Error(`The provided field type '${field.type}' with ID '${field.id}' is not supported in this form.`);
+          }
+        case 'date':
+          return validateDate(field);
+        case 'tel':
+          return validatePhone(field);
+        case 'checkbox':
+        case 'radio':
+          return validateChoice(field);
+        case 'file':
+          return validateReportCard(field);
+        default:
+          throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
+      }
+    case 'select':
+      return validateSelect(field);
+    default:
+      throw new Error(`The provided field type '${field.tagName}' is not supported in this form.`);
+  }
+};
+  
+  
   /*****************************************************************************
    * Expects a Node (field or fieldset).
    *
@@ -773,54 +836,76 @@ ready(function () {
    * Returns the user's IP address.
    */
 
-  async function getIP(url = 'https://api.ipify.org?format=json') {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+//   async function getIP(url = 'https://api.ipify.org?format=json') {
+//     return new Promise((resolve, reject) => {
+//         const callbackName = 'jsonpCallback' + Math.round(100000 * Math.random());
+//         window[callbackName] = (data) => {
+//             delete window[callbackName];
+//             resolve(data);
+//         };
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
+//         const script = document.createElement('script');
+//         script.src = url + '&callback=' + callbackName;
+//         script.async = true;
+//         script.onerror = (error) => {
+//             reject(error);
+//         };
 
-    return response.json();
-  }
+//         document.head.appendChild(script);
+//     });
+// }
 
-  /*****************************************************************************
-   * POSTs to the specified endpoint.
-   */
+//   /*****************************************************************************
+//    * POSTs to the specified endpoint.
+//    */
 
-  async function postData(url = '', data = {}) {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+//   async function postData(url = '', data = {}) {
+//     const response = await fetch(url, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(data)
+//     });
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
+//     if (!response.ok) {
+//       throw new Error(response.statusText);
+//     }
 
-    return response.json();
-  }
+//     return response.json();
+//   }
+
+//   document.getElementById("submitButton").addEventListener("click", function() {
+//     const formData = {
+//         // Collect form data here
+//     };
+
+//     // Replace 'https://httpbin.org/post' with your actual endpoint URL
+//     postData('https://httpbin.org/post', formData)
+//         .then(data => {
+//             console.log(data); // Log response data to the console
+//             // Handle response data as needed
+//         })
+//         .catch(error => {
+//             console.error('Error:', error); // Log any errors to the console
+//             // Handle errors as needed
+//         });
+// });
+
 
   /****************************************************************************/
 
-  function disableSubmit() {
-    const submitButton = progressForm.querySelector('[type="submit"]');
+  // function disableSubmit() {
+  //   const submitButton = progressForm.querySelector('[type="submit"]');
 
-    if (progressForm.contains(submitButton)) {
+  //   if (progressForm.contains(submitButton)) {
 
-      // Update the state of the submit button
-      submitButton.setAttribute('disabled', '');
-      submitButton.textContent = 'Submitting...';
+  //     // Update the state of the submit button
+  //     submitButton.setAttribute('disabled', '');
+  //     submitButton.textContent = 'Submitting...';
 
-    }
-  }
+  //   }
+  // }
 
   /****************************************************************************/
 
@@ -840,113 +925,115 @@ ready(function () {
 
   /****************************************************************************/
 
-  // function handleError(error) {
-  //   const submitButton = progressForm.querySelector('[type="submit"]');
+//   function handleError(error) {
+//     const submitButton = progressForm.querySelector('[type="submit"]');
 
-  //   if (progressForm.contains(submitButton)) {
-  //     const errorText = document.createElement('p');
+//     if (progressForm.contains(submitButton)) {
+//       const errorText = document.createElement('p');
 
-  //     // Reset the state of the submit button
-  //     submitButton.removeAttribute('disabled');
-  //     submitButton.textContent = 'Submit';
+//       // Reset the state of the submit button
+//       submitButton.removeAttribute('disabled');
+//       submitButton.textContent = 'Submit';
 
-  //     // Display an error message for the user
-  //     errorText.classList.add('m-0', 'form__error-text');
-  //     errorText.textContent = `Sorry, your submission could not be processed.
-  //       Please try again. If the issue persists, please contact our support
-  //       team. Error message: ${error}`;
+//       // Display an error message for the user
+//       errorText.classList.add('m-0', 'form__error-text');
+//       errorText.textContent = `Sorry, your submission could not be processed.
+//         Please try again. If the issue persists, please contact our support
+//         team. Error message: ${error}`;
 
-  //     submitButton.parentElement.prepend(errorText);
-  //   }
-  // }
+//       submitButton.parentElement.prepend(errorText);
+//     }
+//   }
 
-  /****************************************************************************/
+//   /****************************************************************************/
+//   function handleError(errorMessage, errorStack) {
+//     console.error("An error occurred: ", errorMessage);
+//     console.error("Error stack trace: ", errorStack);
+//     // Additional error handling logic can be added here
+// }
 
-  progressForm.addEventListener('submit', e => {
+//  progressForm.addEventListener('submit', e => {
+//     // Prevent the form from submitting
+//     e.preventDefault();
 
-    // Prevent the form from submitting
-    e.preventDefault();
+//     // Get the API endpoint using the form action attribute
+//     const form = e.currentTarget;
+//     const API = new URL(form.action);
 
-    // Get the API endpoint using the form action attribute
-    const form = e.currentTarget
-      , API = new URL(form.action);
+//     validateStep(currentStep)
+//         .then(() => {
+//             // Indicate that the submission is working
+//             disableSubmit();
 
-    validateStep(currentStep).then(() => {
+//             // Prepare the data
+//             const formData = new FormData(form);
+//             const formTime = new Date().getTime();
+//             const formFields = [];
 
-      // Indicate that the submission is working
-      disableSubmit();
+//             // Format the data entries
+//             for (const [name, value] of formData) {
+//                 formFields.push({
+//                     'name': name,
+//                     'value': value
+//                 });
+//             }
 
-      // Prepare the data
-      const formData = new FormData(form)
-        , formTime = new Date().getTime()
-        , formFields = [];
+//             // Get the user's IP address (for fun)
+//             // Build the final data structure, including the IP
+//             // POST the data and handle success or error
+//             getIP().then(response => {
+//                 return {
+//                     'fields': formFields,
+//                     'meta': {
+//                         'submittedAt': formTime,
+//                         'ipAddress': response.ip
+//                     }
+//                 };
+//             })
+//             .then(data => postData(API, data))
+//             .then(response => {
+//                 setTimeout(() => {
+//                     handleSuccess(response)
+//                 }, 5000); // An artificial delay to show the state of the submit button
+//             })
+//             .catch(error => {
+//                 // Pass error message and stack trace to handleError function
+//                 handleError(error.message, error.stack);
+//             });
 
-      // Format the data entries
-      for (const [name, value] of formData) {
-        formFields.push({
-          'name': name,
-          'value': value
-        });
-      }
+//         })
+//         .catch(invalidFields => {
+//             // Ensure invalidFields is an array
+//             if (Array.isArray(invalidFields)) {
+//                 // Show errors for any invalid fields
+//                 invalidFields.forEach(field => {
+//                     reportValidity(field);
+//                 });
 
-      // Get the user's IP address (for fun)
-      // Build the final data structure, including the IP
-      // POST the data and handle success or error
-      getIP().then(response => {
-        return {
-          'fields': formFields,
-          'meta': {
-            'submittedAt': formTime,
-            'ipAddress': response.ip
-          }
-        };
-      })
-        .then(data => postData(API, data))
-        .then(response => {
-          setTimeout(() => {
-            handleSuccess(response)
-          }, 5000); // An artificial delay to show the state of the submit button
-        })
-        .catch(error => {
-          setTimeout(() => {
-            handleError(error)
-          }, 5000); // An artificial delay to show the state of the submit button
-        });
+//                 // Focus the first found invalid field for the user
+//                 invalidFields[0].focus();
+//             } else {
+//                 // Handle the case when invalidFields is not an array
+//                 console.error("Invalid fields data structure is not an array:", invalidFields);
+//             }
+//         });
+// });
 
-    }).catch(invalidFields => {
 
-      // Show errors for any invalid fields
-      invalidFields.forEach(field => {
-        reportValidity(field);
-      });
-
-      // Focus the first found invalid field for the user
-      invalidFields[0].focus();
-
-    });
-  });
 });
 
 /****************************************************************************/
 //SAVE FORM DATA
 function saveFormData() {
   var inputs = document.querySelectorAll('input:not([type="file"]), select');
-  var gwaInputs = document.querySelectorAll('.grade-input:not([type="file"])');
-  var fileInput = document.getElementById('ReportCard');
   var formData = {};
 
   inputs.forEach(function (input) {
-    if (input.type === "select-one") {
-      formData[input.name] = input.selectedIndex;
-    } else {
-      formData[input.name] = input.value;
-    }
-  });
-
-  formData['ReportCard'] = fileInput.files.length > 0 ? fileInput.files[0].name : '';
-
-  gwaInputs.forEach(function (input) {
-    formData[input.name] = input.value;
+      if (input.type === "select-one") {
+          formData[input.name] = input.selectedIndex;
+      } else {
+          formData[input.name] = input.value;
+      }
   });
 
   localStorage.setItem('formData', JSON.stringify(formData));
@@ -956,28 +1043,21 @@ function loadFormData() {
   var storedData = localStorage.getItem('formData');
 
   if (storedData) {
-    var formData = JSON.parse(storedData);
+      var formData = JSON.parse(storedData);
 
-    for (var key in formData) {
-      if (formData.hasOwnProperty(key)) {
-        var inputElement = document.querySelector('[name="' + key + '"]');
-        if (inputElement) {
-          if (inputElement.type === "select-one") {
-            inputElement.selectedIndex = formData[key];
-            inputElement.dispatchEvent(new Event('change'));
-          } else if (inputElement.type === "file") {
-            if (formData[key] !== '') {
-              var file = new File([""], formData[key]);
-              var dataTransfer = new DataTransfer();
-              dataTransfer.items.add(file);
-              inputElement.files = dataTransfer.files;
-            }
-          } else {
-            inputElement.value = formData[key];
+      for (var key in formData) {
+          if (formData.hasOwnProperty(key)) {
+              var inputElement = document.querySelector('[name="' + key + '"]');
+              if (inputElement) {
+                  if (inputElement.type === "select-one") {
+                      inputElement.selectedIndex = formData[key];
+                      inputElement.dispatchEvent(new Event('change'));
+                  } else {
+                      inputElement.value = formData[key];
+                  }
+              }
           }
-        }
       }
-    }
   }
 }
 
@@ -985,231 +1065,73 @@ window.addEventListener('beforeunload', saveFormData);
 window.addEventListener('load', loadFormData);
 document.querySelector('[data-action="next"]').addEventListener('click', saveFormData);
 
-/****************************************************************************/
-
 //specific drop down input field
 document.addEventListener("DOMContentLoaded", function () {
   const incomingGradeSelect = document.getElementById("incomingGrade");
-  const gradeInputs = document.querySelectorAll('.grade-input');
-  const reportCardInput = document.getElementById("ReportCardField");
 
   incomingGradeSelect.addEventListener("change", function () {
-    const selectedValue = incomingGradeSelect.value;
-
-    // Hide all grade input fields
-    gradeInputs.forEach(input => input.style.display = "none");
-
-    if (selectedValue === "GradeSeven") {
-      showGrades(["grade3", "grade4", "grade5"]);
-    } else if (selectedValue === "GradeEight") {
-      showGrades(["grade4", "grade5", "grade6", "ReportCardField"]);
-    } else if (selectedValue === "GradeNine") {
-      showGrades(["grade5", "grade6", "grade7", "ReportCardField"]);
-    } else if (selectedValue === "GradeTen") {
-      showGrades(["grade6", "grade7", "grade8", "ReportCardField"]);
-    } else if (selectedValue === "GradeEleven") {
-      showGrades(["grade7", "grade8", "grade9", "ReportCardField"]);
-    } else if (selectedValue === "GradeTwelve") {
-      showGrades(["grade8", "grade9", "grade10", "ReportCardField"]);
-    } else if (selectedValue === "FirstYear") {
-      showGrades(["grade9", "grade10", "grade11SemSelect", "ReportCardField"]);
-    } else if (selectedValue === "SecondYear") {
-      showGrades(["grade10", "grade11SemSelect", "grade12SemSelect", "ReportCardField"]);
-    }
+      const selectedValue = incomingGradeSelect.value;
   });
-
-  //semesters
-  const gradeSemesters = {
-    "grade11SemSelect": {
-      "inputs": document.querySelectorAll("[id^=grade11][id$=SemGWA]")
-    },
-    "grade12SemSelect": {
-      "inputs": document.querySelectorAll("[id^=grade12][id$=SemGWA]")
-    }
-  };
-
-  for (const selectId in gradeSemesters) {
-    const selectElement = document.getElementById(selectId);
-    const inputs = gradeSemesters[selectId].inputs;
-
-    selectElement.addEventListener("change", function () {
-      const selectedValue = selectElement.value;
-
-      // Hide all semester input fields
-      inputs.forEach(input => input.style.display = "none");
-
-      if (selectedValue === "TwoSem" || selectedValue === "ThreeSem") {
-        const semesterCount = selectedValue === "TwoSem" ? 2 : 3;
-        for (let i = 1; i <= semesterCount; i++) {
-          const inputId = selectId.includes("grade11") ? `grade11${i}SemGWA` : `grade12${i}SemGWA`;
-          const inputElement = document.getElementById(inputId);
-          if (inputElement) {
-            inputElement.style.display = "block";
-          }
-        }
-      }
-    });
-  }
-
-  function showGrades(gradesToShow) {
-    gradesToShow.forEach(gradeId => {
-      const gradeInput = document.getElementById(gradeId);
-      if (gradeInput) {
-        gradeInput.style.display = "block";
-      }
-    });
-  }
-
-});
-
-//reset the grade gwa
-document.getElementById('incomingGrade').addEventListener('change', function () {
-  var selectedValue = this.value;
-
-  for (var i = 3; i <= 10; i++) {
-    var gradeInput = document.getElementById('grade' + i);
-    if (gradeInput) {
-      gradeInput.style.display = 'none';
-      gradeInput.querySelector('input').value = '';
-    }
-  }
-
-  if (selectedValue !== '') {
-    var gradeInputId = 'grade' + (parseInt(selectedValue.replace(/\D/g, '')) || 0);
-    var selectedGradeInput = document.getElementById(gradeInputId);
-    if (selectedGradeInput) {
-      selectedGradeInput.style.display = 'block';
-    }
-  }
 });
 
 /****************************************************************************/
+document.getElementById('incomingGrade').addEventListener('change', function() {
+  const toggleDisplay = (field, input, show, required) => {
+    if (field && input) { // Check if both field and input are not null
+      field.style.display = show ? 'block' : 'none';
+      if (required) {
+        input.setAttribute('required', 'required');
+      } else {
+        input.removeAttribute('required');
+        input.value = '';
+      }
+    }
+  };
 
-//Monthly Household 
+  const grade = this.value;
+  const isUpperGrade = grade === 'GradeTwelve' || grade === 'FirstYear' || grade === 'SecondYear' || grade === 'ThirdYear';
+  const isFirstYear = grade === 'FirstYear';
 
-// document.addEventListener('DOMContentLoaded', function () {
-//   const elements = {
-//       householdSelect: document.getElementById('householdSelect'),
-//       householdInfoFields: document.getElementById('householdInfoFields'),
-//       householdSections: document.getElementById('householdSections'),
-//       totalMonthlyIncomeField: document.getElementById('totalMonthlyIncomeField'),
-//   };
+  toggleDisplay(document.getElementById('currentProgramField'), document.getElementById('currentProgram'), isUpperGrade, isUpperGrade);
+  toggleDisplay(document.getElementById('latestAverageField'), document.getElementById('latestAverage'), !isUpperGrade, !isUpperGrade);
+  toggleDisplay(document.getElementById('latestGWAField'), document.getElementById('latestGWA'), isUpperGrade, isUpperGrade);
+  toggleDisplay(document.getElementById('equivalentGradeField'), document.getElementById('equivalentGrade'), isUpperGrade, isUpperGrade);
 
-//   elements.householdSelect.addEventListener('change', function () {
-//       const selectedValue = parseInt(elements.householdSelect.value);
+  document.getElementById('scopeGWA-label').innerHTML = `Scope of Latest ${isUpperGrade ? 'GWA' : 'General Average'} <span data-required="true" aria-hidden="true"></span><span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;"> Ex. ${isUpperGrade ? '1st Semester' : '1st Grading'}</span>`;
 
-//       elements.householdSections.innerHTML = "";
+  const schoolFields = ['schoolChoice1Field', 'schoolChoice2Field', 'schoolChoice3Field'];
+  const schoolInputs = ['schoolChoice1', 'schoolChoice2', 'schoolChoice3'];
+  const programFields = ['courseChoice1Field', 'courseChoice2Field', 'courseChoice3Field'];
+  const programInputs = ['courseChoice1', 'courseChoice2', 'courseChoice3'];
 
-//       if (selectedValue >= 1 && selectedValue <= 10) {
-//           elements.totalMonthlyIncomeField.style.display = 'block';
+  schoolFields.forEach((field, i) => {
+    const fieldElem = document.getElementById(field);
+    const inputElem = document.getElementById(schoolInputs[i]);
+    toggleDisplay(fieldElem, inputElem, isFirstYear, isFirstYear);
+  });
 
-//           for (let i = 1; i <= selectedValue; i++) {
-//               const div = document.createElement("div");
-//               div.classList.add("household-section");
+  programFields.forEach((field, i) => {
+    const fieldElem = document.getElementById(field);
+    const inputElem = document.getElementById(programInputs[i]);
+    toggleDisplay(fieldElem, inputElem, isFirstYear, isFirstYear);
+  });
 
-//               div.innerHTML = `
-//                   <h5 style="font-weight: bold; margin-top: 20px;">Family ${i}</h5>
-//                   <div class="form__field">
-//                       <label for="name${i}">Name
-//                           <span data-required="true" aria-hidden="true"></span>
-//                       </label>
-//                       <input id="name${i}" type="text" name="name${i}" autocomplete="name" required>
-//                   </div>
+  // Show or hide the headers based on whether it's First Year
+  const schoolHeader = document.getElementById('schoolApplicationHeader');
+  const programHeader = document.getElementById('preferredProgramHeader');
 
-//                   <div class="form__field">
-//                       <label for="relationship${i}">Relationship
-//                           <span data-required="true" aria-hidden="true"></span>
-//                       </label>
-//                       <input id="relationship${i}" type="text" name="relationship${i}" autocomplete="relationship" required>
-//                   </div>
+  if (schoolHeader) {
+    schoolHeader.style.display = isFirstYear ? 'block' : 'none';
+  }
 
-//                   <div class="form__field mt-3">
-//                       <label for="occupation${i}">Occupation
-//                           <span data-required="true" aria-hidden="true"></span>
-//                       </label>
-//                       <input id="occupation${i}" type="text" name="occupation${i}" autocomplete="occupation" required>
-//                   </div>
-
-//                   <div class="form__field mt-3">
-//                       <label for="monthlyIncome${i}">Monthly Income
-//                           <span data-required="true" aria-hidden="true"></span>
-//                       </label>
-//                       <input id="monthlyIncome${i}" type="number" name="monthlyIncome${i}" autocomplete="name" required>
-//                   </div>
-//               `;
-//               elements.householdSections.appendChild(div);
-//           }
-//       } else {
-//           elements.totalMonthlyIncomeField.style.display = 'none';
-//       }
-//   });
-// });
-
-// document.addEventListener('input', function (event) {
-//   if (event.target && event.target.id.startsWith('monthlyIncome')) {
-//       calculateTotalIncome();
-//   }
-// });
-
-// function calculateTotalIncome() {
-//   const totalMonthlyIncomeField = document.getElementById('totalMonthlyIncomeField');
-//   const monthlyIncomeFields = document.querySelectorAll('[id^="monthlyIncome"]');
-
-//   let totalIncome = 0;
-
-//   monthlyIncomeFields.forEach(field => {
-//       const income = parseFloat(field.value.replace(/,/g, '')) || 0;
-//       totalIncome += income;
-//   });
-
-//   totalMonthlyIncomeField.value = totalIncome.toLocaleString('en-US', {
-//       minimumFractionDigits: 2,
-//       maximumFractionDigits: 2
-//   });
-// }
-
-// $(document).ready(function () {
-//   $("#employed").on("input", function () {
-//       var numFamilyMembers = $(this).val();
-//       $("#householdInfoFields").empty(); // Clear existing fields
-
-//       for (var i = 1; i <= numFamilyMembers; i++) {
-//           var dynamicFields = `
-//               <h2>Family Member${i}</h2> 
-//               <div class="form__field mt-3">
-//                   <label for="name${i}">Name
-//                       <span data-required="true" aria-hidden="true"></span>
-//                   </label>
-//                   <input id="name${i}" type="text" name="name${i}" autocomplete="name" required>
-//               </div>
-//               <div class="form__field mt-3">
-//                   <label for="relationship${i}">Relationship
-//                       <span data-required="true" aria-hidden="true"></span>
-//                   </label>
-//                   <input id="relationship${i}" type="text" name="relationship${i}" autocomplete="relationship" required>
-//               </div>
-//               <div class="form__field mt-3">
-//                   <label for="occupation${i}">Occupation
-//                       <span data-required="true" aria-hidden="true"></span>
-//                   </label>
-//                   <input id="occupation${i}" type="text" name="occupation${i}" autocomplete="occupation" required>
-//               </div>
-//               <div class="form__field mt-3">
-//                   <label for="monthlyIncome${i}">Monthly Income
-//                       <span data-required="true" aria-hidden="true"></span>
-//                   </label>
-//                   <input id="monthlyIncome${i}" type="number" name="monthlyIncome${i}" autocomplete="name" required>
-//               </div>
-//           `;
-//           $("#householdInfoFields").append(dynamicFields);
-//       }
-//   });
-// });
+  if (programHeader) {
+    programHeader.style.display = isFirstYear ? 'block' : 'none';
+  }
+});
 
 
 
-
-
+/******************************************/
 
 
 

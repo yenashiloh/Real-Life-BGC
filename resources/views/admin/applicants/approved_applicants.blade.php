@@ -176,7 +176,7 @@ success: function(response) {
     badgeElement.removeClass('badge-primary badge-secondary badge-warning badge-dark badge-success');
 
     switch (newStatus) {
-        case 'New Applicant':
+        case 'Sent':
             badgeElement.addClass('badge-primary');
             break;
         case 'Under Review':
@@ -203,7 +203,7 @@ success: function(response) {
     } else {
       var dropdownContent = '';
       switch (newStatus) {
-        case 'New Applicant':
+        case 'Sent':
           dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Under Review</a></li>' +
             '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
             $('#status-' + applicantId).addClass('badge status-new-applicant');

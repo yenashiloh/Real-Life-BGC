@@ -1,13 +1,28 @@
 @include('partials.header')
+<link rel="stylesheet" href="assets-applicant/css/faq.css" type="text/css">
 
 <!-- ======= FAQ Section ======= -->
-<section id="contact" class="contact">
+ <!-- Breadcrumb Section Begin -->
+ <div class="breadcrumb-section">
     <div class="container">
-        <br><br><br>
-        <div class="section-title">
-            <h2>FREQUENTLY ASKED QUESTIONS</h2>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h2>Frequently Ask Questions</h2>
+                    <div class="bt-option">
+                        <a href="/">Home</a>
+                        <span>FAQ</span>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+</div>
+<!-- Breadcrumb Section End -->
 
+<!-- FAQ Begin -->
+<section class="rooms-section spad">
+    <div class="container">
         <div class="faq-container">
             <div class="faq-question shadow-sm " onclick="toggleFAQ(this)">
                 What does Real LIFE provide for its scholars?
@@ -132,8 +147,10 @@
                     href="https://www.reallife.ph/findacenter"><u><em>https://www.reallife.ph/findacenter</u></em></a>
             </div>
         </div>
+        </div>
     </div>
 </section>
+<!-- FAQ End -->
 <script>
     function toggleFAQ(element) {
         var answer = element.nextElementSibling;

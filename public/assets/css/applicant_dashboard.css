@@ -71,20 +71,31 @@
     font-size: 15px;
 }
 #submitForm {
-background-color: #71BF44;
-color: white; /* Set text color to white */
-border: none; /* Remove default button border */
+    background-color: #71BF44;
+    color: white; /* Set text color to white */
+    border: none; /* Remove default button border */
+    cursor: default; /* Set default cursor */
 }
 
-#submitForm:hover {
-background-color: #017358;
-
+#submitForm:not(:disabled) {
+    cursor: pointer; /* Set pointer cursor when not disabled */
 }
+
+#submitForm:not(:disabled):hover {
+    background-color: #017358;
+}
+
 #submitEditForm {
     background-color: #71BF44; /* Set the desired background color */
     border-color: #71BF44; /* Set the border color to match */
+    cursor: default; /* Set default cursor */
 }
-#submitEditForm:hover {
+
+#submitEditForm:not(:disabled) {
+    cursor: pointer; /* Set pointer cursor when not disabled */
+}
+
+#submitEditForm:not(:disabled):hover {
     background-color: #017358;
 }
 
@@ -92,3 +103,43 @@ select#documentType option:hover {
     background-color: #017358; /* Change background color on hover */
     color: #ffffff; /* Change text color on hover */
 }
+.form-check-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #222222;
+    border-radius: 3px;
+    outline: none; /* Remove outline when focused */
+    cursor: pointer; /* Show pointer cursor */
+    position: relative; /* Ensure position is relative for absolute positioning of checkmark */
+    margin-bottom: 2px; /* Add bottom margin to center vertically */
+}
+
+.form-check-input:checked {
+    background-color: #71BF44; /* Change background color when checked */
+}
+
+/* Style the inner checkmark */
+.form-check-input::before {
+    content: ''; /* Empty content */
+    display: block;
+    width: 6px; /* Width of the checkmark */
+    height: 12px; /* Height of the checkmark */
+    border: solid white; /* White border */
+    border-width: 0 2px 2px 0; /* Thickness and direction of checkmark */
+    transform: translate(-50%, -50%) rotate(45deg); /* Position and rotate the checkmark */
+    position: absolute;
+    top: 40%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform-origin: center; /* Set transform origin to center */
+}
+
+/* Optional: Style the label text associated with the checkbox */
+.form-check-label {
+    /* Add styles for label text if needed */
+    color: #333; /* Example text color */
+    margin-left: 24px; /* Example margin for alignment */
+}
+

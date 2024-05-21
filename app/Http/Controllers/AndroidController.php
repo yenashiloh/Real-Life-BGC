@@ -36,7 +36,7 @@ class AndroidController extends Controller
         $result = Applicant::create([
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'status' => 'New Applicant',
+            'status' => 'Sent',
         ]);
 
         $result->personalInformation()->create([

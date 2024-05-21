@@ -100,7 +100,7 @@
                     console.log("AJAX request successful:", response); // Handle success response
         
                 // Update success message in session storage
-                    sessionStorage.setItem('successEditMessage', 'Edit Successfully!');
+                    sessionStorage.setItem('successEditMessage', 'Update Successfully!');
 
                     // Reload the page
                     location.reload();

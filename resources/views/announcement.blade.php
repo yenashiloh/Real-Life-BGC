@@ -1,4 +1,4 @@
-@include('partials.header')
+{{-- @include('partials.header')
 <style>
 
 
@@ -347,13 +347,9 @@
                                         </div>
                                     @else
                                         <div class="content-toggle" style="font-size: 15px; color: rgb(7, 7, 7);">
-                                            <!-- Content when caption is not available -->
                                         </div>
                                     @endif
                                 </div>
-                            {{-- <div class="widget-49-meeting-action">
-                               
-                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -367,10 +363,10 @@
 
 <br><br><br>
 
-</section>
+</section> --}}
 <!-- Add this script before the closing </body> tag -->
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{-- 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 {{-- <script>
     $(document).ready(function() {
         $(".read-more").click(function(e) {
@@ -386,4 +382,89 @@
     });
 </script> --}}
 
-@include('partials.footer')
+{{-- @include('partials.footer') --}}
+
+
+@include('partials.header')
+
+<div class="breadcrumb-section">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="breadcrumb-text">
+                  <h2>Announcement</h2>
+                  <div class="bt-option">
+                      <a href="/ ">Home</a>
+
+                      <span>Announcement</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Breadcrumb Section End -->
+  
+  <!-- Blog Details Hero End -->
+
+  <!-- Blog Details Section Begin -->
+  <section class="blog-details-section">
+    <div class="container-fluid gedf-wrapper" style="cursor: default;">
+        <div class="row justify-content-center"> <!-- Center the content within the row -->
+            <div class="col-md-10 gedf-main">
+                @if($announcement->isEmpty())
+                    <p style="text-align: center; font-size: 25px; font-weight: normal;">No Announcement</p>
+                @else
+                    <!-- Post -->
+                    @foreach($announcement->where('published', true)->sortByDesc('created_at') as $announce)
+                        <div class="card gedf-card mx-auto" style="margin-top: 0;"> <!-- Use mx-auto to center the card horizontally -->
+                            <div class="card-header" style="background-color: rgb(235, 235, 235);">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-2">
+                                            <img class="rounded-circle" width="45" src="assets-applicant/img/profile.png" alt="Profile Picture">
+                                        </div>
+                                        <div class="ml-2">
+                                            <div class="h5 m-0 f-para">{!! $announce->title !!}</div>
+                                            <div class="text-muted h7 mb-2" style="font-size:14px;">
+                                              @php
+                                              $created = \Carbon\Carbon::parse($announce->created_at)->timezone('Asia/Manila');
+                                              $now = \Carbon\Carbon::now()->timezone('Asia/Manila');
+                                              $diffInHours = $created->diffInHours($now);
+                                          @endphp
+                                          
+                                          @if ($diffInHours >= 12)
+                                              {{ $created->isoFormat('MMMM D, YYYY, h:mm A') }} (Posted by Real LIFE BGC)
+                                          @else
+                                              {{ $created->diffForHumans(['suffix' => true]) }} (Posted by Real LIFE BGC)
+                                          @endif
+                                          
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <!-- Additional content or actions can be placed here -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-link">
+                                    <h5 class="card-title f-para" style="font-weight: bold; font-size:23px;"></h5>
+                                </a>
+                                <p class="card-text">
+                                  {!! preg_replace('/<img(.*?)src="data:image\/jpeg;base64,(.*?)"(.*?)>/i', '<a href="data:image/jpeg;base64,$2" target="_blank"$1$3><img$1src="data:image/jpeg;base64,$2"$3></a>', $announce->caption) !!}
+
+                                </p>
+                              </div>  
+                            </div>
+                        </div>
+                        <br>
+                    @endforeach
+                @endif
+            </div>
+        </div>
+    </div>
+</section>
+
+<br>
+@include('partials.footer') 

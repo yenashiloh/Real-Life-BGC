@@ -71,7 +71,7 @@
                     <div class="row mb-2">
                       <div class="col-lg-3 col-md-4 label ">Status</div>
                       <div class="col-lg-2 col-md-8 badge p-2" style="
-                        @if ($status === 'New Applicant')
+                        @if ($status === 'Sent')
                           margin-top: 2px;
                           background-color: #CFE2FF;
                           color: #052C92;

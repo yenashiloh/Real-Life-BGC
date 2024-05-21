@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -30,7 +30,6 @@
     <link rel="stylesheet" href="assets/vendor/aos/aos.css">
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    {{-- <link href="https://cdn.jsdelivr.net/npm/jolty/dist/jolty.css" rel="stylesheet"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="  https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
@@ -49,9 +48,9 @@
     <style type="text/scss">
     
     </style>
-</head>
+</head> --}}
 
-<body>
+{{-- <body>
     @php
     if (auth()->check()) {
         $personalInfo = auth()->user()->personalInformation()->first();
@@ -86,7 +85,6 @@
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" aria-labelledby="messageDropdown">
                             <li class="dropdown-header" style="font-weight: medium; color:#151515; font-weight: 500; font-size: 17px;">
                                 Notifications
-                                {{-- <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a> --}}
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -118,14 +116,6 @@
                                         </div>
                                     </li>
                                 @endif
-                        
-                            
-                         
-                            
-                        {{-- <li class="dropdown-footer">
-                            <a href="#">Show all notifications</a>
-                        </li> --}}
-
                     </ul><!-- End Notification Dropdown Items -->
 
                     </li><!-- End Notification Nav -->
@@ -206,7 +196,7 @@
 </header><!-- End Header -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-<script src="assets/js/applicant_notification.js"></script>
+<script src="assets/js/applicant_notification.js"></script> --}}
 
 {{-- <script>
        $(document).ready(function () {
@@ -269,3 +259,364 @@ $('#messageDropdown').on('click', function() {
     });
 });
 </script> --}}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sona Template">
+    <meta name="keywords" content="Sona, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $title }}</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="assets-applicant/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/style.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/header.css" type="text/css">
+    <link rel="stylesheet" href="assets-applicant/css/footer.css" type="text/css">
+    <!-- Bootstrap JS (including jQuery and Popper.js) -->
+    <link href="assets/css/applicant_dashboard.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    
+    
+</head>
+<style>
+   .link-style {
+      
+        cursor: pointer; /* Show pointer cursor on hover */
+    }
+
+    .link-style:hover {
+        color: rgb(0, 0, 0); /* Text color on hover */
+        background-color: rgb(248, 246, 250); /* Background color on hover */
+    }
+    .no-notifications {
+    text-align: center;
+    padding: 10px;
+    color: #555;
+    font-size: 14px;
+}
+
+
+</style>
+
+<body style="background-color: #fafafa;">
+    @php
+    if (auth()->check()) {
+        $personalInfo = auth()->user()->personalInformation()->first();
+    }
+@endphp
+    <!-- Offcanvas Menu Section Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="canvas-open">
+    <!-- Container for notification bell -->
+    @if(auth()->check())
+    <div class="icon-container">
+        <i class="fa-regular fa-bell"></i> <!-- Notification bell icon -->
+    </div>
+    @endif
+
+    <!-- Container for user icon -->
+    @if(auth()->check())
+    <div class="icon-container">
+        <i class="fa-regular fa-user"></i> <!-- User icon -->
+    </div>
+    @endif
+    
+    <!-- Menu icon -->
+    <div class="icon-container">
+        <i class="icon_menu"></i> <!-- Menu icon -->
+    </div>
+</div>
+
+<div class="offcanvas-menu-wrapper">
+    <div class="canvas-close">
+        <i class="icon_close"></i>
+    </div>
+    <div class="search-icon search-switch">
+        <img id="logo" src="assets-applicant/img/RLlogo.png" alt="" style="width: 125px;">
+    </div>
+    <div class="header-configure-area">
+        <br>
+        @unless(auth()->check())
+        <a href="/register" class="bk-btn">Apply Now</a>
+        @endunless
+    </div>
+    <nav class="mainmenu mobile-menu">
+        <ul>
+            <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="/">Home</a></li>
+            <li class="{{ Request::is('announcement') ? 'active' : '' }}"><a href="/announcement">Announcement</a></li>
+            <li class="{{ Request::is('contact') ? 'active' : '' }}"><a href="/contact">Contact Us</a></li>
+            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="/faq">FAQ</a></li>
+            @unless(auth()->check())
+            <li><a href="/login" class="bk-btn">Login</a></li>
+            @endunless
+        </ul>
+    </nav>
+    <div id="mobile-menu-wrap"></div>
+</div>
+<!-- Offcanvas Menu Section End -->
+
+<!-- Header Section Begin -->
+<header class="header-section">
+    <div class="top-nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="tn-left">
+                        <li><i class="fa fa-phone"></i>(632) 8817-1212</li>
+                        <li><i class="fa fa-envelope"></i>fortbonifacio@reallife.ph</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <div class="tn-right">
+                        <div class="top-social">
+                            <a href="https://www.facebook.com/reallifeph"><i class="fa fa-facebook"></i></a>
+                            <a href="https://www.instagram.com/reallifeph/"><i class="fa fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/channel/UCCH8ji_JYH28LxSghsfPeig/videos"><i class="fa fa-youtube-play"></i></a>
+                        </div>
+                        @unless(auth()->check())
+                        <a href="/register" class="bk-btn">Apply Now</a>
+                        @endunless
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="menu-item">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="logo">
+                        <a href="./index.html">
+                            <img id="logo" src="assets-applicant/img/RLlogo.png" alt="" style="width: 125px;">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <div class="nav-menu">
+                        <nav class="mainmenu">
+                            <ul>
+                                @unless(auth()->check())
+                                    <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="/">Home</a></li>
+                                
+                                    <li class="{{ Request::is('announcement') ? 'active' : '' }}"><a href="/announcement">Announcement</a></li>
+                                    <li class="{{ Request::is('contact') ? 'active' : '' }}"><a href="/contact">Contact Us</a></li>
+                                    <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="/faq">FAQ</a></li>
+                                    <li><a href="/login" class="bk-btn">Login</a></li>
+                                @else
+                                    <li class="{{ Request::is('home') ? 'active' : '' }}"><a href="/home">Home</a></li>
+                                    <li class="{{ Request::is('announcement') ? 'active' : '' }}"><a href="/announcement">Announcement</a></li>
+                                    <li class="{{ Request::is('contact') ? 'active' : '' }}"><a href="/contact">Contact Us</a></li>
+                                    <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="/faq">FAQ</a></li>
+                
+                                    @if(isset($applicantNotifications) && count($applicantNotifications) > 0)
+                                        <li class="notification-badge">
+                                            <a class="nav-link nav-icon notification-icon" id="messageDropdown" href="#" data-bs-toggle="dropdown">
+                                                <i class="fas fa-bell">
+                                                    <span class="badge badge-pill badge-danger" id="notificationCount" style="display: none;">{{ count($applicantNotifications) }}</span>
+                                                </i>
+                                            </a>
+                                            <ul class="dropdown-menu notification-dropdown-menu" id="notificationDropdown">
+                                                <li>
+                                                    <div class="notification-label">Notifications</div>
+                                                    <div class="notification-separator"></div>
+                                                </li>
+                                                @foreach ($applicantNotifications as $notification)
+                                                    <li>
+                                                        <div class="notification-item" onclick="redirectToApplicantDashboard('{{ $notification->id }}')">
+                                                            <div class="notification-info">
+                                                                <span class="notification-title">{{ $notification->admin_name }}</span>
+                                                                <span class="notification-description">{{ $notification->message }}</span>
+                                                                <span class="notification-time">
+                                                                    @if($notification->created_at->gt(now()->subDay()))
+                                                                        {{ $notification->created_at->diffForHumans() }}
+                                                                    @else
+                                                                        <em>{{ $notification->created_at->format('F d, Y \a\t g:iA') }}</em>
+                                                                    @endif
+                                                                </span>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <hr style="width: 300px;"> 
+                                                    </li>
+                                                  
+                                                @endforeach
+                                            </ul>
+                                        </li>
+                                    @else
+                                    <li class="notification-badge">
+                                        <a class="nav-link nav-icon notification-icon" id="messageDropdown" href="#" data-bs-toggle="dropdown">
+                                            <i class="fas fa-bell"></i>
+                                        </a>
+                                        <ul class="dropdown-menu notification-dropdown-menu" id="notificationDropdown">
+                                            <li>
+                                                <div class="notification-label">Notifications</div>
+                                                <div class="notification-separator"></div>
+                                                <div class="no-notifications">You have no notifications.</div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    @endif
+                                @endif 
+                                        
+                                <li class="user-profile">
+                                    <a href="#" id="user-dropdown-toggle">
+                                        @auth
+                                        <i class="fas fa-user"></i>
+                                        @if(isset($personalInfo) && $personalInfo->first_name && $personalInfo->last_name)
+                                        {{ $personalInfo->first_name }}
+                                   
+                                        @endauth
+                                        <i class="fas fa-caret-down"></i>
+                                    </a>
+                                    <!-- User Dropdown Menu (Hidden by Default) -->
+                                    
+                                    <ul class="user-dropdown-menu" id="user-dropdown-menu">
+                                        <li>
+                                            <div class="notification-label">{{ $personalInfo->first_name ?? '' }}
+                                                {{ $personalInfo->last_name ?? '' }}</div>
+                                        </li>
+                                        <hr style="padding: 0%; margin:0%;">
+                                        <li>
+                                            <form action="/applicant_dashboard" method="GET">
+                                                <button type="submit" class="dropdown-item">Dashboard</button>
+                                            </form>
+                                        </li>
+                                        <hr style="padding: 0%; margin:0%;">
+                                        <li>
+                                            <form action="/personal-details" method="GET">
+                                                <button type="submit" class="dropdown-item">Profile Details</button>
+                                            </form>
+                                        </li>
+                                        <hr style="padding: 0%; margin:0%;">
+                                        <li>
+                                            <form action="/change_password" method="GET">
+                                                <button type="submit" class="dropdown-item">Change Password</button>
+                                            </form>
+                                        </li>
+                                        <hr style="padding: 0%; margin:0%;">
+                                        <li>
+                                            <form action="/logout" method="POST">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item">Log out</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                    @endif   
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Header Section End -->
+
+        
+    <!-- Header End -->
+
+        
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+<script src="assets/js/applicant_notification.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="assets-applicant/jquery-3.3.1.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        // Activate the carousel with a specified interval (e.g., 5 seconds)
+        $('.carousel').carousel({
+            interval: 3000 // Adjust this value (in milliseconds) to control the sliding interval
+        });
+    });
+
+    $(document).ready(function() {
+    // Toggle dropdown on click
+    $('#messageDropdown').click(function(e) {
+        e.preventDefault();
+        var dropdownMenu = $('#notificationDropdown');
+        // Calculate the left position relative to the parent element
+        var leftPosition = -dropdownMenu.outerWidth() + $(this).outerWidth();
+        dropdownMenu.css({ 'left': leftPosition });
+        dropdownMenu.toggle();
+
+        // Close other dropdowns
+        $('.dropdown-menu').not(dropdownMenu).hide();
+    });
+
+    // Hide dropdown when clicking outside of it
+    $(document).click(function(e) {
+        if (!$(e.target).closest('#messageDropdown').length && !$(e.target).closest('#notificationDropdown').length) {
+            $('#notificationDropdown').hide();
+        }
+    });
+
+    // Prevent closing the dropdown when clicking inside it
+    $('#notificationDropdown').click(function(e) {
+        e.stopPropagation();
+    });
+});
+
+
+$(document).ready(function() {
+    // Hide the user dropdown menu initially
+    $('#user-dropdown-menu').hide();
+
+    // Toggle user dropdown menu when clicking on user profile link
+    $('#user-dropdown-toggle').click(function(e) {
+        e.preventDefault();
+        // Toggle visibility of the user dropdown menu
+        $('#user-dropdown-menu').toggle();
+    });
+
+    // Close dropdown when clicking outside of the user dropdown area
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.user-profile').length) {
+            // If the click is not within the user-profile area, hide the dropdown
+            $('#user-dropdown-menu').hide();
+        }
+    });
+
+    // Prevent hiding dropdown when clicking inside the dropdown menu
+    $('#user-dropdown-menu').on('click', function(e) {
+        e.stopPropagation(); // Prevent the click event from propagating to document
+    });
+
+    // Close dropdown when specific dropdown items are clicked
+    $('#user-dropdown-menu').on('click', 'a', function() {
+        $('#user-dropdown-menu').hide(); // Hide the dropdown menu
+    });
+});
+/***************************************************/
+function redirectToApplicantDashboard(notificationId) {
+        // Assuming your applicant dashboard link is "/applicant_dashboard"
+        window.location.href = "/applicant_dashboard"; // Modify this if your link is different
+        // You can also append any query parameters or additional information if needed
+        // For example: window.location.href = "/applicant_dashboard?id=" + notificationId;
+    }
+
+</script>

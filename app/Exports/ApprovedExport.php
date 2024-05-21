@@ -41,7 +41,7 @@ class ApprovedExport implements FromCollection, WithHeadings, WithStyles
     )
     ->join('applicants_personal_information as personal_info', 'applicants.applicant_id', '=', 'personal_info.applicant_id')
     ->join('applicants_academic_information as academic_info', 'applicants.applicant_id', '=', 'academic_info.applicant_id')
-    ->whereNotIn('applicants.status', ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined'])
+    ->whereNotIn('applicants.status', ['Sent', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined'])
     ->get()
     ->map(function ($item) {
         $item->birthday = Carbon::parse($item->birthday)->format('F d, Y');

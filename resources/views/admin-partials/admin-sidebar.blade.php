@@ -141,12 +141,12 @@
               <i class="icon-user-unfollow menu-icon"></i>
             </a>
           </li>
-          <li class="nav-item">
+          {{-- <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.uploaded-files') }}">
               <span class="menu-title">Uploaded Files</span>
               <i class="icon-notebook menu-icon"></i>
             </a>
-          </li>
+          </li> --}}
           {{-- <li class="nav-item">
             <a class="nav-link" href="pages/charts/chartist.html">
               <span class="menu-title">Scheduling</span>

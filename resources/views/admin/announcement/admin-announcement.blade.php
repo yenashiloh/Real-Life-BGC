@@ -43,17 +43,10 @@
 
               <div class="col-lg-12">
                   <button type="button" class="btn custom-btn btn-fw" style="font-size: 12px; margin-bottom: 20px;" onclick="location.href='{{ route('admin.announcement.add-announcement') }}'">Create</button>
-                  {{-- <div class="row">
-                    @if(session('success'))
-                    <div id="successAlert"  class="alert alert-success alert-dismissible fade show" role="alert" style="text-align: center;">
-                        {{ session('success') }}
-                    </div>
-                    @endif --}}
                       @foreach($announcements as $announcement)
                           <div class="col-md-12 mb-4">
                               <div class="card position-relative">
                                   <div class="position-absolute top-4 end-0 margin-right-6 btn-group dropleft">
-                                    
                                       <i class="bi bi-three-dots" style="cursor: pointer; margin-right: 10px; margin-top: 10px;" onclick="toggleDropdownMenu('dropdownMenu{{ $announcement->id }}')"></i>
                                       <span style="position: absolute; left: -98px; top: 10px;">
                                         @if($announcement->published)
@@ -69,8 +62,11 @@
                                               @method('DELETE')
                                               <button type="button" onclick="confirmDelete('{{ $announcement->id }}')" class="dropdown-item">Delete</button>
                                           </form>
-                                          <a class="dropdown-item" href="{{ route('admin.announcement.publish', ['id' => $announcement->id]) }}">Publish</a>
+                                          @if($announcement->published)
                                           <a class="dropdown-item" href="{{ route('admin.announcement.unpublish', ['id' => $announcement->id]) }}">Unpublish</a>
+                                      @else
+                                          <a class="dropdown-item" href="{{ route('admin.announcement.publish', ['id' => $announcement->id]) }}">Publish</a>
+                                      @endif
                                       </div>
                                     </div>
             

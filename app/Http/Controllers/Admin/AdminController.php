@@ -287,7 +287,7 @@ class AdminController extends Controller
         $totalDeclined = Applicant::where('status', 'Declined')->count();
         $totalApproved = Applicant::where('status', 'Approved')->count();
         $title = 'Dashboard'; 
-        $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
+        $validStatuses = ['Sent', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
     
         $applicantsData = ApplicantsPersonalInformation::select(
             'applicants_personal_information.first_name',
@@ -338,7 +338,7 @@ class AdminController extends Controller
     //applicants data 
     public function showNewApplicants()
     {
-        $title = 'New Applicants';
+        $title = 'All Applicants';
     
         $availableYears = Applicant::selectRaw('YEAR(created_at) as year')
             ->distinct()
@@ -352,7 +352,7 @@ class AdminController extends Controller
     
     public function getApplicantsData($selectedYear = null)
     {
-        $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
+        $validStatuses = ['Sent', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation'];
     
         $query = ApplicantsPersonalInformation::select(
             'applicants_personal_information.first_name',
@@ -406,7 +406,7 @@ class AdminController extends Controller
             }
 
             $status = $request->status;
-            $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Approved', 'Declined'];
+            $validStatuses = ['Sent', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Approved', 'Declined'];
 
             if (!in_array($status, $validStatuses)) {
                 return response()->json(['error' => 'Invalid status'], 400);
@@ -676,7 +676,7 @@ class AdminController extends Controller
     public function getDataForYear(Request $request)
     {
         $selectedYear = $request->input('year');
-        $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined', 'Approved'];
+        $validStatuses = ['Sent', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined', 'Approved'];
         
         $totalApplicants = ApplicantsPersonalInformation::selectRaw('COUNT(*) as total')
             ->join('applicants_academic_information', 'applicants_personal_information.applicant_id', '=', 'applicants_academic_information.applicant_id')

@@ -350,7 +350,7 @@
                             </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary" style="margin-top: 13px;" id="save-changes-btn"
-                                        {{ auth()->user()->status !== 'New Applicant' || in_array(auth()->user()->status, ['Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined']) ? 'disabled' : '' }}>Save
+                                        {{ auth()->user()->status !== 'Sent' || in_array(auth()->user()->status, ['Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined']) ? 'disabled' : '' }}>Save
                                         Changes</button>
                                 </div>
                             </form><!-- End Profile Edit Form -->
@@ -404,7 +404,7 @@
             $('#save-changes-btn').prop('disabled', currentData === initialData);
         }
 
-        if ("{{ auth()->user()->status }}" === "New Applicant") {
+        if ("{{ auth()->user()->status }}" === "Sent") {
             $('#profile-form :input').on('input', function() {
                 checkFormChanges();
             });
@@ -412,7 +412,7 @@
             $('#save-changes-btn').prop('disabled', true);
         }
 
-        if ("{{ auth()->user()->status }}" === "New Applicant") {
+        if ("{{ auth()->user()->status }}" === "Sent") {
             checkFormChanges();
         }
 

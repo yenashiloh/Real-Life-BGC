@@ -73,7 +73,7 @@
                                 <td>{{ $applicant->current_school }}</td>
                                 <td>
                                   <span id="status-{{ $applicant->applicant_id }}" class="badge
-                                    @if($applicant->status === 'New Applicant') badge-primary
+                                    @if($applicant->status === 'Sent') badge-danger
                                     @elseif($applicant->status === 'Under Review') badge-secondary
                                     @elseif($applicant->status === 'Shortlisted') badge-warning
                                     @elseif($applicant->status === 'For Interview') badge-dark
@@ -89,7 +89,7 @@
                                       Action
                                   </button>
                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $applicant->applicant_id }}" >
-                                      @if($applicant->status === 'New Applicant')
+                                      @if($applicant->status === 'Sent')
                                           <li>
                                               <a class="dropdown-item dropdown-blue" href="#" data-action="Under Review" data-applicant-id="{{ $applicant->applicant_id }}" data-route="{{ route('update.status') }}" >
                                                   Under Review
@@ -250,7 +250,7 @@ $(document).ready(function() {
                                     var badgeElement = $('#status-' + applicant_id);
                                     var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(2)').text();
                                     var alertHTML = '<div class="alert alert-success" role="alert" style="text-align:center;">' +
-                                        '<strong>' + applicantFullName + ' has been successfully change the status' + newStatus + '</strong>' +
+                                        '<strong>' + applicantFullName + ' is now '  + newStatus + '</strong>' +
                                         '</div>';
 
                                     $('.datatable').before(alertHTML);
@@ -260,7 +260,7 @@ $(document).ready(function() {
                                     badgeElement.removeClass('badge-primary badge-secondary badge-warning badge-dark badge-success');
 
                                     switch (newStatus) {
-                                        case 'New Applicant':
+                                        case 'Sent':
                                             badgeElement.addClass('badge-primary');
                                             break;
                                         case 'Under Review':
@@ -287,7 +287,7 @@ $(document).ready(function() {
                                     } else {
                                         var dropdownContent = '';
                                         switch (newStatus) {
-                                            case 'New Applicant':
+                                            case 'Sent':
                                                 dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Under Review</a></li>' +
                                                     '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
                                                 $('#status-' + applicantId).addClass('badge status-new-applicant');

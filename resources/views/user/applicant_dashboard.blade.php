@@ -35,23 +35,23 @@
                                                 $badgeStyle = '';
 
                                                 switch ($status) {
-                                                    case 'New Applicant':
-                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;  font-family: "Poppins", sans-serif;';
+                                                    case 'Sent':
+                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;  ';
                                                         break;
                                                     case 'Under Review':
-                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;  font-family: "Poppins", sans-serif; ';
+                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;   ';
                                                         break;
                                                     case 'Declined':
                                                         $badgeStyle = 'background-color: #F8D7DA; color: #58151C;';
                                                         break;
                                                     case 'Shortlisted':
-                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;  font-family: "Poppins", sans-serif;';
+                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;  ';
                                                         break;
                                                     case 'For Interview':
-                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;  font-family: "Poppins", sans-serif;';
+                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;  ';
                                                         break;
                                                     case 'For House Visitation':
-                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;  font-family: "Poppins", sans-serif;';
+                                                        $badgeStyle = 'background-color: #CFE2FF; color: #052C92;  ';
                                                         break;
                                                     default:
                                                         $badgeStyle = 'background-color: gray; color: black;';
@@ -92,14 +92,14 @@
                                         <div class="alert alert-success">{{ session('status') }}</div>
                                     @endif
                                 
-                                    <h5 style="font-weight: bold;">Requirements <i class="fa fa-plus-circle clickable-icon" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#basicModal"></i></h5>
+                                    <h5 style="font-weight: bold; font-size: 22px;">Requirements <i class="fa fa-plus-circle clickable-icon" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#basicModal"></i></h5>
                                     <br>
                                 
                                     <!-- ADD DOCUMENTS -->
                                     <div class="alert alert-success" id="successMessage" style="display: none; text-align: center;">
                                         Upload Successfully!
                                     </div>
-                                    <div id="successEditMessage" class="alert alert-success" style="display: none; text-align: center;">Edit Successfully!</div>
+                                    <div id="successEditMessage" class="alert alert-success" style="display: none; text-align: center;">Update Successfully!</div>
                                     
                                     <div class="modal fade" id="basicModal" tabindex="-1">
                                         <form id="uploadForm" action="{{ route('applicant_dashboard.requirements') }}" method="POST">
@@ -108,7 +108,6 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Add Document</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <!-- Document Type -->
@@ -152,7 +151,7 @@
                                                         </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                <button type="button" id="submitForm" class="btn btn-primary" disabled>Submit</button>
+                                                                <button type="button" id="submitForm" class="btn " disabled>Submit</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -160,66 +159,112 @@
                                             </div>
                                             
                                         <!----DISPLAY TABLE-->
-                                        <div class="table-responsive">
-                                            <table id="example" class="table table-striped table-bordered">
-                                                <thead>
-                                                    <tr class="data-tables" >
-                                                        <th>#</th>
-                                                        <th style="font-size: 15px;">Document Type</th>
-                                                        <th>Notes</th>
-                                                        <th>Uploaded Document</th>
-                                                        <th>Status</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($reportcardData as $index => $requirement)
-                                                    <tr class="data">
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $requirement->document_type }}</td>
-                                                        <td>{{ $requirement->notes }}</td>
-                                                        <td> 
-                                                            @if(Storage::exists($requirement->uploaded_document))
-                                                            <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ basename($requirement->uploaded_document) }}" style="text-decoration: underline; color: #1e2482;">
-                                                                {{ basename($requirement->uploaded_document) }}
-                                                            </a>
-                                                        @else
-                                                            File not found
-                                                        @endif
-                                                        
-                                                        </td>
-                                                        <td>
-                                                            @php
-                                                            $status = $requirement->status;
-                                                            $badgeClass = '';
-                                                            
-                                                            switch ($status) {
-                                                                case 'Approved':
-                                                                    $badgeClass = 'badge-success';
-                                                                    break;
-                                                                case 'Declined':
-                                                                    $badgeClass = 'badge-danger';
-                                                                    break;
-                                                                default:
-                                                                    $badgeClass = 'badge-primary';
-                                                            }
-                                                            @endphp
-                                                        
-                                                            <span class="badge {{ $badgeClass }}">{{ $status }}</span>
-                                                        </td>   
-                                                        <td>
-                                                            @if ($requirement->status !== 'Approved' && $requirement->status !== 'Declined')
-                                                                <button type="button" class="btn edit-button" data-requirement-id="{{ $requirement->id }}">
-                                                                    Edit
-                                                                </button>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table id="example" class="table table-striped table-bordered">
+                                                        <thead>
+                                                            <tr class="data-tables">
+                                                                <th>#</th>
+                                                                <th style="font-size: 15px;">Document Type</th>
+                                                                <th>Notes</th>
+                                                                <th>Uploaded Document</th>
+                                                                <th>Status</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($reportcardData as $index => $requirement)
+                                                            <tr class="data">
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ $requirement->document_type }}</td>
+                                                                <td class="notes-column">{{ $requirement->notes }}</td>
+                                                                <td> 
+                                                                    @if(Storage::exists($requirement->uploaded_document))
+                                                                    <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ basename($requirement->uploaded_document) }}" style="text-decoration: underline; color: #1e2482;">
+                                                                        {{ basename($requirement->uploaded_document) }}
+                                                                    </a>
+                                                                    @else
+                                                                    File not found
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    @php
+                                                                    $status = $requirement->status;
+                                                                    // $badgeClass = '';
+                                                                    $badgeStyle = '';
+                                                                    
+                                                                    switch ($status) {
+                                                                        case 'Approved':
+                                                                        $badgeStyle = 'background-color: #71BF44; color: #fff;'; 
+                                                                            break;
+                                                                        case 'Declined':
+                                                                        $badgeStyle = 'background-color:  rgb(250, 0, 0); color: #fff;'; 
+                                                                            break;
+                                                                        default:
+                                                                        $badgeStyle = 'background-color:  rgb(41, 17, 254); color: #fff;'; ;
+                                                                    }
+                                                                    @endphp
+                                                                    
+                                                                    <span class="badge"  style="{{ $badgeStyle }}"> {{ $status }}</span>
+                                                                </td>   
+                                                                <td>
+                                                                    @if ($requirement->status !== 'Approved' && $requirement->status !== 'Declined')
+                                                                    <button type="button" class="btn btn-dark edit-button" data-requirement-id="{{ $requirement->id }}">
+                                                                        Edit
+                                                                    </button>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
-
+                                        
+                                        <h5 style="font-weight: bold; font-size: 22px; margin-top: 80px;">Monitoring Checklist </h5>
+                                        <div class="card mt-4">
+                                            <div class="card-body">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                @php
+                                                                    $halfway = ceil(count($documentTypes) / 2); // Calculate halfway point
+                                                                @endphp
+                                                                @foreach($documentTypes as $index => $docType)
+                                                                    @if($index < $halfway)
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="checkbox" name="document_types[]" value="{{ $docType }}" id="flexCheckDefault{{ $index + 1 }}">
+                                                                            <label class="form-check-label" for="flexCheckDefault{{ $index + 1 }}" style="font-size: 17px;">
+                                                                                {{ $docType }}
+                                                                            </label>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                @foreach($documentTypes as $index => $docType)
+                                                                    @if($index >= $halfway)
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input " type="checkbox" name="document_types[]" value="{{ $docType }}" id="flexCheckDefault{{ $index + 1 }}" > 
+                                                                            <label class="form-check-label" for="flexCheckDefault{{ $index + 1 }}" style="font-size: 18px;">
+                                                                                {{ $docType }}
+                                                                            </label>
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br><br>
+                                            
                                        <!-- Edit Document Modal -->
                                         <div class="modal fade" id="editModal" tabindex="-1">
                                             <form id="editForm" method="POST" enctype="multipart/form-data">
@@ -227,8 +272,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Edit Document</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <h5 class="modal-title f-para" sty>Edit Document</h5> 
                                                         </div>
                                                         <div class="modal-body">
                                                             <!-- Document Type -->
@@ -246,7 +290,7 @@
                                                                     <option value="Report Card / Grades">Report Card / Grades</option>
                                                                     <option value="Prospectus">Prospectus</option>
                                                                     <option value="Official Grading System">Official Grading System</option>
-                                                                    <option value="Tuition Projection">Tuition Projection</option>
+                                                                    <option value="Tuition Projection">Tuition Projection (For Private Only)</option>
                                                                     <option value="Admission Slip">Admission Slip</option>
                                                                 </select>
                                                             </div>
@@ -283,6 +327,24 @@
         
         <script src="assets/js/applicant_dashboard.js"></script>
         <script src="assets/js/edit_documents.js"></script>
+        {{-- <script src="assets-admin/js/checklist.js"></script> --}}
+        <script src="assets/js/applicant_checklist.js"></script>
+        <script>
+              document.addEventListener('DOMContentLoaded', function() {
+        const reportcardData = @json($reportcardData);
+
+        reportcardData.forEach(requirement => {
+            const documentType = requirement.document_type;
+            const status = requirement.status;
+
+            // Find the corresponding checkbox and check it if the status is 'Approved'
+            const checkbox = document.querySelector(`input[value='${documentType}']`);
+            if (checkbox && status === 'Approved') {
+                checkbox.checked = true;
+            }
+        });
+    });
+        </script>
     </body>
     </html>
 

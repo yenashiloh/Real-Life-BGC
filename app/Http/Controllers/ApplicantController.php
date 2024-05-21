@@ -11,6 +11,7 @@ use App\Models\Announcement;
 use App\Models\ApplicantsAcademicInformation;
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
+use App\Models\ApplicantsFamilyInformation;
 use App\Models\Household;
 use App\Models\Member;
 use App\Models\NotificationApplicant;
@@ -61,21 +62,39 @@ class ApplicantController extends Controller
 
     public function userHome()
     {
-        $title = 'Real LIFE Foundation - Home';
-        return view('user.home', compact('title'));
+        $title = 'Home';
+        $applicantId = auth()->id();
+        $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
+        return view('user.home', compact('title', 'personalInfo' ));
     }
 
     public function applicantDashboard()
-        {
-            $applicantId = auth()->id();
-            $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
-            $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
-            $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
-            $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
-            $title = 'Dashboard';
-            $reportcardData = Requirement::where('applicant_id', $applicantId)->get();
-            return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'personalInfo' , 'reportcardData'));
-        }
+    {
+        $applicantId = auth()->id();
+        $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
+        $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
+        $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
+        $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
+        $title = 'Dashboard';
+        $reportcardData = Requirement::where('applicant_id', $applicantId)->get();
+        $documentTypes = [
+            "Signed Application Form",
+            "Birth Certificate",
+            "Character Evaluation Forms",
+            "Proof of Financial Status",
+            "Payslip / DSWD Report / ITR",
+            "Two References Form",
+            "Home Visitation Form",
+            "Report Card / Grades",
+            "Prospectus",
+            "Official Grading System",
+            "Tuition Projection",
+            "Admission Slip"
+        ];
+
+        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 
+        'academicInfoChoiceData', 'personalInfo' , 'reportcardData', 'documentTypes'));
+    }
 
 
         public function personalDetails()
@@ -113,7 +132,7 @@ class ApplicantController extends Controller
         ]);
     }
 
-        //UPLOAD REQUIREMENTS AND NOTIFICATIONS(ADMIN)
+    //UPLOAD REQUIREMENTS AND NOTIFICATIONS(ADMIN)
     public function uploadRequirements(Request $request)
     {
          $request->validate([
@@ -220,7 +239,7 @@ class ApplicantController extends Controller
 
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
-        $data['status'] = 'New Applicant';
+        $data['status'] = 'Sent';
         $applicant = Applicant::create($data);
 
         if ($applicant) {
@@ -522,7 +541,7 @@ class ApplicantController extends Controller
         }
     }
     
-        //update documents uploaded
+    //update documents uploaded
     public function update(Request $request, $id)
     {
         try {
@@ -567,5 +586,131 @@ class ApplicantController extends Controller
         }
 
         return response()->json($document);
+    }
+
+    function screeningPost(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'email' => 'required|email|unique:applicants',
+            'password' => 'required|min:8',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'contact' => 'required',
+            'birthdate' => 'required',
+            'houseNumber' => 'required',
+            'street' => 'required',
+            'barangay' => 'required',
+            'municipality' => 'required',
+        ]);
+        
+        $data['email'] = $request->email;
+        $data['password'] = Hash::make($request->password);
+        $data['status'] = 'Sent';
+        $applicant = Applicant::create($data);
+
+        if ($applicant) {
+            $personalInfoData = [
+                'applicant_id' => $applicant->applicant_id,
+                'first_name' => $request->firstname,
+                'last_name' => $request->lastname,
+                'contact' => $request->contact,
+                'birthday' => $request->birthdate,
+                'house_number' => $request->houseNumber,
+                'street' => $request->street,
+                'barangay' => $request->barangay,
+                'municipality' => $request->municipality
+            ];
+            ApplicantsPersonalInformation::create($personalInfoData);
+
+            $gradeMapping = [
+                'GradeSeven' => 'Grade 7',
+                'GradeEight' => 'Grade 8',
+                'GradeNine' => 'Grade 9',
+                'GradeTen' => 'Grade 10',
+                'GradeEleven' => 'Grade 11',
+                'GradeTwelve' => 'Grade 12',
+                'FirstYear' => 'First Year College',
+                'SecondYear' => 'Second Year College',
+                'ThirdYear' => 'Third Year College',
+            ];
+
+            $incomingGrade = $request->incomingGrade;
+            $convertedGrade = isset($gradeMapping[$incomingGrade]) ? $gradeMapping[$incomingGrade] : $incomingGrade;
+
+            $academicInfoData = [
+                'applicant_id' => $applicant->applicant_id,
+                'incoming_grade_year' => $convertedGrade,
+                'current_course_program_grade' => $request->currentProgram,
+                'current_school' => $request->currentSchool
+            ];
+
+            ApplicantsAcademicInformation::create($academicInfoData);
+
+
+            $academicInfoChoiceData = [
+                'applicant_id' => $applicant->applicant_id,
+                'first_choice_school' => $request->schoolChoice1,
+                'second_choice_school' => $request->schoolChoice2,
+                'third_choice_school' => $request->schoolChoice3,
+                'first_choice_course' => $request->courseChoice1,
+                'second_choice_course' => $request->courseChoice2,
+                'third_choice_course' => $request->courseChoice3,
+            ];
+            ApplicantsAcademicInformationChoice::create($academicInfoChoiceData);
+
+            $academicInfoGradesData = [
+                'applicant_id' => $applicant->applicant_id,
+                'latestAverage' => $request->latestAverage,
+                'latestGWA' => $request->latestGWA,
+                'scopeGWA' => $request->scopeGWA,
+                'equivalentGrade' => $request->equivalentGrade
+            ];
+            ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
+
+            $familyInformationData = [
+                'applicant_id' => $applicant->applicant_id,
+                'total_household_members' => $request->householdMembers,
+                'father_occupation' => $request->fatherOccupation,
+                'father_income' => $request->fatherIncome,
+                'mother_occupation' => $request->motherOccupation,
+                'mother_income' => $request->incomeMother,
+                'total_support_received' => $request->supportReceived
+            ];
+            ApplicantsFamilyInformation::create($familyInformationData);
+            
+            $reportcardFile = $request->file('ReportCard');
+            $reportcardfilename = $reportcardFile->getClientOriginalName();
+            $fileName = pathinfo($reportcardfilename, PATHINFO_FILENAME);
+            $extension = $reportcardFile->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . $extension;
+
+            $reportcardData = [
+                'applicant_id' => $applicant->applicant_id,
+                'document_type' => 'Report Card / Grades',
+                'uploaded_document' => $reportcardFile->storeAs('ReportCards', $fileName, 'public'),
+                'status' => 'For Review',
+            ];
+            Requirement::create($reportcardData);
+
+            $payslipFile = $request->file('payslip');
+            $payslipfilename = $payslipFile->getClientOriginalName();
+            $fileName = pathinfo($payslipfilename, PATHINFO_FILENAME);
+            $extension = $payslipFile->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . $extension;
+
+            $payslipData = [
+                'applicant_id' => $applicant->applicant_id,
+                'document_type' => 'Payslip / DSWD Report / ITR',
+                'uploaded_document' => $payslipFile->storeAs('Payslips', $fileName, 'public'),
+                'status' => 'For Review',
+            ];
+            Requirement::create($payslipData);
+
+            return redirect(route('login'))->with("success", "Registration success, Login to access the app");
+        } else {
+            Log::error("Registration failed. Applicant creation failed.");
+        return redirect(route('register'))->with("error", "Registration failed, try again.");
+        }
     }
 }

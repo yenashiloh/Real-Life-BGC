@@ -51,7 +51,7 @@
                                   <a href="{{ route('admin.registration') }}" class="btn px-0"><i class="icon-user-follow mr-2"></i>Create Account</a>
                               </div>
                               <div class="col-sm-6 col-md-4 p-3 text-center btn-wrapper">
-                                  <button type="button" class="btn px-0"><i class="icon-layers mr-2"></i>Create Content</button>
+                                  <button type="button" class="btn px-0"><i class="icon-envelope-open menu-icon mr-2"></i>Email</button>
                               </div>
                           </div>
                       </div>

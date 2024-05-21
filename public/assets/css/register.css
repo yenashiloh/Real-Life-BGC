@@ -8,13 +8,13 @@
 
   /* --- Colors --- */
 
-  --light-blue-100: 199, 84%, 55%; /* #2bb0ed */
-  --light-blue-500: 202, 83%, 41%; /* #127fbf */
-  --light-blue-900: 204, 96%, 27%; /* #035388 */
+  --light-blue-100: #111111;
+  --light-blue-500: #111111;; /* #127fbf */
+  --light-blue-900: #111111; /* #035388 */
 
   --blue-100:       210, 22%, 49%; /* #627d98 */
-  --blue-500:       209, 34%, 30%; /* #334e68 */
-  --blue-900:       209, 61%, 16%; /* #102a43 */
+  --blue-500:       #111111; /* #334e68 */
+  --blue-900:       #111111; /* #102a43 */
 
   --gray-100:       210, 36%, 96%; /* #f0f4F8 */
   --gray-300:       212, 33%, 89%; /* #d9e2ec */
@@ -26,7 +26,7 @@
 
   /* --- Typography --- */
 
-  --font-family-sans-serif: "Poppins", sans-serif;
+  --font-family-sans-serif: "Cabin", sans-serif;
 
   /* --- Layout --- */
 
@@ -90,8 +90,8 @@
 }
 
 body {
-  background-color: hsl(var(--gray-100));
-  color: hsl(var(--blue-900));
+  background-color:  #f8f8f8;
+  color: #111111;
   font-family: var(--font-family-sans-serif);
   font-size: 1.6rem;
   font-weight: 500;
@@ -973,7 +973,7 @@ a:focus {
     letter-spacing: var(--label-text-letter-spacing);
   }
 
-  .form__field input {
+  /* .form__field input {
     width: 100%;
     box-sizing: border-box;
     height: var(--field-height);
@@ -987,7 +987,7 @@ a:focus {
     font-weight: var(--field-text-font-weight);
     letter-spacing: var(--field-text-letter-spacing);
     transition: border-color 0.3s ease;
-  }
+  } */
 
   .form__field input:focus {
     outline: none;

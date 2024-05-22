@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ApplicantsFamilyInformation extends Model
 {
+    use HasFactory;
+    
     protected $fillable = [
         'family_id',
         'applicant_id',

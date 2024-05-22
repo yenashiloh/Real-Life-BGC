@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('applicants_family_information', function (Blueprint $table) {
             $table->id('family_id'); // Change the column name to 'family_id'
-          
+            $table->unsignedBigInteger('applicant_id');
+            $table->foreign('applicant_id')->references('applicant_id')->on('applicants')->onDelete('cascade');
             $table->integer('total_household_members');
             $table->string('father_occupation')->nullable();
             $table->decimal('father_income', 10, 2)->nullable();

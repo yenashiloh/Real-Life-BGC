@@ -31,9 +31,8 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/register', [ApplicantController::class, 'register'])->name('register');
     Route::post('/register', [ApplicantController::class, 'registerPost'])->name('register.post');
 
-    Route::post('/registration', [ApplicantController::class, 'screeningPost'])->name('screening.post');
-
     Route::get('/registration', [ApplicantController::class, 'registration'])->name('registration');
+    Route::post('/registration', [ApplicantController::class, 'screeningPost'])->name('screening.post');
 
     Route::get('/email', [EmailController::class, 'create']);
     Route::post('/email', [EmailController::class, 'sendEmail'])->name('send.email');

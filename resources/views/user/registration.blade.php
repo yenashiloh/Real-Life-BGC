@@ -462,7 +462,7 @@
             Mother's Occupation
              <span data-required="true" aria-hidden="true"></span>
            </label>
-           <input value="" id="motherOccupation" type="number" name="motherOccupation" autocomplete="motherOccupation" required>
+           <input value="" id="motherOccupation" type="text" name="motherOccupation" autocomplete="motherOccupation" required>
          </div>
 
          <div class="mt-3 form__field">
@@ -554,7 +554,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </script> --}}
 
-<script>
+{{-- <script>
   $(document).ready(function() {
     $('#submitButton').on('click', function(e) {
         e.preventDefault(); 
@@ -577,4 +577,4 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-</script>
+</script> --}}

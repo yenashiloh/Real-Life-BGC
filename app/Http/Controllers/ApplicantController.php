@@ -11,7 +11,7 @@ use App\Models\Announcement;
 use App\Models\ApplicantsAcademicInformation;
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
-use App\Models\ApplicantsFamilyInformation;
+use App\ApplicantsFamilyInformation;
 use App\Models\Household;
 use App\Models\Member;
 use App\Models\NotificationApplicant;
@@ -709,8 +709,7 @@ class ApplicantController extends Controller
 
             return redirect(route('login'))->with("success", "Registration success, Login to access the app");
         } else {
-            Log::error("Registration failed. Applicant creation failed.");
-        return redirect(route('register'))->with("error", "Registration failed, try again.");
+            return redirect(route('registration'))->with("error", "Registration failed, try again.");
         }
     }
 }

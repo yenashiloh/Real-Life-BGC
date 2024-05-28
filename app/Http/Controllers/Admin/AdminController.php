@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Notifications\StatusUpdateNotification; 
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
+use App\Models\ApplicantsFamilyInformation;
 use App\Models\Member;
 use App\Models\Notification;
 use App\Models\NotificationApplicant;
@@ -25,10 +26,6 @@ use App\Exports\ApplicantsExport;
 use App\Exports\ApprovedExport;
 use App\Exports\DeclinedExport;
 use Maatwebsite\Excel\Facades\Excel;
-
-
-
-
 
 
 class AdminController extends Controller
@@ -64,7 +61,6 @@ class AdminController extends Controller
         return view('admin.dashboard', ['title' => $title]);
         
     }
-
 
     //admin profile
     public function adminProfile()
@@ -514,7 +510,7 @@ class AdminController extends Controller
         $email = $applicantData ? $applicantData->email : null;
         $status = $applicantData ? $applicantData->status : null;
 
-        $members = Member::where('applicant_id', $id)->get();
+        $members = ApplicantsFamilyInformation::where('applicant_id', $id)->get();
         $reportcardData = Requirement::where('applicant_id', $id)->get();
 
         $documentTypes = [
@@ -599,7 +595,7 @@ class AdminController extends Controller
     }
     
     // fetch notification
-    public function fetchNotificationCount()
+        public function fetchNotificationCount()
     {
         try {
             $count = Notification::where('status', 'unread')->count();
@@ -774,6 +770,9 @@ class AdminController extends Controller
         
         return redirect()->back()->with('success', 'Announcement unpublished successfully!');
     }
+
+    //Application Settings
+  
         
 }    
 

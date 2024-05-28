@@ -4,11 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta name="csrf_token" content="{{ csrf_token() }}" />
-
     <title>{{ $title }}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicons -->
     <link href="assets/img/RLlogo1.png" rel="icon">
@@ -39,8 +38,9 @@
 
   <!-- Progress Form -->
 
-    <form class="form w-lg-500px mx-auto" action="{{ route('screening.post') }}" method="POST" id="progress-form"  lang="en" novalidate enctype="multipart/form-data">
+    <form class="p-4 progress-form" action="{{ route('screening.post') }}" method="POST" id="progress-form"  lang="en" novalidate enctype="multipart/form-data">
       @csrf
+      @if ($applicationOpen)
     <!-- Step Navigation -->
     <div class="d-flex align-items-start mb-3 sm:mb-5 progress-form__tabs" role="tablist">
       <button id="progress-form__tab-1" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button" role="tab" aria-controls="progress-form__panel-1" aria-selected="true">
@@ -127,7 +127,7 @@
         {{-- <span id="error-message" style="color: red; font-size: 10px;">Please agree before proceeding.</span> --}}
         <div class="mt-1 form__field">
           <label class="form__choice-wrapper">
-            <input value="" id="agree" type="checkbox" name="agree">
+            <input value="" id="email-newsletter" type="checkbox" name="agree">
         <span>
             I understand that the information I will provide will be used by Real LIFE Foundation to screen and process my application for SY 2023-2024. I give my consent to Real LIFE to use the data I will provide and the file attachments for the said application.
         </span>
@@ -478,7 +478,7 @@
             Total Support Received
              <span data-required="true" aria-hidden="true"></span>
            </label>
-           <input value="" id="supportReceived" type="number" name="supportReceived" autocomplete="supportReceived" required>
+           <input value="" id="supportReceived" type="text" name="supportReceived" autocomplete="supportReceived" required readonly>
          </div>
       </div>
     
@@ -492,7 +492,10 @@
       </div>
     </section>
   </form>
-    
+
+  @else
+  <p>The screening form is currently closed.</p>
+@endif
   
   <!-- / End Progress Form -->
 
@@ -554,27 +557,59 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </script> --}}
 
-{{-- <script>
-  $(document).ready(function() {
-    $('#submitButton').on('click', function(e) {
-        e.preventDefault(); 
+<script>
+   $(document).ready(function() {
+      var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-        var formData = new FormData($('#progress-form')[0]);
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': csrfToken
+          }
+      });
 
-        $.ajax({
-            type: 'POST',
-            url: '{{ route('screening.post') }}', 
-            data: formData,
-            processData: false, 
-            contentType: false, 
-            success: function(response) {
-                alert('Registration successful!');
-            },
-            error: function(xhr, status, error) {
-                alert('Registration failed. Please try again.');
-            }
-        });
-    });
-});
+      $('#submitButton').on('click', function(e) {
+          e.preventDefault();
 
-</script> --}}
+          // Change the button text to "Submitting..." and disable it
+          $(this).text('Submitting...').prop('disabled', true);
+
+          var formData = new FormData($('#progress-form')[0]);
+          formData.append('_token', csrfToken);
+
+          $.ajax({
+              type: 'POST',
+              url: '{{ route('screening.post') }}',
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function(response) {
+                  window.location.href = '{{ route('verification') }}';
+              },
+              error: function(xhr, status, error) {
+                console.log(xhr);  // Debugging line to see the error
+                if (xhr.status == 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessage = "";
+                    $.each(errors, function(key, value) {
+                        if (key === 'email' && value[0] === 'The email has already been taken.') {
+                            errorMessage = "The email address is already registered. Please use a different email.  ";
+                        } else {
+                            errorMessage += value[0] + "\n";
+                        }
+                    });
+                    alert(errorMessage);
+                } else if (xhr.status == 419) {
+                    alert('Session expired. Please refresh the page and try again.');
+                } else {
+                    alert('Registration failed. Please try again.');
+                  }
+
+                  $('#error-messages').html(errorMessage);
+
+                  // Re-enable the button and reset the text
+                  $('#submitButton').text('Submit').prop('disabled', false);
+              }
+          });
+      });
+  });
+</script>

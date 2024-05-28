@@ -12,16 +12,19 @@
       background-color: #ffffff; /* Primary color */
       color: #000000; /* Text color */
   }
+  .new-notification {
+        background-color: #e7f3ff; /* Light blue background for new notifications */
+    }
 </style>
 
 <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex align-items-center">
-        <a class="navbar-brand brand-logo" href="index.html">
+        <a class="navbar-brand brand-logo" href="/dashboard">
         <h4 style="color: white;">Real LIFE Foundation</h4>
         </a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><h4 style="color: white;">Real LIFE Foundation</h4></a>
+        <a class="navbar-brand brand-logo-mini" href="/dashboard"><h4 style="color: white;">Real LIFE Foundation</h4></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center flex-grow-1">
         <h5 class="mb-0 font-weight-medium d-none d-lg-flex">Welcome, {{ Session::get('adminFirstName') }}!</h5>
@@ -31,47 +34,46 @@
               <input type="search" class="form-control" id="searchInput" placeholder="Search Here" title="Search here">
           </form> --}}
           <li class="nav-item dropdown">
-              <a class="nav-link count-indicator message-dropdown" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                  <i class="icon-bell"></i>
-                  @php
-                  $unreadCount = \App\Models\Notification::where('status', 'unread')->count();
-              @endphp
-              @if ($unreadCount > 0)
-                  <span id="notificationCount" class="count">{{ $unreadCount }}</span>
-              @endif
-              </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown" style="max-height: 450px; overflow-y: auto;">
+            <a class="nav-link count-indicator message-dropdown" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <i class="icon-bell"></i>
+                @php
+                    $unreadCount = \App\Models\Notification::where('status', 'unread')->count();
+                @endphp
+                @if ($unreadCount > 0)
+                    <span id="notificationCount" class="count">{{ $unreadCount }}</span>
+                @endif
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown" style="max-height: 450px; overflow-y: auto;">
                 <a class="dropdown-item py-3">
                     <p class="mb-0 font-weight-medium float-left">Notifications</p>
                 </a>
                 <div class="dropdown-divider"></div>
                 @if($notifications->isEmpty())
-                <div class="preview-item-content flex-grow py-2">
-                <p class="font-weight-light small-text text-center">No notifications</p>
-              </div>
-            @else
-                @foreach($notifications as $notification)
-                    <a href="/applicants/{{ $notification->applicant_id }}" class="dropdown-item preview-item" data-notification-id="{{ $notification->id }}">
-                        <div class="preview-thumbnail">
-                            <img src="../assets-new-admin/images/faces/face23.png" alt="image" class="img-sm profile-pic">
-                        </div>
-                        <div class="preview-item-content flex-grow py-2">
-                            <p class="preview-subject ellipsis font-weight-medium text-dark">{{ $notification->applicant_name }}</p>
-                            <p class="font-weight-light small-text">{{ $notification->message }}</p>
-                            <span></span>
-                            <p class="font-weight-light" style="font-size:12px; font-style: italic;">
-                                @if($notification->created_at->gt(now()->subDay()))
-                                    {{ $notification->created_at->diffForHumans() }}
-                                @else
-                                    {{ $notification->created_at->format('F d, Y \a\t g:iA') }}
-                                @endif
-                            </p>
-                        </div>
-                    </a>
-                    <hr style="margin: 0;">
-                @endforeach
-            @endif
-            
+                    <div class="preview-item-content flex-grow py-2">
+                        <p class="font-weight-light small-text text-center">No notifications</p>
+                    </div>
+                @else
+                    @foreach($notifications as $notification)
+                        <a href="/applicants/{{ $notification->applicant_id }}" class="dropdown-item preview-item @if($notification->status == 'unread') new-notification @endif" data-notification-id="{{ $notification->id }}">
+                            <div class="preview-thumbnail">
+                                <img src="../assets-new-admin/images/faces/face23.png" alt="image" class="img-sm profile-pic">
+                            </div>
+                            <div class="preview-item-content flex-grow py-2">
+                                <p class="preview-subject ellipsis font-weight-medium text-dark">{{ $notification->applicant_name }}</p>
+                                <p class="font-weight-light small-text">{{ $notification->message }}</p>
+                                <span></span>
+                                <p class="font-weight-light" style="font-size:12px; font-style: italic;">
+                                  @if($notification->created_at->gt(now()->subDay()))
+                                      {{ $notification->created_at->setTimezone('Asia/Manila')->diffForHumans() }}
+                                  @else
+                                      {{ $notification->created_at->setTimezone('Asia/Manila')->format('F d, Y \a\t g:iA') }}
+                                  @endif
+                                </p>
+                            </div>
+                        </a>
+                        <hr style="margin: 0;">
+                    @endforeach
+                @endif
             </div>            
           </li>
           <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
@@ -170,6 +172,12 @@
             <a class="nav-link"  href="{{ route('admin.email.email') }}">
               <span class="menu-title">Email</span>
               <i class=" icon-envelope-open menu-icon"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href="{{ route('admin.application-settings') }}">
+              <span class="menu-title">Application Settings</span>
+              <i class=" icon-settings menu-icon"></i>
             </a>
           </li>
           <li class="nav-item">

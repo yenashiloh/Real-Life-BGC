@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\ApplicationSettingsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,23 +20,35 @@ use App\Http\Controllers\EmailController;
 */
 
 
-// applicant
+// ANNOUNCEMENT
 Route::get('/announcement', [ApplicantController::class, 'announcement'])->name('announcement')->middleware('PreventBackHistory');
+
+//CONTACT
 Route::get('/contact', [ApplicantController::class, 'contact'])->name('contact')->middleware('PreventBackHistory');
+
+//FAQ
 Route::get('/faq', [ApplicantController::class, 'faq'])->name('faq')->middleware('PreventBackHistory');
 
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/', [ApplicantController::class, 'index']);
   
+    //APPLICANT LOGIN 
     Route::get('/login', [ApplicantController::class, 'login'])->name('login');
     Route::post('/login', [ApplicantController::class, 'loginPost'])->name('login.post');
 
     Route::get('/register', [ApplicantController::class, 'register'])->name('register');
     Route::post('/register', [ApplicantController::class, 'registerPost'])->name('register.post');
 
+    //APPLICANT APPLICATION FORM
     Route::get('/registration', [ApplicantController::class, 'registration'])->name('registration');
     Route::post('/registration', [ApplicantController::class, 'screeningPost'])->name('screening.post');
 
+    //EMAIL VERIFICATION 
+    Route::get('/verify-email/{token}', [VerificationController::class, 'verify'])->name('verify');
+    Route::get('/verification', [ApplicantController::class, 'showVerification'])->name('verification');
+    Route::get('/verification_success', [VerificationController::class, 'showVerificationSucess'])->name('verification_sucess');
+
+    //EMAIL 
     Route::get('/email', [EmailController::class, 'create']);
     Route::post('/email', [EmailController::class, 'sendEmail'])->name('send.email');
     Route::get('/android_app/android_announcement', [ApplicantController::class, 'androidAnnouncement'])->name('android_app.android_announcement');
@@ -41,7 +56,9 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     
 });
 Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
+    //HOME PAGE
     Route::get('/home', [ApplicantController::class, 'userHome'])->name('user.home');
+    //PERSONAL DETAILS
     Route::get('/personal-details', [ApplicantController::class, 'personalDetails'])->name('user.profile');
     Route::post('/logout', [ApplicantController::class, 'logout']);
 
@@ -124,8 +141,6 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
         Route::post('/{id}/notify', [EmailController::class, 'notifyApplicant'])->name('notify.applicant');
         Route::get('/{id}/approved-documents', [AdminController::class, 'getApprovedDocuments'])->name('applicants.approved_documents');
     });
-    
-    
 
     //FILE UPDATE STATUS
     Route::post('/applicants/{requirement_id}', [AdminController::class, 'fileStatus'])->name('requirements.file-status');
@@ -163,8 +178,11 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
 
     Route::get('/get-data-for-applicant-year', [AdminController::class, 'getDataForApplicantYear'])->name('get-data-for-applicant-year');
 
-    // Route::get('/api/approved-documents', 'AdminController@getApprovedDocuments');
+    Route::get('/application-settings', [ApplicationSettingsController::class, 'showApplicationSettings'])->name('admin.application-settings');
 
+    // Route::put('/application_settings/{id}', [ApplicationSettingsController::class, 'update'])->name('application_settings.update');
+    Route::post('/application-settings/save', [ApplicationSettingsController::class, 'save'])->name('application.settings.save');
+    Route::get('/fetch-notification-count', [ApplicationSettingsController::class, 'fetch'])->name('application-settings.save');
 
 
 });

@@ -27,6 +27,9 @@
     .custom-checkbox .form-check-input {
         border-color: black;
     }
+    .capitalize{
+      text-transform: capitalize;
+    }
     </style>
   </head>
   <body>
@@ -52,7 +55,7 @@
                   </li>
         
                   <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#household">Household Information</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#household">Family Information</button>
                   </li>
         
                   <li class="nav-item">
@@ -157,22 +160,56 @@
         
                     <form>
                       <div class="row mb-2">
-                        
+                        <div class="col-lg-4 col-md-4 label" style="margin-top: 20px; color: #0A6E57; font-weight: bold;">ACADEMIC INFORMATION</div>
+                    </div>
+                      <div class="row mb-2"> 
                         <div class="col-lg-4 col-md-4 label">Incoming Grade</div>
-                        <div class="col-lg-7 col-md-8">{{ $applicant->academicInformation->incoming_grade_year }}</div>
+                        <div class="capitalize col-lg-7 col-md-8">{{ $applicant->academicInformation->incoming_grade_year }}</div>
                       </div>
                       @if(!empty($applicant->academicInformation->current_course_program_grade))
                       <div class="row mb-2">
                           <div class="col-lg-4 col-md-4 label">Current Course or Program</div>
-                          <div class="col-lg-7 col-md-8">{{ $applicant->academicInformation->current_course_program_grade }}</div>
+                          <div class="capitalize col-lg-7 col-md-8">{{ $applicant->academicInformation->current_course_program_grade }}</div>
                       </div>
                   @endif
         
                   <div class="row mb-2">
                     <div class="col-lg-4 col-md-4 label">Current School</div>
-                    <div class="col-lg-7 col-md-8">{{ $applicant->academicInformation->current_school }}</div>
+                    <div class="capitalize col-lg-7 col-md-8">{{ $applicant->academicInformation->current_school }}</div>
                   </div>
-                
+
+                  @if($applicant->grades->isNotEmpty())
+                  @foreach($applicant->grades as $grade)
+                      <div class="row mb-2">
+                          <div class="col-lg-4 col-md-4 label" style="margin-top: 20px; color: #0A6E57; font-weight: bold;">GRADES</div>
+                      </div>
+                      @if(!empty($grade->latestAverage))
+                          <div class="row mb-2">
+                              <div class="col-lg-4 col-md-4 label">Latest Average</div>
+                              <div class="capitalize col-lg-7 col-md-8">{{ $grade->latestAverage }}</div>
+                          </div>
+                      @endif
+                      @if(!empty($grade->latestGWA))
+                          <div class="row mb-2">
+                              <div class="col-lg-4 col-md-4 label">Latest General Average</div>
+                              <div class="capitalize col-lg-7 col-md-8">{{ $grade->latestGWA }}</div>
+                          </div>
+                      @endif
+                      @if(!empty($grade->scopeGWA))
+                      <div class="row mb-2">
+                          <div class="col-lg-4 col-md-4 label">Scope General Average/GWA</div>
+                          <div class="capitalize col-lg-7 col-md-8">{{ $grade->scopeGWA }}</div>
+                      </div>
+                      @endif
+                      @if(!empty($grade->equivalentGrade))
+                      <div class="row mb-2">
+                          <div class="col-lg-4 col-md-4 label">Equivalent Grade</div>
+                          <div class="capitalize col-lg-7 col-md-8">{{ $grade->equivalentGrade }}</div>
+                      </div>
+                      @endif
+                  @endforeach
+              @endif
+
                   @if($applicant->choices->isNotEmpty())
                     @foreach($applicant->choices as $choice)
                         @if($choice->first_choice_school)
@@ -182,21 +219,21 @@
         
                             <div class="row mb-2">
                                 <div class="col-lg-4 col-md-4 label">First School Choice</div>
-                                <div class="col-lg-7 col-md-8">{{ $choice->first_choice_school }}</div>
+                                <div class="capitalize col-lg-7 col-md-8">{{ $choice->first_choice_school }}</div>
                             </div>
                         @endif
                     
                         @if($choice->second_choice_school)
                             <div class="row mb-2">
                                 <div class="col-lg-4 col-md-4 label">Second School Choice</div>
-                                <div class="col-lg-7 col-md-8">{{ $choice->second_choice_school }}</div>
+                                <div class="capitalize col-lg-7 col-md-8">{{ $choice->second_choice_school }}</div>
                             </div>
                         @endif
                         
                         @if($choice->third_choice_school)
                             <div class="row mb-2">
                                 <div class="col-lg-4 col-md-4 label">Third School Choice</div>
-                                <div class="col-lg-7 col-md-8">{{ $choice->third_choice_school }}</div>
+                                <div class="capitalize col-lg-7 col-md-8">{{ $choice->third_choice_school }}</div>
                             </div>
                         @endif
                         
@@ -207,27 +244,28 @@
                         
                             <div class="row mb-2">
                                 <div class="col-lg-4 col-md-4 label">First Choice Course</div>
-                                <div class="col-lg-7 col-md-8">{{ $choice->first_choice_course }}</div>
+                                <div class="capitalize col-lg-7 col-md-8">{{ $choice->first_choice_course }}</div>
                             </div>
                         @endif
                         
                         @if($choice->second_choice_course)
                             <div class="row mb-2">
                                 <div class="col-lg-4 col-md-4 label">Second Choice Course</div>
-                                <div class="col-lg-7 col-md-8">{{ $choice->second_choice_course }}</div>
+                                <div class="capitalize col-lg-7 col-md-8">{{ $choice->second_choice_course }}</div>
                             </div>
                         @endif
                         
                         @if($choice->third_choice_course)
                             <div class="row mb-2">
                                 <div class="col-lg-4 col-md-4 label">Third Choice Course</div>
-                                <div class="col-lg-7 col-md-8">{{ $choice->third_choice_course }}</div>
+                                <div class="capitalize col-lg-7 col-md-8">{{ $choice->third_choice_course }}</div>
                             </div>
                         @endif
                     @endforeach
                  @endif
         
-                 @php $gradesExist = false; @endphp
+             
+                 {{-- @php $gradesExist = false; @endphp
         
                 @foreach($applicant->grades as $grade)
                     @for($i = 3; $i <= 10; $i++)
@@ -245,7 +283,7 @@
                         @if($grade->$gradeField)
                             <div class="row mb-2">
                                 <div class="col-lg-4 col-md-4 label">Grade {{ $i }} GWA</div>
-                                <div class="col-lg-7 col-md-8">{{ $grade->$gradeField }}</div>
+                                <div class="capitalize col-lg-7 col-md-8">{{ $grade->$gradeField }}</div>
                             </div>
                         @endif
                     @endfor
@@ -273,11 +311,11 @@
                               @endif
                               <div class="row mb-2">
                                   <div class="col-lg-4 col-md-4 label">{{ $label }}</div>
-                                  <div class="col-lg-7 col-md-8">{{ $grade->$field }}</div>
+                                  <div class="capitalize col-lg-7 col-md-8">{{ $grade->$field }}</div>
                               </div>
                           @endif
                       @endforeach
-                  @endforeach
+                  @endforeach --}}
                </form><!-- End Profile Edit Form -->
             </div>
 
@@ -285,24 +323,32 @@
                     <form>
                       @foreach ($members as $member)
                           <div class="row mb-2">
-                              <div class="col-lg-4 col-md-4 label" style="margin-top: 20px; color: #0A6E57; font-weight: bold;">Household Employed {{ $loop->iteration }}</div>
+                              <div class="col-lg-4 col-md-4 label" style="margin-top: 20px; color: #0A6E57; font-weight: bold;">FAMILY INFORMATION</div>
                           </div>
                           <div class="row mb-2">
-                              <div class="col-lg-4 col-md-4 label">Name</div>
-                              <div class="col-lg-8 col-md-8">{{ $member->name ?? '' }}</div>
+                              <div class="col-lg-4 col-md-4 label">Total Household Members</div>
+                              <div class="col-lg-8 col-md-8 capitalize">{{ $member->total_household_members ?? '' }}</div>
                           </div>
                           <div class="row mb-2">
-                              <div class="col-lg-4 col-md-4 label">Relationship</div>
-                              <div class="col-lg-8 col-md-8">{{ $member->relationship ?? '' }}</div>
+                              <div class="col-lg-4 col-md-4 label">Father's Occupation</div>
+                              <div class="col-lg-8 col-md-8 capitalize">{{ $member->father_occupation ?? '' }}</div>
                           </div>
                           <div class="row mb-2">
-                              <div class="col-lg-4 col-md-4 label">Occupation</div>
-                              <div class="col-lg-8 col-md-8">{{ $member->occupation ?? '' }}</div>
+                              <div class="col-lg-4 col-md-4 label">Father's Income</div>
+                              <div class="col-lg-8 col-md-8 capitalize">{{ number_format($member->father_income?? 0, 2) }}</div>
                           </div>
                           <div class="row mb-2">
-                              <div class="col-lg-4 col-md-4 label">Monthly Income</div>
-                              <div class="col-lg-8 col-md-8">{{ number_format($member->monthly_income ?? 0, 2) }}</div>
+                              <div class="col-lg-4 col-md-4 label">Mother's Occupation</div>
+                              <div class="col-lg-8 col-md-8 capitalize">{{ $member->mother_occupation ?? '' }}</div>
                           </div>
+                        <div class="row mb-2">
+                            <div class="col-lg-4 col-md-4 label">Mother's Income</div>
+                            <div class="col-lg-8 col-md-8 capitalize">{{ number_format($member->mother_income?? 0, 2) }}</div>
+                        </div>
+                        <div class="row mb-2">
+                          <div class="col-lg-4 col-md-4 label">Total Support Received</div>
+                          <div class="col-lg-8 col-md-8 capitalize">{{ number_format($member->total_support_received?? 0, 2) }}</div>
+                      </div>
                       @endforeach
                   </form>
                   </div>

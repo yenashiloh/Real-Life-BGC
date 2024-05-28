@@ -38,7 +38,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
-<body>
+<body style="background-color: #fafafa;">
 
     <!----------LOGIN----------->
     <main>
@@ -89,7 +89,7 @@
                     <div class="login-signup">
                         {{-- <x-messages /> --}}
                         <span class="text">You want to apply?
-                            <a href="/register" class="text signup-link">Apply Now</a>
+                            <a href="/registration" class="text signup-link">Apply Now</a>
                         </span>
                     </div>
                 </div>

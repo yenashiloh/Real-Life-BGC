@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Applicant;
 use App\Models\ApplicantsPersonalInformation;
 use Illuminate\Http\Request;
@@ -11,7 +10,6 @@ use App\Models\Announcement;
 use App\Models\ApplicantsAcademicInformation;
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
-use App\ApplicantsFamilyInformation;
 use App\Models\Household;
 use App\Models\Member;
 use App\Models\NotificationApplicant;
@@ -20,8 +18,13 @@ use App\Models\Notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-
-
+use App\Models\ApplicantsFamilyInformation;
+use App\Mail\VerificationEmail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationMail;
+use App\Models\ApplicationSettings;
+use Carbon\Carbon;
 
 class ApplicantController extends Controller
 {
@@ -66,6 +69,12 @@ class ApplicantController extends Controller
         $applicantId = auth()->id();
         $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         return view('user.home', compact('title', 'personalInfo' ));
+    }
+
+    public function showVerification()
+    {
+        $title = 'Verification';
+        return view('user.verification')->with('title', $title);
     }
 
     public function applicantDashboard()
@@ -143,9 +152,8 @@ class ApplicantController extends Controller
 
             try {
                 $file = $request->file('fileUpload');
-
-                $filename = time() . '_' . $file->getClientOriginalName();
-
+                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $filename = $originalFilename . '.' . $file->getClientOriginalExtension();
                 $filePath = $file->storeAs('public/uploads', $filename);
 
                 $requirement = new Requirement();
@@ -204,9 +212,48 @@ class ApplicantController extends Controller
     public function registration()
     {
         $title = 'Registration';
-        $incomingGrade = request('incomingGrade');
     
-        return view('user.registration', compact('title', 'incomingGrade'));
+        // Retrieve application settings
+        $settings = ApplicationSettings::first();
+        
+        // Get current time in Asia/Manila timezone
+        $now = Carbon::now('Asia/Manila');
+        
+        // Extract current date and time
+        $currentDate = $now->format('Y-m-d');
+        $currentTime = $now->format('H:i:s');
+        
+        // Extract start and stop dates and times from settings
+        $startDate = $settings->start_date;
+        $startTime = $settings->start_time;
+        $stopDate = $settings->stop_date;
+        $stopTime = $settings->stop_time;
+        
+        // Check if current time is within the registration period
+        $applicationOpen = $this->isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime);
+        
+        return view('user.registration', compact('title', 'applicationOpen'));
+    }
+    
+    private function isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime)
+    {
+        // Convert dates to Carbon objects for comparison
+        $startDate = Carbon::createFromFormat('Y-m-d', $startDate);
+        $stopDate = Carbon::createFromFormat('Y-m-d', $stopDate);
+        $currentDate = Carbon::createFromFormat('Y-m-d', $currentDate);
+    
+        // Check if current date is within the start and stop dates
+        if ($currentDate->lt($startDate) || $currentDate->gt($stopDate)) {
+            return false;
+        }
+        
+        // Create Carbon instances for the current time, start time, and stop time
+        $currentTime = Carbon::createFromFormat('H:i:s', $currentTime);
+        $startTime = Carbon::createFromFormat('H:i:s', $startTime);
+        $stopTime = Carbon::createFromFormat('H:i:s', $stopTime);
+    
+        // Check if current time is within the daily start and stop times
+        return $currentTime->between($startTime, $stopTime);
     }
     
     function registerPost(Request $request)
@@ -590,7 +637,6 @@ class ApplicantController extends Controller
 
     function screeningPost(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'email' => 'required|email|unique:applicants',
             'password' => 'required|min:8',
@@ -675,41 +721,69 @@ class ApplicantController extends Controller
                 'father_income' => $request->fatherIncome,
                 'mother_occupation' => $request->motherOccupation,
                 'mother_income' => $request->incomeMother,
-                'total_support_received' => $request->supportReceived
+                'total_support_received' => str_replace(',', '', $request->supportReceived)
             ];
             ApplicantsFamilyInformation::create($familyInformationData);
             
-            $reportcardFile = $request->file('ReportCard');
-            $reportcardfilename = $reportcardFile->getClientOriginalName();
-            $fileName = pathinfo($reportcardfilename, PATHINFO_FILENAME);
-            $extension = $reportcardFile->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
+            if ($request->hasFile('ReportCard')) {
+                $reportcardFile = $request->file('ReportCard');
+                $originalFilename = pathinfo($reportcardFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $reportcardfilename = $originalFilename . '.' . $reportcardFile->getClientOriginalExtension();
+                $reportcardFilePath = $reportcardFile->storeAs('public/ReportCards', $reportcardfilename);
+            
+                $reportcardData = [
+                    'applicant_id' => $applicant->applicant_id,
+                    'document_type' => 'Report Card / Grades',
+                    'uploaded_document' => $reportcardFilePath,
+                    'status' => 'For Review',
+                ];
+                Requirement::create($reportcardData);
+            }
+            
+            if ($request->hasFile('payslip')) {
+                $payslipFile = $request->file('payslip');
+                $originalFilename = pathinfo($payslipFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $payslipfilename = $originalFilename . '.' . $payslipFile->getClientOriginalExtension();
+                $payslipFilePath = $payslipFile->storeAs('public/Payslips', $payslipfilename);            
+    
+                $payslipData = [
+                    'applicant_id' => $applicant->applicant_id,
+                    'document_type' => 'Payslip / DSWD Report / ITR',
+                    'uploaded_document' => $payslipFilePath,
+                    'status' => 'For Review',
+                ];
+                Requirement::create($payslipData);
+            }
 
-            $reportcardData = [
-                'applicant_id' => $applicant->applicant_id,
-                'document_type' => 'Report Card / Grades',
-                'uploaded_document' => $reportcardFile->storeAs('ReportCards', $fileName, 'public'),
-                'status' => 'For Review',
-            ];
-            Requirement::create($reportcardData);
+            $verificationToken = Str::random(60);
 
-            $payslipFile = $request->file('payslip');
-            $payslipfilename = $payslipFile->getClientOriginalName();
-            $fileName = pathinfo($payslipfilename, PATHINFO_FILENAME);
-            $extension = $payslipFile->getClientOriginalExtension();
-            $fileName = $fileName . '_' . time() . '.' . $extension;
+            $applicant->api_token = $verificationToken;
+            $applicant->save();
 
-            $payslipData = [
-                'applicant_id' => $applicant->applicant_id,
-                'document_type' => 'Payslip / DSWD Report / ITR',
-                'uploaded_document' => $payslipFile->storeAs('Payslips', $fileName, 'public'),
-                'status' => 'For Review',
-            ];
-            Requirement::create($payslipData);
+            \Mail::to($applicant->email)->send(new \App\Mail\VerificationMail($applicant));
 
-            return redirect(route('login'))->with("success", "Registration success, Login to access the app");
+            return view('user.verification');
         } else {
-            return redirect(route('registration'))->with("error", "Registration failed, try again.");
+            return response()->json(['message' => 'Registration failed, try again.', 'error' => $e->getMessage()], 400);
         }
     }
+
+    // public function showApplicationForm()
+    // {
+    //     // Retrieve application settings
+    //     $settings = ApplicationSettings::first();
+    //     $now = Carbon::now();
+    //     $startDate = Carbon::parse($settings->start_date . ' ' . $settings->start_time);
+    //     $endDate = Carbon::parse($settings->stop_date . ' ' . $settings->stop_time);
+
+    //     // Check if application is open based on current time and status
+    //     $applicationOpen = ($now >= $startDate && $now <= $endDate && $settings->status === 'Opened');
+
+
+    //     // Pass the value of $applicationOpen to the view
+    //     return view('user.registration', compact('applicationOpen'));
+    // }
+
+    
+    
 }

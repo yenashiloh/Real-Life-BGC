@@ -270,7 +270,8 @@ $('#messageDropdown').on('click', function() {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }}</title>
-
+    <link href="assets/img/RLlogo1.png" rel="icon">
+    <link href="assets/img/RLlogo1.png" rel="apple-touch-icon">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
@@ -359,7 +360,7 @@ $('#messageDropdown').on('click', function() {
     <div class="header-configure-area">
         <br>
         @unless(auth()->check())
-        <a href="/register" class="bk-btn">Apply Now</a>
+        <a href="/registration" class="bk-btn">Apply Now</a>
         @endunless
     </div>
     <nav class="mainmenu mobile-menu">
@@ -396,7 +397,7 @@ $('#messageDropdown').on('click', function() {
                             <a href="https://www.youtube.com/channel/UCCH8ji_JYH28LxSghsfPeig/videos"><i class="fa fa-youtube-play"></i></a>
                         </div>
                         @unless(auth()->check())
-                        <a href="/register" class="bk-btn">Apply Now</a>
+                        <a href="/registration" class="bk-btn">Apply Now</a>
                         @endunless
                     </div>
                 </div>

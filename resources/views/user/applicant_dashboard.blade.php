@@ -181,12 +181,18 @@
                                                                 <td class="notes-column">{{ $requirement->notes }}</td>
                                                                 <td> 
                                                                     @if(Storage::exists($requirement->uploaded_document))
-                                                                    <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ basename($requirement->uploaded_document) }}" style="text-decoration: underline; color: #1e2482;">
-                                                                        {{ basename($requirement->uploaded_document) }}
+                                                                    @php
+                                                                        $originalFilename = basename($requirement->uploaded_document);
+                                                                        // Remove the unique identifier from the filename
+                                                                        $filename = preg_replace('/_\d+/', '', $originalFilename);
+                                                                    @endphp
+                                                                    <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ $originalFilename }}" style="text-decoration: underline; color: #1e2482;">
+                                                                        {{ $filename }}
                                                                     </a>
-                                                                    @else
+                                                                @else
                                                                     File not found
-                                                                    @endif
+                                                                @endif
+                                                                
                                                                 </td>
                                                                 <td>
                                                                     @php
@@ -324,7 +330,14 @@
                     </section>
                 </main><!-- End #main -->
         @include('partials.user-footer')
-        
+        {{-- <script src="assets-applicant/js/jquery-3.3.1.min.js"></script>
+    <script src="assets-applicant/js/bootstrap.min.js"></script>
+    <script src="assets-applicant/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets-applicant/js/jquery.nice-select.min.js"></script>
+    <script src="assets-applicant/js/jquery-ui.min.js"></script> --}}
+    <script src="assets-applicant/js/jquery.slicknav.js"></script>
+    <script src="assets-applicant/js/owl.carousel.min.js"></script>
+    <script src="assets-applicant/js/main.js"></script>
         <script src="assets/js/applicant_dashboard.js"></script>
         <script src="assets/js/edit_documents.js"></script>
         {{-- <script src="assets-admin/js/checklist.js"></script> --}}

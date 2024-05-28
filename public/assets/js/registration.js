@@ -1031,7 +1031,7 @@ function saveFormData() {
   inputs.forEach(function (input) {
       if (input.type === "select-one") {
           formData[input.name] = input.selectedIndex;
-      } else {
+      } else {  
           formData[input.name] = input.value;
       }
   });
@@ -1077,7 +1077,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /****************************************************************************/
 document.getElementById('incomingGrade').addEventListener('change', function() {
   const toggleDisplay = (field, input, show, required) => {
-    if (field && input) { // Check if both field and input are not null
+    if (field && input) { 
       field.style.display = show ? 'block' : 'none';
       if (required) {
         input.setAttribute('required', 'required');
@@ -1129,9 +1129,28 @@ document.getElementById('incomingGrade').addEventListener('change', function() {
   }
 });
 
-
-
 /******************************************/
+//Total Received Income
+const fatherIncomeInput = document.getElementById('fatherIncome');
+const motherIncomeInput = document.getElementById('incomeMother');
+const supportReceivedInput = document.getElementById('supportReceived');
+
+// Function to format a number with commas as thousand separators
+function formatNumberWithCommas(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+// Function to calculate and update the total support received
+function updateTotalSupport() {
+  const fatherIncome = parseFloat(fatherIncomeInput.value) || 0;
+  const motherIncome = parseFloat(motherIncomeInput.value) || 0;
+  const totalSupport = fatherIncome + motherIncome;
+  supportReceivedInput.value = formatNumberWithCommas(totalSupport.toFixed(2));
+}
+
+// Add event listeners to the input elements to trigger the calculation
+fatherIncomeInput.addEventListener('input', updateTotalSupport);
+motherIncomeInput.addEventListener('input', updateTotalSupport);
 
 
 

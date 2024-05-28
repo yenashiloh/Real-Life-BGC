@@ -14,6 +14,10 @@ class ApplicantsAcademicInformationGrade extends Model
 
     protected $fillable = [
         'applicant_id',
+        'latestAverage',
+        'latestGWA',
+        'scopeGWA',
+        'equivalentGrade',
         'grade_3_gwa',
         'grade_4_gwa',
         'grade_5_gwa',

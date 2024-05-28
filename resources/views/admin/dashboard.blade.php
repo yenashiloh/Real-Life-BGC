@@ -38,10 +38,10 @@
                           <div class="card-header d-flex justify-content-between align-items-center">
                               <h5 class="mb-0">Quick Actions</h5>
                               <!-- Inserted switch to the right -->
-                              <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Open/Close the Application</label>
-                            </div>
+                              {{-- <div class="form-check form-switch">
+                                Application Settings
+                                <i class="bi bi-three-dots"></i>
+                            </div> --}}
                           </div>
                           <div class="d-md-flex row m-0 quick-action-btns" role="group" aria-label="Quick action buttons">
                               <div class="col-sm-6 col-md-4 p-3 text-center btn-wrapper">

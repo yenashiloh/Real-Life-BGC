@@ -12,7 +12,8 @@ use App\Models\ApplicantsPersonalInformation;
 use App\Notifications\StatusUpdateNotification; 
 use App\Models\ApplicantsAcademicInformationChoice;
 use App\Models\ApplicantsAcademicInformationGrade;
-use App\Models\Member;
+use App\Models\ApplicantsFamilyInformation;
+// use App\Models\Member;
 use Illuminate\Support\Carbon;
 
 

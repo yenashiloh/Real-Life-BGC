@@ -30,14 +30,13 @@ class ApplicationSettingsController extends Controller
     public function showApplicationSettings()
     {
         $settings = ApplicationSettings::first();
-
-        return view('admin.application-settings', compact('settings'));
+        $applicantsCount = Applicant::count(); 
+    
+        return view('admin.application-settings', compact('settings', 'applicantsCount'));
     }
-
 
     public function save(Request $request)
     {
-        // Validate the request data
         $validatedData = $request->validate([
             'start_date' => 'required|date',
             'start_time' => 'required',
@@ -46,21 +45,17 @@ class ApplicationSettingsController extends Controller
             'stop_time' => 'required',
         ]);
     
-        // Convert start and stop times to Philippine time zone
         $timezone = 'Asia/Manila';
         $startDate = \Carbon\Carbon::parse($validatedData['start_date'] . ' ' . $validatedData['start_time'], $timezone);
         $stopDate = \Carbon\Carbon::parse($validatedData['stop_date'] . ' ' . $validatedData['stop_time'], $timezone);
         
-        // Ensure the parsed start and stop times have the correct date
         $startDate->setDate(now()->year, now()->month, now()->day);
         $stopDate->setDate(now()->year, now()->month, now()->day);
         
-        // Determine the current status based on the current time, start time, and stop time
         $now = now()->setTimezone($timezone);
         $currentStatus = $this->getCurrentStatus($now, $startDate, $stopDate);
     
-        // Update or create ApplicationSettings
-        $settings = ApplicationSettings::first();
+        $settings = ApplicationSettings::first() ?? new ApplicationSettings;
         $settings->fill($validatedData);
         $settings->current_status = $currentStatus;
         $settings->save();
@@ -70,7 +65,6 @@ class ApplicationSettingsController extends Controller
     
     private function getCurrentStatus($currentTime, $startTime, $stopTime)
     {
-        // Check if current time is within the range of start and stop times
         if ($currentTime->between($startTime, $stopTime)) {
             return 'Opened';
         } else {
@@ -78,12 +72,13 @@ class ApplicationSettingsController extends Controller
         }
     }
     
-    
     public function fetch()
     {
         $settings = ApplicationSettings::first();
         return response()->json(['current_status' => $settings->current_status]);
     }   
+
+
 
     
 }

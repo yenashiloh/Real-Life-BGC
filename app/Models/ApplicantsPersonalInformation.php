@@ -21,7 +21,9 @@ class ApplicantsPersonalInformation extends Model
         'house_number',
         'street',
         'barangay',
-        'municipality'
+        'municipality',
+        'mapAddress',
+        'noteAddress'
     ];
 
     public function academicInformation()

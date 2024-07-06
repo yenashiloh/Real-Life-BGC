@@ -7,7 +7,7 @@
 
 .clickable-icon {
     cursor: pointer;
-    font-size: 24px;
+    font-size: 28px;
     color: #71BF44;
 }
 
@@ -72,13 +72,13 @@
 }
 #submitForm {
     background-color: #71BF44;
-    color: white; /* Set text color to white */
-    border: none; /* Remove default button border */
-    cursor: default; /* Set default cursor */
+    color: white; 
+    border: none; 
+    cursor: default; 
 }
 
 #submitForm:not(:disabled) {
-    cursor: pointer; /* Set pointer cursor when not disabled */
+    cursor: pointer; 
 }
 
 #submitForm:not(:disabled):hover {
@@ -86,13 +86,13 @@
 }
 
 #submitEditForm {
-    background-color: #71BF44; /* Set the desired background color */
-    border-color: #71BF44; /* Set the border color to match */
-    cursor: default; /* Set default cursor */
+    background-color: #71BF44; 
+    border-color: #71BF44; 
+    cursor: default; 
 }
 
 #submitEditForm:not(:disabled) {
-    cursor: pointer; /* Set pointer cursor when not disabled */
+    cursor: pointer; 
 }
 
 #submitEditForm:not(:disabled):hover {
@@ -100,8 +100,8 @@
 }
 
 select#documentType option:hover {
-    background-color: #017358; /* Change background color on hover */
-    color: #ffffff; /* Change text color on hover */
+    background-color: #017358; 
+    color: #ffffff; 
 }
 .form-check-input {
     -webkit-appearance: none;
@@ -111,35 +111,51 @@ select#documentType option:hover {
     height: 16px;
     border: 1px solid #222222;
     border-radius: 3px;
-    outline: none; /* Remove outline when focused */
-    cursor: pointer; /* Show pointer cursor */
-    position: relative; /* Ensure position is relative for absolute positioning of checkmark */
-    margin-bottom: 2px; /* Add bottom margin to center vertically */
+    outline: none; 
+    cursor: pointer; 
+    position: relative; 
+    margin-bottom: 2px; 
 }
 
 .form-check-input:checked {
-    background-color: #71BF44; /* Change background color when checked */
+    background-color: #71BF44; 
 }
 
-/* Style the inner checkmark */
 .form-check-input::before {
-    content: ''; /* Empty content */
+    content: ''; 
     display: block;
-    width: 6px; /* Width of the checkmark */
-    height: 12px; /* Height of the checkmark */
-    border: solid white; /* White border */
-    border-width: 0 2px 2px 0; /* Thickness and direction of checkmark */
-    transform: translate(-50%, -50%) rotate(45deg); /* Position and rotate the checkmark */
+    width: 6px; 
+    height: 12px;
+    border: solid white; 
+    border-width: 0 2px 2px 0; 
+    transform: translate(-50%, -50%) rotate(45deg); 
     position: absolute;
-    top: 40%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    transform-origin: center; /* Set transform origin to center */
+    top: 40%; 
+    left: 50%; 
+    transform-origin: center; 
 }
 
-/* Optional: Style the label text associated with the checkbox */
 .form-check-label {
-    /* Add styles for label text if needed */
-    color: #333; /* Example text color */
-    margin-left: 24px; /* Example margin for alignment */
+    color: #333; 
+    margin-left: 24px;
 }
-
+.col-lg-9{
+    text-transform: capitalize;
+    font-size: 16px;
+}
+td{
+    font-size: 16px;
+}
+.form-check-input .form-check-input .label{
+    font-size: 16px;
+}
+.file-drop{
+    font-size: 16px;
+}
+input[type="checkbox"] {
+    pointer-events: none;
+}
+.modal-title{
+    font-weight: bold;
+    font-size: 20px;
+}

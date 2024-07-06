@@ -74,8 +74,9 @@ class EmailController extends Controller
         $interview_data = $contentEmail ? $contentEmail->interview : ''; 
         $house_visitation_data = $contentEmail ? $contentEmail->house_visitation : ''; 
         $decline_data = $contentEmail ? $contentEmail->decline : ''; 
+        $approved_data = $contentEmail ? $contentEmail->approved : '';
         
-        return view('admin.email.email', compact('title', 'under_review_data', 'shortlisted_data', 'interview_data', 'house_visitation_data', 'decline_data')); 
+        return view('admin.email.email', compact('title', 'under_review_data', 'shortlisted_data', 'interview_data', 'house_visitation_data', 'decline_data', 'approved_data')); 
     }
 
     //under review email content 
@@ -205,6 +206,29 @@ class EmailController extends Controller
           return redirect()->route('admin.email.email')->with('decline_data', $request->input('decline'));
       }
 
+      public function saveApprovedContent(Request $request)
+      {
+        $validator = Validator::make($request->all(), [
+            'approved' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return redirect()->withErrors($validator)->withInput();
+        }
+
+        $content_email = ContentEmail::first();
+        
+        if ($content_email) {
+            $content_email->approved = $request->input('approved');
+            $content_email->save();
+        }else{
+            $content_email = new ContentEmail();
+            $content_email->approved = $request->input('approved');
+            $content_email->save();
+        }
+        $request->session()->flash('success', 'Approved Content Save Successfully!');
+        return redirect()->route('admin.email.email')->with('approved_data', $request->input('approved'));
+      }
 
       public function notifyApplicant(Request $request, $applicantId)
 {

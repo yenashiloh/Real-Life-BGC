@@ -31,7 +31,9 @@
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/register.css">
-    
+    <style>
+
+    </style>
 </head>
 <body>
    <div class="mx-auto container">
@@ -125,15 +127,21 @@
           <label for="email-address">
         </div>
         {{-- <span id="error-message" style="color: red; font-size: 10px;">Please agree before proceeding.</span> --}}
-        <div class="mt-1 form__field">
-          <label class="form__choice-wrapper">
-            <input value="" id="email-newsletter" type="checkbox" name="agree">
-        <span>
-            I understand that the information I will provide will be used by Real LIFE Foundation to screen and process my application for SY 2023-2024. I give my consent to Real LIFE to use the data I will provide and the file attachments for the said application.
-        </span>
-    </label>
-            <!-- Add an element to display the error message -->
-        </div>
+    
+          <div class="mt-1 form__field">
+            <label class="form__choice-wrapper">
+              <fieldset>
+              <input id="consent" type="checkbox" name="agree">
+          
+              <span>
+                I understand that the information I will provide will be used by Real LIFE Foundation to screen and process my application for SY 2023-2024. I give my consent to Real LIFE to use the data I will provide and the file attachments for the said application.
+              </span>
+            </fieldset>
+            </label>
+            {{-- <p class="form__error-text" style="display:none;">Please check this box if you want to proceed.</p> --}}
+          </div>
+        
+        
         <div class="d-flex align-items-center justify-center sm:justify-end mt-4 sm:mt-5">
           <button type="button" data-action="next">Next</button>
         </div>
@@ -246,6 +254,26 @@
         <input value="" id="municipality" type="text" name="municipality" autocomplete="municipality" required>
       </div>
     </div>
+
+      <div class="sm:d-grid sm:grid-col-12 sm:mt-3">
+      <div class="form__field">
+        <label for="mapAddress">
+          Please provide a screenshot in Google Maps from Every Nation BGC to your place
+          <span data-required="true" aria-hidden="true"></span>
+        </label>
+        <input value="" id="mapAddress" type="file" name="mapAddress" autocomplete="map address" required style="padding" >
+      </div>
+
+      <div class="mt-3 form__field">
+        <label for="noteAddress">
+          Please provide instructions on how to go to your place if you will be coming from Every Nation BGC
+          <span data-required="true" aria-hidden="true"></span>
+        </label>
+        <textarea id="noteAddress" name="noteAddress" rows="4" required></textarea>
+      </div>
+    </div>
+
+    
     
       <div class="d-flex flex-column-reverse sm:flex-row align-items-center justify-center sm:justify-end mt-4 sm:mt-5">
         <button type="button" class="mt-1 sm:mt-0 button--simple" data-action="prev">
@@ -351,7 +379,6 @@
       </div>
 
         <h1 style="font-weight: bold;" id="schoolApplicationHeader" style="display: none;">School Application</h1>
-
         <div class="sm:d-grid sm:grid-col-2">
           <div class="form__field" id="schoolChoice1Field" style="display: none;">
             <label for="schoolChoice1" id="schoolChoice1-label">
@@ -371,7 +398,7 @@
         </div>
 
         <div class="sm:d-grid sm:grid-col-2">
-        <div class="form__field" id="schoolChoice3Field">
+        <div class="form__field" id="schoolChoice3Field" style="display: none;">
           <label for="schoolChoice3" id="schoolChoice3-label">
           Third Choice School
             <span data-required="true" aria-hidden="true"></span>
@@ -380,10 +407,10 @@
         </div>
       </div>
 
-      <h1 id="preferredProgramHeader" style="font-weight: bold;">Preferred Program</h1>
+      <h1 id="preferredProgramHeader" style="font-weight: bold;" style="display: none;">Preferred Program</h1>
 
       <div class="sm:d-grid sm:grid-col-2">
-        <div class="form__field" id="courseChoice1Field">
+        <div class="form__field" id="courseChoice1Field" style="display: none;">
           <label for="courseChoice1" id="courseChoice1-label">
             First Choice Program
             <span data-required="true" aria-hidden="true"></span>
@@ -391,8 +418,8 @@
           <input value="" type="text" id="courseChoice1" name="courseChoice1" autocomplete="courseChoice1">
         </div>
 
-        <div class="form__field" id="courseChoice2Field">
-          <label for="courseChoice2" id="courseChoice2-label">
+        <div class="form__field" id="courseChoice2Field" style="display: none;">
+          <label for="courseChoice2" id="courseChoice2-label" >
             Second Choice Program
             <span data-required="true" aria-hidden="true"></span>
           </label>
@@ -401,7 +428,7 @@
       </div>
 
       <div class="sm:d-grid sm:grid-col-2">
-      <div class="form__field" id="courseChoice3Field">
+      <div class="form__field" id="courseChoice3Field" style="display: none;">
         <label for="courseChoice3" id="courseChoice3-label">
           Third Choice Program
           <span data-required="true" aria-hidden="true"></span>
@@ -495,7 +522,7 @@
 
   @else
   <p>The screening form is currently closed.</p>
-@endif
+  @endif
   
   <!-- / End Progress Form -->
 
@@ -514,48 +541,7 @@
 </body>
 </html>
 
-{{-- <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Find the form element
-    const form = document.getElementById("progress-form");
 
-    // Add event listener for form submission
-    form.addEventListener("submit", function(event) {
-        // Prevent the default form submission behavior
-        event.preventDefault();
-
-        // Gather form data
-        const formData = new FormData(form);
-
-        // Convert FormData to JSON object
-        const jsonObject = {};
-        formData.forEach((value, key) => {
-            jsonObject[key] = value;
-        });
-
-        // Make an AJAX request to submit the form data to your server
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "{{ route('screening.post') }}", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    // Handle successful response from the server
-                    console.log("Form data submitted successfully.");
-                    // You can perform additional actions here, such as displaying a success message
-                } else {
-                    // Handle errors
-                    console.error("Error submitting form data:", xhr.statusText);
-                    // You can display an error message or handle the error in another way
-                }
-            }
-        };
-        xhr.send(JSON.stringify(jsonObject));
-    });
-});
-
-
-</script> --}}
 
 <script>
    $(document).ready(function() {

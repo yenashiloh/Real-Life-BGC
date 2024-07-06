@@ -29,7 +29,7 @@
                         Bonifacio Global City, <br>
                         1634 Philippines<br><br>
                         <strong>Phone:</strong>(632) 8817-1212<br>
-                        <strong>Email:</strong>fortbonifacio@reallife.ph<br>
+                        <strong>Email:</strong>bgc@reallife.ph<br>
                     </p>
                 </div>
             </div>

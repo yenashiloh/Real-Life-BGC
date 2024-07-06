@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
 use App\Models\ApplicationSettings;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ApplicantController extends Controller
 {
@@ -80,6 +81,10 @@ class ApplicantController extends Controller
     public function applicantDashboard()
     {
         $applicantId = auth()->id();
+        $approvedDocumentTypes = Requirement::where('applicant_id', $applicantId)
+            ->where('status', 'approved')
+            ->pluck('document_type')
+            ->toArray();
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
         $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
         $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
@@ -91,7 +96,7 @@ class ApplicantController extends Controller
             "Birth Certificate",
             "Character Evaluation Forms",
             "Proof of Financial Status",
-            "Payslip / DSWD Report / ITR",
+            "Payslip / Social Case Study Report / ITR",
             "Two References Form",
             "Home Visitation Form",
             "Report Card / Grades",
@@ -100,29 +105,31 @@ class ApplicantController extends Controller
             "Tuition Projection",
             "Admission Slip"
         ];
-
+    
         return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 
-        'academicInfoChoiceData', 'personalInfo' , 'reportcardData', 'documentTypes'));
+        'academicInfoChoiceData', 'personalInfo' , 'reportcardData', 'documentTypes', 'approvedDocumentTypes'));
     }
+    
 
 
-        public function personalDetails()
-        {
-            $applicantId = auth()->id();
-            $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
-            $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
-            $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
-            $members = Member::where('applicant_id', $applicantId)->get();
+    public function personalDetails()
+    {
+        $applicantId = auth()->id();
+        $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
+        $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
+        $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
+        $familyInfoData = ApplicantsFamilyInformation::where('applicant_id', $applicantId)->first();
+        $members = Member::where('applicant_id', $applicantId)->get();
 
-            $title = 'Personal Details';
-            return view('user.personal_details', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'members'));
-        }
+        $title = 'Personal Details';
+        return view('user.personal_details', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'members', 'familyInfoData'));
+    }
 
         public function viewChangePassword()
         {
             $title = 'Change Password';
             return view('user.change_password')->with('title', $title);
-        }
+    }
 
     // public function androidAnnouncement()
     // {
@@ -190,19 +197,33 @@ class ApplicantController extends Controller
             'password' => 'required'
         ]);
 
-        // if(auth()->attempt($credentials)){
-        //     $request->session()->regenerate();
-        //     return redirect(route('user.home'));+
-        // }
-
         $credentials = $request->only('email', 'password');
-        // dd($credentials);
+
         if (Auth::attempt($credentials)) {
-            return redirect()->intended(route('user.home'));
+            $user = Auth::user();
+
+            if ($user instanceof Applicant) {
+                Log::debug('User is an applicant');
+
+                if (!$user->verify_status) {
+                    Auth::logout();
+                    return redirect(route('login'))->with("error", "Your email is not verified. Please verify your email before logging in.");
+                }
+
+                if ($user->api_token) {
+                    Auth::logout();
+                    return redirect(route('login'))->with("error", "Your account is not verified. Please verify your email before logging in.");
+                }
+            }
+
+            Log::debug('Login successful');
+            return redirect()->intended(route('user.applicant_dashboard'));
         }
-        return redirect(route('login'))->with("error", "Incorrect email address/password. Please try again.");
+
+        return redirect(route('login'))->with("error", "Incorrect email address or password. Please try again.");
     }
 
+        
     public function register()
     {
         $title = 'Register';
@@ -213,47 +234,51 @@ class ApplicantController extends Controller
     {
         $title = 'Registration';
     
-        // Retrieve application settings
         $settings = ApplicationSettings::first();
         
-        // Get current time in Asia/Manila timezone
         $now = Carbon::now('Asia/Manila');
         
-        // Extract current date and time
         $currentDate = $now->format('Y-m-d');
         $currentTime = $now->format('H:i:s');
         
-        // Extract start and stop dates and times from settings
         $startDate = $settings->start_date;
         $startTime = $settings->start_time;
         $stopDate = $settings->stop_date;
         $stopTime = $settings->stop_time;
         
-        // Check if current time is within the registration period
         $applicationOpen = $this->isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime);
         
         return view('user.registration', compact('title', 'applicationOpen'));
     }
     
+    //Open and Close Application
     private function isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime)
     {
-        // Convert dates to Carbon objects for comparison
         $startDate = Carbon::createFromFormat('Y-m-d', $startDate);
         $stopDate = Carbon::createFromFormat('Y-m-d', $stopDate);
         $currentDate = Carbon::createFromFormat('Y-m-d', $currentDate);
     
-        // Check if current date is within the start and stop dates
         if ($currentDate->lt($startDate) || $currentDate->gt($stopDate)) {
             return false;
         }
         
-        // Create Carbon instances for the current time, start time, and stop time
         $currentTime = Carbon::createFromFormat('H:i:s', $currentTime);
         $startTime = Carbon::createFromFormat('H:i:s', $startTime);
         $stopTime = Carbon::createFromFormat('H:i:s', $stopTime);
     
-        // Check if current time is within the daily start and stop times
-        return $currentTime->between($startTime, $stopTime);
+        if (!$currentTime->between($startTime, $stopTime)) {
+            return false;
+        }
+    
+        $applicantCount = DB::table('applicants')->count();
+    
+        $maxNumber = DB::table('application_settings')->value('max_number');
+
+        if ($applicantCount >= $maxNumber) {
+            return false;
+        }
+    
+        return true;
     }
     
     function registerPost(Request $request)
@@ -270,19 +295,6 @@ class ApplicantController extends Controller
             'barangay' => 'required',
             'municipality' => 'required',
         ]);
-
-        // $existingUser = Applicant::where('email', $request->email)->first();
-
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
-
-        // Check for existing user with the provided email
-        // $existingUser = Applicant::where('email', $request->email)->first();
-        // if ($existingUser) {
-        //     $errorMessage = "Email already exists.";
-        //     return redirect(route('register'))->with("error", $errorMessage)->withInput();
-        // }
 
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
@@ -407,7 +419,7 @@ class ApplicantController extends Controller
 
             $payslipData = [
                 'applicant_id' => $applicant->applicant_id,
-                'document_type' => 'Payslip / DSWD Report / ITR',
+                'document_type' => 'Payslip / Social Case Study Report / ITR',
                 'uploaded_document' => $payslipFile->storeAs('Payslips', $fileName, 'public'),
                 'status' => 'For Review',
             ];
@@ -415,7 +427,7 @@ class ApplicantController extends Controller
 
             return redirect(route('login'))->with("success", "Registration success, Login to access the app");
         } else {
-            return redirect(route('register'))->with("error", "Registration failed, try again.");
+            return redirect(route('register'))->with("error", "No internet, please try again.");
         }
     }
 
@@ -438,7 +450,7 @@ class ApplicantController extends Controller
         $street = $request->input('street');
         $barangay = $request->input('barangay');
         $municipality = $request->input('municipality');
-
+    
         $personalInfo = ApplicantsPersonalInformation::updateOrCreate(
             ['applicant_id' => auth()->id()],
             [
@@ -452,26 +464,37 @@ class ApplicantController extends Controller
                 'municipality' => $municipality,
             ]
         );
+    
+        $familyInfoData= $request->only([
+            'total_household_members','father_occupation','father_incom','mother_occupation',
+            'mother_income', 'total_support_received'
+        ]);
+       
+        $familyInfo = ApplicantsFamilyInformation::updateOrCreate(
+            ['applicant_id' => auth()->id()],
+            $familyInfoData
+        );
 
         $academicInfoGradesData = $request->only([
+            'latestAverage','latestGWA','scopeGWA','equivalentGrade',
             'grade_3_gwa', 'grade_4_gwa', 'grade_5_gwa', 'grade_6_gwa', 'grade_7_gwa', 'grade_8_gwa', 'grade_9_gwa', 'grade_10_gwa',
             'grade_11_sem1_gwa', 'grade_11_sem2_gwa', 'grade_11_sem3_gwa', 'grade_11_sem4_gwa', 'grade_12_sem1_gwa', 'grade_12_sem2_gwa',
             'grade_12_sem3_gwa', 'grade_12_sem4_gwa', '1st_year_sem1_gwa', '1st_year_sem2_gwa', '1st_year_sem3_gwa', '1st_year_sem4_gwa', '2nd_year_sem1_gwa',
             '2nd_year_sem2_gwa', '2nd_year_sem3_gwa', '2nd_year_sem4_gwa'
         ]);
-
+    
         $academicInfoGradesData['applicant_id'] = auth()->id();
-
+    
         $academicInfo = ApplicantsAcademicInformationGrade::updateOrCreate(
             ['applicant_id' => auth()->id()],
             $academicInfoGradesData
         );
-
+    
         $academicInfoData = $request->only([
             'current_course_program_grade', 'current_school'
         ]);
         $academicInfoData['applicant_id'] = auth()->id();
-
+    
         $academicInfoIncoming = ApplicantsAcademicInformation::updateOrCreate(
             ['applicant_id' => auth()->id()],
             [
@@ -479,41 +502,27 @@ class ApplicantController extends Controller
                 'current_school' => $academicInfoData['current_school'] ?? null
             ]
         );
-
+    
         $academicInfoChoiceData = $request->only([
             'first_choice_school', 'second_choice_school', 'third_choice_school',
             'first_choice_course', 'second_choice_course', 'third_choice_course'
         ]);
         $academicInfoChoiceData['applicant_id'] = auth()->id();
-
+    
         $academicChoices = ApplicantsAcademicInformationChoice::updateOrCreate(
             ['applicant_id' => auth()->id()],
             $academicInfoChoiceData
         );
-
-        $householdMembersData = $request->input('household_members');
-
-        $householdMembersData = $request->input('name');
-
-        if (isset($householdMembersData) && is_array($householdMembersData)) {
-            foreach ($householdMembersData as $key => $name) {
-                Member::updateOrCreate(
-                    ['members_id' => auth()->id(), 'members_id' => $key + 1], 
-                    [
-                        'name' => $request->input("name.$key") ?? null,
-                        'relationship' => $request->input("relationship.$key") ?? null,
-                        'occupation' => $request->input("occupation.$key") ?? null,
-                        'monthly_income' => $request->input("monthly_income.$key") ?? null,
-                    ]
-                );
-            }
-        }
     
-        if ($personalInfo && $academicInfo && $academicInfoIncoming && $academicChoices) {
-            return redirect()->back()->with('success', 'Updated Successfully!');
+        if ($personalInfo && $academicInfo && $academicInfoIncoming && $academicChoices && $familyInfo) {
+            return redirect()->back()->with('success', 'Updated Successfully!')->with(compact('familyInfoData'));
         } else {
             return redirect()->back()->with('error', 'Failed to Update');
         }
+        
+        
+        
+        
     }
 
     //change password
@@ -557,6 +566,7 @@ class ApplicantController extends Controller
         }
     }
     
+    //notification fetch
     public function fetchNotificationCount()
     {
         try {
@@ -572,6 +582,7 @@ class ApplicantController extends Controller
         }
     }
 
+    //notification mark
     public function markNotificationsAsRead()
     {
         try {
@@ -648,6 +659,8 @@ class ApplicantController extends Controller
             'street' => 'required',
             'barangay' => 'required',
             'municipality' => 'required',
+            'mapAddress' => 'file',
+            'noteAddress' => 'required'
         ]);
         
         $data['email'] = $request->email;
@@ -665,7 +678,9 @@ class ApplicantController extends Controller
                 'house_number' => $request->houseNumber,
                 'street' => $request->street,
                 'barangay' => $request->barangay,
-                'municipality' => $request->municipality
+                'municipality' => $request->municipality,
+                'mapAddress' => $request->mapAddress,
+                'noteAddress' => $request->noteAddress
             ];
             ApplicantsPersonalInformation::create($personalInfoData);
 
@@ -748,7 +763,7 @@ class ApplicantController extends Controller
     
                 $payslipData = [
                     'applicant_id' => $applicant->applicant_id,
-                    'document_type' => 'Payslip / DSWD Report / ITR',
+                    'document_type' => 'Payslip / Social Case Study Report / ITR',
                     'uploaded_document' => $payslipFilePath,
                     'status' => 'For Review',
                 ];
@@ -767,23 +782,6 @@ class ApplicantController extends Controller
             return response()->json(['message' => 'Registration failed, try again.', 'error' => $e->getMessage()], 400);
         }
     }
-
-    // public function showApplicationForm()
-    // {
-    //     // Retrieve application settings
-    //     $settings = ApplicationSettings::first();
-    //     $now = Carbon::now();
-    //     $startDate = Carbon::parse($settings->start_date . ' ' . $settings->start_time);
-    //     $endDate = Carbon::parse($settings->stop_date . ' ' . $settings->stop_time);
-
-    //     // Check if application is open based on current time and status
-    //     $applicationOpen = ($now >= $startDate && $now <= $endDate && $settings->status === 'Opened');
-
-
-    //     // Pass the value of $applicationOpen to the view
-    //     return view('user.registration', compact('applicationOpen'));
-    // }
-
     
     
 }

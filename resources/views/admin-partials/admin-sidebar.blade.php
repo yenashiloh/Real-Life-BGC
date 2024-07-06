@@ -4,16 +4,16 @@
     overflow-y: auto;
 }
   .notification:hover {
-      background-color: #dddddd; /* Primary color */
-      color: #000000; /* Text color */
+      background-color: #dddddd; 
+      color: #000000;
   }
 
   .notif:hover {
-      background-color: #ffffff; /* Primary color */
-      color: #000000; /* Text color */
+      background-color: #ffffff; 
+      color: #000000;
   }
   .new-notification {
-        background-color: #e7f3ff; /* Light blue background for new notifications */
+        background-color: #e7f3ff; 
     }
 </style>
 
@@ -59,7 +59,7 @@
                                 <img src="../assets-new-admin/images/faces/face23.png" alt="image" class="img-sm profile-pic">
                             </div>
                             <div class="preview-item-content flex-grow py-2">
-                                <p class="preview-subject ellipsis font-weight-medium text-dark">{{ $notification->applicant_name }}</p>
+                                <p class="preview-subject ellipsis font-weight-medium text-dark" style="text-transform: capitalize;">{{ $notification->applicant_name }}</p>
                                 <p class="font-weight-light small-text">{{ $notification->message }}</p>
                                 <span></span>
                                 <p class="font-weight-light" style="font-size:12px; font-style: italic;">
@@ -101,13 +101,13 @@
         <ul class="nav">
           <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
-              <div class="profile-image">
+              <div class="profile-image" style="cursor: default;">
                 <img class="img-xs rounded-circle" src="../assets-new-admin/images/faces/face22.png" alt="profile image">
                 <div class="dot-indicator bg-success"></div>
               </div>
-              <div class="text-wrapper">
-                <p class="profile-name">{{ Session::get('adminFirstName') }} {{ Session::get('adminLastName') }}</p>
-                <p class="designation">Administrator</p>
+              <div class="text-wrapper" style="cursor: default;">
+                <p class="profile-name" style="cursor: default;">{{ Session::get('adminFirstName') }} {{ Session::get('adminLastName') }}</p>
+                <p class="designation" style="cursor: default;">Administrator</p>
               </div>
               {{-- <div class="icon-container">
                 <i class="icon-bubbles"></i>

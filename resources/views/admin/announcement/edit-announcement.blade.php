@@ -61,7 +61,7 @@
                 <h4>Content</h4>
                   <textarea class="tinymce-editor" name="announcement_caption">{{ $announcement->caption }}</textarea>
                 <div class="text-center mt-3">
-                  <button class="btn btn-primary" style="width: 200px;" type="submit">Save Changes</button>
+                  <button class="btn custom-btn" style="width: 200px;" type="submit">Save Changes</button>
                 </div>
               </div>
             </div>

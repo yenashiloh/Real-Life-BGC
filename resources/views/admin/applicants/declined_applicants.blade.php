@@ -1,153 +1,4 @@
-{{-- <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>{{ $title }}</title>
-@include('admin-partials.header')
 
-<style>
-  .loader {
-       border: 4px solid rgba(0, 0, 0, 0.1);
-       border-top: 4px solid #3498db;
-       border-radius: 50%;
-       width: 40px;
-       height: 40px;
-       animation: spin 1s linear infinite;
-       position: absolute;
-       left: 50%;
-       transform: translate(-50%, -50%);
-       z-index: 9999;
-       display: none;
-     }
-     @keyframes spin {
-       0% { transform: rotate(0deg); }
-       100% { transform: rotate(360deg); }
-     }
- 
- </style>
-<aside id="sidebar" class="sidebar">
-
-  <ul class="sidebar-nav" id="sidebar-nav">
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="/dashboard" id="dashboard-link">
-        <i class="bi bi-grid"></i>
-        <span>Dashboard</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="applicants-link">
-        <i class="bi bi-menu-button-wide" ></i><span>Applicants</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-        <li>
-          <a href="{{ route('admin.applicants.new_applicants') }}" >
-            <i class="bi bi-circle"></i><span>All Applicants </span>
-          </a>
-        </li>
-        <li>
-          <a href="{{ route('admin.applicants.approved_applicants') }}">
-            <i class="bi bi-circle"></i><span>Approved Applicants</span>
-          </a>
-        </li>
-        <li>
-          <a href="{{ route('admin.applicants.declined_applicants') }}"  class="active">
-            <i class="bi bi-circle"></i><span>Declined Applicants</span>
-          </a>
-        </li>
-      </ul>
-    </li><!-- End Components Nav -->
-
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="{{ route('admin.announcement.admin-announcement') }}" id="announcement-link">
-        <i class="bi bi-journal-text"></i><span>Announcement</span></i>
-      </a>
-    
-    </li><!-- End Forms Nav -->
-
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="{{ route('admin.registration') }}" id="createaccount-link">
-        <i class="bi bi-person-plus"></i><span>Create Account</span></i>
-      </a>
-      
-    </li><!-- End Charts Nav -->
-
-    <li class="nav-item">
-      <a class="nav-link collapsed"  href="{{ route('admin.admin-logout') }}" id="signout-link">
-        <i class="bi bi-box-arrow-in-right"></i><span>Sign out</span></i>
-      </a>
-    </li><!-- End Icons Nav -->
-</aside><!-- End Sidebar-->
-<main id="main" class="main">
-
-    <div class="pagetitle">
-      <h1>Declined Applicants</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Applicants</li>
-          <li class="breadcrumb-item active">Declined Applicants</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
-
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Declined Applicants</h5>
-          
-              <div class="loader"></div>
-              <table class="table datatable">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Date Applied</th>
-                    <th scope="col">Full Name</th>
-                    <th scope="col" >Incoming Grade/Year Level</th>
-                    <th scope="col" >School</th>
-                    <th scope="col">Status</th>
-              
-                  </tr>
-                </thead>
-                <tbody>
-                  @php
-                  $count = 1; 
-                @endphp
-                @foreach($applicantsData as $applicant)
-                  <tr>
-                    <th scope="row">{{ $count }}</th> 
-                      <td>{{ date('F d, Y', strtotime($applicant->created_at)) }}</td>
-                      <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
-                      <td>{{ $applicant->incoming_grade_year }}</td>
-                      <td>{{ $applicant->current_school }}</td>
-                      <td>
-                        <span id="status-{{ $applicant->applicant_id }}" class="badge status-declined" style="font-weight: normal;">
-                            {{ $applicant->status }}
-                          </span>
-                      </td>
-                  </tr>
-                  @php
-                  $count++; 
-                  @endphp
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main><!-- End #main -->
-      
-  @include('admin-partials.footer')
-
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</body>
-</html>
-
-
- --}}
  <!DOCTYPE html>
  <html lang="en">
    <head>
@@ -162,6 +13,25 @@
       max-width: 250px; 
       white-space: normal;
     }
+    .loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color:#71BF44; /* Change color as needed */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Loader animation */
+  @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+  }
+
     </style>
    </head>
    <body>
@@ -172,67 +42,65 @@
          <div class="page-header">
            <h3 class="page-title">Declined Applicants</h3>
          </div>
-     
          <div class="row">
-          <div class="col-12 grid-margin stretch-card">
-              <div class="card">
-                  <div class="card-body">
-                    <div class="btn-group">
-                      {{-- <button type="button" class="btn custom-btn dropdown-toggle btn-hover-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Export Record
-                      </button>
-                      <div class="dropdown-menu">
-                          <a class="dropdown-item dropdown-blue" href="{{ route('export.declined.applicants', ['format' => 'csv']) }}">CSV</a>
-                          <a class="dropdown-item dropdown-blue" href="{{ route('export.declined.applicants', ['format' => 'excel']) }}">Excel</a>
-                      </div> --}}
-                  </div>
-                 <div class="table-responsive">
-                   <table class="table table-striped datatable">
-                     <thead>
-                       <tr>
-                         <th scope="col">#</th>
-                         <th scope="col">Date Applied</th>
-                         <th scope="col">Full Name</th>
-                         <th scope="col">Incoming Grade/Year Level</th>
-                         <th scope="col">School</th>
-                         <th scope="col">Status</th>
-                         <th scope="col">Action</th>
-                       </tr>
-                     </thead>
-                     <tbody>
-                       @php
-                       $count = 1;
-                       @endphp
-                       @foreach($applicantsData as $applicant)
-                       <tr>
-                        <th scope="row">{{ $count }}</th> 
-                        <td>{{ date('F d, Y', strtotime($applicant->created_at)) }}</td>
-                        <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
-                        <td>{{ $applicant->incoming_grade_year }}</td>
-                        <td>{{ $applicant->current_school }}</td>
-                        <td>
-                          <span id="status-{{ $applicant->applicant_id }}" class="badge badge-danger p-2" style="font-weight: normal;">
-                              {{ $applicant->status }}
-                            </span>
-                        </td>
-                         <td>
-                           <div class="view-button">
-                             <a href="{{ route('admin.view_applicant', ['id' => $applicant->applicant_id]) }}"
-                               class="btn btn-dark btn-fw p-2" >
-                               View
-                             </a>
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                      <div class="btn-group">
+                        <button type="button" class="btn custom-btn dropdown-toggle btn-hover-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Year
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="yearDropdownButton">
+                            @foreach($years as $year)
+                                <a class="dropdown-item dropdown-blue" href="#" onclick="getDataForYear('{{ $year }}')">{{ $year }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="loader" style="display: none;"></div>
+                  <div class="table-responsive">
+                    <table class="table table-striped datatable" style="display: none;">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Date Applied</th>
+                          <th scope="col">Full Name</th>
+                          <th scope="col">Incoming Grade/Year Level</th>
+                          <th scope="col">School</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @php
+                        $count = 1;
+                        @endphp
+                        @foreach($applicantsData as $applicant)
+                        <tr>
+                          <th scope="row">{{ $count }}</th> 
+                          <td>{{ date('F d, Y', strtotime($applicant->created_at)) }}</td>
+                          <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
+                          <td>{{ $applicant->incoming_grade_year }}</td>
+                          <td>{{ $applicant->current_school }}</td>
+                          <td>
+                            <span id="status-{{ $applicant->applicant_id }}" class="badge badge-danger p-2" style="font-weight: normal;">
+                                {{ $applicant->status }}
+                              </span>
+                          </td>
+                          <td>
+                            <div class="view-button">
+                              <a href="{{ route('admin.view_applicant', ['id' => $applicant->applicant_id]) }}" class="btn btn-dark p-2 btn-fw mt-1"> View</a>
                            </div>
-                         </td>
-                       </tr>
-                       @php
-                       $count++;
-                       @endphp
-                       @endforeach
-                     </tbody>
-                   </table>
-                 </div>
-               </div>
-             </div>
+                          </td>
+                        </tr>
+                        @php
+                        $count++;
+                        @endphp
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
            </div>
          </div>
        </div>
@@ -266,141 +134,90 @@
    </body>
  </html>
  <script>
-  $.ajaxSetup({
-headers: {
-'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-}
-});
-
-$(document).ready(function() {
-$(document).on('click', '.dropdown-item', function(e) {
-var action = $(this).data('action');
-
-if (action) {
-  e.preventDefault();
+ // Function to show loader and hide table
+function showLoader() {
+    $('.loader').show();
+    $('.datatable').hide();
 }
 
-var applicant_id = $(this).data('applicant-id');
-var updateRoute = $(this).data('route');
-
-if (action) {
-  $('.loader').show();
-}
-
-console.log('Applicant ID:', applicant_id);
-console.log('Update Route:', updateRoute);
-console.log('Action:', action);
-
-if (!applicant_id || !updateRoute || !action) {
-  console.log('Invalid data');
-  return;
-}
-$('.alert').remove();
-
-$.ajax({
-type: 'POST',
-url: updateRoute,
-data: {
-  _token: $('meta[name="csrf-token"]').attr('content'),
-  applicant_id: applicant_id,
-  status: action
-},
-success: function(response) {
-  console.log('Success:', response);
-  if (response.success) {
-    console.log('Status updated successfully');
-    var applicantId = applicant_id;
-    var newStatus = action;
-    var badgeElement = $('#status-' + applicant_id);
-    var applicantFullName = $('#status-' + applicantId).closest('tr').find('td:eq(2)').text(); 
-    var alertHTML = '<div class="alert alert-success" role="alert" style="text-align:center;">' +
-      '<strong>' + applicantFullName + ' is ' + newStatus + '</strong>' +
-      '</div>';
-
-    $('.datatable').before(alertHTML);
-    $('#status-' + applicantId).text(newStatus);
-    badgeElement.text(newStatus);
-
-    badgeElement.removeClass('badge-primary badge-secondary badge-warning badge-dark badge-success');
-
-    switch (newStatus) {
-        case 'Sent':
-            badgeElement.addClass('badge-primary');
-            break;
-        case 'Under Review':
-            badgeElement.addClass('badge-secondary');
-            break;
-        case 'Shortlisted':
-            badgeElement.addClass('badge-warning');
-            break;
-        case 'For Interview':
-            badgeElement.addClass('badge-dark');
-            break;
-        case 'For House Visitation':
-            badgeElement.addClass('badge-success');
-            break;
-        default:
-            badgeElement.addClass('badge-secondary');
-            break;
-    }
-
-    if (newStatus === 'Declined' || newStatus === 'Approved') {
-      $('#dropdownMenuButton' + applicantId).show();
-      $('#dropdownMenuButton' + applicantId).closest('.dropdown').find('.view-button').show();
-      $('#status-' + applicantId).closest('tr').remove();
-    } else {
-      var dropdownContent = '';
-      switch (newStatus) {
-        case 'Sent':
-          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Under Review" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Under Review</a></li>' +
-            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
-            $('#status-' + applicantId).addClass('badge status-new-applicant');
-          break;
-        case 'Under Review':
-          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Shortlisted" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve for Shortlisted</a></li>' +
-            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline for Shorlisted</a></li>';
-            $('#status-' + applicantId).addClass('badge status-under-review');                
-          break;
-        case 'Shortlisted':
-          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For Interview" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve for Interview</a></li>' +
-            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
-            $('#status-' + applicantId).addClass('badge status-shortlisted');
-          break;
-        case 'For Interview':
-          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="For House Visitation" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve for House Visitation</a></li>' +
-            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline</a></li>';
-            $('#status-' + applicantId).addClass('badge status-interview');
-          break;
-        case 'For House Visitation':
-          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Approved" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Approve Scholarship</a></li>' +
-            '<li><a class="dropdown-item" href="#" data-action="Declined" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Decline Scholarship</a></li>';
-           $('#status-' + applicantId).addClass('badge status-housevisit');
-          break;
-        default:
-          dropdownContent = '<li><a class="dropdown-item" href="#" data-action="Default Action" data-applicant-id="' + applicantId + '" data-route="{{ route('update.status') }}">Default Action</a></li>';
-          break;
-      }
-       $('#dropdownMenuButton' + applicantId).next('.dropdown-menu').html(dropdownContent);
-      }
-      setTimeout(function() {
-        $('.alert').remove();
-      }, 8000);
-    } else {
-      console.log('Failed to update status:', response.error);
-    }
-    $('.loader').hide(); 
-  },
-  error: function(xhr, status, error) {
-    console.log('Error:', error);
+// Function to hide loader and show table
+function hideLoader() {
     $('.loader').hide();
-  } 
-}); 
-});
+    $('.datatable').show();
+}
+
+// Function to get data for a specific year
+function getDataForYear(year) {
+    // Show loader and hide table
+    showLoader();
+
+    // Make an AJAX request to fetch data for the selected year
+    $.ajax({
+        url: "{{ route('ajax.get_declined_applicants') }}",
+        type: "GET",
+        data: { year: year },
+        success: function(response) {
+            // Hide loader and show table
+            hideLoader();
+
+            // Update table content with the received data
+            var tableBody = $('.datatable tbody');
+            tableBody.empty(); // Clear existing table rows
+
+            if (response.error) {
+                console.error(response.error);
+                return;
+            }
+
+            $.each(response.applicantsData, function(index, applicant) {
+                // Convert created_at to a Date object
+                var createdAtDate = new Date(applicant.created_at);
+
+                // Format the date as "Month Day, Year"
+                var formattedDate = createdAtDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                var row = '<tr>' +
+                    '<th scope="row">' + (index + 1) + '</th>' +
+                    '<td>' + formattedDate + '</td>' +
+                    '<td>' + applicant.first_name + ' ' + applicant.last_name + '</td>' +
+                    '<td>' + applicant.incoming_grade_year + '</td>' +
+                    '<td>' + applicant.current_school + '</td>' +
+                    '<td>' +
+                    '<span class="badge badge-danger p-2" style="font-weight: normal;">' +
+                    'Declined' +
+                    '</span>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="view-button">' +
+                    '<a href="/applicants/' + applicant.applicant_id + '" class="btn btn-dark p-2 btn-fw mt-1">View</a>' +
+                    '</div>' +
+                    '</td>' +
+                    '</tr>';
+
+                tableBody.append(row);
+            });
+
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            // Hide loader in case of error and show table
+            hideLoader();
+        }
+    });
+}
+
+// Function to initialize selected year from sessionStorage
+$(document).ready(function() {
+    var selectedYear = sessionStorage.getItem('selectedYear');
+    if (selectedYear) {
+        // Trigger getDataForYear with the selected year
+        getDataForYear(selectedYear);
+    }
 });
 
-const datatables = select('.datatable', true)
-datatables.forEach(datatable => {
-new simpleDatatables.DataTable(datatable);
-})
 </script>
  

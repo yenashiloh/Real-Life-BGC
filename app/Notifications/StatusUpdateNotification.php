@@ -38,7 +38,7 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
             case 'For House Visitation':
                 return $this->sendForHouseVisitationEmail();
             case 'Approved': 
-                return null;
+                return $this->sendApprovedEmail();
             default:
                 return $this->sendDefaultEmail();
         }
@@ -90,9 +90,9 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
 
     private function sendForHouseVisitationEmail()
     {
-        if ($this->applicant->status === 'Approved') {
-            return null; 
-        }
+        // if ($this->applicant->status === 'Approved') {
+        //     return null; 
+        // }
 
         $houseVisitationContent = ContentEmail::first()->house_visitation ?? ''; 
         $applicant = $this->applicant->load('applicants_personal_information');
@@ -108,6 +108,19 @@ class StatusUpdateNotification extends Mailable implements ShouldQueue
             ]);
     }
 
+    private function sendApprovedEmail()
+    {
+        $approvedContent = ContentEmail::first()->approved ?? ''; 
+        $applicant = $this->applicant->load('applicants_personal_information');
+        $firstName = $applicant->applicants_personal_information->first_name ?? '';
+
+        return $this->subject('Real LIFE Scholarship Application')
+            ->view('emails.applicant-for-approved', [
+                'applicant' => $this->applicant,
+                'firstName' =>$this->firstName,
+                'approvedContent' => $approvedContent
+        ]);
+    }
 
     private function sendDefaultEmail()
     {

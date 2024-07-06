@@ -16,6 +16,7 @@ class Requirement extends Model
         'document_type',
         'notes',
         'uploaded_document',
+        'declined_reason',
         'status'
     ];
     

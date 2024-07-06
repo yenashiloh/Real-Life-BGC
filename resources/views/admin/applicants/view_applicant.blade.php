@@ -30,6 +30,12 @@
     .capitalize{
       text-transform: capitalize;
     }
+    .col-lg-9{
+       text-transform: capitalize;
+    }
+    input[type="checkbox"] {
+    pointer-events: none;
+  }
     </style>
   </head>
   <body>
@@ -39,6 +45,12 @@
           <div class="content-wrapper"> 
             <div class="page-header">
               <h3 class="page-title">View Applicant</h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="../applicants/new_applicants">All Applicants</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">View Applicant</li>
+                </ol>
+              </nav>
             </div>
 
             <div class="card">
@@ -59,7 +71,7 @@
                   </li>
         
                   <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#files">Files</button>
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#files">Documents</button>
                   </li>
 
                   <li class="nav-item">
@@ -119,7 +131,7 @@
         
                       <div class="row mb-2">
                         <div class="col-lg-3 col-md-4 label">Email</div>
-                        <div class="col-lg-9 col-md-8">{{ $email }}</div>
+                        <div class="col-lg-9 col-md-8" style="text-transform:lowercase;">{{ $email }}</div>
                       </div>
         
                     <div class="row mb-2">
@@ -353,55 +365,83 @@
                   </form>
                   </div>
         
-                  <div class="tab-pane fade" id="files">
-                    <form>
-                        <table class="table datatable table-responsive">
-                          <div class="alert alert-success" role="alert" style="text-align:center; display: none;" id="successMessage"></div>
-                            <thead>
+                    <div class="tab-pane fade" id="files">
+                      <form>
+                          <table class="table datatable table-responsive">
+                            <div class="alert alert-success" role="alert" style="text-align:center; display: none;" id="successMessage"></div>
+                              <thead>
+                                  <tr>
+                                      <th scope="col">#</th>
+                                      <th scope="col">Document Type</th>
+                                      <th scope="col">Notes</th>
+                                      <th scope="col">Uploaded Document</th>
+                                      <th scope="col">Status</th>
+                                      <th scope="col">Action</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                @foreach($reportcardData as $index => $requirement)
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Document Type</th>
-                                    <th scope="col">Notes</th>
-                                    <th scope="col">Uploaded Document</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $requirement->document_type }}</td>
+                                    <td>{{ $requirement->notes }}</td>
+                                    <td>
+                                        <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ basename($requirement->uploaded_document) }}" style="text-decoration: underline;">
+                                            {{ basename($requirement->uploaded_document) }}
+                                        </a>
+                                    </td>
+                                    <td id="status-{{ $requirement->id }}" class="badge p-2 status-{{ $requirement->id }}" >
+                                        @if($requirement->status == 'Approved')
+                                            <span class="badge badge-success">{{ $requirement->status }}</span>
+                                        @elseif($requirement->status == 'Declined')
+                                            <span class="badge badge-danger">{{ $requirement->status }}</span>
+                                            <br>
+                                            <span>Reason: {{ $requirement->declined_reason}}</span>
+                                        @elseif($requirement->status == 'For Review')
+                                            <span class="badge badge-warning">{{ $requirement->status }}</span>
+                                        @else
+                                            {{ $requirement->status }}
+                                        @endif
+                                    </td>                           
+                                    <td class="d-flex justify-content-center">
+                                        {{-- Conditionally render buttons based on requirement status --}}
+                                        @if($requirement->status != 'Approved' && $requirement->status != 'Declined')
+                                            <button type="button" class="btn btn-primary p-2 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Approved" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Approve</button>
+                                            <button type="button" class="btn btn-danger p-2 mt-1 btn-fw  open-decline-modal" data-requirement-id="{{ $requirement->id }}" data-action="Declined" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Decline</button>
+                                        @endif
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                              @foreach($reportcardData as $index => $requirement)
-                              <tr>
-                                  <td>{{ $index + 1 }}</td>
-                                  <td>{{ $requirement->document_type }}</td>
-                                  <td>{{ $requirement->notes }}</td>
-                                  <td>
-                                      <a href="{{ Storage::url($requirement->uploaded_document) }}" download="{{ basename($requirement->uploaded_document) }}" style="text-decoration: underline;">
-                                          {{ basename($requirement->uploaded_document) }}
-                                      </a>
-                                  </td>
-                                  <td id="status-{{ $requirement->id }}" class="badge p-2 status-{{ $requirement->id }}" >
-                                      @if($requirement->status == 'Approved')
-                                          <span class="badge badge-success">{{ $requirement->status }}</span>
-                                      @elseif($requirement->status == 'Declined')
-                                          <span class="badge badge-danger">{{ $requirement->status }}</span>
-                                      @elseif($requirement->status == 'For Review')
-                                          <span class="badge badge-warning">{{ $requirement->status }}</span>
-                                      @else
-                                          {{ $requirement->status }}
-                                      @endif
-                                  </td>                           
-                                  <td class="d-flex justify-content-center">
-                                      {{-- Conditionally render buttons based on requirement status --}}
-                                      @if($requirement->status != 'Approved' && $requirement->status != 'Declined')
-                                          <button type="button" class="btn btn-primary p-2 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Approved" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Approve</button>
-                                          <button type="button" class="btn btn-danger p-2 mt-1 btn-fw change-status" data-requirement-id="{{ $requirement->id }}" data-action="Declined" data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Decline</button>
-                                      @endif
-                                  </td>
-                              </tr>
-                              @endforeach
-                              
-                          </tbody>
-                        </table>
-                    </form>
+                                @endforeach
+                                
+                            </tbody>
+                          </table>
+                      </form>
+                    </div>
+
+                    <!------------------------DECLINED MODAL----------------------------------------------->
+                    <!-- Modal -->
+                    <div class="modal fade" id="declineReasonModal" tabindex="-1" aria-labelledby="declineReasonModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="declineReasonModalLabel">Decline Reason</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body" style="background-color: white;">
+                                  <form id="declineReasonForm">
+                                      <div class="mb-3">
+                                          <label for="declineReason" class="form-label">Reason</label>
+                                          <textarea class="form-control" id="declineReason" rows="6" required style="margin-bottom: 10px; border: 1px solid black;"></textarea>
+                                      </div>
+                                      <input type="hidden" id="requirementId" name="requirement_id">
+                                  </form>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-dark m-2" data-bs-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-danger" id="submitDeclineReason" data-route="{{ route('requirements.file-status', ['requirement_id' => ':requirementId']) }}" >Decline</button>
+                              </div>
+                          </div>
+                      </div>
                   </div>
                   
                   <div class="tab-pane fade" id="checklist">
@@ -441,23 +481,23 @@
     <script src="../assets-new-admin/js/off-canvas.js"></script>
     <script src="../assets-new-admin/js/misc.js"></script>
       <!-- Vendor JS Files -->
-  <script src="../assets-admin/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="../assets-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets-admin/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="../assets-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <script src="../assets-admin/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="../assets-admin/vendor/tinymce/tinymce.min.js"></script>
-  <script src="../assets-admin/vendor/php-email-form/validate.js"></script>
-  <script src="../assets-admin/tinymce/tinymce.min.js"></script>
- 
-  <script src="../assets-admin/vendor/chart.js/chart.umd.js"></script>
-  <script src="../assets-admin/vendor/echarts/echarts.min.js"></script>
-  <script src="../assets-admin/vendor/quill/quill.min.js"></script>
+    <script src="../assets-admin/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="../assets-admin/vendor/tinymce/tinymce.min.js"></script>
+    <script src="../assets-admin/vendor/php-email-form/validate.js"></script>
+    <script src="../assets-admin/tinymce/tinymce.min.js"></script>
+  
+    <script src="../assets-admin/vendor/chart.js/chart.umd.js"></script>
+    <script src="../assets-admin/vendor/echarts/echarts.min.js"></script>
+    <script src="../assets-admin/vendor/quill/quill.min.js"></script>
 
-  <!-- Template Main JS File -->
-  <script src="../assets-admin/js/main.js"></script>
-  <script src="../assets-admin/js/checklist.js"></script>
-  <script src="../assets-admin/js/view_applicant.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Template Main JS File -->
+    <script src="../assets-admin/js/main.js"></script>
+    <script src="../assets-admin/js/checklist.js"></script>
+    <script src="../assets-admin/js/view_applicant.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     
 

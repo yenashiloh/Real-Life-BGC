@@ -432,10 +432,53 @@ class AdminController extends Controller
     public function showDeclinedApplicants()
     {
         $title = 'Declined Applicants';
-        $applicantsData = $this->getDeclinedData();
-        return view('admin.applicants.declined_applicants', compact('title', 'applicantsData'));
+        $applicantsData = $this->getDeclinedData(); // Assuming getDeclinedData() retrieves declined applicants
+        $validStatuses = ['Declined'];
+        $selectedYear = now()->year; // You might want to set a default year here
+        $years = Applicant::selectRaw('YEAR(created_at) as year')
+                            ->distinct()
+                            ->orderBy('year', 'desc')
+                            ->pluck('year');
+    
+        // Fetch applicant data for the selected year
+        $applicantsPersonalInformation = ApplicantsPersonalInformation::select(
+                'applicants_personal_information.*', // Select all columns from applicants_personal_information
+                'applicants_academic_information.*', // Select all columns from applicants_academic_information
+                'applicants.*' // Select all columns from applicants
+            )
+            ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->whereIn('applicants.status', $validStatuses)
+            ->whereYear('applicants.created_at', $selectedYear)
+            ->get();
+    
+        return view('admin.applicants.declined_applicants', compact('title', 'applicantsData', 'years', 'applicantsPersonalInformation'));
     }
-
+    
+    public function getDeclinedApplicantsByYear(Request $request)
+    {
+        // Ensure the year parameter is present and is numeric
+        $selectedYear = $request->input('year');
+    
+        if (!is_numeric($selectedYear)) {
+            return response()->json(['error' => 'Invalid year']);
+        }
+    
+        // Fetch declined applicants for the selected year
+        $applicantsData = ApplicantsPersonalInformation::select(
+                'applicants_personal_information.*',
+                'applicants_academic_information.*',
+                'applicants.*'
+            )
+            ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->whereYear('applicants.created_at', $selectedYear)
+            ->where('applicants.status', 'Declined')
+            ->get();
+    
+        return response()->json(['applicantsData' => $applicantsData]);
+    }
+    
     public function getDeclinedData()
     {
         $validStatuses = ['Declined'];
@@ -461,8 +504,50 @@ class AdminController extends Controller
     public function showApprovedApplicants()
     {
         $title = 'Approved Applicants';
+        $applicantsData = $this->getDeclinedData(); 
+        $validStatuses = ['Approved'];
+        $selectedYear = now()->year;
+        $years = Applicant::selectRaw('YEAR(created_at) as year')
+                            ->distinct()
+                            ->orderBy('year', 'desc')
+                            ->pluck('year');
+    
+        $applicantsPersonalInformation = ApplicantsPersonalInformation::select(
+                'applicants_personal_information.*', 
+                'applicants_academic_information.*', 
+                'applicants.*' 
+            )
+            ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->whereIn('applicants.status', $validStatuses)
+            ->whereYear('applicants.created_at', $selectedYear)
+            ->get();
+
         $applicantsData = $this->getApprovedData(); 
-        return view('admin.applicants.approved_applicants', compact('title', 'applicantsData'));
+        return view('admin.applicants.approved_applicants', compact('title', 'applicantsData', 'years', 'applicantsPersonalInformation'));
+    }
+
+    //filter year of approved table
+    public function getApprovedApplicantsByYear(Request $request)
+    {
+        $selectedYear = $request->input('year');
+    
+        if (!is_numeric($selectedYear)) {
+            return response()->json(['error' => 'Invalid year']);
+        }
+    
+        $applicantsData = ApplicantsPersonalInformation::select(
+                'applicants_personal_information.*',
+                'applicants_academic_information.*',
+                'applicants.*'
+            )
+            ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->whereYear('applicants.created_at', $selectedYear)
+            ->where('applicants.status', 'Approved')
+            ->get();
+    
+        return response()->json(['applicantsData' => $applicantsData]);
     }
 
     //approved table page 
@@ -518,7 +603,7 @@ class AdminController extends Controller
             "Birth Certificate",
             "Character Evaluation Forms",
             "Proof of Financial Status",
-            "Payslip / DSWD Report / ITR",
+            "Payslip / Social Case Study Report / ITR",
             "Two References Form",
             "Home Visitation Form",
             "Report Card / Grades",
@@ -553,13 +638,16 @@ class AdminController extends Controller
         try {
             $status = $request->status;
             $validStatuses = ['For Review', 'Approved', 'Declined'];
-
+    
             if (!in_array($status, $validStatuses)) {
                 return response()->json(['error' => 'Invalid status'], 400);
             }
-
+    
             $requirement = Requirement::findOrFail($requirement_id);
             $requirement->status = $status;
+            if ($status == 'Declined') {
+                $requirement->declined_reason = $request->decline_reason; // Save the decline reason
+            }
             $requirement->save();
 
             $applicant_id = $requirement->applicant_id;
@@ -731,26 +819,35 @@ class AdminController extends Controller
         ]);
     }
 
-    // public function getDataForApplicantYear(Request $request)
-    // {
-    //     $selectedYear = $request->input('year');
-    //     $validStatuses = ['New Applicant', 'Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined', 'Approved'];
-    
-    //     $applicantsData = ApplicantsPersonalInformation::select(
-    //         'applicants_personal_information.*', // Select all columns from applicants_personal_information
-    //         'applicants_academic_information.*', // Select all columns from applicants_academic_information
-    //         'applicants.*' // Select all columns from applicants
-    //     )
-    //     ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
-    //     ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
-    //     ->whereIn('applicants.status', $validStatuses)
-    //     ->whereYear('applicants.created_at', $selectedYear)
-    //     ->get();
-    
-    //     return response()->json([
-    //         'applicantsData' => $applicantsData,
-    //     ]);
-    // }
+//     public function getDataForApplicantYear(Request $request)
+// {
+//     $selectedYear = $request->input('year');
+//     $validStatuses = ['Declined', 'Approved'];
+
+//     // Fetch distinct years from the created_at column of applicants table
+//     $years = Applicant::selectRaw('YEAR(created_at) as year')
+//                         ->distinct()
+//                         ->orderBy('year', 'desc')
+//                         ->pluck('year');
+
+//     // Fetch applicant data for the selected year
+//     $applicantsData = ApplicantsPersonalInformation::select(
+//             'applicants_personal_information.*', // Select all columns from applicants_personal_information
+//             'applicants_academic_information.*', // Select all columns from applicants_academic_information
+//             'applicants.*' // Select all columns from applicants
+//         )
+//         ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
+//         ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
+//         ->whereIn('applicants.status', $validStatuses)
+//         ->whereYear('applicants.created_at', $selectedYear)
+//         ->get();
+
+//     // Pass data to the view and return it
+//     return view('admin.applicants.declined_applicants', [
+//         'years' => $years,
+//         'applicantsData' => $applicantsData,
+//     ]);
+// }
     
     // Controller method to publish announcement
     public function publishAnnouncement($id)

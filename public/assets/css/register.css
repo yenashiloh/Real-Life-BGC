@@ -1178,6 +1178,38 @@ textarea {
   background-size: 1em auto;
 }
 
+    /*CHECBOX FINAL CSS*/
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 16px;
+    height: 16px;
+    margin-right: 0.5rem;
+    border: 1px solid #999999;
+    border-radius: 3px;
+    position: relative; 
+  }
+
+  /* Style for the custom checkbox */
+  input[type="checkbox"]:checked {
+    background-color: #71BF44;
+    border-color: #71BF44;
+  }
+
+
+  /* Show the checkmark when checkbox is checked */
+  input[type="checkbox"]:checked::before {
+    display: block; /* Show the checkmark */
+  }
+
+  /* Style for the error message */
+  .form__error-text {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  }
+
 /* Errors
    ========================================================================== */
 

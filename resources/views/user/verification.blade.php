@@ -23,7 +23,7 @@
                 <img src="assets-applicant/img/verification_sent.png" class="img-fluid" alt="Successfully Sent Image" style="max-width: 30%; height: auto;">
                 <h1 >Verify your email</h1>
                 <p style="padding: 10px;">Thanks for interested for applying! We've sent an email to verify your email address and activate your account.</p>
-               <button type="button" class="btn " style="background-color: #71BF44; color:white;">Resend Email </button>
+               {{-- <button type="button" class="btn " style="background-color: #71BF44; color:white;">Resend Email </button> --}}
             </div>
         </div>
     </div>

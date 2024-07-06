@@ -200,7 +200,7 @@ ready(function () {
     if (val !== password) {
       return {
         isValid: false,
-        message: 'Password doesn\'t match.'
+        message: 'Password and Confirm Password doesn\'t match.'
       };
     }
 
@@ -280,38 +280,32 @@ ready(function () {
    * Expects a Node (fieldset).
    */
 
+  // Update the validateGroup function to set required attribute to the checkbox
   const validateGroup = fieldset => {
     if (!fieldset) {
-      return {
-        isValid: false,
-        message: 'Fieldset element not found.'
-      };
+        return {
+            isValid: false,
+            message: 'Fieldset element not found.'
+        };
     }
 
-    const choices = fieldset.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+    const checkbox = fieldset.querySelector('input[type="checkbox"]');
 
-    let isRequired = false
-      , isChecked = false;
-
-    for (const choice of choices) {
-      if (choice.required) {
-        isRequired = true;
-      }
-
-      if (choice.checked) {
-        isChecked = true;
-      }
+    if (checkbox) {
+        checkbox.setAttribute('required', 'required');
     }
 
-    if (!isChecked && isRequired) {
-      return {
-        isValid: false,
-        message: 'Please make a selection.'
-      };
+    const isChecked = checkbox && checkbox.checked;
+
+    if (!isChecked) {
+        return {
+            isValid: false,
+            message: 'Please ensure the checkbox is checked to proceed with your application.'
+        };
     } else {
-      return {
-        isValid: true
-      };
+        return {
+            isValid: true
+        };
     }
   };
 
@@ -327,47 +321,69 @@ ready(function () {
    * Expects a Node (input[type="tel"]).
    */
 
-  const isPDFFile = (filename) => {
-    return /\.(pdf)$/i.test(filename);
-  };
+    const isPDFFile = (filename) => {
+      return /\.(pdf)$/i.test(filename);
+    };
 
-  const validatePhone = field => {
-    const val = field.value.trim();
+    const isImageFile = (filename) => {
+      return true;
+    };
 
-    if (val === '' && field.required) {
-      return {
-        isValid: false
-      };
-    } else if (val !== '' && !isValidPhone(val)) {
-      return {
-        isValid: false,
-        message: 'Please provide a valid phone number.'
-      };
-    } else {
-      return {
-        isValid: true
-      };
-    }
-  };
+    const validatePhone = field => {
+      const val = field.value.trim();
 
-  const validateReportCard = field => {
-    const val = field.value.trim();
-    if (val === '' && field.required) {
-      return {
-        isValid: false
-      };
-    } else if (val !== '' && !isPDFFile(val)) {
-      return {
-        isValid: false,
-        message: 'Please upload pdf file only.'
-      };
-    } else {
-      return {
-        isValid: true
-      };
-    }
-  };
+      if (val === '' && field.required) {
+        return {
+          isValid: false
+        };
+      } else if (val !== '' && !isValidPhone(val)) {
+        return {
+          isValid: false,
+          message: 'Please provide a valid phone number.'
+        };
+      } else {
+        return {
+          isValid: true
+        };
+      }
+    };
 
+    const validateReportCard = field => {
+      const val = field.value.trim();
+      if (val === '' && field.required) {
+        return {
+          isValid: false
+        };
+      } else if (val !== '' && !isPDFFile(val)) {
+        return {
+          isValid: false,
+          message: 'Please upload pdf file only.'
+        };
+      } else {
+        return {
+          isValid: true
+        };
+      }
+    };
+
+    const validateMapAddress = field => {
+      const val = field.value.trim();
+      if (val === '' && field.required) {
+        return {
+          isValid: false,
+        };
+      } else if (val !== '' && !isImageFile(val)) {
+        return {
+          isValid: false,
+          message: 'Please upload JPG, JPEG, or PNG files only for the map address.'
+        };
+      } else {
+        return {
+          isValid: true
+        };
+      }
+    };
+    
   /*****************************************************************************
    * Expects a Node (input[type="email"]).
    */
@@ -401,8 +417,7 @@ ready(function () {
 
   const getValidationData = (field) => {
   switch (field.tagName.toLowerCase()) {
-    case 'input':
-    case 'textarea':
+        case 'input':
       switch (field.type) {
         case 'text':
         case 'number':
@@ -436,7 +451,7 @@ ready(function () {
               }
               return validateNumberRange(field, 88, 100);
             } else {
-              return { isValid: true }; // Skip validation for lower grades
+              return { isValid: true }; 
             }
           }
           return validateNumber(field);
@@ -456,16 +471,37 @@ ready(function () {
         case 'radio':
           return validateChoice(field);
         case 'file':
-          return validateReportCard(field);
+          if (field.name === 'reportCard') {
+            return validateReportCard(field);
+          } else if (field.name === 'mapAddress') {
+            return validateMapAddress(field);
+          } else if (field.name === 'ReportCard') { 
+            return validateReportCard(field); 
+          } else {
+            throw new Error(`The provided file input field with name '${field.name}' is not supported in this form.`);
+          }
+          
+          default:
+            throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
+        }
+        case 'textarea':
+          if (field.name === 'noteAddress') {
+            if (field.value.trim() === '') {
+              return {
+                isValid: false,
+                message: 'Please provide instructions on how to go to your place if you will be coming from Every Nation BGC.'
+              };
+            }
+            return { isValid: true };
+          } else {
+            throw new Error(`The provided field type 'TEXTAREA:${field.name}' is not supported in this form.`);
+          }
+        case 'select':
+          return validateSelect(field);
         default:
-          throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
+          throw new Error(`The provided field type '${field.tagName}' is not supported in this form.`);
       }
-    case 'select':
-      return validateSelect(field);
-    default:
-      throw new Error(`The provided field type '${field.tagName}' is not supported in this form.`);
-  }
-};
+    };
   
   
   /*****************************************************************************
@@ -487,12 +523,12 @@ ready(function () {
    */
 
   const validateStep = currentStep => {
-    const fields = tabPanels[currentStep].querySelectorAll('fieldset, input:not([type="radio"]):not([type="checkbox"]), select, textarea');
-
+    const fields = tabPanels[currentStep].querySelectorAll('input:not([type="radio"]):not([type="checkbox"]), select, textarea, input[type="checkbox"], input[type="radio"]');
+  
     const invalidFields = [...fields].filter(field => {
       return !isValid(field);
     });
-
+  
     return new Promise((resolve, reject) => {
       if (invalidFields && !invalidFields.length) {
         resolve();
@@ -501,20 +537,18 @@ ready(function () {
       }
     });
   };
-
+  
   // Form Error and Success
-
-  const FIELD_PARENT_CLASS = 'form__field'
-    , FIELD_ERROR_CLASS = 'form__error-text';
-
+  
+  const FIELD_ERROR_CLASS = 'form__error-text';
   /*****************************************************************************
    * Expects a Node (fieldset) that contains any number of radio or checkbox
    * input elements, and a string representing the group's validation status.
    */
 
   function updateChoice(fieldset, status, errorId = '') {
-    const choices = fieldset.querySelectorAll('[type="radio"], [type="checkbox"]');
-
+    const choices = fieldset ? fieldset.querySelectorAll('[type="radio"], [type="checkbox"]') : [];
+  
     for (const choice of choices) {
       if (status) {
         choice.setAttribute('aria-invalid', 'true');
@@ -525,7 +559,6 @@ ready(function () {
       }
     }
   }
-
   /*****************************************************************************
    * Expects a Node (field or fieldset) that either has the class name defined
    * by `FIELD_PARENT_CLASS`, or has a parent with that class name. Optional
@@ -538,39 +571,22 @@ ready(function () {
    */
 
   function reportError(field, message = 'Please complete this required field.') {
-    const fieldParent = field.closest(`.${FIELD_PARENT_CLASS}`);
-
-    if (progressForm.contains(fieldParent)) {
-      let fieldError = fieldParent.querySelector(`.${FIELD_ERROR_CLASS}`)
-        , fieldErrorId = '';
-
-      if (!fieldParent.contains(fieldError)) {
+    const fieldParent = field.closest('.form__field');
+  
+    if (fieldParent) {
+      let fieldError = fieldParent.querySelector(`.${FIELD_ERROR_CLASS}`);
+  
+      if (!fieldError) {
         fieldError = document.createElement('p');
-
-        if (field.matches('fieldset')) {
-          fieldErrorId = `${field.id}__error`;
-
-          updateChoice(field, true, fieldErrorId);
-        } else if (field.matches('[type="radio"], [type="checkbox"]')) {
-          fieldErrorId = `${field.closest('fieldset').id}__error`;
-
-          updateChoice(field.closest('fieldset'), true, fieldErrorId);
-        } else {
-          fieldErrorId = `${field.id}__error`;
-
-          field.setAttribute('aria-invalid', 'true');
-          field.setAttribute('aria-describedby', fieldErrorId);
-        }
-
-        fieldError.id = fieldErrorId;
         fieldError.classList.add(FIELD_ERROR_CLASS);
-
         fieldParent.appendChild(fieldError);
       }
-
+  
       fieldError.textContent = message;
+      fieldError.style.display = 'block';
     }
   }
+  
 
   /*****************************************************************************
    * Expects a Node (field or fieldset) that either has the class name defined
@@ -580,25 +596,58 @@ ready(function () {
    */
 
   function reportSuccess(field) {
-    const fieldParent = field.closest(`.${FIELD_PARENT_CLASS}`);
-
-    if (progressForm.contains(fieldParent)) {
+    const fieldParent = field.closest('.form__field');
+  
+    if (fieldParent) {
       const fieldError = fieldParent.querySelector(`.${FIELD_ERROR_CLASS}`);
-
-      if (fieldParent.contains(fieldError)) {
-        if (field.matches('fieldset')) {
-          updateChoice(field, false);
-        } else if (field.matches('[type="radio"], [type="checkbox"]')) {
-          updateChoice(field.closest('fieldset'), false);
-        } else {
-          field.removeAttribute('aria-invalid');
-          field.removeAttribute('aria-describedby');
-        }
-
-        fieldParent.removeChild(fieldError);
+  
+      if (fieldError) {
+        fieldError.textContent = '';
+        fieldError.style.display = 'none';
       }
     }
   }
+
+// Add event listener for checkbox click event
+// Add event listener for checkbox click event
+// Add event listener for checkbox click event
+document.getElementById('consent').addEventListener('click', validateCheckbox);
+
+function validateCheckbox() {
+  const checkbox = document.getElementById('consent');
+  const fieldsetParent = checkbox.closest('fieldset');
+  const errorMessage = 'Please check this box if you want to proceed.';
+
+  if (!fieldsetParent) {
+      console.error('Fieldset element not found.');
+      return;
+  }
+
+  const validationResult = validateGroup(fieldsetParent);
+
+  if (!checkbox.checked) {
+      reportError(checkbox, errorMessage);
+      updateChoice(fieldsetParent, true);
+  } else {
+      reportSuccess(checkbox);
+      updateChoice(fieldsetParent, false);
+  }
+
+  if (!validationResult.isValid) {
+      reportError(fieldsetParent, validationResult.message);
+      updateChoice(fieldsetParent, true);
+  } else {
+      reportSuccess(fieldsetParent);
+      updateChoice(fieldsetParent, false);
+  }
+}
+
+
+
+
+
+
+
 
   /*****************************************************************************
    * Expects a Node (field or fieldset).
@@ -1077,7 +1126,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /****************************************************************************/
 document.getElementById('incomingGrade').addEventListener('change', function() {
   const toggleDisplay = (field, input, show, required) => {
-    if (field && input) { 
+    if (field && input) {
       field.style.display = show ? 'block' : 'none';
       if (required) {
         input.setAttribute('required', 'required');
@@ -1116,18 +1165,38 @@ document.getElementById('incomingGrade').addEventListener('change', function() {
     toggleDisplay(fieldElem, inputElem, isFirstYear, isFirstYear);
   });
 
-  // Show or hide the headers based on whether it's First Year
   const schoolHeader = document.getElementById('schoolApplicationHeader');
   const programHeader = document.getElementById('preferredProgramHeader');
 
-  if (schoolHeader) {
+  if (schoolHeader && programHeader) {
     schoolHeader.style.display = isFirstYear ? 'block' : 'none';
-  }
-
-  if (programHeader) {
     programHeader.style.display = isFirstYear ? 'block' : 'none';
   }
+
+  if (!grade) {
+    // If no grade is selected, hide the fields related to school and program
+    const schoolFields = ['schoolChoice1Field', 'schoolChoice2Field', 'schoolChoice3Field'];
+    const programFields = ['courseChoice1Field', 'courseChoice2Field', 'courseChoice3Field'];
+
+    schoolFields.forEach((field) => {
+      const fieldElem = document.getElementById(field);
+      if (fieldElem) {
+        fieldElem.style.display = 'none';
+      }
+    });
+
+    programFields.forEach((field) => {
+      const fieldElem = document.getElementById(field);
+      if (fieldElem) {
+        fieldElem.style.display = 'none';
+      }
+    });
+  }
 });
+
+document.getElementById('incomingGrade').dispatchEvent(new Event('change')); 
+
+
 
 /******************************************/
 //Total Received Income

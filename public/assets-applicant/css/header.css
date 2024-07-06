@@ -210,9 +210,9 @@
 
 /********NOTIFICATION********/
 .notification-label {
-  font-size: 18px; /* Set the font size for the label */
-  font-weight: bold; /* Optionally, apply bold font weight */
-  padding: 10px 0; /* Add padding to the label */
+  font-size: 18px; 
+  font-weight: bold;
+  padding: 10px 0; 
   margin-left: 10px;
 }
 
@@ -220,14 +220,13 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 320px; /* Full width */
-  height: 1px; /* Separator height */
-  background-color: #efefef; /* Separator color */
+  width: 320px; 
+  height: 1px;
+  background-color: #efefef; 
 }
 
-  /* Style for notification items */
 .notification-item {
-    padding: 10px; /* Adjust padding as needed */
+    padding: 10px; 
     cursor: pointer; /* Show pointer cursor on hover */
     transition: background-color 0.3s ease; /* Smooth transition for background color change */
 }

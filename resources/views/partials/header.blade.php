@@ -303,20 +303,23 @@ $('#messageDropdown').on('click', function() {
 </head>
 <style>
    .link-style {
-      
-        cursor: pointer; /* Show pointer cursor on hover */
+        cursor: pointer; 
     }
 
     .link-style:hover {
-        color: rgb(0, 0, 0); /* Text color on hover */
-        background-color: rgb(248, 246, 250); /* Background color on hover */
+        color: rgb(0, 0, 0); 
+        background-color: rgb(248, 246, 250); 
     }
     .no-notifications {
     text-align: center;
     padding: 10px;
     color: #555;
     font-size: 14px;
+    }
+    .notification-item-container.new-notification {
+    background-color: #ffcccc; /* Change the background color as needed */
 }
+
 
 
 </style>
@@ -333,20 +336,20 @@ $('#messageDropdown').on('click', function() {
     <!-- Container for notification bell -->
     @if(auth()->check())
     <div class="icon-container">
-        <i class="fa-regular fa-bell"></i> <!-- Notification bell icon -->
+        <i class="fa-regular fa-bell"></i> 
     </div>
     @endif
 
     <!-- Container for user icon -->
     @if(auth()->check())
     <div class="icon-container">
-        <i class="fa-regular fa-user"></i> <!-- User icon -->
+        <i class="fa-regular fa-user"></i> 
     </div>
     @endif
     
     <!-- Menu icon -->
     <div class="icon-container">
-        <i class="icon_menu"></i> <!-- Menu icon -->
+        <i class="icon_menu"></i> 
     </div>
 </div>
 
@@ -386,7 +389,7 @@ $('#messageDropdown').on('click', function() {
                 <div class="col-lg-6">
                     <ul class="tn-left">
                         <li><i class="fa fa-phone"></i>(632) 8817-1212</li>
-                        <li><i class="fa fa-envelope"></i>fortbonifacio@reallife.ph</li>
+                        <li><i class="fa fa-envelope"></i>bgc@reallife.ph</li>
                     </ul>
                 </div>
                 <div class="col-lg-6">
@@ -444,8 +447,8 @@ $('#messageDropdown').on('click', function() {
                                                     <div class="notification-separator"></div>
                                                 </li>
                                                 @foreach ($applicantNotifications as $notification)
-                                                    <li>
-                                                        <div class="notification-item" onclick="redirectToApplicantDashboard('{{ $notification->id }}')">
+                                                <li class="notification-item-container">
+                                                        <div class="notification-item " onclick="redirectToApplicantDashboard('{{ $notification->id }}')">
                                                             <div class="notification-info">
                                                                 <span class="notification-title">{{ $notification->admin_name }}</span>
                                                                 <span class="notification-description">{{ $notification->message }}</span>
@@ -457,7 +460,6 @@ $('#messageDropdown').on('click', function() {
                                                                     @endif
                                                                 </span>
                                                             </div>
-                                                           
                                                         </div>
                                                         <hr style="width: 300px;"> 
                                                     </li>
@@ -482,7 +484,7 @@ $('#messageDropdown').on('click', function() {
                                 @endif 
                                         
                                 <li class="user-profile">
-                                    <a href="#" id="user-dropdown-toggle">
+                                    <a href="#" id="user-dropdown-toggle" style="text-transform: capitalize;">
                                         @auth
                                         <i class="fas fa-user"></i>
                                         @if(isset($personalInfo) && $personalInfo->first_name && $personalInfo->last_name)
@@ -491,11 +493,10 @@ $('#messageDropdown').on('click', function() {
                                         @endauth
                                         <i class="fas fa-caret-down"></i>
                                     </a>
-                                    <!-- User Dropdown Menu (Hidden by Default) -->
-                                    
+                                    <!-- User Dropdown Menu -->
                                     <ul class="user-dropdown-menu" id="user-dropdown-menu">
                                         <li>
-                                            <div class="notification-label">{{ $personalInfo->first_name ?? '' }}
+                                            <div class="notification-label" style="text-transform: capitalize;">{{ $personalInfo->first_name ?? '' }}
                                                 {{ $personalInfo->last_name ?? '' }}</div>
                                         </li>
                                         <hr style="padding: 0%; margin:0%;">
@@ -614,10 +615,7 @@ $(document).ready(function() {
 });
 /***************************************************/
 function redirectToApplicantDashboard(notificationId) {
-        // Assuming your applicant dashboard link is "/applicant_dashboard"
-        window.location.href = "/applicant_dashboard"; // Modify this if your link is different
-        // You can also append any query parameters or additional information if needed
-        // For example: window.location.href = "/applicant_dashboard?id=" + notificationId;
+        window.location.href = "/applicant_dashboard"; 
     }
 
 </script>

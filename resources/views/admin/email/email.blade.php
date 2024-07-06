@@ -106,6 +106,10 @@
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#decline">Declined</button>
                   </li>
   
+                  <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#approve">Approved</button>
+                  </li>
+  
                 </ul>
 
                 <!----------------UNDER REVIEW--------------------->
@@ -194,6 +198,25 @@
                         </div>
                     </form>                    
                   </div>
+                  
+                      <!----------------APPROVED-------------------->
+                  <div class="tab-pane fade" id="approve">
+                    <form method="POST" action="{{ route('admin.email.save-approved-content') }}" id="approvedForm">
+                        @csrf
+                        <br>
+                        <div class="form-group">
+                            <h6 class="pt-2">Email Content for Approved</h6>
+                            <div class="quill-editor-default-approved" id="approved-editor-container" style="height: 300px;">
+                                {!! $approved_data !!}
+                            </div>
+                            <input type="hidden" name="approved" id="approved-input">
+                            <div class="text-center mt-3">
+                                <button class="btn custom-btn btn-fw" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>                    
+                  </div>
+
               </div><!-- End tab-content -->
               
         <script src="../assets-new-admin/vendors/js/vendor.bundle.base.js"></script>
@@ -321,6 +344,16 @@ declineEditor.on('text-change', function(delta, oldDelta, source) {
     document.getElementById('decline-input').value = htmlContent;
 });
 
+var approvedEditor = new Quill('#approved-editor-container', {
+    theme: 'snow' // You can customize the theme if needed
+});
+
+approvedEditor.on('text-change', function(delta, oldDelta, source) {
+    // Get the HTML content of the editor
+    var htmlContent = approvedEditor.root.innerHTML;
+    // Set the value of the hidden input field
+    document.getElementById('approved-input').value = htmlContent;
+});
 
 
 </script>

@@ -75,11 +75,10 @@
 
                         <div class="checkbox-text">
                             <div class="checkbox-content">
-                                <input type="checkbox" id="logCheck">
-                                <label for="logCheck" class="text">Remember me</label>
+                                <a href="#" class="text checkbox-content" style="margin-left: 190px;">Forgot password?</a>
                             </div>
 
-                            <a href="#" class="text">Forgot password?</a>
+                            {{-- <a href="#" class="text">Forgot password?</a> --}}
                         </div>
 
                         <div class="input-field button">

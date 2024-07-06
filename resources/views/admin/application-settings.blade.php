@@ -23,6 +23,10 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('application.settings.save') }}">
                             @csrf
+                            <div class="form-group">
+                              <label for="current_applicants">Current Number of Applicants:</label>
+                              <input type="number" class="form-control" id="current_applicants" name="current_applicants" value="{{ $applicantsCount }}"  disabled>
+                          </div>
                         <div class="form-group">
                             <label for="max_number">Maximum Number to Accept:</label>
                             <input type="number" class="form-control" id="max_number" name="max_number" value="{{ optional($settings)->max_number }}">
@@ -46,11 +50,11 @@
                           <input type="text" class="form-control" id="current_status_display" name="current_status"  disabled>
                         </div>
                         <div class="form-group">
-                          <label for="stop_date">Stop Date:</label>
+                          <label for="stop_date">End Date:</label>
                           <input type="date" class="form-control" id="stop_date" name="stop_date" value="{{ optional($settings)->stop_date }}">
                         </div>
                         <div class="form-group">
-                          <label for="stop_time">Stop Time:</label>
+                          <label for="stop_time">End Time:</label>
                           <input type="time" class="form-control" id="stop_time" name="stop_time" value="{{ optional($settings)->stop_time }}">
                         </div>
                       </div>
@@ -62,16 +66,12 @@
                 <!-- Save Settings Button -->
                 <div class="row justify-content-center mt-5">
                   <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary btn-block">Save Settings</button>
+                    <button type="submit" class="btn custom-btn btn-block">Save Settings</button>
                   </div>
                 </div>
               </form>
             </div>
-          </div>
-          
-          
-          
-          
+          </div>     
 
          <!-- container-scroller -->
     <!-- plugins:js -->
@@ -97,87 +97,102 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Template Main JS File -->
   <script src="../assets-admin/js/main.js"></script>
+  
     
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var startDateInput = document.getElementById('start_date');
-        var stopDateInput = document.getElementById('stop_date');
-        var startTimeInput = document.getElementById('start_time');
-        var stopTimeInput = document.getElementById('stop_time');
+    document.addEventListener('DOMContentLoaded', function() {
+    var startDateInput = document.getElementById('start_date');
+    var stopDateInput = document.getElementById('stop_date');
+    var startTimeInput = document.getElementById('start_time');
+    var stopTimeInput = document.getElementById('stop_time');
 
-        // Set the minimum value for the start date to today's date
-        var now = new Date().toLocaleString("en-US", { timeZone: "Asia/Manila" });
-        now = new Date(now);
-        var today = now.toISOString().split('T')[0];
-        startDateInput.setAttribute('min', today);
+    // Set the minimum value for the start date to today's date
+    var now = new Date().toLocaleString("en-US", { timeZone: "Asia/Manila" });
+    now = new Date(now);
+    var today = now.toISOString().split('T')[0];
+    startDateInput.setAttribute('min', today);
 
-        // Set the minimum value for the stop date based on the selected start date
-        startDateInput.addEventListener('change', function() {
-            stopDateInput.setAttribute('min', startDateInput.value);
-        });
-
-        // Set the minimum value for the stop time based on the selected start time
-        startTimeInput.addEventListener('change', function() {
-            stopTimeInput.setAttribute('min', startTimeInput.value);
-        });
-
-        // Initialize the stop date min value if start date is already set
-        if (startDateInput.value) {
-            stopDateInput.setAttribute('min', startDateInput.value);
-        }
-
-        // Initialize the stop time min value if start time is already set
-        if (startTimeInput.value) {
-            stopTimeInput.setAttribute('min', startTimeInput.value);
-        }
+    // Set the minimum value for the stop date based on the selected start date
+    startDateInput.addEventListener('change', function() {
+        stopDateInput.setAttribute('min', startDateInput.value);
     });
 
-    function updateCurrentStatus() {
-        // Get the current time in Asia/Manila timezone
-        var now = new Date().toLocaleString("en-US", { timeZone: "Asia/Manila" });
-        now = new Date(now);
+    // Set the minimum value for the stop time based on the selected start time
+    startTimeInput.addEventListener('change', function() {
+        stopTimeInput.setAttribute('min', startTimeInput.value);
+    });
 
-        // Get the start and stop dates and times from the settings
-        var startDate = '{{ $settings->start_date }}'; 
-        var startTime = '{{ $settings->start_time }}'; 
-        var stopDate = '{{ $settings->stop_date }}'; 
-        var stopTime = '{{ $settings->stop_time }}'; 
+    // Initialize the stop date min value if start date is already set
+    if (startDateInput.value) {
+        stopDateInput.setAttribute('min', startDateInput.value);
+    }
 
+    // Initialize the stop time min value if start time is already set
+    if (startTimeInput.value) {
+        stopTimeInput.setAttribute('min', startTimeInput.value);
+    }
+});
+
+function updateCurrentStatus() {
+    // Get the current time in Asia/Manila timezone
+    var now = new Date().toLocaleString("en-US", { timeZone: "Asia/Manila" });
+    now = new Date(now);
+
+    // Check if settings and applicants count are available
+    var settings = {
+        start_date: '{{ $settings->start_date ?? '' }}',
+        start_time: '{{ $settings->start_time ?? '' }}',
+        stop_date: '{{ $settings->stop_date ?? '' }}',
+        stop_time: '{{ $settings->stop_time ?? '' }}',
+        max_number: {{ $settings->max_number ?? 0 }}, 
+    };
+    var currentApplicants = {{ $applicantsCount ?? 0 }}; 
+
+    if (settings.start_date && settings.start_time && settings.stop_date && settings.stop_time && currentApplicants !== null && settings.max_number !== null) {
         // Combine the start and stop dates with daily times
-        var startDateTime = parseDateTime(startDate, startTime);
-        var stopDateTime = parseDateTime(stopDate, stopTime);
+        var startDateTime = parseDateTime(settings.start_date, settings.start_time);
+        var stopDateTime = parseDateTime(settings.stop_date, settings.stop_time);
 
         // Check if current date is within the start and stop dates
         var withinDateRange = now >= startDateTime.dateOnly && now <= stopDateTime.dateOnly;
 
         // If within the date range, check the time range for today
-        var applicationOpen = withinDateRange && isWithinDailyTimeRange(now, startTime, stopTime);
+        var applicationOpen = withinDateRange && isWithinDailyTimeRange(now, settings.start_time, settings.stop_time);
+
+        // Check if current number of applicants equals the maximum number
+        var maximumReached = currentApplicants >= settings.max_number;
 
         // Set the value of the input field based on the current status
-        document.getElementById('current_status_display').value = applicationOpen ? 'Opened' : 'Closed';
+        document.getElementById('current_status_display').value = (applicationOpen && !maximumReached) ? 'Opened' : 'Closed';
+    } else {
+        // Default status when settings or applicants count are not fully available
+        document.getElementById('current_status_display').value = 'Closed';
     }
+}
 
-    // Function to parse date and time strings and return a Date object in Asia/Manila timezone
-    function parseDateTime(dateString, timeString) {
-        var dateTimeString = dateString + 'T' + timeString + 'Z';
-        var date = new Date(dateTimeString);
-        var dateOnly = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
-        return { dateTime: date, dateOnly: new Date(dateOnly.getFullYear(), dateOnly.getMonth(), dateOnly.getDate()) };
-    }
 
-    // Function to check if the current time is within the daily time range
-    function isWithinDailyTimeRange(now, startTime, stopTime) {
-        var nowTimeString = now.toTimeString().split(' ')[0];
-        return nowTimeString >= startTime && nowTimeString <= stopTime;
-    }
+// Function to parse date and time strings and return a Date object in Asia/Manila timezone
+function parseDateTime(dateString, timeString) {
+    var dateTimeString = dateString + 'T' + timeString + 'Z';
+    var date = new Date(dateTimeString);
+    var dateOnly = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+    return { dateTime: date, dateOnly: new Date(dateOnly.getFullYear(), dateOnly.getMonth(), dateOnly.getDate()) };
+}
 
-    // Update the current status initially when the page loads
-    updateCurrentStatus();
+// Function to check if the current time is within the daily time range
+function isWithinDailyTimeRange(now, startTime, stopTime) {
+    var nowTimeString = now.toTimeString().split(' ')[0];
+    return nowTimeString >= startTime && nowTimeString <= stopTime;
+}
 
-    // Update the current status every second to reflect real-time changes
-    setInterval(updateCurrentStatus, 1000);
+// Update the current status initially when the page loads
+updateCurrentStatus();
+
+// Update the current status every second to reflect real-time changes
+setInterval(updateCurrentStatus, 1000);
+
 </script>
 
 </body>

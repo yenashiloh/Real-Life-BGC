@@ -218,61 +218,6 @@
                 </div>
               </div>
             </div>
-            {{-- <div class="row">
-              <div class="col-md-12 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="d-sm-flex align-items-center mb-4">
-                      <h4 class="card-title mb-sm-0">Applicants</h4>
-                      <a href="/applicants/new_applicants" class="text-dark ml-auto mb-3 mb-sm-0"> View all Applicants</a>
-                    </div>
-                    <div class="table-responsive border rounded p-1">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th class="font-weight-bold">#</th>
-                            <th class="font-weight-bold">Date Applied</th>
-                            <th class="font-weight-bold">Full Name</th>
-                            <th class="font-weight-bold">Incoming Year Level</th>
-                            <th class="font-weight-bold">School</th>
-                            <th class="font-weight-bold">Status</th>
-
-                          </tr>
-                        </thead>
-                          <tbody>
-                            @php $count = 1; @endphp
-                            @foreach($applicantsData->take(10) as $applicant)
-                            <tr>
-                                <td>{{ $count }}</td>
-                                <td>{{ date('F d, Y', strtotime($applicant->created_at)) }}</td>
-                                <td>{{ $applicant->first_name }} {{ $applicant->last_name }}</td>
-                                <td>{{ $applicant->incoming_grade_year }}</td>
-                                <td>{{ $applicant->current_school }}</td>
-                                <td>
-                                    <span id="status-{{ $applicant->applicant_id }}" class="badge
-                                        @if($applicant->status === 'New Applicant') badge-primary
-                                        @elseif($applicant->status === 'Under Review') badge-secondary
-                                        @elseif($applicant->status === 'Shortlisted') badge-warning
-                                        @elseif($applicant->status === 'For Interview') badge-dark
-                                        @elseif($applicant->status === 'For House Visitation') badge-success
-                                        @endif
-                                        p-2" style="font-weight: normal;">
-                                        {{ $applicant->status }}
-                                    </span>
-                                </td>
-                            </tr>
-                            @php $count++; @endphp
-                            @endforeach
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="d-flex mt-4 flex-wrap">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> --}}
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
           
@@ -303,34 +248,36 @@
 </html>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function() {
-      var chartInstance; // Variable to store the chart instance
+ $(document).ready(function() {
+    // Variable to store the chart instance
+    var chartInstance;
 
-      // Check if there's a selected year in localStorage and update the dropdown if it exists
-      var selectedYear = localStorage.getItem('selectedYear');
-      if (selectedYear) {
-          $('.filter-year').removeClass('active');
-          $('.filter-year[data-value="' + selectedYear + '"]').addClass('active');
-          fetchDataForYear(selectedYear);
-          fetchGraphDataForYear(selectedYear);
-      }
+    // Check if there's a selected year in session storage and update the dropdown if it exists
+    var selectedYear = sessionStorage.getItem('selectedYear');
+    if (selectedYear) {
+        // Update the active state of the clicked year in the dropdown
+        $('.filter-year').removeClass('active');
+        $('.filter-year[data-value="' + selectedYear + '"]').addClass('active');
+        fetchDataForYear(selectedYear);
+        fetchGraphDataForYear(selectedYear);
+    }
 
-      // Event listener for clicking a year
-      $('.filter-year').click(function(e) {
-          e.preventDefault();
-          var selectedYear = $(this).data('value');
+    // Event listener for clicking a year
+    $('.filter-year').click(function(e) {
+        e.preventDefault();
+        var selectedYear = $(this).data('value');
 
-          // Save the selected year to localStorage
-          localStorage.setItem('selectedYear', selectedYear);
+        // Save the selected year to session storage
+        sessionStorage.setItem('selectedYear', selectedYear);
 
-          // Update the active state of the clicked year in the dropdown
-          $('.filter-year').removeClass('active');
-          $(this).addClass('active');
+        // Update the active state of the clicked year in the dropdown
+        $('.filter-year').removeClass('active');
+        $(this).addClass('active');
 
-          // Fetch data for the selected year
-          fetchDataForYear(selectedYear);
-          fetchGraphDataForYear(selectedYear);
-      });
+        // Fetch data for the selected year
+        fetchDataForYear(selectedYear);
+        fetchGraphDataForYear(selectedYear);
+    });
 
       // Function to fetch data for the selected year
       function fetchDataForYear(year) {

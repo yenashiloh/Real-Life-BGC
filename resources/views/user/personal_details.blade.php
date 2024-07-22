@@ -125,10 +125,7 @@
 
                                 </div>
 
-                                @if (
-                                    !empty($academicInfoChoiceData->first_choice_school) ||
-                                        !empty($academicInfoChoiceData->second_choice_school) ||
-                                        !empty($academicInfoChoiceData->third_choice_school))
+                                @if (!empty($academicInfoChoiceData->first_choice_school) || !empty($academicInfoChoiceData->second_choice_school) || !empty($academicInfoChoiceData->third_choice_school))
                                     <br>
                                     <div class="row mb-3">
                                         <h5 class="card-title" style="font-weight: bold; color:#212529;">School Application</h5>
@@ -159,10 +156,7 @@
                                     </div>
                                 @endif
 
-                                @if (
-                                    !empty($academicInfoChoiceData->first_choice_course) ||
-                                        !empty($academicInfoChoiceData->second_choice_course) ||
-                                        !empty($academicInfoChoiceData->third_choice_course))
+                                @if (!empty($academicInfoChoiceData->first_choice_course) || !empty($academicInfoChoiceData->second_choice_course) || !empty($academicInfoChoiceData->third_choice_course))
                                     <br>
                                     <div class="row mb-3">
                                         <h5 class="card-title" style="font-weight: bold; color:#212529;">Choice Courses</h5>
@@ -195,7 +189,7 @@
 
                                 <br> --}}
 
-                                {{-- <div class="row mb-3">
+{{-- <div class="row mb-3">
                                     <h5 class="card-title" style="font-weight: bold; color:#212529;">Grades</h5>
 
                                     @php
@@ -238,8 +232,8 @@
                                     @endforeach
                                 </div>
                                 <br> --}}
-                                
-                                {{-- @foreach ($members as $key => $member)
+
+{{-- @foreach ($members as $key => $member)
                                 <div class="row mb-3">
                                 
                                     <h5 class="card-title" style="font-weight: bold; color: #212529;">Family Information</h5>
@@ -269,7 +263,7 @@
                                 <br>
                             @endforeach
                             </div> --}}
-                                {{-- <div class="text-center">
+{{-- <div class="text-center">
                                     <button type="submit" class="btn btn-primary" style="margin-top: 13px;" id="save-changes-btn"
                                         {{ auth()->user()->status !== 'Sent' || in_array(auth()->user()->status, ['Under Review', 'Shortlisted', 'For Interview', 'For House Visitation', 'Declined']) ? 'disabled' : '' }}>Save
                                         Changes</button>
@@ -285,205 +279,247 @@
 </main><!-- End #main --> --}}
 @include('partials.header')
 <style>
-    .card-title{
+    .card-title {
         font-size: 20px;
     }
-
 </style>
+
 <body>
     @php
-        $personalInfo = auth()
-            ->user()
-            ->personalInformation()
-            ->first();
+        $personalInfo = auth()->user()->personalInformation()->first();
     @endphp
-        <main id="main" class="main">
-            <section class="section profile">
-                <div class="col-xl-10 mx-auto">
-                    <div class="tab-content pt-1">
-                        <!-- Profile Edit Form -->
-                        <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                            <form method="POST" action="{{ route('update_personal_details') }}" id="profile-form">
-                                @csrf
-                        <br>
-                        <!-- Personal Information Card -->
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title" style="font-weight: bold; color: #212529;">Personal Information</h5>
-                                <div class="row mb-3">
-                                    <div class="col-md-6 form__field">
-                                        <label for="first_name" class="col-form-label" style="font-weight: bold;">First Name</label>
-                                        <div class="value">{{ $personalInfo->first_name ?? '' }}</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="last_name" class="col-form-label" style="font-weight: bold;">Last Name</label>
-                                        <div class="value">{{ $personalInfo->last_name ?? '' }}</div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="contact_no" class="col-form-label" style="font-weight: bold;">Contact Number</label>
-                                        <div class="value">{{ $personalInfo->contact ?? '' }}</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="birthdate" class="col-form-label" style="font-weight: bold;">Birthdate</label>
-                                        <div class="value">{{ !empty($personalInfo->birthday) ? date('F d, Y', strtotime($personalInfo->birthday)) : '' }}</div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="house_no" class="col-form-label" style="font-weight: bold;">House Number</label>
-                                        <div class="value">{{ $personalInfo->house_number ?? '' }}</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="street" class="col-form-label" style="font-weight: bold;">Street</label>
-                                        <div class="value">{{ $personalInfo->street ?? '' }}</div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="barangay" class="col-form-label" style="font-weight: bold;">Barangay</label>
-                                        <div class="value">{{ $personalInfo->barangay ?? '' }}</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="municipality" class="col-form-label" style="font-weight: bold;">Municipality</label>
-                                        <div class="value">{{ $personalInfo->municipality ?? '' }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Academic Information Card -->
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title" style="font-weight: bold; color:#212529;">Academic Information</h5>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="current_school" class="col-form-label" style="font-weight: bold;">Current School</label>
-                                        <div class="value">{{ $academicInfoData['current_school'] }}</div>
-                                    </div>
-                                    @if (!empty($academicInfoData['current_course_program_grade']))
+    <main id="main" class="main">
+        <section class="section profile">
+            <div class="col-xl-10 mx-auto">
+                <div class="tab-content pt-1">
+                    <!-- Profile Edit Form -->
+                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                        <form method="POST" action="{{ route('update_personal_details') }}" id="profile-form">
+                            @csrf
+                            <br>
+                            <!-- Personal Information Card -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-weight: bold; color: #212529;">Personal
+                                        Information</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 form__field">
+                                            <label for="first_name" class="col-form-label"
+                                                style="font-weight: bold;">First Name</label>
+                                            <div class="value">{{ $personalInfo->first_name ?? '' }}</div>
+                                        </div>
                                         <div class="col-md-6">
-                                            <label for="current_course" class="col-form-label" style="font-weight: bold;">Current Course or Program</label>
-                                            <div class="value">{{ $academicInfoData['current_course_program_grade'] }}</div>
+                                            <label for="last_name" class="col-form-label"
+                                                style="font-weight: bold;">Last Name</label>
+                                            <div class="value">{{ $personalInfo->last_name ?? '' }}</div>
                                         </div>
-                                    @endif
-                                    @if (!empty($academicInfoGradesData['latestAverage']))
+                                    </div>
+                                    <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label for="current_course" class="col-form-label" style="font-weight: bold;">Latest Average</label>
-                                            <div class="value">{{ $academicInfoGradesData['latestAverage'] }}</div>
+                                            <label for="contact_no" class="col-form-label"
+                                                style="font-weight: bold;">Contact Number</label>
+                                            <div class="value">{{ $personalInfo->contact ?? '' }}</div>
                                         </div>
-                                    @endif
-                                    @if (!empty($academicInfoGradesData['latestGWA']))
-                                    <div class="col-md-6">
-                                        <label for="current_course" class="col-form-label" style="font-weight: bold;">Latest General Weighted Average</label>
-                                        <div class="value">{{ $academicInfoGradesData['latestGWA'] }}</div>
-                                    </div>
-                                    @endif
-                                    <div class="col-md-6">
-                                        <label for="current_school" class="col-form-label" style="font-weight: bold;">Scope General Average/GWA</label>
-                                        <div class="value">{{ $academicInfoGradesData['scopeGWA'] }}</div>
-                                    </div>
-                                    @if (!empty($academicInfoGradesData['equivalentGrade']))
-                                    <div class="col-md-6">
-                                        <label for="current_course" class="col-form-label" style="font-weight: bold;">Latest General Weighted Average</label>
-                                        <div class="value">{{ number_format($academicInfoGradesData['equivalentGrade'], 0) }}</div>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- School Application and Choice Courses Card -->
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title" style="font-weight: bold; color:#212529;">School Application and Choice Courses</h5>
-                                <div class="row mb-3">
-                                    @if (!empty($academicInfoChoiceData->first_choice_school))
-                                        <div class="col-md-6 mb-3">
-                                            <label for="first_choice_school" class="col-form-label" style="font-weight: bold;">First Choice School</label>
-                                            <div class="value">{{ $academicInfoChoiceData->first_choice_school }}</div>
+                                        <div class="col-md-6">
+                                            <label for="birthdate" class="col-form-label"
+                                                style="font-weight: bold;">Birthdate</label>
+                                            <div class="value">
+                                                {{ !empty($personalInfo->birthday) ? date('F d, Y', strtotime($personalInfo->birthday)) : '' }}
+                                            </div>
                                         </div>
-                                    @endif
-                                    @if (!empty($academicInfoChoiceData->first_choice_course))
-                                        <div class="col-md-6 mb-3">
-                                            <label for="first_choice_course" class="col-form-label" style="font-weight: bold;">First Choice Course</label>
-                                            <div class="value">{{ $academicInfoChoiceData->first_choice_course }}</div>
-                                        </div>
-                                    @endif
-                                    @if (!empty($academicInfoChoiceData->second_choice_school))
-                                        <div class="col-md-6 mb-3">
-                                            <label for="second_choice_school" class="col-form-label" style="font-weight: bold;">Second Choice School</label>
-                                            <div class="value">{{ $academicInfoChoiceData->second_choice_school }}</div>
-                                        </div>
-                                    @endif
-                                    @if (!empty($academicInfoChoiceData->second_choice_course))
-                                        <div class="col-md-6 mb-3">
-                                            <label for="second_choice_course" class="col-form-label" style="font-weight: bold;">Second Choice Course</label>
-                                            <div class="value">{{ $academicInfoChoiceData->second_choice_course }}</div>
-                                        </div>
-                                    @endif
-                                    @if (!empty($academicInfoChoiceData->third_choice_school))
-                                        <div class="col-md-6 mb-3">
-                                            <label for="third_choice_school" class="col-form-label" style="font-weight: bold;">Third Choice School</label>
-                                            <div class="value">{{ $academicInfoChoiceData->third_choice_school }}</div>
-                                        </div>
-                                    @endif
-                                    @if (!empty($academicInfoChoiceData->third_choice_course))
-                                        <div class="col-md-6 mb-3">
-                                            <label for="third_choice_course" class="col-form-label" style="font-weight: bold;">Third Choice Course</label>
-                                            <div class="value">{{ $academicInfoChoiceData->third_choice_course }}</div>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Family Information -->
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title" style="font-weight: bold; color: #212529;">Family Information</h5>
-                                <div class="row mb-3">
-                                    <div class="col-md-6 form__field">
-                                        <label for="total_household_members" class="col-form-label" style="font-weight: bold;">Total Household Members</label>
-                                        <div class="value">{{ $familyInfoData['total_household_members'] }}</div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="father_occupation" class="col-form-label" style="font-weight: bold;">Father's Occupation</label>
-                                        <div class="value">{{ $familyInfoData['father_occupation'] }}</div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="house_no" class="col-form-label"
+                                                style="font-weight: bold;">House Number</label>
+                                            <div class="value">{{ $personalInfo->house_number ?? '' }}</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="street" class="col-form-label"
+                                                style="font-weight: bold;">Street</label>
+                                            <div class="value">{{ $personalInfo->street ?? '' }}</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="father_income" class="col-form-label" style="font-weight: bold;">Father's Income</label>
-                                        <div class="value">{{ number_format($familyInfoData['father_income']) }}</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="mother_occupation" class="col-form-label" style="font-weight: bold;">Mother's occupation</label>
-                                        <div class="value">{{ $familyInfoData['mother_occupation'] }}</div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="mother_income" class="col-form-label" style="font-weight: bold;">Mother's Income</label>
-                                        <div class="value">{{ number_format($familyInfoData['mother_income']) }}</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="total_support_received" class="col-form-label" style="font-weight: bold;">Total Support Received</label>
-                                        <div class="value">{{ number_format($familyInfoData['total_support_received']) }}</div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="barangay" class="col-form-label"
+                                                style="font-weight: bold;">Barangay</label>
+                                            <div class="value">{{ $personalInfo->barangay ?? '' }}</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="municipality" class="col-form-label"
+                                                style="font-weight: bold;">Municipality</label>
+                                            <div class="value">{{ $personalInfo->municipality ?? '' }}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div><!-- End Bordered Tabs -->
+
+                            <!-- Academic Information Card -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-weight: bold; color:#212529;">Academic
+                                        Information</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="current_school" class="col-form-label"
+                                                style="font-weight: bold;">Current School</label>
+                                            <div class="value">{{ $academicInfoData['current_school'] }}</div>
+                                        </div>
+                                        @if (!empty($academicInfoData['current_course_program_grade']))
+                                            <div class="col-md-6">
+                                                <label for="current_course" class="col-form-label"
+                                                    style="font-weight: bold;">Current Course or Program</label>
+                                                <div class="value">
+                                                    {{ $academicInfoData['current_course_program_grade'] }}</div>
+                                            </div>
+                                        @endif
+                                        @if (!empty($academicInfoGradesData['latestAverage']))
+                                            <div class="col-md-6">
+                                                <label for="current_course" class="col-form-label"
+                                                    style="font-weight: bold;">Latest Average</label>
+                                                <div class="value">{{ $academicInfoGradesData['latestAverage'] }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                        @if (!empty($academicInfoGradesData['latestGWA']))
+                                            <div class="col-md-6">
+                                                <label for="current_course" class="col-form-label"
+                                                    style="font-weight: bold;">Latest General Weighted Average</label>
+                                                <div class="value">{{ $academicInfoGradesData['latestGWA'] }}</div>
+                                            </div>
+                                        @endif
+                                        <div class="col-md-6">
+                                            <label for="current_school" class="col-form-label"
+                                                style="font-weight: bold;">Scope General Average/GWA</label>
+                                            <div class="value">{{ $academicInfoGradesData['scopeGWA'] }}</div>
+                                        </div>
+                                        @if (!empty($academicInfoGradesData['equivalentGrade']))
+                                            <div class="col-md-6">
+                                                <label for="current_course" class="col-form-label"
+                                                    style="font-weight: bold;">Latest General Weighted Average</label>
+                                                <div class="value">
+                                                    {{ number_format($academicInfoGradesData['equivalentGrade'], 0) }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- School Application and Choice Courses Card -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-weight: bold; color:#212529;">School Application
+                                        and Choice Courses</h5>
+                                    <div class="row mb-3">
+                                        @if (!empty($academicInfoChoiceData->first_choice_school))
+                                            <div class="col-md-6 mb-3">
+                                                <label for="first_choice_school" class="col-form-label"
+                                                    style="font-weight: bold;">First Choice School</label>
+                                                <div class="value">{{ $academicInfoChoiceData->first_choice_school }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                        @if (!empty($academicInfoChoiceData->first_choice_course))
+                                            <div class="col-md-6 mb-3">
+                                                <label for="first_choice_course" class="col-form-label"
+                                                    style="font-weight: bold;">First Choice Course</label>
+                                                <div class="value">{{ $academicInfoChoiceData->first_choice_course }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                        @if (!empty($academicInfoChoiceData->second_choice_school))
+                                            <div class="col-md-6 mb-3">
+                                                <label for="second_choice_school" class="col-form-label"
+                                                    style="font-weight: bold;">Second Choice School</label>
+                                                <div class="value">
+                                                    {{ $academicInfoChoiceData->second_choice_school }}</div>
+                                            </div>
+                                        @endif
+                                        @if (!empty($academicInfoChoiceData->second_choice_course))
+                                            <div class="col-md-6 mb-3">
+                                                <label for="second_choice_course" class="col-form-label"
+                                                    style="font-weight: bold;">Second Choice Course</label>
+                                                <div class="value">
+                                                    {{ $academicInfoChoiceData->second_choice_course }}</div>
+                                            </div>
+                                        @endif
+                                        @if (!empty($academicInfoChoiceData->third_choice_school))
+                                            <div class="col-md-6 mb-3">
+                                                <label for="third_choice_school" class="col-form-label"
+                                                    style="font-weight: bold;">Third Choice School</label>
+                                                <div class="value">{{ $academicInfoChoiceData->third_choice_school }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                        @if (!empty($academicInfoChoiceData->third_choice_course))
+                                            <div class="col-md-6 mb-3">
+                                                <label for="third_choice_course" class="col-form-label"
+                                                    style="font-weight: bold;">Third Choice Course</label>
+                                                <div class="value">{{ $academicInfoChoiceData->third_choice_course }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Family Information -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="font-weight: bold; color: #212529;">Family
+                                        Information</h5>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 form__field">
+                                            <label for="total_household_members" class="col-form-label"
+                                                style="font-weight: bold;">Total Household Members</label>
+                                            <div class="value">{{ $familyInfoData['total_household_members'] }}</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="father_occupation" class="col-form-label"
+                                                style="font-weight: bold;">Father's Occupation</label>
+                                            <div class="value">{{ $familyInfoData['father_occupation'] }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="father_income" class="col-form-label"
+                                                style="font-weight: bold;">Father's Income</label>
+                                            <div class="value">{{ number_format($familyInfoData['father_income']) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="mother_occupation" class="col-form-label"
+                                                style="font-weight: bold;">Mother's occupation</label>
+                                            <div class="value">{{ $familyInfoData['mother_occupation'] }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="mother_income" class="col-form-label"
+                                                style="font-weight: bold;">Mother's Income</label>
+                                            <div class="value">{{ number_format($familyInfoData['mother_income']) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="total_support_received" class="col-form-label"
+                                                style="font-weight: bold;">Total Support Received</label>
+                                            <div class="value">
+                                                {{ number_format($familyInfoData['total_support_received']) }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div><!-- End Bordered Tabs -->
+                </div>
             </div>
-        </div>
-    </section>
-</main>
-<br><br>
-@include('partials.user-footer')
+        </section>
+    </main>
+    <br><br>
+    @include('partials.user-footer')
 
 </body>
 

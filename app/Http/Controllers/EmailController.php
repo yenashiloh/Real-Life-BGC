@@ -80,30 +80,33 @@ class EmailController extends Controller
     }
 
     //under review email content 
-      public function saveUnderReviewContent(Request $request)
-      {
-          $validator = Validator::make($request->all(), [
-              'under_review' => 'required', 
-          ]);
-      
-          if ($validator->fails()) {
-              return redirect()->back()->withErrors($validator)->withInput();
-          }
-      
-          $content_email = ContentEmail::first();
-      
-          if ($content_email) {
-              $content_email->under_review = $request->input('under_review');
-              $content_email->save();
-          } else {
-              $content_email = new ContentEmail();
-              $content_email->under_review = $request->input('under_review');
-              $content_email->save();
-          }
-      
-          $request->session()->flash('success', 'Under Review Content Saved Successfully!');
-          return redirect()->route('admin.email.email')->with('under_review_data', $request->input('under_review'));
-      }
+    public function saveUnderReviewContent(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'under_review' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        $content_email = ContentEmail::first();
+    
+        if ($content_email) {
+            $content_email->under_review = $request->input('under_review');
+            $content_email->approved = $content_email->approved ?? false; // Ensure 'approved' is set
+            $content_email->save();
+        } else {
+            $content_email = new ContentEmail();
+            $content_email->under_review = $request->input('under_review');
+            $content_email->approved = false; // Set default value
+            $content_email->save();
+        }
+    
+        $request->session()->flash('success', 'Under Review Content Saved Successfully!');
+        return redirect()->route('admin.email.email')->with('under_review_data', $request->input('under_review'));
+    }
+    
 
       //shortlisted email content 
       public function saveShortlistedContent(Request $request)
@@ -230,39 +233,39 @@ class EmailController extends Controller
         return redirect()->route('admin.email.email')->with('approved_data', $request->input('approved'));
       }
 
-      public function notifyApplicant(Request $request, $applicantId)
-{
-    try {
-        // Retrieve the applicant's personal information
-        $applicantPersonalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->firstOrFail();
+    public function notifyApplicant(Request $request, $applicantId)
+    {
+        try {
+            // Retrieve the applicant's personal information
+            $applicantPersonalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->firstOrFail();
 
-        // Retrieve the associated applicant
-        $applicant = $applicantPersonalInfo->applicant;
+            // Retrieve the associated applicant
+            $applicant = $applicantPersonalInfo->applicant;
 
-        if (!$applicant) {
-            throw new ModelNotFoundException('Applicant not found for applicant_id: ' . $applicantId);
+            if (!$applicant) {
+                throw new ModelNotFoundException('Applicant not found for applicant_id: ' . $applicantId);
+            }
+
+            // Retrieve applicant's email and first name
+            $email = $applicant->email;
+            $firstName = $applicant->applicants_personal_information->first_name ?? ''; // Get the first name
+
+            // Gather unchecked document types
+            $uncheckedDocumentTypes = $request->input('document_types');
+
+            // Customize the email subject
+            $subject = 'Incomplete Requirements';
+
+            // Send email notification
+            Mail::to($email)->send(new IncompleteRequirementsNotification($uncheckedDocumentTypes, $firstName, $subject));
+
+            return response()->json(['message' => 'Notification sent successfully'], 200);
+        } catch (ModelNotFoundException $e) {
+            Log::error('Applicant not found: ' . $e->getMessage());
+            return response()->json(['message' => 'Applicant not found'], 404);
+        } catch (\Exception $e) {
+            Log::error('Failed to send notification: ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to send notification', 'error' => $e->getMessage()], 500);
         }
-
-        // Retrieve applicant's email and first name
-        $email = $applicant->email;
-        $firstName = $applicant->applicants_personal_information->first_name ?? ''; // Get the first name
-
-        // Gather unchecked document types
-        $uncheckedDocumentTypes = $request->input('document_types');
-
-        // Customize the email subject
-        $subject = 'Incomplete Requirements';
-
-        // Send email notification
-        Mail::to($email)->send(new IncompleteRequirementsNotification($uncheckedDocumentTypes, $firstName, $subject));
-
-        return response()->json(['message' => 'Notification sent successfully'], 200);
-    } catch (ModelNotFoundException $e) {
-        Log::error('Applicant not found: ' . $e->getMessage());
-        return response()->json(['message' => 'Applicant not found'], 404);
-    } catch (\Exception $e) {
-        Log::error('Failed to send notification: ' . $e->getMessage());
-        return response()->json(['message' => 'Failed to send notification', 'error' => $e->getMessage()], 500);
     }
-}
 }

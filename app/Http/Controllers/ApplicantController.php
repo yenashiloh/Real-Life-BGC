@@ -27,6 +27,7 @@ use App\Models\ApplicationSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+
 class ApplicantController extends Controller
 {
     public function index()
@@ -38,7 +39,9 @@ class ApplicantController extends Controller
     public function announcement()
     {
         $title = 'Announcement';
-        $announcements = Announcement::all();
+        $announcements = Announcement::where('published', true)
+                                    ->orderByDesc('created_at')
+                                    ->get();
 
         return view('announcement', [
             'title' => $title,
@@ -110,8 +113,6 @@ class ApplicantController extends Controller
         'academicInfoChoiceData', 'personalInfo' , 'reportcardData', 'documentTypes', 'approvedDocumentTypes'));
     }
     
-
-
     public function personalDetails()
     {
         $applicantId = auth()->id();
@@ -233,7 +234,7 @@ class ApplicantController extends Controller
     public function registration()
     {
         $title = 'Registration';
-    
+
         $settings = ApplicationSettings::first();
         
         $now = Carbon::now('Asia/Manila');
@@ -241,15 +242,19 @@ class ApplicantController extends Controller
         $currentDate = $now->format('Y-m-d');
         $currentTime = $now->format('H:i:s');
         
-        $startDate = $settings->start_date;
-        $startTime = $settings->start_time;
-        $stopDate = $settings->stop_date;
-        $stopTime = $settings->stop_time;
-        
-        $applicationOpen = $this->isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime);
-        
+        if ($settings) {
+            $startDate = $settings->start_date;
+            $startTime = $settings->start_time;
+            $stopDate = $settings->stop_date;
+            $stopTime = $settings->stop_time;   
+            $applicationOpen = $this->isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime);
+        } else {
+            $applicationOpen = false;
+        }
+
         return view('user.registration', compact('title', 'applicationOpen'));
     }
+
     
     //Open and Close Application
     private function isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime)
@@ -409,6 +414,7 @@ class ApplicantController extends Controller
                 'uploaded_document' => $reportcardFile->storeAs('ReportCards', $fileName, 'public'),
                 'status' => 'For Review',
             ];
+            
             Requirement::create($reportcardData);
 
             $payslipFile = $request->file('payslip');

@@ -2,8 +2,6 @@
     background: #f6f6f6;
     padding: 0 0 30px 0;
     font-size: 14px;
-   
-   
   }
   
   .footer .footer-newsletter {
@@ -101,8 +99,6 @@
     font-family: "Nunito", sans-serif;
   }
   
-  
-  
   .footer .footer-top .social-links a:hover {
     color: #012970;
   }
@@ -168,8 +164,8 @@
       color: white;
   }
   .thin-chevron {
-      font-size: 1.5em; /* Adjust the size as needed */
-      font-weight: 10; /* Use a lighter font weight for a thinner stroke */
+      font-size: 1.5em;
+      font-weight: 10;
     }
 
     

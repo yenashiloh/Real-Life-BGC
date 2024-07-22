@@ -2,8 +2,8 @@
 <link rel="stylesheet" href="assets-applicant/css/faq.css" type="text/css">
 
 <!-- ======= FAQ Section ======= -->
- <!-- Breadcrumb Section Begin -->
- <div class="breadcrumb-section">
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -147,22 +147,10 @@
                     href="https://www.reallife.ph/findacenter"><u><em>https://www.reallife.ph/findacenter</u></em></a>
             </div>
         </div>
-        </div>
+    </div>
     </div>
 </section>
 <!-- FAQ End -->
-<script>
-    function toggleFAQ(element) {
-        var answer = element.nextElementSibling;
-
-        if (answer.style.display === 'block') {
-            answer.style.display = 'none';
-            element.classList.remove('active');
-        } else {
-            answer.style.display = 'block';
-            element.classList.add('active');
-        }
-    }
-</script>
 <br><br>
 @include('partials.footer')
+<script src="assets/js/faq.js"></script>

@@ -1,27 +1,23 @@
-      /* Default style for the logo */
-      #logo {
-        width: 125px; /* Default width for larger screens */
-    }
+#logo {
+  width: 125px;
+}
 
-    /* Media query for smaller screens */
-    @media (max-width: 767px) {
-        #logo {
-            width: 100px; /* Adjust width for smaller screens */
-        }
-    }
+@media (max-width: 767px) {
+#logo {
+  width: 100px;
+  }
+}
 
-    /* Media query for even smaller screens */
-    @media (max-width: 479px) {
-        #logo {
-            width: 80px; /* Further adjust width for very small screens */
-        }
-    }
-    .education-assistance{
-        /* font-size: 21px;  */
-        display: inline-block; 
-        vertical-align: middle;
-    }
-    #timeline {
+@media (max-width: 479px) {
+#logo {
+  width: 80px;
+  }
+}
+.education-assistance{
+  display: inline-block; 
+  vertical-align: middle;
+}
+#timeline {
   --color: rgba(30, 30, 30);
   --bgColor: rgba(245, 245, 245);
   min-height: 100vh;
@@ -33,8 +29,6 @@
   color: var(--color);
 
 } 
-
-
 
 .timeline_ul {
   --col-gap: 2rem;
@@ -49,7 +43,7 @@
   margin-inline: auto;
 }
 
-/* line */
+
 .timeline_ul::before {
   content: "";
   grid-column: 1;
@@ -58,14 +52,10 @@
   border-radius: calc(var(--line-w) / 2);
 }
 
-/* columns*/
-
-/* row gaps */
 .timeline_ul li:not(:last-child) {
   margin-bottom: var(--row-gap);
 }
 
-/* card */
 .timeline_ul li {
   grid-column: 2;
   --inlineP: 1.5rem;
@@ -75,7 +65,6 @@
   grid-template-rows: min-content min-content min-content;
 }
 
-/* date */
 .timeline_ul li .date {
   --dateH: 3rem;
   height: var(--dateH);
@@ -95,7 +84,6 @@
   border-radius: calc(var(--dateH) / 2) 0 0 calc(var(--dateH) / 2);
 }
 
-/* date flap */
 .timeline_ul li .date::before {
   content: "";
   width: var(--inlineP);
@@ -109,7 +97,6 @@
   right: 0;
 }
 
-/* circle */
 .timeline_ul li .date::after {
   content: "";
   position: absolute;
@@ -124,7 +111,6 @@
   right: calc(100% + var(--col-gap) + var(--line-w) / 2);
 }
 
-/* title descr */
 .timeline_ul li .title,
 .timeline_ul li .descr {
   background: var(--bgColor);
@@ -145,7 +131,6 @@
 
 }
 
-/* shadows */
 .timeline_ul li .title::before,
 .timeline_ul li .descr::before {
   content: "";
@@ -181,7 +166,7 @@
     grid-column: 3;
   }
 
-  /* start second card */
+
   .timeline_ul li:nth-child(2) {
     grid-row: 2/4;
   }
@@ -227,13 +212,15 @@
 
 .notification-item {
     padding: 10px; 
-    cursor: pointer; /* Show pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition for background color change */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 300px;
+
 }
 
 .notification-item:hover {
-    background-color: #f8f8f8; /* Change background color on hover */
-    width: 320px;
+    background-color: #f8f8f8;
+    width: 300px;
 }
 
 .notification-title {
@@ -241,16 +228,15 @@
     margin-bottom: 5px;
 }
 
-.notification-description {
+/* .notification-description {
     color: #333;
-}
+} */
 
 .notification-time {
     font-style: italic;
     color: #888;
 }
 
-  /* Notification badge */
   .notification-badge {
       position: relative;
       display: inline-block;
@@ -262,20 +248,20 @@
   .notification-dropdown-menu {
     display: none;
     position: absolute;
-    max-height: 300px; /* Set maximum height for the dropdown */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
     z-index: 1000;
   }
 
   .dropdown-item {
-    margin-bottom: 0; /* Adjust bottom margin */
-    margin-top: 0;    /* Adjust top margin */
+    margin-bottom: 0;
+    margin-top: 0;   
   }
 
   .preview-item {
-    margin-bottom: 0; /* Adjust bottom margin */
-    margin-top: 0;    /* Adjust top margin */
+    margin-bottom: 0;
+    margin-top: 0;   
   }
 
   .notification-badge .badge {
@@ -285,10 +271,10 @@
       background-color: red;
       color: white;
       border-radius: 50%;
-      padding: 5px; /* Adjust padding to create a perfect circle */
-      font-size: 7px; /* Adjust font-size to create a perfect circle */
+      padding: 5px;
+      font-size: 7px;
   }
-  /* CSS for the dropdown menu */
+ 
   .dropdown-menu {
     margin-right: 0 !important;
     padding-right: 0 !important;
@@ -299,9 +285,9 @@
     position: absolute;
     top: calc(70% + 10px);
     left: 0;
-    max-width: 320px; /* Adjust the maximum width as needed */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
+    max-width: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
     z-index: 1;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -311,16 +297,16 @@
   
 
   #notificationDropdown {
-    max-height: 400px; /* Adjust this value as needed */
+    max-height: 400px;
     overflow-y: auto;
   }
-  /* Ensure parent is positioned relatively for absolute positioning of dropdown */
+ 
   .notification-badge {
     position: relative;
   }
 
   .notification-info {
-    margin-bottom: 0px; /* Add margin below each notification item */
+    margin-bottom: 0px;
   }
 
   .notification-title {
@@ -350,88 +336,88 @@
 
 /********CAROUSEL**********/
 .carousel-item img {
-    max-height: 500px; /* Set maximum desired height */
-    width: 100%; /* Ensure the image width adjusts responsively */
-    object-fit: cover; /* Ensure the image covers the entire space */
+    max-height: 500px;
+    width: 100%;
+    object-fit: cover;
 }
-/* Extra small devices (phones) */
+
 @media (max-width: 576px) {
     .carousel-item img {
-        max-height: 300px; /* Adjust the height for smaller screens */
+        max-height: 300px;
     }
 }
 
-/* Small devices (tablets) */
+
 @media (min-width: 576px) and (max-width: 768px) {
     .carousel-item img {
-        max-height: 400px; /* Adjust the height for tablets */
+        max-height: 400px;
     }
 }
 
-/* Medium devices (laptops, desktops) */
+
 @media (min-width: 768px) and (max-width: 992px) {
     .carousel-item img {
-        max-height: 500px; /* Default height for medium-sized screens */
+        max-height: 500px;
     }
 }
 
-/* Large devices (large desktops, TVs) */
+
 @media (min-width: 992px) {
     .carousel-item img {
-        max-height: 600px; /* Adjust the height for larger screens */
+        max-height: 600px;
     }
 }
 
 /************************************/
 @media (max-width: 576px) {
     .education-assistance {
-        font-size: 16px; /* Adjust font size for smaller screens */
+        font-size: 16px;
     }
 }
 
-/* Medium devices (tablets) */
+
 @media (min-width: 576px) and (max-width: 768px) {
     .education-assistance {
-        font-size: 20px; /* Adjust font size for tablets */
+        font-size: 20px;
     }
 }
 
-/* Large devices (laptops) */
+
 @media (min-width: 768px) and (max-width: 992px) {
     .education-assistance {
-        font-size: 22px; /* Adjust font size for laptops */
+        font-size: 22px;
     }
 }
 
-/* Extra large devices (desktops) */
+
 @media (min-width: 992px) {
     .education-assistance {
-        font-size: 24px; /* Adjust font size for desktops */
+        font-size: 24px;
     }
 }
 
 .user-profile {
-  position: relative; /* Ensure relative positioning for absolute child elements */
+  position: relative;
 }
 
 .user-dropdown-menu {
-  display: none; /* Hide dropdown menu by default */
+  display: none;
   position: absolute;
-  top: 100%; /* Position dropdown below the user profile link */
-  right: 0; /* Align dropdown menu to the right */
-  background-color: #fff; /* Background color for dropdown */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for dropdown */
-  z-index: 1000; /* Ensure dropdown appears above other elements */
-  min-width: 200px; /* Optional: Set minimum width for dropdown menu */
-  padding: 10px; /* Optional: Add padding to dropdown menu */
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 200px;
+  padding: 10px;
   text-align: left; 
 }
 
 .user-dropdown-menu li {
-  list-style: none; /* Remove default list styles */
-  text-align: left; /* Align text to the left within list items */
-  margin: 0; /* Remove any default margin */
-  padding: 0; /* Remove any default padding */
+  list-style: none;
+  text-align: left;
+  margin: 0;
+  padding: 0;
 }
 
 .user-dropdown-menu button {
@@ -441,23 +427,20 @@
   border: none;
   background: none;
   text-align: left;
-  color: #333; /* Text color for dropdown items */
+  color: #333;
   text-decoration: none;
 }
 
 .user-dropdown-menu button:hover {
-  background-color: #f5f5f5; /* Hover background color for dropdown items */
+  background-color: #f5f5f5;
 }
 
 .user-dropdown-menu button:focus, 
 .user-dropdown-menu button:active {
-  outline: none; /* Remove focus outline */
-  background-color: #f5f5f5; /* Match hover background color */
-  color: #333; /* Ensure text color does not change */
+  outline: none;
+  background-color: #f5f5f5;
+  color: #333;
 }
-
-
-
 .dropdown-item {
   background: none;
   border: none;
@@ -466,14 +449,132 @@
   text-align: left;
   width: 100%;
 }
-/* Style to control the appearance of the table */
 .table-responsive {
-  overflow-x: auto; /* Enable horizontal scrolling if needed */
+  overflow-x: auto; 
 }
 
-/* Style to limit the width of the notes column and enable text wrapping */
 .notes-column {
-  max-width: 300px; /* Adjust as needed based on your layout */
-  white-space: normal; /* Allow text wrapping */
-  word-wrap: break-word; /* Break long words to fit within the column */
+  max-width: 300px; 
+  white-space: normal; 
+  word-wrap: break-word; 
+}
+.tn-left li {
+  transition: none; /* or adjust timing as needed */
+}
+.notification-dropdown-mobile {
+  position: absolute;
+  top: 50px;
+  left: 0; /* Ensure it starts from the left */
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  display: none; /* Ensure it's displayed when needed */
+}
+
+/* Ensure that the dropdown is displayed properly */
+.notification-dropdown-mobile.active {
+  display: block;
+}
+
+.notification-list-mobile {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notification-item-container-mobile {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.notification-item-container-mobile:last-child {
+  border-bottom: none;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.notification-info-mobile {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-title-mobile {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.notification-description-mobile {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.notification-time-mobile {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+
+/* Tablet styles */
+@media (max-width: 768px) {
+  .notification-dropdown-mobile {
+    width: 100%;
+    top: 40px;
+  }
+
+  .notification-item-mobile {
+    padding: 10px;
+    
+  }
+
+  .notification-title-mobile {
+    font-size: 13px;
+  }
+
+  .notification-description-mobile {
+    font-size: 12px;
+  }
+
+  .notification-time-mobile {
+    font-size: 11px;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+  .notification-dropdown-mobile {
+    width: 100%;
+    max-height: 400px;
+    top: 35px;
+  }
+
+  .notification-item-mobile {
+    padding: 8px;
+    padding: 10px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 300px;
+  }
+
+  .notification-title-mobile {
+    font-size: 12px;
+  }
+
+  .notification-description-mobile {
+    font-size: 11px;
+  }
+
+  .notification-time-mobile {
+    font-size: 10px;
+  }
 }

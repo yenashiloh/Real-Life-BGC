@@ -390,7 +390,7 @@ class AdminController extends Controller
             'applicantsData' => $applicantsData,
             'availableYears' => $availableYears,
         ]);
-}
+    }
 
     public function updateStatus(Request $request)
     {
@@ -432,9 +432,9 @@ class AdminController extends Controller
     public function showDeclinedApplicants()
     {
         $title = 'Declined Applicants';
-        $applicantsData = $this->getDeclinedData(); // Assuming getDeclinedData() retrieves declined applicants
+        $applicantsData = $this->getDeclinedData();
         $validStatuses = ['Declined'];
-        $selectedYear = now()->year; // You might want to set a default year here
+        $selectedYear = now()->year; 
         $years = Applicant::selectRaw('YEAR(created_at) as year')
                             ->distinct()
                             ->orderBy('year', 'desc')
@@ -442,9 +442,9 @@ class AdminController extends Controller
     
         // Fetch applicant data for the selected year
         $applicantsPersonalInformation = ApplicantsPersonalInformation::select(
-                'applicants_personal_information.*', // Select all columns from applicants_personal_information
-                'applicants_academic_information.*', // Select all columns from applicants_academic_information
-                'applicants.*' // Select all columns from applicants
+                'applicants_personal_information.*', 
+                'applicants_academic_information.*', 
+                'applicants.*' 
             )
             ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
             ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
@@ -457,7 +457,6 @@ class AdminController extends Controller
     
     public function getDeclinedApplicantsByYear(Request $request)
     {
-        // Ensure the year parameter is present and is numeric
         $selectedYear = $request->input('year');
     
         if (!is_numeric($selectedYear)) {
@@ -646,7 +645,7 @@ class AdminController extends Controller
             $requirement = Requirement::findOrFail($requirement_id);
             $requirement->status = $status;
             if ($status == 'Declined') {
-                $requirement->declined_reason = $request->decline_reason; // Save the decline reason
+                $requirement->declined_reason = $request->decline_reason; 
             }
             $requirement->save();
 
@@ -683,7 +682,7 @@ class AdminController extends Controller
     }
     
     // fetch notification
-        public function fetchNotificationCount()
+    public function fetchNotificationCount()
     {
         try {
             $count = Notification::where('status', 'unread')->count();
@@ -697,7 +696,6 @@ class AdminController extends Controller
     public function markNotificationsAsRead()
     {
         try {
-            // Update status of unread notifications to 'read'
             Notification::where('status', 'unread')->update(['status' => 'read']);
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
@@ -723,7 +721,7 @@ class AdminController extends Controller
         }
     }
 
-      //export status declined
+    //export status declined
     public function exportDeclined(Request $request)
     {
         $format = $request->get('format', 'excel');
@@ -867,10 +865,7 @@ class AdminController extends Controller
         
         return redirect()->back()->with('success', 'Announcement unpublished successfully!');
     }
-
-    //Application Settings
-  
-        
+      
 }    
 
 

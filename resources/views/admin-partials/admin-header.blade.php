@@ -26,7 +26,7 @@
 <style>
   .loader {
        border: 4px solid rgba(0, 0, 0, 0.1);
-       border-top: 4px solid #3498db;
+       border-top: 4px solid #71BF44;
        border-radius: 50%;
        width: 40px;
        height: 40px;
@@ -42,8 +42,8 @@
        100% { transform: rotate(360deg); }
      }
      .dropdown-blue:hover {
-    background-color: #007bff; 
-    color: #fff; 
+    background-color: #dfdfdf; 
+    color: #050505; 
     }
     .table-responsive td {
       max-width: 250px; 

@@ -159,3 +159,23 @@ input[type="checkbox"] {
     font-weight: bold;
     font-size: 20px;
 }
+
+.link-style {
+    cursor: pointer;
+}
+
+.link-style:hover {
+    color: rgb(0, 0, 0);
+background-color: rgb(248, 246, 250);
+}
+
+.no-notifications {
+    text-align: center;
+    padding: 10px;
+    color: #555;
+    font-size: 14px;
+}
+
+.notification-item-container.new-notification {
+    background-color: #ffcccc;
+}

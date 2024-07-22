@@ -52,7 +52,6 @@ async function updateChecklistStatus() {
 
     } catch (error) {
         console.error(`Error fetching approved documents: ${error.message}`);
-        // Handle error (e.g., display an error message)
     }
 }
 
@@ -93,7 +92,7 @@ document.getElementById('notifyBtn').addEventListener('click', async () => {
         return !checkedCheckboxes.some(cb => cb.value === doc.type);
     }).map(doc => doc.type);
 
-    const applicantId = window.location.pathname.split('/').pop(); // Extract applicant ID from the URL path
+    const applicantId = window.location.pathname.split('/').pop(); 
     const csrfToken = getCsrfToken(); // Retrieve the CSRF token dynamically
 
     if (!csrfToken) {
@@ -136,8 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
     notifyBtn.addEventListener('click', function() {
         // Show the loader immediately
         showLoader();
-
-        // Simulate an asynchronous operation (like an API call) for 3 seconds
+        
         setTimeout(function() {
             // Hide the loader after 3 seconds
             hideLoader();
@@ -161,4 +159,5 @@ document.addEventListener('DOMContentLoaded', function() {
         notifyBtn.innerHTML = 'Notify';
         notifyBtn.disabled = false;
     }
+    
 });

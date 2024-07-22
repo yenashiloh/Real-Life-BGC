@@ -2,35 +2,16 @@
   Template Name: Sona
   Description: Sona Hotel Html Template
   Author: Colorlib
-  Author URI: https://colorlib.com
+  Author URI: https:
   Version: 1.0
   Created: Colorlib
 ******************************************************************/
 
-/*------------------------------------------------------------------
-[Table of contents]
 
-1.  Template default CSS
-	1.1	Variables
-	1.2	Mixins
-	1.3	Flexbox
-	1.4	Reset
-2.  Helper Css
-3.  Header Section
-4.  Hero Section
-5.  About Section
-6.  Services Section
-7.  Testimonial Section
-8.  Blog Section
-9.  Contact
-10.  Footer Style
 
--------------------------------------------------------------------*/
 
-/*----------------------------------------*/
 
-/* Template default CSS
-/*----------------------------------------*/
+
 
 html, body {
 	height: 100%;
@@ -89,9 +70,7 @@ ul, ol {
 	padding: 0;
 	margin: 0;
 }
-/*---------------------
-  Helper CSS
------------------------*/
+
 
 .section-title {
 	text-align: center;
@@ -126,7 +105,7 @@ ul, ol {
 .text-white h1, .text-white h2, .text-white h3, .text-white h4, .text-white h5, .text-white h6, .text-white p, .text-white span, .text-white li, .text-white a {
 	color: #fff;
 }
-/* buttons */
+
 
 .primary-btn {
 	display: inline-block;
@@ -146,7 +125,7 @@ ul, ol {
 	background: #71BF44;
 	content: "";
 }
-/* Preloder */
+
 
 #preloder {
 	position: fixed;
@@ -265,9 +244,7 @@ ul, ol {
 	-ms-flex-pack: center;
 	justify-content: center;
 }
-/*---------------------
-  Header
------------------------*/
+
 
 .header-section.header-normal .menu-item {
 	-webkit-box-shadow: 0px 12px 15px rgba(36, 11, 12, 0.05);
@@ -496,9 +473,7 @@ ul, ol {
 .offcanvas-menu-wrapper {
 	display: none;
 }
-/*---------------------
-  Hero
------------------------*/
+
 
 .hero-section {
 	position: relative;
@@ -647,12 +622,10 @@ ul, ol {
 .hero-slider .owl-stage-outer, .hero-slider .owl-stage, .hero-slider .owl-item, .hero-slider .hs-item {
 	height: 100%;
 }
-/*---------------------
-  About US
------------------------*/
+
 
 .about-text {
-	/* text-align: center; */
+
 	padding: 0 35px;
 }
 .about-text p {
@@ -673,9 +646,7 @@ ul, ol {
 	min-width: 100%;
 }
 
-/*---------------------
-  Service Section
------------------------*/
+
 
 .services-section {
 	padding-bottom: 60px;
@@ -725,9 +696,7 @@ ul, ol {
 	-o-transition: all 0.3s;
 	transition: all 0.3s;
 }
-/*------------------------
-  Home Page Room Section 
--------------------------*/
+
 
 .hp-room-items {
 	margin-left: -15px;
@@ -787,9 +756,7 @@ ul, ol {
 .hp-room-items .hp-room-item .hr-text .primary-btn:after {
 	background: #ffffff;
 }
-/*---------------------
-  Testimonial Slider
------------------------*/
+
 
 .testimonial-section {
 	background: #f9f9f9;
@@ -853,9 +820,7 @@ ul, ol {
 	color: #19191a;
 	display: inline-block;
 }
-/*---------------------
-  Blog and Event
------------------------*/
+
 
 .blog-section {
 	padding-bottom: 70px;
@@ -863,9 +828,7 @@ ul, ol {
 .blog-section .section-title {
 	margin-bottom: 36px;
 }
-/*---------------------
-  Footer Section
------------------------*/
+
 
 .footer-section {
 	background:  #71BF44;
@@ -982,15 +945,13 @@ ul, ol {
 	color: #ffffff;
 	text-align: center;
 }
-/* --------------------------------- Other Pages Styles ----------------------------------- */
 
-/*---------------------
-  Breadcrumb Section
------------------------*/
+
+
 
 .breadcrumb-section {
 	padding-top: 70px;
-	padding-bottom: 80px;
+	padding-bottom: 70px;
 }
 .breadcrumb-text {
 	text-align: center;
@@ -1022,9 +983,7 @@ ul, ol {
 	font-size: 18px;
 	color: #aaaab3;
 }
-/*------------------------
-  About Us Page Section
--------------------------*/
+
 
 .aboutus-page-section {
 	padding-top: 0;
@@ -1072,9 +1031,7 @@ ul, ol {
 .about-page-services .ap-service-item .api-text h3 {
 	color: #ffffff;
 }
-/*---------------------
-  Video Section
------------------------*/
+
 
 .video-section {
 	height: 500px;
@@ -1096,9 +1053,7 @@ ul, ol {
 .video-section .video-text .play-btn {
 	display: inline-block;
 }
-/*---------------------
-  Gallery Section
------------------------*/
+
 
 .gallery-section {
 	padding-bottom: 80px;
@@ -1158,9 +1113,7 @@ ul, ol {
 .gallery-item .gi-text h3 {
 	color: #ffffff;
 }
-/*---------------------
-  Room Section
------------------------*/
+
 
 .rooms-section {
 	padding-top: 0;
@@ -1229,9 +1182,7 @@ ul, ol {
 	background: #71BF44;
 	color: #ffffff;
 }
-/*-----------------------
-  Room Details Section
--------------------------*/
+
 
 .room-details-section {
 	padding-top: 0;
@@ -1526,9 +1477,7 @@ ul, ol {
 	height: 46px;
 	margin-top: 30px;
 }
-/*---------------------
-  Blog Section
------------------------*/
+
 
 .blog-section.blog-page {
 	padding-top: 0;
@@ -1581,9 +1530,7 @@ ul, ol {
 .load-more .primary-btn {
 	color: #19191a;
 }
-/*----------------------------
-  Blog Details Hero Section
-----------------------------*/
+
 
 .blog-details-hero {
 	height: 530px;
@@ -1623,13 +1570,9 @@ ul, ol {
 .bd-hero-text ul li.b-time {
 	text-transform: uppercase;
 }
-/*---------------------
-  Blog Details Section
------------------------*/
 
-.blog-details-section {
-	padding-top: 55px;
-}
+
+
 .blog-details-text .bd-title {
 	margin-bottom: 52px;
 }
@@ -1727,7 +1670,7 @@ ul, ol {
 	position: absolute;
     left: 0;
     top: 0;
-    bottom: 0; /* Align the bottom of ::before with the bottom of .sc-text */
+    bottom: 0;
     width: 1px;
     background: #ebebeb;
     content: "";
@@ -1847,9 +1790,7 @@ ul, ol {
 	display: inline-block;
 	border-radius: 2px;
 }
-/*---------------------
-  Recommend Blog
------------------------*/
+
 
 .recommend-blog-section {
 	padding-top: 65px;
@@ -1861,9 +1802,7 @@ ul, ol {
 .recommend-blog-section .section-title h2 {
 	margin-top: 0;
 }
-/*---------------------
-  Contact Section
------------------------*/
+
 
 .contact-section {
 	padding-top: 80px;
@@ -1957,7 +1896,7 @@ ul, ol {
 .map iframe {
 	width: 100%;
 }
-/*-------------------------------- Respinsive Media Styles --------------------------------*/
+
 
 @media only screen and (min-width: 1554px) and (max-width: 1920px) {
 	.hp-room-items .hp-room-item .hr-text {
@@ -1974,7 +1913,7 @@ ul, ol {
 		max-width: 1170px;
 	}
 }
-/* Medium Device: 1200px */
+
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
 	.testimonial-slider.owl-carousel .owl-nav button {
@@ -2018,34 +1957,33 @@ ul, ol {
 		right: 40px;
 		top: 25px;
 		font-size: 22px;
-		width: auto; /* Adjust width to accommodate icons */
-		height: 30px; /* Set a fixed height */
+		width: auto;
+		height: 30px;
 		color: #19191a;
-		/* border: 1px solid #19191a;
-		border-radius: 2px; */
-		line-height: 33px; /* Match line height to height */
+	
+		line-height: 33px;
 		text-align: center;
 		z-index: 100;
-		display: flex; /* Use flexbox to align icons horizontally */
-		justify-content: space-between; /* Space items evenly */
+		display: flex;
+		justify-content: space-between;
 		cursor: pointer;
 	}
 	
 	.icon-container {
-		display: flex; /* Use flexbox for icon containers */
-		align-items: center; /* Center items vertically */
-		padding: 0 10px; /* Add padding for spacing between icons */
+		display: flex;
+		align-items: center;
+		padding: 0 10px;
+		font-size: 18px;
 	}
 	
-	/* Target icon_menu specifically to remove border and border radius */
 	.canvas-open .icon_menu {
 		border: 2px solid #19191a;
-		border-radius: 0; /* Remove border radius */
-		color: inherit; /* Inherit parent color (if needed) */
+		border-radius: 0;
+		color: inherit;
 	}
 	
 	.canvas-open i {
-		color: inherit; /* Inherit parent color (if needed) */
+		color: inherit;
 	}
 	
 	.offcanvas-menu-wrapper {
@@ -2266,7 +2204,7 @@ ul, ol {
 		margin-bottom: 40px;
 	}
 }
-/* Tablet Device: 768px */
+
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
 	.testimonial-slider.owl-carousel .owl-nav button {
@@ -2282,7 +2220,7 @@ ul, ol {
 		margin-bottom: 15px;
 	}
 }
-/* Large Mobile: 480px */
+
 
 @media only screen and (max-width: 767px) {
 	.testimonial-slider.owl-carousel .owl-nav {
@@ -2320,7 +2258,7 @@ ul, ol {
 		margin-bottom: 10px;
 	}
 }
-/* Small Mobile: 320px */
+
 
 @media only screen and (max-width: 479px) {
 	.footer-section .copyright-option ul li {
@@ -2362,38 +2300,38 @@ ul, ol {
 	}
 }
 
-@media (min-width: 992px) { /* Show the logo on devices larger than laptops or PCs */
+@media (min-width: 992px) {
     .logo_mobile {
       display: none;
     }
   }
 
   .nav-link {
-    color: #71BF44; /* Default text color */
-    font-family: "Cabin", sans-serif; /* Font family */
-    position: relative; /* Positioning context for the pseudo-element */
+    color: #71BF44;
+    font-family: "Cabin", sans-serif;
+    position: relative;
     font-weight: 500;
     font-size: 16px;
 }
   
   .nav-link::after {
-    content: ''; /* Empty content */
-    position: absolute; /* Position the rectangle */
-    left: 0; /* Align rectangle with the left of the link */
-    bottom: -5px; /* Position the rectangle below the link */
-    width: 100%; /* Full width */
-    height: 3px; /* Height of the rectangle */
-    background-color: transparent; /* Initial color of the rectangle (transparent) */
-    transition: background-color 0.3s ease; /* Smooth transition for color change */
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 3px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
   }
   .nav-link:hover::after,
   .nav-link.active::after {
-	background-color:#71BF44; /* Color of the rectangle */
+	background-color:#71BF44;
   }
 
-  /* Adjustments for responsive alignment */
+ 
   .d-flex.align-items-center {
-    align-items: center; /* Ensures vertical centering */
+    align-items: center;
 }
 
 ul.list-unstyled {
@@ -2402,34 +2340,92 @@ ul.list-unstyled {
 }
 
 ul.list-unstyled li {
-    margin-right: 10px; /* Ensure list items are horizontally spaced */
+    margin-right: 10px;
 }
 
 .navbar-toggler {
-    margin-left: auto; /* Ensure navbar toggler button aligns correctly */
+    margin-left: auto;
 }
-  /* Adjustments for badge positioning and alignment */
+ 
 
-/* Badge styling */
+
 .badge {
-	font-size: 0.8rem; /* Adjust font size for badge */
-	padding: 4px 8px; /* Padding for badge */
+	font-size: 0.8rem;
+	padding: 4px 8px;
   }
   
-  /* Positioning adjustments for badge */
+ 
   .position-relative {
-	position: relative; /* Ensure parent container is relative */
+	position: relative;
   }
   
   .position-absolute.translate-middle {
 	position: absolute;
-	transform: translate(-50%, -50%); /* Center the badge */
+	transform: translate(-50%, -50%);
   }
   
-  /* Media query for smaller screens */
+ 
   @media (max-width: 575.98px) {
 	.d-flex.justify-content-end.list-unstyled.m-0.me-2 {
-	  margin-right: 0.5rem; /* Adjust margin for smaller screens */
+	  margin-right: 0.5rem;
 	}
   }
-  
+  .icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.icon-container i {
+    font-size: 18px; /* Adjust icon size */
+}
+
+.notification-count {
+    position: absolute;
+	top: 2px;
+    right: 0;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    text-align: center;
+    line-height: 15px; /* Ensures the text is vertically centered */
+    transform: translateX(-35%);
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: 40px; /* Adjust dropdown position */
+    right: 10px; /* Adjust dropdown position */
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: none;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.notification-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .notification-dropdown {
+        top: 30px;
+        right: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .notification-dropdown {
+        top: 25px;
+        right: 0;
+    }
+}

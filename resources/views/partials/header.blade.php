@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }}</title>
     <link href="assets/img/RLlogo1.png" rel="icon">
-    <link href="assets/img/RLlogo1.png" rel="apple-touch-icon">
+    {{-- <link href="assets/img/RLlogo1.png" rel="apple-touch-icon"> --}}
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
@@ -39,7 +39,6 @@
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 
 <body style="background-color: #fafafa;">
@@ -48,40 +47,9 @@
             $personalInfo = auth()->user()->personalInformation()->first();
         }
     @endphp
-
     <!-- Offcanvas Menu Section Begin -->
     <div class="offcanvas-menu-overlay"></div>
     <div class="canvas-open">
-        @if (auth()->check())
-            <div class="icon-container" id="notification-bell">
-                <i class="fa-solid fa-bell"></i>
-                @if (isset($applicantNotifications) && count($applicantNotifications) > 0)
-                    <span class="notification-count">{{ count($applicantNotifications) }}</span>
-                @endif
-            </div>
-            <div class="notification-dropdown-mobile">
-                <ul class="notification-list-mobile">
-                    @foreach ($applicantNotifications as $notification)
-                        <li class="notification-item-container-mobile">
-                            <div class="notification-item-mobile" id="notification-link"
-                                onclick="redirectToApplicantDashboard('{{ $notification->id }}')">
-                                <div class="notification-info-mobile">
-                                    <span class="notification-title-mobile">{{ $notification->admin_name }}</span>
-                                    <span class="notification-description-mobile">{{ $notification->message }}</span>
-                                    <span class="notification-time-mobile">
-                                        @if ($notification->created_at->gt(now()->subDay()))
-                                            {{ $notification->created_at->diffForHumans() }}
-                                        @else
-                                            <em>{{ $notification->created_at->format('F d, Y \a\t g:iA') }}</em>
-                                        @endif
-                                    </span>
-                                </div>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         <div class="icon-container" id="menu-icon">
             <i class="fa-solid fa-bars"></i>
@@ -100,9 +68,8 @@
         </div>
         <div class="header-configure-area">
             <br>
-            @unless (auth()->check())
-                <a href="/registration" class="bk-btn">Apply Now</a>
-            @endunless
+
+            <a href="/registration" class="bk-btn">Apply Now</a>
         </div>
         <nav class="mainmenu mobile-menu">
             <ul>
@@ -111,28 +78,8 @@
                 </li>
                 <li class="{{ Request::is('contact') ? 'active' : '' }}"><a href="/contact">Contact Us</a></li>
                 <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="/faq">FAQ</a></li>
-                @unless (auth()->check())
-                    <li><a href="/login" class="bk-btn">Login</a></li>
-                @endunless
 
-                <li> <i class="fas fa-user"></i>
-                    @if (isset($personalInfo) && $personalInfo->first_name && $personalInfo->last_name)
-                        {{ explode(' ', $personalInfo->first_name)[0] }} {{ $personalInfo->last_name }}
-                        <ul class="dropdown">
-
-                            <li><a href="./applicant_dashboard">Dashboard</a></li>
-                            <li><a href="/personal-details">Profile Details</a></li>
-                            <li><a href="/change_password">Change Password</a></li>
-                            <li>
-                                <a href="#"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                                <form id="logout-form" action="/logout" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </li>
-                        </ul>
-                    @endif
-                </li>
+                <li><a href="/login" class="bk-btn">Login</a></li>
 
                 </a>
             </ul>
@@ -190,145 +137,30 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        @unless (auth()->check())
-                                            <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="/">Home</a>
-                                            </li>
+                                        <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="/">Home</a>
+                                        </li>
+                                        <li class="{{ Request::is('announcement') ? 'active' : '' }}"><a
+                                                href="/announcement">Announcement</a></li>
+                                        <li class="{{ Request::is('contact') ? 'active' : '' }}"><a
+                                                href="/contact">Contact Us</a></li>
+                                        <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="/faq">FAQ</a>
+                                        </li>
+                                        <li><a href="/login" class="bk-btn">Login</a></li>
 
-                                            <li class="{{ Request::is('announcement') ? 'active' : '' }}"><a
-                                                    href="/announcement">Announcement</a></li>
-                                            <li class="{{ Request::is('contact') ? 'active' : '' }}"><a
-                                                    href="/contact">Contact Us</a></li>
-                                            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="/faq">FAQ</a>
-                                            </li>
-                                            <li><a href="/login" class="bk-btn">Login</a></li>
-                                        @else
-                                            <li class="{{ Request::is('home') ? 'active' : '' }}"><a href="/home">Home</a>
-                                            </li>
-                                            <li class="{{ Request::is('announcement') ? 'active' : '' }}"><a
-                                                    href="/announcement">Announcement</a></li>
-                                            <li class="{{ Request::is('contact') ? 'active' : '' }}"><a
-                                                    href="/contact">Contact Us</a></li>
-                                            <li class="{{ Request::is('faq') ? 'active' : '' }}"><a href="/faq">FAQ</a>
-                                            </li>
-
-                                            @if (isset($applicantNotifications) && count($applicantNotifications) > 0)
-                                                <li class="notification-badge">
-                                                    <a class="nav-link nav-icon notification-icon" id="messageDropdown"
-                                                        href="#" data-bs-toggle="dropdown">
-                                                        <i class="fas fa-bell">
-                                                            <span class="badge badge-pill badge-danger" id="notificationCount"
-                                                                style="display: none;">{{ count($applicantNotifications) }}</span>
-                                                        </i>
-                                                    </a>
-                                                    <ul class="dropdown-menu notification-dropdown-menu"
-                                                        id="notificationDropdown">
-                                                        <li>
-                                                            <div class="notification-label">Notifications</div>
-                                                            <div class="notification-separator"></div>
-                                                        </li>
-                                                        @foreach ($applicantNotifications as $notification)
-                                                            <li class="notification-item-container">
-                                                                <div class="notification-item "
-                                                                    onclick="redirectToApplicantDashboard('{{ $notification->id }}')">
-                                                                    <div class="notification-info">
-                                                                        <span
-                                                                            class="notification-title">{{ $notification->admin_name }}</span>
-                                                                        <span
-                                                                            class="notification-description">{{ $notification->message }}</span>
-                                                                        <span class="notification-time">
-                                                                            @if ($notification->created_at->gt(now()->subDay()))
-                                                                                {{ $notification->created_at->diffForHumans() }}
-                                                                            @else
-                                                                                <em>{{ $notification->created_at->format('F d, Y \a\t g:iA') }}</em>
-                                                                            @endif
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                {{-- <hr style="width: 300px;"> --}}
-                                                            </li>
-                                                        @endforeach
-                                                    </ul>
-                                                </li>
-                                            @else
-                                                <li class="notification-badge">
-                                                    <a class="nav-link nav-icon notification-icon" id="messageDropdown"
-                                                        href="#" data-bs-toggle="dropdown">
-                                                        <i class="fas fa-bell"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu notification-dropdown-menu"
-                                                        id="notificationDropdown">
-                                                        <li>
-                                                            <div class="notification-label">Notifications</div>
-                                                            <div class="notification-separator"></div>
-                                                            <div class="no-notifications">You have no notifications.</div>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                            @endif
-                                            @endif
-
-                                            <li class="user-profile">
-                                                <a href="#" id="user-dropdown-toggle"
-                                                    style="text-transform: capitalize;">
-                                                    @auth
-                                                        <i class="fas fa-user"></i>
-                                                        @if (isset($personalInfo) && $personalInfo->first_name && $personalInfo->last_name)
-                                                            {{ explode(' ', $personalInfo->first_name)[0] }}
-
-                                                        @endauth
-                                                        <i class="fas fa-caret-down"></i>
-                                                </a>
-                                                <!-- User Dropdown Menu -->
-                                                <ul class="user-dropdown-menu" id="user-dropdown-menu">
-                                                    <li>
-                                                        <div class="notification-label" style="text-transform: capitalize;">
-                                                            {{ $personalInfo->first_name ?? '' }}
-                                                            {{ $personalInfo->last_name ?? '' }}</div>
-                                                    </li>
-                                                    <hr style="padding: 0%; margin:0%;">
-                                                    <li>
-                                                        <form action="/applicant_dashboard" method="GET">
-                                                            <button type="submit" class="dropdown-item">Dashboard</button>
-                                                        </form>
-                                                    </li>
-                                                    <hr style="padding: 0%; margin:0%;">
-                                                    <li>
-                                                        <form action="/personal-details" method="GET">
-                                                            <button type="submit" class="dropdown-item">Profile
-                                                                Details</button>
-                                                        </form>
-                                                    </li>
-                                                    <hr style="padding: 0%; margin:0%;">
-                                                    <li>
-                                                        <form action="/change_password" method="GET">
-                                                            <button type="submit" class="dropdown-item">Change
-                                                                Password</button>
-                                                        </form>
-                                                    </li>
-                                                    <hr style="padding: 0%; margin:0%;">
-                                                    <li>
-                                                        <form action="/logout" method="POST">
-                                                            @csrf
-                                                            <button type="submit" class="dropdown-item">Log out</button>
-                                                        </form>
-                                                    </li>
-                                                </ul>
-                                                @endif
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
                 </div>
-                </div>
-            </header>
-            <!-- Header Section End -->
+            </div>
+            </div>
+        </header>
+        <!-- Header Section End -->
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="assets/js/applicant_notification.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-            <script src="assets-applicant/jquery-3.3.1.min.js"></script>
-            <script src="assets/js/header.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="assets/js/applicant_notification.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="assets-applicant/jquery-3.3.1.min.js"></script>
+        <script src="assets/js/header.js"></script>

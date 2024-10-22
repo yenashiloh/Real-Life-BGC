@@ -96,21 +96,35 @@ class AdminController extends Controller
         ]);
     
         if ($validator->fails()) {
-            return redirect()->route('admin.registration')
-                ->withErrors($validator)
-                ->withInput();
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
         }
     
-        $admin = Admin::create([
-            'first_name' => $request->input('firstname'),
-            'last_name' => $request->input('lastname'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-            'contact_number' => $request->input('contact_no'),
-        ]);
+        try {
+            $admin = Admin::create([
+                'first_name' => $request->input('firstname'),
+                'last_name' => $request->input('lastname'),
+                'email' => $request->input('email'),
+                'password' => bcrypt($request->input('password')),
+                'contact_number' => $request->input('contact_no'),
+            ]);
     
-        return redirect()->route('admin.registration')->with('success', 'Create Account Successfully!');
+            return response()->json([
+                'success' => true,
+                'message' => 'Account Created Successfully!'
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Admin registration error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while creating the account.'
+            ], 500);
+        }
     }
+
+    
     
     public function showUploadedFiles()
     {
@@ -192,6 +206,7 @@ class AdminController extends Controller
         return view('admin.announcement.admin-announcement', compact('title', 'announcements'));
     }
     
+    //add announcement
     public function addAnnouncement()
     {
         $title = 'Add Announcement';
@@ -233,7 +248,7 @@ class AdminController extends Controller
         $announcement->caption = $request->input('announcement_caption');
         $announcement->save();
 
-        return redirect()->route('admin.announcement.edit-announcement', ['id' => $id])->with('success', 'Announcement Updated Successfully!');
+        return redirect()->route('admin.announcement.admin-announcement', ['id' => $id])->with('success', 'Announcement Updated Successfully!');
     }
 
     //add announcement
@@ -254,26 +269,25 @@ class AdminController extends Controller
         $announcement->save();
     
         $request->session()->flash('success', 'Announcement Added Successfully!');
-        return redirect()->route('admin.announcement.add-announcement');
+        return redirect()->route('admin.announcement.admin-announcement');
     }
 
     //delete announcement
     public function deleteAnnouncement($id)
     {
         $announcement = Announcement::find($id);
-
+    
         if (!$announcement) {
-            return redirect()->back()->with('error', 'Announcement not found.');
+            return response()->json(['success' => false, 'message' => 'Announcement not found.']);
         }
     
         if ($announcement->delete()) {
-            return redirect()->back()->with('success', 'Announcement Deleted Successfully!');
+            return response()->json(['success' => true, 'message' => 'Announcement deleted successfully.']);
         } else {
-            return redirect()->back()->with('error', 'Failed to delete the announcement.');
+            return response()->json(['success' => false, 'message' => 'Failed to delete the announcement.']);
         }
     }
 
-    // dashboard total
     public function totalApplicants()
     {
         $totalApplicants = Applicant::count();
@@ -314,21 +328,59 @@ class AdminController extends Controller
         return $years;
     }
 
+    public function getDashboardData(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+    
+        // Fetch data based on the date range
+        $totalApplicants = Applicant::whereBetween('created_at', [$startDate, $endDate])->count();
+        $totalShortlisted = Applicant::where('status', 'Shortlisted')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
+        $totalForInterview = Applicant::where('status', 'For Interview')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
+        $totalHouseVisitation = Applicant::where('status', 'For House Visitation')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
+        $totalDeclined = Applicant::where('status', 'Declined')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
+        $totalApproved = Applicant::where('status', 'Approved')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
+    
+        // Fetch bar chart data for applicants by grade/year level
+        $barChartData = $this->getApplicantsByGradeYear($startDate, $endDate);
+    
+        return response()->json([
+            'totalApplicants' => $totalApplicants,
+            'totalShortlisted' => $totalShortlisted,
+            'totalForInterview' => $totalForInterview,
+            'totalHouseVisitation' => $totalHouseVisitation,
+            'totalDeclined' => $totalDeclined,
+            'totalApproved' => $totalApproved,
+            'barChartData' => $barChartData,
+        ]);
+    }
+    
+    
+
     //bar chart - incoming grade/yr level
-    public function getApplicantsByGradeYear()
+    private function getApplicantsByGradeYear($startDate, $endDate)
     {
         $gradeCounts = ApplicantsAcademicInformation::select('incoming_grade_year', DB::raw('count(*) as count'))
+            ->join('applicants', 'applicants_academic_information.applicant_id', '=', 'applicants.applicant_id')
+            ->whereBetween('applicants.created_at', [$startDate, $endDate])
             ->groupBy('incoming_grade_year')
             ->orderBy('incoming_grade_year')
             ->get();
     
-        $labels = $gradeCounts->pluck('incoming_grade_year')->toArray(); 
-        $counts = $gradeCounts->pluck('count')->toArray(); 
-    
-        return response()->json([
-            'labels' => $labels,
-            'counts' => $counts,
-        ]);
+        return [
+            'labels' => $gradeCounts->pluck('incoming_grade_year')->toArray(),
+            'counts' => $gradeCounts->pluck('count')->toArray(),
+        ];
     }
 
     //applicants data 
@@ -526,26 +578,57 @@ class AdminController extends Controller
         return view('admin.applicants.approved_applicants', compact('title', 'applicantsData', 'years', 'applicantsPersonalInformation'));
     }
 
-    //filter year of approved table
-    public function getApprovedApplicantsByYear(Request $request)
+
+    //approved - filter year using date range
+    public function getApprovedApplicantsByDateRange(Request $request)
     {
-        $selectedYear = $request->input('year');
-    
-        if (!is_numeric($selectedYear)) {
-            return response()->json(['error' => 'Invalid year']);
-        }
-    
-        $applicantsData = ApplicantsPersonalInformation::select(
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        $query = ApplicantsPersonalInformation::select(
                 'applicants_personal_information.*',
                 'applicants_academic_information.*',
                 'applicants.*'
             )
             ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
             ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
-            ->whereYear('applicants.created_at', $selectedYear)
-            ->where('applicants.status', 'Approved')
-            ->get();
-    
+            ->where('applicants.status', 'Approved');
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('applicants.created_at', [
+                Carbon::createFromFormat('F d, Y', $startDate)->startOfDay(),
+                Carbon::createFromFormat('F d, Y', $endDate)->endOfDay()
+            ]);
+        }
+
+        $applicantsData = $query->get();
+
+        return response()->json(['applicantsData' => $applicantsData]);
+    }
+
+    public function getDeclinedApplicantsByDateRange(Request $request)
+    {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        $query = ApplicantsPersonalInformation::select(
+                'applicants_personal_information.*',
+                'applicants_academic_information.*',
+                'applicants.*'
+            )
+            ->join('applicants', 'applicants.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->join('applicants_academic_information', 'applicants_academic_information.applicant_id', '=', 'applicants_personal_information.applicant_id')
+            ->where('applicants.status', 'Declined');
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('applicants.created_at', [
+                Carbon::createFromFormat('F d, Y', $startDate)->startOfDay(),
+                Carbon::createFromFormat('F d, Y', $endDate)->endOfDay()
+            ]);
+        }
+
+        $applicantsData = $query->get();
+
         return response()->json(['applicantsData' => $applicantsData]);
     }
 
@@ -612,8 +695,19 @@ class AdminController extends Controller
             "Admission Slip"
         ];
 
+        $gradeFields = [
+            'grade_11_sem1_gwa' => 'Grade 11 First Sem GWA',
+            'grade_11_sem2_gwa' => 'Grade 11 Second Sem GWA',
+            'grade_12_sem1_gwa' => 'Grade 12 First Sem GWA',
+            'grade_12_sem2_gwa' => 'Grade 12 Second Sem GWA',
+            '1st_year_sem1_gwa' => 'First Year First Sem GWA',
+            '1st_year_sem2_gwa' => 'First Year Second Sem GWA',
+            '2nd_year_sem1_gwa' => 'Second Year First Sem GWA',
+            '2nd_year_sem2_gwa' => 'Second Year Second Sem GWA',
+        ];
+
         return view('admin.applicants.view_applicant', compact(
-            'title', 'applicant', 'email', 'status', 'members', 'reportcardData', 'documentTypes', 'id'));
+            'title', 'applicant', 'email', 'status', 'members', 'reportcardData', 'documentTypes', 'id', 'gradeFields' ));
     }
 
     // Checked document type

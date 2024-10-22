@@ -1,4 +1,6 @@
 @include('partials.header')
+
+<!-- Hero Section Begin -->
 <section class="banner">
     <div class="container">
         <div class="col-lg-12">
@@ -62,8 +64,8 @@
                 <div class="about-text">
                     <div class="section-title">
                         <span>What We Do</span><br>
-                        <img src="assets-applicant/img/banner/cup.png" alt=""
-                            style="max-width: 40%; height: auto; " class="image_about"><br>
+                        <img src="assets-applicant/img/banner/cup-1.png" alt=""
+                            style="max-width: 15%; height: auto; " class="image_about"><br>
                         <h2>Education Assistance</h2>
                     </div>
                     <p class="education-assistance f-para">
@@ -91,18 +93,52 @@
             <div class="col-lg-12" id="character_formation">
                 <div class="about-text">
                     <div class="section-title mt-8">
-                        <img src="assets-applicant/img/banner/character.png" alt=""
-                            style="max-width: 40%; height: auto; margin-top: 50px;" class="image_about"><br>
+                        <img src="assets-applicant/img/banner/character-1.png" alt=""
+                            style="max-width: 15%; height: auto; margin-top: 50px;" class="image_about"><br>
                         <h2>Character Formation</h2>
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
-                            <img src="assets-applicant/img/banner/life-groups.jpg" class="img-fluid mb-4"
-                                alt="">
+                            <div id="scholarUpdatesCarousel" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100" src="assets-applicant/img/banner/life-group-5.jpg"
+                                            style="height: 350px; object-fit: cover;" alt="Scholar Updates Image 5">
+                                    </div>
+                                    <div class="carousel-item ">
+                                        <img class="d-block w-100" src="assets-applicant/img/banner/life-group-1.jpg"
+                                            style="height: 350px; object-fit: cover;" alt="Scholar Updates Image 1">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="assets-applicant/img/banner/life-group-2.jpg"
+                                            style="height: 350px; object-fit: cover;" alt="Scholar Updates Image 2">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="assets-applicant/img/banner/life-group-3.jpg"
+                                            style="height: 350px; object-fit: cover;" alt="Scholar Updates Image 3">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="assets-applicant/img/banner/life-group-4.jpg"
+                                            style="height: 350px; object-fit: cover;" alt="Scholar Updates Image 4">
+                                    </div>
+
+                                </div>
+                                <a class="carousel-control-prev" href="#scholarUpdatesCarousel" role="button"
+                                    data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#scholarUpdatesCarousel" role="button"
+                                    data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
                         </div>
                         <div class="col-lg-6 d-flex align-items-center">
                             <div>
-                                <p class="education-assistance f-para"><strong style="font-weight: bold;">LIFE Groups -
+                                <p class="education-assistance f-para"><strong style="font-weight: bold;">LIFE Groups
+                                        -
                                     </strong>
                                     All Real LIFE scholars are plugged into LIFE Groups where they learn about
                                     leadership, integrity, faith, and
@@ -116,24 +152,50 @@
                 <div class="row mt-6">
                     <div class="col-lg-6 d-flex align-items-center about-text">
                         <div>
-                            <p class="education-assistance f-para"><strong style="font-weight: bold;">Scholar Updates -
+                            <p class="education-assistance f-para"><strong style="font-weight: bold;">Scholar Updates
+                                    -
                                 </strong>
                                 During these monthly updates, the scholars are able to share their struggles and wins
                                 with one another, building a community they know they can turn to for support.</p>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <img src="assets-applicant/img/banner/scholar-updates.jpeg" class="img-fluid mb-4"
-                            alt="">
+                        <div id="lifeGroupCarousel" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" src="assets-applicant/img/banner/scholar-updates.jpeg"
+                                        style="height: 350px; object-fit: cover;" alt="Scholar Updates Image 1">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="assets-applicant/img/banner/scholar-updates-1.jpg"
+                                        style="height: 350px; object-fit: cover;" alt="Scholar Updates Image 2">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="assets-applicant/img/banner/scholar-updates-2.jpg"
+                                        style="height: 350px; object-fit: cover;" alt="Scholar Updates Image 3">
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#lifeGroupCarousel" role="button"
+                                data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#lifeGroupCarousel" role="button"
+                                data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
                     </div>
-                </div>
 
+                </div>
+                <br>
                 <div class="row">
                     <div class="col-lg-12" id="leadership_development">
                         <div class="about-text">
                             <div class="section-title">
-                                <img src="assets-applicant/img/banner/leadership.png" alt=""
-                                    style="max-width: 40%; height: auto; " class="image_about"><br>
+                                <img src="assets-applicant/img/banner/leadership-1.png" alt=""
+                                    style="max-width: 20%; height: auto; " class="image_about"><br>
                                 <h2>Leadership Development</h2>
                             </div>
                             <p class="education-assistance f-para">
@@ -142,7 +204,8 @@
                                 empowering a generation of future leaders who will make an impact in the
                                 different sectors of society.
                             </p>
-                            <p class="education-assistance f-para"><strong style="font-weight: bold;">Special Workshops
+                            <p class="education-assistance f-para"><strong style="font-weight: bold;">Special
+                                    Workshops
                                     - </strong>
                                 Both the Real LIFE national office and local centers regularly hold workshops for
                                 practical life skills and
@@ -219,4 +282,9 @@
     </div>
     </div>
 </section>
+
 @include('partials.footer')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

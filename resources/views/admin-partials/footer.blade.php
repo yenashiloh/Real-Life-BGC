@@ -1,15 +1,32 @@
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../../../admin-assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="../../../admin-assets/js/core/popper.min.js"></script>
+<script src="../../../admin-assets/js/core/bootstrap.min.js"></script>
 
-  <!-- Vendor JS Files -->
-  <script src="../assets-admin/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="../assets-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets-admin/vendor/chart.js/chart.umd.js"></script>
-  <script src="../assets-admin/vendor/echarts/echarts.min.js"></script>
-  <script src="../assets-admin/vendor/quill/quill.min.js"></script>
-  <script src="../assets-admin/vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="../assets-admin/vendor/tinymce/tinymce.min.js"></script>
-  <script src="../assets-admin/vendor/php-email-form/validate.js"></script>
-  <script src="../assets-admin/tinymce/tinymce.min.js"></script>
+<!-- jQuery Scrollbar -->
+<script src="../../../admin-assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-  <!-- Template Main JS File -->
-  <script src="../assets-admin/js/main.js"></script>
+<!-- Chart JS -->
+<script src="../../../admin-assets/js/plugin/chart.js/chart.min.js"></script>
+
+<!-- jQuery Sparkline -->
+<script src="../../../admin-assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+<!-- Chart Circle -->
+<script src="../../../admin-assets/js/plugin/chart-circle/circles.min.js"></script>
+
+<!-- Datatables -->
+<script src="../../../admin-assets/js/plugin/datatables/datatables.min.js"></script>
+
+<!-- Bootstrap Notify -->
+<script src="../../../admin-assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+<!-- jQuery Vector Maps -->
+<script src="../../../admin-assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+<script src="../../../admin-assets/js/plugin/jsvectormap/world.js"></script>
+
+<!-- Sweet Alert -->
+<script src="../../../admin-assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+<script src="../../../admin-assets/js/kaiadmin.min.js"></script>
+<script src="../../../admin-assets/js/loader.js"></script>

@@ -1,0 +1,85 @@
+body {
+font-family: "Poppins", sans-serif;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+
+.policy-card {
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    padding: 10px;
+}
+
+
+.policy-card-header {
+    color: rgb(31, 31, 31);
+    padding: 15px;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+
+.policy-card-content {
+    padding: 15px;
+}
+
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+h5 {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
+
+
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    .policy-card {
+        padding: 8px;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    h5 {
+        font-size: 1.1rem;
+    }
+
+    h4 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        padding: 10px;
+    }
+
+    .policy-card {
+        padding: 5px;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+
+    h5 {
+        font-size: 1rem;
+    }
+
+    h4 {
+        font-size: 1.2rem;
+    }
+}

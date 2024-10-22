@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EmailController extends Controller
 {
+    //send email to applicant
     public function sendEmail(Request $request)
     {
         $request->validate([
@@ -59,12 +60,11 @@ class EmailController extends Controller
                 ->replyTo($data['email'], $senderName);
         });
         
-        
-        return back()->with(['message' => 'Your message has been sent. Thank you!']);
+        return response()->json(['message' => 'Your message has been sent successfully!']);
     }    
 
-      //email page
-      public function emailShow()
+    //email page
+    public function emailShow()
     {
         $title = 'Email';
 
@@ -94,22 +94,21 @@ class EmailController extends Controller
     
         if ($content_email) {
             $content_email->under_review = $request->input('under_review');
-            $content_email->approved = $content_email->approved ?? false; // Ensure 'approved' is set
+            $content_email->approved = $content_email->approved ?? false; 
             $content_email->save();
         } else {
             $content_email = new ContentEmail();
             $content_email->under_review = $request->input('under_review');
-            $content_email->approved = false; // Set default value
+            $content_email->approved = false; 
             $content_email->save();
         }
     
         $request->session()->flash('success', 'Under Review Content Saved Successfully!');
         return redirect()->route('admin.email.email')->with('under_review_data', $request->input('under_review'));
     }
-    
 
-      //shortlisted email content 
-      public function saveShortlistedContent(Request $request)
+    //for shortlisted email content 
+    public function saveShortlistedContent(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'shortlisted' => 'required', 
@@ -134,7 +133,7 @@ class EmailController extends Controller
         return redirect()->route('admin.email.email')->with('shortlisted_data', $request->input('shortlisted'));
     }
 
-    //For interview email content
+    //for interview email content
     public function saveInterviewContent(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -159,104 +158,95 @@ class EmailController extends Controller
         return redirect()->route('admin.email.email')->with('interview_data', $request->input('interview'));
     }
 
-     //For interview email content
-     public function saveHouseVisitationContent(Request $request)
-     {
-         $validator = Validator::make($request->all(), [
-             'house_visitation' => 'required', 
-         ]);
- 
-         if ($validator->fails()) {
-             return redirect()->back()->withErrors($validator)->withInput();
-         }
- 
-         $content_email = ContentEmail::first();
- 
-         if ($content_email) {
-             $content_email->house_visitation = $request->input('house_visitation');
-             $content_email->save();
-         } else {
-             $content_email = new ContentEmail();
-             $content_email->house_visitation = $request->input('house_visitation');
-             $content_email->save();
-         }
-         $request->session()->flash('success', 'House Visitation Content Saved Successfully!');
-         return redirect()->route('admin.email.email')->with('house_visitation_data', $request->input('house_visitation'));
-     }
-
-      //For declined email content
-      public function saveDeclineContent(Request $request)
-      {
-          $validator = Validator::make($request->all(), [
-              'decline' => 'required', 
-          ]);
-  
-          if ($validator->fails()) {
-              return redirect()->back()->withErrors($validator)->withInput();
-          }
-  
-          $content_email = ContentEmail::first();
-  
-          if ($content_email) {
-              $content_email->decline = $request->input('decline');
-              $content_email->save();
-          } else {
-              $content_email = new ContentEmail();
-              $content_email->decline = $request->input('decline');
-              $content_email->save();
-          }
-          $request->session()->flash('success', 'Declined Content Saved Successfully!');
-          return redirect()->route('admin.email.email')->with('decline_data', $request->input('decline'));
-      }
-
-      public function saveApprovedContent(Request $request)
-      {
+    //for interview email content
+    public function saveHouseVisitationContent(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'approved' => 'required',
+            'house_visitation' => 'required', 
+        ]);
+ 
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+ 
+        $content_email = ContentEmail::first();
+ 
+        if ($content_email) {
+            $content_email->house_visitation = $request->input('house_visitation');
+            $content_email->save();
+        } else {
+            $content_email = new ContentEmail();
+            $content_email->house_visitation = $request->input('house_visitation');
+            $content_email->save();
+        }
+        $request->session()->flash('success', 'House Visitation Content Saved Successfully!');
+        return redirect()->route('admin.email.email')->with('house_visitation_data', $request->input('house_visitation'));
+    }
+
+    //for declined email content
+    public function saveDeclineContent(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'decline' => 'required', 
+        ]);
+  
+        if ($validator->fails()) {
+             return redirect()->back()->withErrors($validator)->withInput();
+        }
+  
+        $content_email = ContentEmail::first();
+  
+        if ($content_email) {
+            $content_email->decline = $request->input('decline');
+            $content_email->save();
+        } else {
+            $content_email = new ContentEmail();
+            $content_email->decline = $request->input('decline');
+            $content_email->save();
+        }
+        $request->session()->flash('success', 'Declined Content Saved Successfully!');
+        return redirect()->route('admin.email.email')->with('decline_data', $request->input('decline'));
+    }
+
+    //for approve content
+    public function saveApprovedContent(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'approved' => 'required', 
         ]);
 
-        if ($validator->fails()){
-            return redirect()->withErrors($validator)->withInput();
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $content_email = ContentEmail::first();
-        
-        if ($content_email) {
-            $content_email->approved = $request->input('approved');
-            $content_email->save();
-        }else{
-            $content_email = new ContentEmail();
-            $content_email->approved = $request->input('approved');
-            $content_email->save();
-        }
-        $request->session()->flash('success', 'Approved Content Save Successfully!');
+        $content_email = ContentEmail::firstOrNew();
+
+        $content_email->approved = $request->input('approved') ?? null;
+        $content_email->save();
+
+        $request->session()->flash('success', 'Approved Content Saved Successfully!');
+
         return redirect()->route('admin.email.email')->with('approved_data', $request->input('approved'));
-      }
+    }
 
+    //notify applicant for incomplete requirements
     public function notifyApplicant(Request $request, $applicantId)
     {
         try {
-            // Retrieve the applicant's personal information
             $applicantPersonalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->firstOrFail();
 
-            // Retrieve the associated applicant
             $applicant = $applicantPersonalInfo->applicant;
 
             if (!$applicant) {
                 throw new ModelNotFoundException('Applicant not found for applicant_id: ' . $applicantId);
             }
 
-            // Retrieve applicant's email and first name
             $email = $applicant->email;
-            $firstName = $applicant->applicants_personal_information->first_name ?? ''; // Get the first name
-
-            // Gather unchecked document types
+            $firstName = $applicant->applicants_personal_information->first_name ?? ''; 
             $uncheckedDocumentTypes = $request->input('document_types');
 
-            // Customize the email subject
             $subject = 'Incomplete Requirements';
 
-            // Send email notification
             Mail::to($email)->send(new IncompleteRequirementsNotification($uncheckedDocumentTypes, $firstName, $subject));
 
             return response()->json(['message' => 'Notification sent successfully'], 200);

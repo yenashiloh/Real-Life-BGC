@@ -1,0 +1,128 @@
+body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+}
+
+#loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    z-index: 9999;
+    transition: opacity 0.3s ease-in-out;
+}
+
+
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loading-logo {
+    width: 200px;
+    height: auto;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #71BF44;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.loading {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #71BF44;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: none;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+.bold-label{
+    font-weight: bold;;
+}
+.capitalize-first-letter {
+    text-transform: lowercase;
+}
+
+.capitalize-first-letter::first-letter {
+    text-transform: uppercase;
+}
+
+.notif-box .notif-center a {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 15px;
+    border-bottom: 1px solid #f1f1f1;
+    text-decoration: none;
+    color: #444;
+}
+.notif-box .notif-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25px;
+    flex-shrink: 0;
+}
+.notif-box .notif-icon i {
+    font-size: 18px;
+    color: #fff;
+}
+.notif-box .notif-content {
+    flex-grow: 1;
+    min-width: 0;
+}
+.notif-box .notif-content .block {
+    display: block;
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.notif-box .notif-content .time {
+    font-size: 0.8em;
+    color: #999;
+}
+.notif-box .dropdown-title {
+    font-size: 1.0em;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-bottom: 1px solid #f1f1f1;
+}

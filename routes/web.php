@@ -6,19 +6,7 @@ use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\ApplicationSettingsController;
-
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+use App\Http\Controllers\DocumentsController;
 
 // ANNOUNCEMENT
 Route::get('/announcement', [ApplicantController::class, 'announcement'])->name('announcement')->middleware('PreventBackHistory');
@@ -29,8 +17,10 @@ Route::get('/contact', [ApplicantController::class, 'contact'])->name('contact')
 //FAQ
 Route::get('/faq', [ApplicantController::class, 'faq'])->name('faq')->middleware('PreventBackHistory');
 
+Route::get('/data-privacy', [ApplicantController::class, 'dataPrivacy'])->name('data-privacy')->middleware('PreventBackHistory');
+
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
-    Route::get('/', [ApplicantController::class, 'index']);
+    Route::get('/', [ApplicantController::class, 'index'])->name('home');
   
     //APPLICANT LOGIN 
     Route::get('/login', [ApplicantController::class, 'login'])->name('login');
@@ -51,16 +41,16 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     //EMAIL 
     Route::get('/email', [EmailController::class, 'create']);
     Route::post('/email', [EmailController::class, 'sendEmail'])->name('send.email');
-    Route::get('/android_app/android_announcement', [ApplicantController::class, 'androidAnnouncement'])->name('android_app.android_announcement');
-
-    
+    // Route::get('/android_app/android_announcement', [ApplicantController::class, 'androidAnnouncement'])->name('android_app.android_announcement');
 });
+
+
+//Applicant
 Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
-    //HOME PAGE
-    Route::get('/home', [ApplicantController::class, 'userHome'])->name('user.home');
+
     //PERSONAL DETAILS
     Route::get('/personal-details', [ApplicantController::class, 'personalDetails'])->name('user.profile');
-    Route::post('/logout', [ApplicantController::class, 'logout']);
+    Route::post('/logout', [ApplicantController::class, 'logout'])->name('logout');
 
     Route::post('/update-personal-details', [ApplicantController::class, 'updatePersonalDetails'])->name('update_personal_details');
 
@@ -82,10 +72,13 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::post('/documents/{id}', [ApplicantController::class, 'update'])->name('update_document');
     Route::get('/documents/{id}', [ApplicantController::class, 'showEdit'])->name('show_document');
 
+    Route::get('/upload/documents', [DocumentsController::class, 'showUploadDocuments'])->name('user.documents.upload-documents');
+    Route::post('/apply-again', [ApplicantController::class, 'applyAgain'])->name('apply.again');
+
 });
 
 
-//admin
+//Admin
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/admin-login', [AdminController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/admin-login', [AdminController::class, 'adminloginPost'])->name('admin.login.post');
@@ -106,7 +99,9 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/announcement/admin-announcement', [AdminController::class, 'showAnnouncement'])->name('admin.announcement.admin-announcement');
     Route::get('/announcement/add-announcement', [AdminController::class, 'addAnnouncement'])->name('admin.announcement.add-announcement');
     Route::post('/announcement/add-announcement', [AdminController::class, 'saveAnnouncement'])->name('admin.save-announcement');
-    Route::delete('/delete-announcement/{id}', [AdminController::class, 'deleteAnnouncement'])->name('delete.announcement');
+    // Route::delete('/delete-announcement/{id}', [AdminController::class, 'deleteAnnouncement'])->name('delete.announcement');
+    Route::delete('/admin/announcement/delete/{id}', [AdminController::class, 'deleteAnnouncement'])->name('delete.announcement');
+
     Route::match(['post', 'put'], '/announcement/update-announcement/{id}', [AdminController::class, 'updateAnnouncement'])->name('admin.update-announcement');
     Route::get('/announcement/{id}', [AdminController::class, 'showEditAnnouncement'])->name('admin.announcement.edit-announcement');
 
@@ -117,6 +112,7 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'new_dashboard'])->name('admin.dashboard-new');
     Route::get('/dashboard', [AdminController::class, 'totalApplicants'])->name('dashboard');
     Route::get('/getApplicantsByGradeYear', [AdminController::class, 'getApplicantsByGradeYear'])->name('getApplicantsByGradeYear');
+    Route::get('/admin/get-dashboard-data', [AdminController::class, 'getDashboardData'])->name('admin.get-dashboard-data');
 
     //DATA APPLICANTS 
     Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
@@ -135,7 +131,7 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
 
     //VIEW DATA OF APPLICANTS
     Route::group(['prefix' => '/applicants'], function() {
-        Route::get('/{id}', [AdminController::class, 'viewApplicant'])->name('admin.view_applicant');
+        Route::get('/view/{id}', [AdminController::class, 'viewApplicant'])->name('admin.view_applicant');
         Route::post('/{id}/notify', [EmailController::class, 'notifyApplicant'])->name('notify.applicant');
         Route::get('/{id}/approved-documents', [AdminController::class, 'getApprovedDocuments'])->name('applicants.approved_documents');
     });
@@ -188,8 +184,10 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
 
 
     //SELECT YEAR
-    Route::get('/get-declined-applicants-by-year', [AdminController::class, 'getDeclinedApplicantsByYear'])->name('ajax.get_declined_applicants');
-    Route::get('/get-approved-applicants-by-year', [AdminController::class, 'getApprovedApplicantsByYear'])->name('ajax.get_approved_applicants');
+    // Route::get('/get-declined-applicants-by-year', [AdminController::class, 'getDeclinedApplicantsByYear'])->name('ajax.get_declined_applicants');
+    Route::get('/get-approved-applicants-by-date-range', [AdminController::class, 'getApprovedApplicantsByDateRange']);
+    Route::get('/get-declined-applicants-by-year', [AdminController::class, 'getDeclinedApplicantsByDateRange']);
+
 
    
 });

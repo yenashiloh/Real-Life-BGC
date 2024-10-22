@@ -1,60 +1,53 @@
-@include('partials.header')
-<style>
-    .btn {
-        margin-top: 20px;
-        background-color: #71BF44;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        cursor: pointer;
-    }
+<!DOCTYPE html>
+<html lang="en">
 
-    .btn:hover {
-        background-color: #5cb874;
-        color: white;
-    }
-</style>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Change Password</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    @include('applicant-partials.link')
+    <link href="../../assets/css/applicant_dashboard.css" rel="stylesheet">
+</head>
 
 <body>
-    @php
-        $personalInfo = auth()->user()->personalInformation()->first();
-    @endphp
-    <main id="main" class="main">
-        <section class="section profile">
-            <div class="col-xl-11 mx-auto">
-                <br><br>
-                <div class="card ">
-                    <div class="card-body">
-                        <div class="tab-content pt-1">
-                            <div class="tab-pane fade show active profile-overview" id="profile-overview">
-                                <br>
-                                {{-- <h5 style="font-weight: bold;"> Welcome, {{ $personalInfo->first_name ?? '' }}! </h5> --}}
-                                <h5 style="font-weight: bold; font-size: 25px;">Change Password</h5>
-                                <br>
+    <div id="loading-spinner" class="loading-spinner">
+        <div class="loading-content">
+            <img src="../admin-assets/img/RLlogo.png" alt="Logo" class="loading-logo" id="loading-logo">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    <div class="wrapper">
+        @include('applicant-partials.sidebar')
 
-                                <form action="{{ route('change.password') }}" method="POST">
+        <div class="main-panel">
+            @include('applicant-partials.header')
+        </div>
+        <div class="container">
+            <div class="page-inner">
+                <div class="page-header">
+                    <h3 class="fw-bold mb-3">Change Password</h3>
+                    <ul class="breadcrumbs mb-3">
+                        <li class="nav-home">
+                            <a href="{{ route('user.applicant_dashboard') }}">
+                                <i class="icon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route ('user.change_password')}}">Change Password</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="changePasswordForm" action="{{ route('change.password') }}" method="POST">
                                     @csrf
-                                    @if (session('success'))
-                                        <div class="alert alert-success" role="alert">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
+                                    <div id="message"></div>
 
-                                    @if (session('error'))
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ session('error') }}
-                                        </div>
-                                    @endif
-
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger" role="alert">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
                                     <div class="row mb-3">
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
                                             Password</label>
@@ -82,19 +75,16 @@
                                         </div>
                                     </div>
 
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-password">Change Password</button>
+                                    <div class="p-1">
+                                        <button type="submit" class="btn btn-success">Change Password</button>
                                     </div>
-                                </form><!-- End settings Form -->
+                                </form>
                             </div>
                         </div>
                     </div>
-                </div><!-- End Bordered Tabs -->
+                </div>
             </div>
-        </section>
-    </main><!-- End #main -->
-    @include('partials.user-footer')
-
-</body>
-
-</html>
+        </div>
+        @include('applicant-partials.footer')
+        <script src="../../../admin-assets/js/change-password.js"></script>
+        <script></script>

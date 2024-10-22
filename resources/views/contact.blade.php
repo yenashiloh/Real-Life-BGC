@@ -1,12 +1,19 @@
 @include('partials.header')
-
+<style>
+    @media (max-width: 768px) {
+        .contact-text h2 {
+            font-size: 30px;
+        }
+    }
+</style>
 <section class="contact-section spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
                 <div class="contact-text">
                     <h2>Contact Info</h2>
-                    <p>Simply submit your name, email address, the nature of your inquiry, and any background
+                    <p class="capitalize-first-letter ">Simply submit your name, email address, the nature of your
+                        inquiry, and any background
                         information below,
                         and a member of our staff will contact you as soon as possible.</p>
                     <table>
@@ -21,7 +28,7 @@
                             </tr>
                             <tr>
                                 <td class="c-o">Email:</td>
-                                <td>bgc@reallife.ph</td>
+                                <td style="text-transform: lowercase">bgc@reallife.ph</td>
                             </tr>
                         </tbody>
                     </table>
@@ -30,11 +37,8 @@
             <div class="col-lg-7 offset-lg-1">
                 <form action="{{ route('send.email') }}" class="contact-form" method="post">
                     @csrf
-                    @if (session()->has('message'))
-                        <div id="successMessageContainer" class="alert alert-success" style="text-align: center;">
-                            {{ session()->get('message') }}
-                        </div>
-                    @endif
+                    <div id="successMessageContainer" class="alert alert-success capitalize-first-letter"
+                        style="display: none; text-align: center;"></div>
 
                     <div class="row">
                         <div class="col-lg-6">

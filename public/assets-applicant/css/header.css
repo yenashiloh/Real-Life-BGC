@@ -396,6 +396,55 @@
     }
 }
 
+
+
+.mission-statement {
+  font-size: 16px; /* Smaller size for mobile */
+}
+
+/* Increase font size for laptops and larger devices */
+@media (min-width: 768px) { /* For devices 768px and wider */
+  .mission-statement {
+      font-size: 25px !important; /* Set font size to 25px with important */
+  }
+}
+
+.image_about {
+  max-width: 15%;
+  height: auto;    
+  margin-top: 15px;
+}
+
+.image-character-formation{
+  max-width: 15%;
+  height: auto;    
+  margin-top: 20px;
+}
+
+.leadership-about{
+  max-width: 20%;
+  height: auto;    
+  margin-top: 20px;
+}
+
+@media (max-width: 767px) { 
+  .image_about {
+      max-width: 38%;
+      margin-top: 15px;
+  }
+
+  .image-character-formation{
+    max-width: 38%;
+  }
+  
+  .leadership-about{
+    max-width: 45%;
+    margin-top: 15px;
+    
+  }
+}
+
+
 .user-profile {
   position: relative;
 }

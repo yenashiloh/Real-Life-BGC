@@ -1803,3 +1803,19 @@ section {
   max-height: 300px; /* Adjust the height as needed */
   overflow-y: auto; /* Enable vertical scrollbar */
 }
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group-text {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+
+  font-size: 1em;
+  color: rgb(172, 172, 172);
+}

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('applicant_id');
             $table->foreign('applicant_id')->references('applicant_id')->on('applicants')->onDelete('cascade');
             $table->string('document_type')->nullable();
-            $table->string('notes')->nullable();
+            $table->longText('notes')->nullable();
             $table->string('uploaded_document')->nullable();
             $table->string('status')->nullable();
         });

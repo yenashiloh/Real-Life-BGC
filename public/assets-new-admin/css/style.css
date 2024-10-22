@@ -13401,12 +13401,14 @@ td {
   color: #fff;
 }
 .btn-view{
-  background-color: #F8BBD0;
+  background-color: white;
   color: #0c0c0c;
+  border-color: #9A9A9A;
 }
 .btn-view:hover {
-  background-color: #F48FB1;
+  background-color: white;
   color: #0c0c0c;
+  border-color: #9A9A9A;
 }
 .btn-status,
 .dropdown-toggle.btn-status {
@@ -13436,4 +13438,51 @@ td {
 
 .fa-check {
   color: green;
+}
+
+.loading-spinner {
+  position: fixed;
+  top: 0;
+left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #71BF44;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.main-panel {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+/* .table-responsive td {
+  max-width: 250px; 
+  white-space: normal;
+} */
+.published-unpublished {
+  color: gray;
+  font-size: 14px;
+}
+
+.table-responsive td {
+  max-width: 750px; 
+  white-space: normal;
+  margin-bottom: 10px; 
+  padding-bottom: 10px;
 }

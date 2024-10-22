@@ -17,8 +17,11 @@ class Requirement extends Model
         'notes',
         'uploaded_document',
         'declined_reason',
-        'status'
+        'status',
+        'uploaded_at'
     ];
+
+    protected $dates = ['uploaded_at'];
     
     public function applicant()
 {

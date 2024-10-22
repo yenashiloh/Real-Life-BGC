@@ -1,5 +1,29 @@
 @include('partials.header')
+<style>
+    @media (max-width: 768px) {
+        .breadcrumb-section h2 {
+            font-size: 30px;
+        }
 
+        .breadcrumb-section .bt-option a,
+        .breadcrumb-section .bt-option span {
+            font-size: 15px;
+        }
+    }
+
+    .announcement-message {
+        text-align: center;
+        font-size: 25px;
+        font-weight: normal;
+    }
+
+    @media (max-width: 768px) {
+b
+        .announcement-message {
+            font-size: 17px;
+        }
+    }
+</style>
 <div class="breadcrumb-section">
     <div class="container">
         <div class="row">
@@ -23,7 +47,9 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 @if ($announcement->isEmpty())
-                    <p style="text-align: center; font-size: 25px; font-weight: normal;">No Announcement</p>
+                    <p class="announcement-message">No announcements available.</p>
+                    <br>
+                    <br>
                 @else
                     @foreach ($announcement->where('published', true)->sortByDesc('created_at') as $announce)
                         <div class="card mb-4" id="card-{{ $announce->id }}">

@@ -30,12 +30,14 @@ use Illuminate\Support\Facades\DB;
 
 class ApplicantController extends Controller
 {
+    //show index page
     public function index()
     {
         $title = 'Real LIFE Foundation - Home';
         return view('index')->with('title', $title);
     }
 
+    //show announcement page
     public function announcement()
     {
         $title = 'Announcement';
@@ -49,24 +51,35 @@ class ApplicantController extends Controller
         ]);
     }
 
+    //show contact page
     public function contact()
     {
         $title = 'Contact Us';
         return view('contact')->with('title', $title);
     }
 
+    //show faq page
     public function faq()
     {
         $title = 'FAQ';
         return view('faq')->with('title', $title);
     }
 
+    //show login page
     public function login()
     {
         $title = 'Login';
         return view('user.login')->with('title', $title);
     }
 
+    //show dataprivacy page
+    public function dataPrivacy()
+    {
+        $title = 'Data Privacy';
+        return view('data-privacy')->with('title', $title);
+    }
+
+    //show home page 
     public function userHome()
     {
         $title = 'Home';
@@ -75,25 +88,50 @@ class ApplicantController extends Controller
         return view('user.home', compact('title', 'personalInfo' ));
     }
 
+    //verification
     public function showVerification()
     {
         $title = 'Verification';
         return view('user.verification')->with('title', $title);
     }
 
+    //show applicant dashboard page
     public function applicantDashboard()
     {
         $applicantId = auth()->id();
+    
+        // count total submitted documents
+        $totalDocuments = Requirement::where('applicant_id', $applicantId)->count();
+    
+        // count total approved documents
+        $totalApprovedDocuments = Requirement::where('applicant_id', $applicantId)
+            ->where('status', 'approved')
+            ->count();
+    
+        // count total declined documents
+        $totalDeclinedDocuments = Requirement::where('applicant_id', $applicantId)
+            ->where('status', 'declined')
+            ->count();
+    
         $approvedDocumentTypes = Requirement::where('applicant_id', $applicantId)
             ->where('status', 'approved')
             ->pluck('document_type')
             ->toArray();
+    
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
-        $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
-        $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
+        $academicInfoGradesData = ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
+        $academicInfoChoiceData = ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
         $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $title = 'Dashboard';
         $reportcardData = Requirement::where('applicant_id', $applicantId)->get();
+    
+        $reportcardData = $reportcardData->map(function ($item) {
+            if ($item->uploaded_at && is_string($item->uploaded_at)) {
+                $item->uploaded_at = \Carbon\Carbon::parse($item->uploaded_at);
+            }
+            return $item;
+        });
+    
         $documentTypes = [
             "Signed Application Form",
             "Birth Certificate",
@@ -109,88 +147,251 @@ class ApplicantController extends Controller
             "Admission Slip"
         ];
     
-        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData', 
-        'academicInfoChoiceData', 'personalInfo' , 'reportcardData', 'documentTypes', 'approvedDocumentTypes'));
+        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData',
+            'academicInfoChoiceData', 'personalInfo', 'reportcardData', 'documentTypes', 'approvedDocumentTypes', 
+            'totalDocuments', 'totalApprovedDocuments', 'totalDeclinedDocuments'));
     }
-    
-    public function personalDetails()
+
+    //show personal details page
+    public function personalDetails(Request $request)
     {
         $applicantId = auth()->id();
+        $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
-        $academicInfoGradesData =  ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
-        $academicInfoChoiceData =  ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
+        $academicInfoGradesData = ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
+        $academicInfoChoiceData = ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
         $familyInfoData = ApplicantsFamilyInformation::where('applicant_id', $applicantId)->first();
         $members = Member::where('applicant_id', $applicantId)->get();
-
+    
+        // Handle the file upload if a file is present
+        if ($request->hasFile('payslip')) {
+            $file = $request->file('payslip');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/Payslips', $filename);
+            
+            // Update the familyInfoData with the new filename
+            if (!$familyInfoData) {
+                $familyInfoData = new ApplicantsFamilyInformation();
+                $familyInfoData->applicant_id = $applicantId;
+            }
+            $familyInfoData->payslip = $filename;
+            $familyInfoData->save();
+        }
+    
         $title = 'Personal Details';
-        return view('user.personal_details', compact('title','academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'members', 'familyInfoData'));
+        return view('user.personal_details', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'members', 'familyInfoData', 'personalInfo'));
     }
 
-        public function viewChangePassword()
-        {
-            $title = 'Change Password';
-            return view('user.change_password')->with('title', $title);
-    }
-
-    // public function androidAnnouncement()
-    // {
-    //     $title = 'Announcement';
-    //     return view('android_app.android_announcement')->with('title', $title);
-    // }
-
-    public function androidAnnouncement()
+    public function getIncomingGradeYearAttribute($value)
     {
-        $title = 'Announcement';
-        $announcements = Announcement::all();
+        $mapping = [
+            'GradeSeven' => 'Grade 7',
+            'GradeEight' => 'Grade 8',
+            'GradeNine' => 'Grade 9',
+            'GradeTen' => 'Grade 10',
+            'GradeEleven' => 'Grade 11',
+            'GradeTwelve' => 'Grade 12',
+            'FirstYear' => 'First Year College',
+            'SecondYear' => 'Second Year College',
+            'ThirdYear' => 'Third Year College',
+        ];
 
-        return view('android_app.android_announcement', [
-            'title' => $title,
-            'announcement' => $announcements
-        ]);
+        return $mapping[$value] ?? $value;
     }
 
-    //UPLOAD REQUIREMENTS AND NOTIFICATIONS(ADMIN)
+    public function applyAgain(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'contact' => 'required',
+            'birthday' => 'required',
+            'house_number' => 'required',
+            'street' => 'required',
+            'barangay' => 'required',
+            'municipality' => 'required',
+            'mapAddress' => 'file|mimes:jpeg,jpg,png,pdf|max:2048',
+            'noteAddress' => 'required',
+            'incoming_grade_year' => 'required',
+            'current_course_program_grade' => 'required',
+            'current_school' => 'required',
+            'first_choice_school' => 'required',
+            'first_choice_course' => 'required',
+            'latestAverage' => 'required',
+            'total_household_members' => 'required',
+            'father_occupation' => 'required',
+            'father_income' => 'required',
+            'mother_occupation' => 'required',
+            'mother_income' => 'required',
+            'payslip' => 'file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
+    
+        // Get the authenticated user and their associated applicant
+        $user = auth()->user();
+        $applicant = $user->applicant;
+    
+        // Check if the applicant exists
+        if (!$applicant) {
+            return redirect()->back()->withErrors(['msg' => 'No applicant record found for the authenticated user.']);
+        }
+    
+        // Create new Personal Information
+        $personalInfoData = [
+            'applicant_id' => $applicant->applicant_id,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'contact' => $request->contact,
+            'birthday' => $request->birthday,
+            'house_number' => $request->house_number,
+            'street' => $request->street,
+            'barangay' => $request->barangay,
+            'municipality' => $request->municipality,
+            'noteAddress' => $request->noteAddress,
+            'created_at' => now(),  // Ensure to set timestamps
+            'updated_at' => now(),
+        ];
+    
+        // Handle map address file upload
+        if ($request->hasFile('mapAddress')) {
+            $mapAddressFile = $request->file('mapAddress');
+            $originalFilename = pathinfo($mapAddressFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $mapAddressFilename = $originalFilename . '.' . $mapAddressFile->getClientOriginalExtension();
+            $mapAddressFilePath = $mapAddressFile->storeAs('public/map-addresses', $mapAddressFilename);
+            $personalInfoData['mapAddress'] = $mapAddressFilePath;
+        }
+    
+        ApplicantsPersonalInformation::create($personalInfoData);
+    
+        // Create new Academic Information
+        $academicInfoData = [
+            'applicant_id' => $applicant->applicant_id,
+            'incoming_grade_year' => $request->incoming_grade_year,
+            'current_course_program_grade' => $request->current_course_program_grade,
+            'current_school' => $request->current_school,
+            'created_at' => now(),  // Ensure to set timestamps
+            'updated_at' => now(),
+        ];
+    
+        ApplicantsAcademicInformation::create($academicInfoData);
+    
+        // Create new Academic Information Choices
+        $academicInfoChoiceData = [
+            'applicant_id' => $applicant->applicant_id,
+            'first_choice_school' => $request->first_choice_school,
+            'second_choice_school' => $request->second_choice_school,
+            'third_choice_school' => $request->third_choice_school,
+            'first_choice_course' => $request->first_choice_course,
+            'second_choice_course' => $request->second_choice_course,
+            'third_choice_course' => $request->third_choice_course,
+            'created_at' => now(),  // Ensure to set timestamps
+            'updated_at' => now(),
+        ];
+        ApplicantsAcademicInformationChoice::create($academicInfoChoiceData);
+    
+        // Create new Academic Information Grades
+        $academicInfoGradesData = [
+            'applicant_id' => $applicant->applicant_id,
+            'latestAverage' => $request->latestAverage,
+            'latestGWA' => $request->latestGWA,
+            'scopeGWA' => $request->scopeGWA,
+            'equivalentGrade' => $request->equivalentGrade,
+            'created_at' => now(),  // Ensure to set timestamps
+            'updated_at' => now(),
+        ];
+        ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
+    
+        // Create new Family Information
+        $familyInformationData = [
+            'applicant_id' => $applicant->applicant_id,
+            'total_household_members' => $request->total_household_members,
+            'father_occupation' => $request->father_occupation,
+            'father_income' => $request->father_income,
+            'mother_occupation' => $request->mother_occupation,
+            'mother_income' => $request->mother_income,
+            'created_at' => now(),  // Ensure to set timestamps
+            'updated_at' => now(),
+        ];
+        ApplicantsFamilyInformation::create($familyInformationData);
+    
+        // Handle Payslip upload
+        if ($request->hasFile('payslip')) {
+            $payslipFile = $request->file('payslip');
+            $originalFilename = pathinfo($payslipFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $payslipfilename = $originalFilename . '.' . $payslipFile->getClientOriginalExtension();
+            $payslipFilePath = $payslipFile->storeAs('public/Payslips', $payslipfilename);            
+    
+            $payslipData = [
+                'applicant_id' => $applicant->applicant_id,
+                'document_type' => 'Payslip / Social Case Study Report / ITR',
+                'uploaded_document' => $payslipFilePath,
+                'status' => 'For Review',
+                'created_at' => now(),  // Ensure to set timestamps
+                'updated_at' => now(),
+            ];
+            Requirement::create($payslipData);
+        }
+    
+        // Update applicant status for the new application
+        $applicant->status = 'Sent';
+        $applicant->save();
+    
+        return redirect()->back()->with('success', 'Application submitted successfully!');
+    }
+    
+
+    //show change password page
+    public function viewChangePassword()
+    {
+        $applicantId = auth()->id();
+        $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
+        $title = 'Change Password';
+        
+        return view('user.change_password', compact('title', 'personalInfo'));
+    }
+
+    //upload requirements and notifications 
     public function uploadRequirements(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'documentType' => 'required',
             'notes' => 'nullable',
-            'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:102400', 
-            ]);
-
-            try {
-                $file = $request->file('fileUpload');
-                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $filename = $originalFilename . '.' . $file->getClientOriginalExtension();
-                $filePath = $file->storeAs('public/uploads', $filename);
-
-                $requirement = new Requirement();
-                $requirement->applicant_id = auth()->id();
-                $requirement->document_type = $request->documentType;
-                $requirement->notes = $request->notes;
-                $requirement->uploaded_document = $filePath; 
-
-                $requirement->status = 'For Review';
-
-                $requirement->save();
-
-                $applicantInfo = ApplicantsPersonalInformation::where('applicant_id', auth()->id())->first();
-                $firstName = $applicantInfo->first_name;
-                $lastName = $applicantInfo->last_name;
-
-                $notification = new Notification();
-                $notification->applicant_id = auth()->id();
-                $notification->applicant_name = "$firstName $lastName";
-                $notification->message = "Submitted {$request->documentType}";
-                $notification->save();
-
-                return response()->json(['success' => 'Document uploaded successfully']);
-            } catch (\Exception $e) {
-                \Log::error('Error saving requirement: ' . $e->getMessage());
-                return response()->json(['error' => 'An error occurred while saving the document. Please try again later.'], 500);
-            }
+            'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:102400',
+        ]);
+    
+        try {
+            $file = $request->file('fileUpload');
+            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $filename = $originalFilename . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('public/uploads', $filename);
+    
+            $requirement = new Requirement();
+            $requirement->applicant_id = auth()->id();
+            $requirement->document_type = $request->documentType;
+            $requirement->notes = $request->notes;
+            $requirement->uploaded_document = $filePath;
+            $requirement->status = 'For Review';
+            $requirement->uploaded_at = now();
+    
+            $requirement->save();
+    
+            $applicantInfo = ApplicantsPersonalInformation::where('applicant_id', auth()->id())->first();
+            $firstName = $applicantInfo->first_name;
+            $lastName = $applicantInfo->last_name;
+    
+            $notification = new Notification();
+            $notification->applicant_id = auth()->id();
+            $notification->applicant_name = "$firstName $lastName";
+            $notification->message = "Submitted {$request->documentType}";
+            $notification->save();
+    
+            return response()->json(['success' => 'Document uploaded successfully']);
+        } catch (\Exception $e) {
+            \Log::error('Error saving requirement: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while saving the document. Please try again later.'], 500);
         }
-
+    }
+    
+    //login post
     function loginPost(Request $request)
     {
         $request->validate([
@@ -224,13 +425,14 @@ class ApplicantController extends Controller
         return redirect(route('login'))->with("error", "Incorrect email address or password. Please try again.");
     }
 
-        
+    
     public function register()
     {
         $title = 'Register';
         return view('user.register')->with('title', $title);
     }
 
+    //show application form page
     public function registration()
     {
         $title = 'Registration';
@@ -254,9 +456,8 @@ class ApplicantController extends Controller
 
         return view('user.registration', compact('title', 'applicationOpen'));
     }
-
     
-    //Open and Close Application
+    //open and close Application
     private function isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime)
     {
         $startDate = Carbon::createFromFormat('Y-m-d', $startDate);
@@ -286,6 +487,7 @@ class ApplicantController extends Controller
         return true;
     }
     
+    //registration post
     function registerPost(Request $request)
     {
         $request->validate([
@@ -437,12 +639,19 @@ class ApplicantController extends Controller
         }
     }
 
-    function logout(Request $request)
+    //logout post
+    public function logout(Request $request)
     {
         auth()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect(route('login'));
+        
+        return redirect(route('home'))
+            ->withHeaders([
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                'Pragma' => 'no-cache',
+                'Expires' => '0',
+            ]);
     }
 
     //edit details
@@ -452,10 +661,11 @@ class ApplicantController extends Controller
         $lastName = $request->input('last_name');
         $contactNo = $request->input('contact_no');
         $birthdate = $request->input('birthdate');
-        $houseNo = $request->input('house_no');
+        $houseNo = $request->input('house_number');
         $street = $request->input('street');
         $barangay = $request->input('barangay');
         $municipality = $request->input('municipality');
+        $noteAddress = $request->input('noteAddress');
     
         $personalInfo = ApplicantsPersonalInformation::updateOrCreate(
             ['applicant_id' => auth()->id()],
@@ -468,6 +678,7 @@ class ApplicantController extends Controller
                 'street' => $street,
                 'barangay' => $barangay,
                 'municipality' => $municipality,
+                'noteAddress' => $noteAddress,
             ]
         );
     
@@ -525,10 +736,6 @@ class ApplicantController extends Controller
         } else {
             return redirect()->back()->with('error', 'Failed to Update');
         }
-        
-        
-        
-        
     }
 
     //change password
@@ -537,40 +744,45 @@ class ApplicantController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'current_password' => 'required',
-                'new_password' => 'required|min:8|different:current_password',
+                'new_password' => [
+                    'required',
+                    'min:8',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                    'different:current_password'
+                ],
                 'renew_password' => 'required|same:new_password',
             ], [
                 'renew_password.same' => 'The re-enter new password field must match new password.',
+                'new_password.regex' => 'The new password must contain at least one lowercase letter, one uppercase letter, and one number.',
             ]);
-            
+    
             if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
+                return response()->json(['errors' => $validator->errors()], 400);
             }
-            
+    
             $applicantId = auth()->id(); 
-
             $user = Auth::user();
-
+    
             if ($user->applicant_id !== $applicantId) {
-                return redirect()->back()->with('error', 'Unauthorized access.');
+                return response()->json(['errors' => ['auth' => ['Unauthorized access.']]]);
             }
-
+    
             if (!Hash::check($request->current_password, $user->password)) {
-                return redirect()->back()->with('error', 'The current password is incorrect.');
+                return response()->json(['errors' => ['current_password' => ['The current password is incorrect.']]]);
             }
-
+    
             $user->password = Hash::make($request->new_password);
             $user->save();
-
+    
             \Log::info('Password changed successfully for user: ' . $user->email);
-
-            return redirect()->back()->with('success', 'Password changed successfully.');
+    
+            return response()->json(['success' => 'Password changed successfully!']);
         } catch (\Exception $e) {
             \Log::error('Error changing password: ' . $e->getMessage());
-
-            return redirect()->back()->with('error', 'Password change failed.');
+            return response()->json(['errors' => ['general' => ['Password change failed. Please try again later.']]]);
         }
     }
+
     
     //notification fetch
     public function fetchNotificationCount()
@@ -641,17 +853,18 @@ class ApplicantController extends Controller
         }
         
         
-    public function showEdit($id)
-    {
-        $document = Requirement::find($id);
-
-        if (!$document) {
-            return response()->json(['error' => 'Document not found'], 404);
+        public function showEdit($id)
+        {
+            $document = Requirement::findOrFail($id);
+            return response()->json([
+                'id' => $document->id,
+                'document_type' => $document->document_type,
+                'notes' => $document->notes,
+                'uploaded_document' => $document->uploaded_document, 
+            ]);
         }
 
-        return response()->json($document);
-    }
-
+    //application form post
     function screeningPost(Request $request)
     {
         $request->validate([
@@ -665,8 +878,11 @@ class ApplicantController extends Controller
             'street' => 'required',
             'barangay' => 'required',
             'municipality' => 'required',
-            'mapAddress' => 'file',
-            'noteAddress' => 'required'
+            'mapAddress' => 'file|mimes:jpeg,jpg,png,pdf|max:2048',
+            'noteAddress' => 'required',
+            'attend_orientation' => 'required|in:yes,no', 
+            'orientation_date' => 'required_if:attend_orientation,yes', 
+            'orientation_proof' => 'nullable|file|mimes:jpeg,jpg,png,pdf|max:2048' 
         ]);
         
         $data['email'] = $request->email;
@@ -685,9 +901,17 @@ class ApplicantController extends Controller
                 'street' => $request->street,
                 'barangay' => $request->barangay,
                 'municipality' => $request->municipality,
-                'mapAddress' => $request->mapAddress,
                 'noteAddress' => $request->noteAddress
             ];
+
+            if ($request->hasFile('mapAddress')) {
+                $mapAddressFile = $request->file('mapAddress');
+                $originalFilename = pathinfo($mapAddressFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $mapAddressFilename = $originalFilename . '.' . $mapAddressFile->getClientOriginalExtension();
+                $mapAddressFilePath = $mapAddressFile->storeAs('public/map-addresses', $mapAddressFilename);
+                $personalInfoData['mapAddress'] = $mapAddressFilePath;
+            }
+
             ApplicantsPersonalInformation::create($personalInfoData);
 
             $gradeMapping = [
@@ -776,6 +1000,52 @@ class ApplicantController extends Controller
                 Requirement::create($payslipData);
             }
 
+            $attendanceData = [
+                'applicant_id' => $applicant->applicant_id,
+                'attend_orientation' => $request->attend_orientation,
+                'orientation_date' => $request->attend_orientation == 'yes' ? $request->orientation_date : null
+            ];
+    
+            // If orientation proof file is provided
+            if ($request->hasFile('orientation_proof')) {
+                $orientationProofFile = $request->file('orientation_proof');
+                $orientationProofFilename = $orientationProofFile->getClientOriginalName();
+                $orientationProofPath = $orientationProofFile->storeAs('public/orientation-proofs', $orientationProofFilename);
+                $attendanceData['orientation_proof'] = $orientationProofPath;
+            }
+    
+            ApplicantAttendance::create($attendanceData);
+    
+            // Save ReportCard and Payslip (existing code)
+            if ($request->hasFile('ReportCard')) {
+                $reportcardFile = $request->file('ReportCard');
+                $reportcardfilename = $reportcardFile->getClientOriginalName();
+                $reportcardFilePath = $reportcardFile->storeAs('public/ReportCards', $reportcardfilename);
+                
+                $reportcardData = [
+                    'applicant_id' => $applicant->applicant_id,
+                    'document_type' => 'Report Card / Grades',
+                    'uploaded_document' => $reportcardFilePath,
+                    'status' => 'For Review',
+                ];
+                Requirement::create($reportcardData);
+            }
+    
+            if ($request->hasFile('payslip')) {
+                $payslipFile = $request->file('payslip');
+                $payslipfilename = $payslipFile->getClientOriginalName();
+                $payslipFilePath = $payslipFile->storeAs('public/Payslips', $payslipfilename);            
+        
+                $payslipData = [
+                    'applicant_id' => $applicant->applicant_id,
+                    'document_type' => 'Payslip / Social Case Study Report / ITR',
+                    'uploaded_document' => $payslipFilePath,
+                    'status' => 'For Review',
+                ];
+                Requirement::create($payslipData);
+            }
+    
+
             $verificationToken = Str::random(60);
 
             $applicant->api_token = $verificationToken;
@@ -783,11 +1053,9 @@ class ApplicantController extends Controller
 
             \Mail::to($applicant->email)->send(new \App\Mail\VerificationMail($applicant));
 
-            return view('user.verification');
+            return response()->json(['message' => 'Registration successful, please check your email for verification.', 'redirect' => route('verification')], 201);
         } else {
-            return response()->json(['message' => 'Registration failed, try again.', 'error' => $e->getMessage()], 400);
+            return response()->json(['message' => 'Registration failed, try again.'], 400);
         }
     }
-    
-    
 }

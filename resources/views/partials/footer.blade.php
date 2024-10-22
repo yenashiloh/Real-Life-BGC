@@ -1,4 +1,5 @@
-<footer id="footer" class="footer footer-section">
+
+<footer id="footer" class="footer footer-section footer-mobile">
     <div class="footer-top" style="margin-top: 0; background-color: #71BF44;">
         <div class="container ">
             <div class="row gy-4">

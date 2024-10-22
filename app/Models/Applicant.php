@@ -71,5 +71,9 @@ class Applicant extends Authenticatable
         return $this->hasMany(NotificationApplicant::class, 'applicant_id', 'applicant_id');
     }
     
+    public function attendance()
+    {
+        return $this->hasOne(ApplicantAttendance::class, 'applicant_id');
+    }
     
 }

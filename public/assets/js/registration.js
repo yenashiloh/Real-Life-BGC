@@ -1,429 +1,15 @@
-console.clear();
-
-function ready(fn) {
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    setTimeout(fn, 1);
-    document.removeEventListener('DOMContentLoaded', fn);
-  } else {
-    document.addEventListener('DOMContentLoaded', fn);
+function getValidationData(field) {
+  if (field.type === 'hidden') {
+    return { isValid: true };
   }
-}
-
-ready(function () {
-
-  // Global Constants
-
-  const progressForm = document.getElementById('progress-form');
-
-  const tabItems = progressForm.querySelectorAll('[role="tab"]')
-    , tabPanels = progressForm.querySelectorAll('[role="tabpanel"]');
-
-  let currentStep = 0;
-
-  // Form Validation
-
-  /*****************************************************************************
-   * Expects a string.
-   *
-   * Returns a boolean if the provided value *reasonably* matches the pattern
-   * of a US phone number. Optional extension number.
-   */
-
-  const isValidPhone = val => {
-    const regex = new RegExp(/^(?:(?:\+|0{0,2})63|0)?\s?(\d{3})[-.\s]?(\d{3})[-.\s]?(\d{4})$/);
-
-    return regex.test(val);
-  };
-
-  /*****************************************************************************
-   * Expects a string.
-   *
-   * Returns a boolean if the provided value *reasonably* matches the pattern
-   * of a real email address.
-   *
-   * NOTE: There is no such thing as a perfect regular expression for email
-   *       addresses; further, the validity of an email address cannot be
-   *       verified on the front end. This is the closest we can get without
-   *       our own service or a service provided by a third party.
-   *
-   * RFC 5322 Official Standard: https://emailregex.com/
-   */
-
-  const isValidEmail = val => {
-    const regex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-
-    return regex.test(val);
-  };
-
-  /*****************************************************************************
-   * Expects a Node (input[type="text"] or textarea).
-   */
-
-  const validateText = field => {
-    const val = field.value.trim();
-
-    if ((val === '' || val === 'Invalid Date') && field.required) {
-      return {
-        isValid: false
-      };
-    } else {
-      return {
-        isValid: true
-      };
-    }
-  };
-
-  /*****************************************************************************
-  * Birthdate Validation
-  */
-  const validateDate = field => {
-    const val = field.value.trim();
-
-    if (val === '' && field.required) {
-      return {
-        isValid: false,
-      };
-    } else {
-      const currentDate = new Date();
-      const selectedDate = new Date(val);
-      const ageInYears = (currentDate - selectedDate) / (365 * 24 * 60 * 60 * 1000);
-
-      if (ageInYears < 10 || ageInYears > 25) {
-        return {
-          isValid: false,
-          message: 'Should not be more than 25 years of age upon admission'
-        };
-      }
-
-      return {
-        isValid: true
-      };
-    }
-  };
-
-  const validateNumber = (field) => {
-    const val = field.value.trim();
   
-    if (val === '' && field.required) {
-      return {
-        isValid: false,
-        message: 'Please complete this required field.'
-      };
-    } else {
-      // Perform number validation logic here if needed
-      return { isValid: true };
-    }
-  };
-  
-  const validateNumberRange = (field, min, max) => {
-    const value = parseFloat(field.value);
-    if (isNaN(value) || value < min || value > max) {
-      return {
-        isValid: false,
-        message: `To qualify for the scholarship, your GWA must be equivalent to at least 88%.`
-      };
-    }
-    return { isValid: true };
-  };
-
-  const validateLatestAverage = (field, minPercentage) => {
-    const value = parseFloat(field.value);
-    if (isNaN(value) || value < minPercentage || value > 100) {
-      return {
-        isValid: false,
-        message: `To qualify for the scholarship, your General Average must be at least ${minPercentage}%.`
-      };
-    }
-    return { isValid: true };
-  };
-
-  // const validateNumber = field => {
-  //   const val = field.value.trim();
-
-  //   if (val === '' && field.required) {
-  //     return {
-  //       isValid: false
-  //     };
-  //   } else {
-
-  //     return {
-  //       isValid: true
-  //     };
-  //   }
-  // };
-
-  const validatePassword = field => {
-    const val = field.value.trim();
-
-    if (val === '' && field.required) {
-      return {
-        isValid: false,
-      };
-    }
-
-    // Check for lowercase letter
-    const hasLowercase = /[a-z]/.test(val);
-
-    // Check for capital letter
-    const hasUppercase = /[A-Z]/.test(val);
-
-    // Check for number
-    const hasNumber = /\d/.test(val);
-
-    // Check for minimum length of 8 characters
-    const hasMinLength = val.length >= 8;
-
-    if (!(hasLowercase && hasUppercase && hasNumber && hasMinLength)) {
-      return {
-        isValid: false,
-        message: 'Requires one lowercase letter, one capital letter, one number, and a minimum of 8 characters.'
-      };
-    }
-
-    return {
-      isValid: true
-    };
-  };
-
-  const validateConfirmPassword = field => {
-    const val = field.value.trim();
-    const passwordField = document.getElementById('passwordField');
-    const password = passwordField.value.trim();
-
-    if (val === '' && field.required) {
-      return {
-        isValid: false,
-        message: 'Please confirm your password.'
-      };
-    }
-
-    if (val !== password) {
-      return {
-        isValid: false,
-        message: 'Password and Confirm Password doesn\'t match.'
-      };
-    }
-
-    return {
-      isValid: true
-    };
-  };
-
-
-
-  // const validateNumber = field => {
-  //   const val = field.value.trim();
-
-  //   if (val === '' && field.required) {
-  //       return {
-  //           isValid: false,
-  //           message: 'This field is required.'
-  //       };
-  //   } else {
-  //       const numericVal = parseFloat(val);
-
-  //       if (isNaN(numericVal) || numericVal < 88 || numericVal > 100) {
-  //           return {
-  //               isValid: false,
-  //               message: 'GWA must be 88% to100% to qualify the scholarship'
-  //           };
-  //       }
-
-  //       return {
-  //           isValid: true
-  //       };
-  //   }
-  // };
-  // const validateFile = (field) => {
-  //   const val = field.value.trim();
-  //   const isValid = !(val === '' && field.required);
-
-  //   return {
-  //     isValid
-  //   };
-  // };
-
-  //   const validateCheckbox = field => {
-  //     if (field.checked) {
-  //         return {
-  //             isValid: true
-  //         };
-  //     } else {
-  //         return {
-  //             isValid: false,
-  //             message: 'please check the box to proceed.'
-  //         };
-  //     }
-  // };
-
-
-  /*****************************************************************************
-   * Expects a Node (select).
-   */
-
-  const validateSelect = field => {
-    const val = field.value.trim();
-
-    if (val === '' && field.required) {
-      return {
-        isValid: false,
-        message: 'Please select an option from the dropdown menu.'
-      };
-    } else {
-      return {
-        isValid: true
-      };
-    }
-  };
-
-  /*****************************************************************************
-   * Expects a Node (fieldset).
-   */
-
-  // Update the validateGroup function to set required attribute to the checkbox
-  const validateGroup = fieldset => {
-    if (!fieldset) {
-        return {
-            isValid: false,
-            message: 'Fieldset element not found.'
-        };
-    }
-
-    const checkbox = fieldset.querySelector('input[type="checkbox"]');
-
-    if (checkbox) {
-        checkbox.setAttribute('required', 'required');
-    }
-
-    const isChecked = checkbox && checkbox.checked;
-
-    if (!isChecked) {
-        return {
-            isValid: false,
-            message: 'Please ensure the checkbox is checked to proceed with your application.'
-        };
-    } else {
-        return {
-            isValid: true
-        };
-    }
-  };
-
-  /*****************************************************************************
-   * Expects a Node (input[type="radio"] or input[type="checkbox"]).
-   */
-
-  const validateChoice = field => {
-    return validateGroup(field.closest('fieldset'));
-  };
-
-  /*****************************************************************************
-   * Expects a Node (input[type="tel"]).
-   */
-
-    const isPDFFile = (filename) => {
-      return /\.(pdf)$/i.test(filename);
-    };
-
-    const isImageFile = (filename) => {
-      return true;
-    };
-
-    const validatePhone = field => {
-      const val = field.value.trim();
-
-      if (val === '' && field.required) {
-        return {
-          isValid: false
-        };
-      } else if (val !== '' && !isValidPhone(val)) {
-        return {
-          isValid: false,
-          message: 'Please provide a valid phone number.'
-        };
-      } else {
-        return {
-          isValid: true
-        };
-      }
-    };
-
-    const validateReportCard = field => {
-      const val = field.value.trim();
-      if (val === '' && field.required) {
-        return {
-          isValid: false
-        };
-      } else if (val !== '' && !isPDFFile(val)) {
-        return {
-          isValid: false,
-          message: 'Please upload pdf file only.'
-        };
-      } else {
-        return {
-          isValid: true
-        };
-      }
-    };
-
-    const validateMapAddress = field => {
-      const val = field.value.trim();
-      if (val === '' && field.required) {
-        return {
-          isValid: false,
-        };
-      } else if (val !== '' && !isImageFile(val)) {
-        return {
-          isValid: false,
-          message: 'Please upload JPG, JPEG, or PNG files only for the map address.'
-        };
-      } else {
-        return {
-          isValid: true
-        };
-      }
-    };
-    
-  /*****************************************************************************
-   * Expects a Node (input[type="email"]).
-   */
-
-  const validateEmail = field => {
-    const val = field.value.trim();
-
-    if (val === '' && field.required) {
-      return {
-        isValid: false
-      };
-    } else if (val !== '' && !isValidEmail(val)) {
-      return {
-        isValid: false,
-        message: 'Please provide a valid email address.'
-      };
-    } else {
-      return {
-        isValid: true
-      };
-    }
-  };
-
-  /*****************************************************************************
-   * Expects a Node (field or fieldset).
-   *
-   * Returns an object describing the field's overall validity, as well as
-   * a possible error message where additional information may be helpful for
-   * the user to complete the field.
-   */
-
-  const getValidationData = (field) => {
   switch (field.tagName.toLowerCase()) {
-        case 'input':
+    case 'input':
       switch (field.type) {
         case 'text':
         case 'number':
         case 'email':
           if (field.name === 'latestAverage') {
-            // Get the selected grade level
             const selectedGrade = document.getElementById('incomingGrade').value;
             // Only validate if the selected grade is Grade 7 to 10
             if (selectedGrade === 'GradeSeven' || selectedGrade === 'GradeEight' || selectedGrade === 'GradeNine' || selectedGrade === 'GradeTen') {
@@ -435,7 +21,7 @@ ready(function () {
               }
               return validateLatestAverage(field, 88, 100);
             } else {
-              return { isValid: true }; // Skip validation for other grades
+              return { isValid: true };
             }
           }   
           if (field.name === 'equivalentGrade') {
@@ -471,45 +57,445 @@ ready(function () {
         case 'radio':
           return validateChoice(field);
         case 'file':
+          if (field.name === 'orientation-proof') {
+            return validateOrientationProof(field); 
+          }
+          if (field.name === 'payslip') {
+            return validatePayslip(field);
+          }
           if (field.name === 'reportCard') {
             return validateReportCard(field);
           } else if (field.name === 'mapAddress') {
             return validateMapAddress(field);
           } else if (field.name === 'ReportCard') { 
             return validateReportCard(field); 
+          } else if (field.name === 'payslip') { 
+            return validatePayslip(field); 
           } else {
             throw new Error(`The provided file input field with name '${field.name}' is not supported in this form.`);
           }
           
-          default:
-            throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
-        }
-        case 'textarea':
-          if (field.name === 'noteAddress') {
-            if (field.value.trim() === '') {
-              return {
-                isValid: false,
-                message: 'Please provide instructions on how to go to your place if you will be coming from Every Nation BGC.'
-              };
-            }
-            return { isValid: true };
-          } else {
-            throw new Error(`The provided field type 'TEXTAREA:${field.name}' is not supported in this form.`);
-          }
-        case 'select':
-          return validateSelect(field);
         default:
-          throw new Error(`The provided field type '${field.tagName}' is not supported in this form.`);
+          throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
       }
+    case 'textarea':
+      if (field.name === 'noteAddress') {
+        if (field.value.trim() === '') {
+          return {
+            isValid: false,
+        
+          };
+        }
+        return { isValid: true };
+      } else {
+        throw new Error(`The provided field type 'TEXTAREA:${field.name}' is not supported in this form.`);
+      }
+    case 'select':
+      if (field.name === 'attend-orientation') {
+        const selectedOption = field.value;
+        if (selectedOption === 'no') {
+          return {
+            isValid: false,
+            message: 'You cannot apply for the scholarship without attending the orientation. Please wait for the next scheduled orientation session.'
+          };
+        } else if (selectedOption === '') {
+          return {
+            isValid: false,
+            message: 'Please select an option for orientation attendance.'
+          };
+        } else {
+          return { isValid: true };
+        }
+      }
+      return validateSelect(field);
+    default:
+      throw new Error(`The provided field type '${field.tagName}' is not supported in this form.`);
+  }
+
+};
+
+const validateChoice = field => {
+  return validateGroup(field.closest('fieldset'));
+};
+
+/*****************************************************************************
+ * Expects a Node (input[type="tel"]).
+ */
+
+  const isPDFFile = (filename) => {
+    return /\.(pdf)$/i.test(filename);
+  };
+  
+  const isImageFile = (filename) => {
+    return /\.(jpe?g|png)$/i.test(filename);
+  };
+
+  const validatePhone = field => {
+    const val = field.value.trim();
+
+    if (val === '' && field.required) {
+      return {
+        isValid: false
+      };
+    } else if (val !== '' && !isValidPhone(val)) {
+      return {
+        isValid: false,
+        message: 'Please provide a valid phone number.'
+      };
+    } else {
+      return {
+        isValid: true
+      };
+    }
+  };
+
+  const validateReportCard = field => {
+    const val = field.value.trim();
+    if (val === '' && field.required) {
+      return {
+        isValid: false
+      };
+    } else if (val !== '' && !isPDFFile(val)) {
+      return {
+        isValid: false,
+        message: 'Please upload pdf file only.'
+      };
+    } else {
+      return {
+        isValid: true
+      };
+    }
+  };
+
+  const validateMapAddress = field => {
+    const val = field.value.trim();
+    if (val === '' && field.hasAttribute('required')) {
+      return {
+        isValid: false,
+      };
+    } else if (val !== '' && !isImageFile(val)) {
+      return {
+        isValid: false,
+        message: 'Please upload JPG, JPEG, or PNG files only.'
+      };
+    } else {
+      return {
+        isValid: true
+      };
+    }
+  };
+  
+  const validatePayslip = (field) => {
+    const val = field.value.trim();
+    if (val === '' && field.required) {
+      return {
+        isValid: false,
+        message: 'Please upload a PDF file only.'
+      };
+    } else if (val !== '' && !isPDFFile(val)) {
+      return {
+        isValid: false,
+        message: 'Please upload a PDF file only.'
+      };
+    } else {
+      return {
+        isValid: true
+      };
+    }
+  };
+
+  const validateOrientationProof = field => {
+    const val = field.value.trim();
+    if (val === '' && field.required) {
+      return {
+        isValid: false,
+ 
+      };
+    } else if (val !== '' && !isImageFile(val)) {
+      return {
+        isValid: false,
+        message: 'Please upload JPG, JPEG, or PNG files only.'
+      };
+    } else {
+      return {
+        isValid: true
+      };
+    }
+  };
+
+/*****************************************************************************
+ * Expects a Node (input[type="email"]).
+ */
+
+const validateEmail = field => {
+  const val = field.value.trim();
+
+  if (val === '' && field.required) {
+    return {
+      isValid: false
     };
-  
-  
-  /*****************************************************************************
-   * Expects a Node (field or fieldset).
-   *
-   * Returns the field's overall validity based on conditions set within
-   * `getValidationData()`.
-   */
+  } else if (val !== '' && !isValidEmail(val)) {
+    return {
+      isValid: false,
+      message: 'Please provide a valid email address.'
+    };
+  } else {
+    return {
+      isValid: true
+    };
+  }
+};
+
+/*****************************************************************************
+ * Expects a Node (field or fieldset).
+ *
+ * Returns an object describing the field's overall validity, as well as
+ * a possible error message where additional information may be helpful for
+ * the user to complete the field.
+ */
+
+const validateFileType = (field, expectedType) => {
+  const file = field.files[0]; 
+  if (file && file.type !== expectedType) {
+    return {
+      isValid: false,
+      message: `Please upload a PDF file.`
+    };
+  }
+  return { isValid: true };
+};
+
+const validateGroup = fieldset => {
+  if (!fieldset) {
+      return {
+          isValid: false,
+          message: 'Fieldset element not found.'
+      };
+  }
+
+  const checkbox = fieldset.querySelector('input[type="checkbox"]');
+
+  if (checkbox) {
+      checkbox.setAttribute('required', 'required');
+  }
+
+  const isChecked = checkbox && checkbox.checked;
+
+  if (!isChecked) {
+      return {
+          isValid: false,
+          message: 'Please ensure the checkbox is checked to proceed with your application.'
+      };
+  } else {
+      return {
+          isValid: true
+      };
+  }
+};
+
+console.clear();
+
+function ready(fn) {
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(fn, 1);
+    document.removeEventListener('DOMContentLoaded', fn);
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
+}
+
+const isValidPhone = val => {
+  const regex = new RegExp(/^(?:(?:\+|0{0,2})63|0)?\s?(\d{3})[-.\s]?(\d{3})[-.\s]?(\d{4})$/);
+
+  return regex.test(val);
+};
+
+/*****************************************************************************/
+
+const isValidEmail = val => {
+  const regex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+
+  return regex.test(val);
+};
+
+/*****************************************************************************
+ * Expects a Node (input[type="text"] or textarea).
+ */
+
+const validateText = field => {
+  const val = field.value.trim();
+
+  if ((val === '' || val === 'Invalid Date') && field.required) {
+    return {
+      isValid: false
+    };
+  } else {
+    return {
+      isValid: true
+    };
+  }
+};
+
+/*****************************************************************************
+* Birthdate Validation
+*/
+const validateDate = field => {
+  const val = field.value.trim();
+
+  if (val === '' && field.required) {
+    return {
+      isValid: false,
+    };
+  } else {
+    const currentDate = new Date();
+    const selectedDate = new Date(val);
+    const ageInYears = (currentDate - selectedDate) / (365 * 24 * 60 * 60 * 1000);
+
+    if (ageInYears < 10 || ageInYears > 25) {
+      return {
+        isValid: false,
+        message: 'Should not be more than 25 years of age upon admission'
+      };
+    }
+
+    return {
+      isValid: true
+    };
+  }
+};
+
+/*****************************************************************************
+* Number Input Field Validation
+*/
+const validateNumber = (field) => {
+  const val = field.value.trim();
+
+  if (val === '' && field.required) {
+    return {
+      isValid: false,
+      message: 'Please complete this required field.'
+    };
+  } else {
+    // Perform number validation logic here if needed
+    return { isValid: true };
+  }
+};
+
+/*****************************************************************************
+* Grades Validation
+*/
+const validateNumberRange = (field, min, max) => {
+  const value = parseFloat(field.value);
+  if (isNaN(value) || value < min || value > max) {
+    return {
+      isValid: false,
+      message: `To qualify for the scholarship, your GWA must be equivalent to at least 88%.`
+    };
+  }
+  return { isValid: true };
+};
+
+/*****************************************************************************
+* Average Validation
+*/
+const validateLatestAverage = (field, minPercentage) => {
+  const value = parseFloat(field.value);
+  if (isNaN(value) || value < minPercentage || value > 100) {
+    return {
+      isValid: false,
+      message: `To qualify for the scholarship, your General Average must be at least ${minPercentage}%.`
+    };
+  }
+  return { isValid: true };
+};
+
+/*****************************************************************************
+* Password Validation
+*/
+const validatePassword = field => {
+  const val = field.value.trim();
+
+  if (val === '' && field.required) {
+    return {
+      isValid: false,
+    };
+  }
+
+  const hasLowercase = /[a-z]/.test(val);
+
+  const hasUppercase = /[A-Z]/.test(val);
+
+  const hasNumber = /\d/.test(val);
+
+  const hasMinLength = val.length >= 8;
+
+  if (!(hasLowercase && hasUppercase && hasNumber && hasMinLength)) {
+    return {
+      isValid: false,
+      message: 'Requires one lowercase letter, one capital letter, one number, and a minimum of 8 characters.'
+    };
+  }
+
+  return {
+    isValid: true
+  };
+};
+
+/*****************************************************************************
+* Confirm Password Validation
+*/
+const validateConfirmPassword = field => {
+  const val = field.value.trim();
+  const passwordField = document.getElementById('passwordField');
+  const password = passwordField.value.trim();
+
+  if (val === '' && field.required) {
+    return {
+      isValid: false,
+      message: 'Please confirm your password.'
+    };
+  }
+
+  if (val !== password) {
+    return {
+      isValid: false,
+      message: 'Password and Confirm Password doesn\'t match.'
+    };
+  }
+
+  return {
+    isValid: true
+  };
+};
+
+/*****************************************************************************
+* Dropdown Validation
+*/
+const validateSelect = field => {
+  const val = field.value.trim();
+
+  if (val === '' && field.required) {
+    return {
+      isValid: false,
+      message: 'Please select an option from the dropdown menu.'
+    };
+  } else {
+    return {
+      isValid: true
+    };
+  }
+};
+
+/*****************************************************************************/
+ready(function () {
+
+  // Global Constants
+  const progressForm = document.getElementById('progress-form');
+
+  const tabItems = progressForm.querySelectorAll('[role="tab"]')
+    , tabPanels = progressForm.querySelectorAll('[role="tabpanel"]');
+
+  let currentStep = 0;
 
   const isValid = field => {
     return getValidationData(field).isValid;
@@ -587,7 +573,6 @@ ready(function () {
     }
   }
   
-
   /*****************************************************************************
    * Expects a Node (field or fieldset) that either has the class name defined
    * by `FIELD_PARENT_CLASS`, or has a parent with that class name.
@@ -608,8 +593,6 @@ ready(function () {
     }
   }
 
-// Add event listener for checkbox click event
-// Add event listener for checkbox click event
 // Add event listener for checkbox click event
 document.getElementById('consent').addEventListener('click', validateCheckbox);
 
@@ -641,13 +624,6 @@ function validateCheckbox() {
       updateChoice(fieldsetParent, false);
   }
 }
-
-
-
-
-
-
-
 
   /*****************************************************************************
    * Expects a Node (field or fieldset).
@@ -798,7 +774,6 @@ function validateCheckbox() {
   /*****************************************************************************
    * Returns a function that only executes after a delay.
    *
-   * https://davidwalsh.name/javascript-debounce-function
    */
 
   const debounce = (fn, delay = 500) => {
@@ -881,83 +856,6 @@ function validateCheckbox() {
 
   // Form Submission
 
-  /*****************************************************************************
-   * Returns the user's IP address.
-   */
-
-//   async function getIP(url = 'https://api.ipify.org?format=json') {
-//     return new Promise((resolve, reject) => {
-//         const callbackName = 'jsonpCallback' + Math.round(100000 * Math.random());
-//         window[callbackName] = (data) => {
-//             delete window[callbackName];
-//             resolve(data);
-//         };
-
-//         const script = document.createElement('script');
-//         script.src = url + '&callback=' + callbackName;
-//         script.async = true;
-//         script.onerror = (error) => {
-//             reject(error);
-//         };
-
-//         document.head.appendChild(script);
-//     });
-// }
-
-//   /*****************************************************************************
-//    * POSTs to the specified endpoint.
-//    */
-
-//   async function postData(url = '', data = {}) {
-//     const response = await fetch(url, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(data)
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(response.statusText);
-//     }
-
-//     return response.json();
-//   }
-
-//   document.getElementById("submitButton").addEventListener("click", function() {
-//     const formData = {
-//         // Collect form data here
-//     };
-
-//     // Replace 'https://httpbin.org/post' with your actual endpoint URL
-//     postData('https://httpbin.org/post', formData)
-//         .then(data => {
-//             console.log(data); // Log response data to the console
-//             // Handle response data as needed
-//         })
-//         .catch(error => {
-//             console.error('Error:', error); // Log any errors to the console
-//             // Handle errors as needed
-//         });
-// });
-
-
-  /****************************************************************************/
-
-  // function disableSubmit() {
-  //   const submitButton = progressForm.querySelector('[type="submit"]');
-
-  //   if (progressForm.contains(submitButton)) {
-
-  //     // Update the state of the submit button
-  //     submitButton.setAttribute('disabled', '');
-  //     submitButton.textContent = 'Submitting...';
-
-  //   }
-  // }
-
-  /****************************************************************************/
-
   function handleSuccess(response) {
     const thankYou = progressForm.querySelector('#progress-form__thank-you');
 
@@ -972,115 +870,23 @@ function validateCheckbox() {
     console.log(response);
   }
 
-  /****************************************************************************/
-
-//   function handleError(error) {
-//     const submitButton = progressForm.querySelector('[type="submit"]');
-
-//     if (progressForm.contains(submitButton)) {
-//       const errorText = document.createElement('p');
-
-//       // Reset the state of the submit button
-//       submitButton.removeAttribute('disabled');
-//       submitButton.textContent = 'Submit';
-
-//       // Display an error message for the user
-//       errorText.classList.add('m-0', 'form__error-text');
-//       errorText.textContent = `Sorry, your submission could not be processed.
-//         Please try again. If the issue persists, please contact our support
-//         team. Error message: ${error}`;
-
-//       submitButton.parentElement.prepend(errorText);
-//     }
-//   }
-
-//   /****************************************************************************/
-//   function handleError(errorMessage, errorStack) {
-//     console.error("An error occurred: ", errorMessage);
-//     console.error("Error stack trace: ", errorStack);
-//     // Additional error handling logic can be added here
-// }
-
-//  progressForm.addEventListener('submit', e => {
-//     // Prevent the form from submitting
-//     e.preventDefault();
-
-//     // Get the API endpoint using the form action attribute
-//     const form = e.currentTarget;
-//     const API = new URL(form.action);
-
-//     validateStep(currentStep)
-//         .then(() => {
-//             // Indicate that the submission is working
-//             disableSubmit();
-
-//             // Prepare the data
-//             const formData = new FormData(form);
-//             const formTime = new Date().getTime();
-//             const formFields = [];
-
-//             // Format the data entries
-//             for (const [name, value] of formData) {
-//                 formFields.push({
-//                     'name': name,
-//                     'value': value
-//                 });
-//             }
-
-//             // Get the user's IP address (for fun)
-//             // Build the final data structure, including the IP
-//             // POST the data and handle success or error
-//             getIP().then(response => {
-//                 return {
-//                     'fields': formFields,
-//                     'meta': {
-//                         'submittedAt': formTime,
-//                         'ipAddress': response.ip
-//                     }
-//                 };
-//             })
-//             .then(data => postData(API, data))
-//             .then(response => {
-//                 setTimeout(() => {
-//                     handleSuccess(response)
-//                 }, 5000); // An artificial delay to show the state of the submit button
-//             })
-//             .catch(error => {
-//                 // Pass error message and stack trace to handleError function
-//                 handleError(error.message, error.stack);
-//             });
-
-//         })
-//         .catch(invalidFields => {
-//             // Ensure invalidFields is an array
-//             if (Array.isArray(invalidFields)) {
-//                 // Show errors for any invalid fields
-//                 invalidFields.forEach(field => {
-//                     reportValidity(field);
-//                 });
-
-//                 // Focus the first found invalid field for the user
-//                 invalidFields[0].focus();
-//             } else {
-//                 // Handle the case when invalidFields is not an array
-//                 console.error("Invalid fields data structure is not an array:", invalidFields);
-//             }
-//         });
-// });
-
 
 });
 
 /****************************************************************************/
 //SAVE FORM DATA
 function saveFormData() {
-  var inputs = document.querySelectorAll('input:not([type="file"]), select');
+  var inputs = document.querySelectorAll('input, select, textarea');
   var formData = {};
 
   inputs.forEach(function (input) {
       if (input.type === "select-one") {
           formData[input.name] = input.selectedIndex;
-      } else {  
+      } else if (input.type === "checkbox") {
+          formData[input.name] = input.checked; 
+      } else if (input.type === "file") {
+          console.log('File input detected, skipping...');
+      } else {
           formData[input.name] = input.value;
       }
   });
@@ -1101,7 +907,9 @@ function loadFormData() {
                   if (inputElement.type === "select-one") {
                       inputElement.selectedIndex = formData[key];
                       inputElement.dispatchEvent(new Event('change'));
-                  } else {
+                  } else if (inputElement.type === "checkbox") {
+                      inputElement.checked = formData[key]; 
+                  } else if (inputElement.type !== "file") {
                       inputElement.value = formData[key];
                   }
               }
@@ -1110,11 +918,11 @@ function loadFormData() {
   }
 }
 
+
 window.addEventListener('beforeunload', saveFormData);
 window.addEventListener('load', loadFormData);
 document.querySelector('[data-action="next"]').addEventListener('click', saveFormData);
 
-//specific drop down input field
 document.addEventListener("DOMContentLoaded", function () {
   const incomingGradeSelect = document.getElementById("incomingGrade");
 
@@ -1124,6 +932,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /****************************************************************************/
+/**
+ * Grades step 4
+ */
 document.getElementById('incomingGrade').addEventListener('change', function() {
   const toggleDisplay = (field, input, show, required) => {
     if (field && input) {
@@ -1221,7 +1032,160 @@ function updateTotalSupport() {
 fatherIncomeInput.addEventListener('input', updateTotalSupport);
 motherIncomeInput.addEventListener('input', updateTotalSupport);
 
+/******************************************/
+/**
+ * SUBMIT BUTTON
+ */
+const validateAllFields = () => {
+  let isValid = true;
+  const formFields = document.querySelectorAll('#progress-form input:not([type="hidden"]), #progress-form select, #progress-form textarea');
+  formFields.forEach((field) => {
+    if (field.type !== 'hidden') {
+      const validationResult = getValidationData(field);
+      if (!validationResult.isValid) {
+        reportError(field, validationResult.message);
+        isValid = false;
+      } else {
+        reportSuccess(field);
+      }
+    }
+  });
+  return isValid;
+};
 
+const reportError = (field, message) => {
+  const existingRedError = field.parentNode.querySelector('.form__error-text');
+  if (existingRedError) {
+    return;
+  }
 
+  const existingBlackError = field.parentNode.querySelector('.error-message:not(.form__error-text)');
+  if (existingBlackError) {
+    existingBlackError.remove();
+  }
 
+  if (!existingRedError) {
+    const errorElement = document.createElement('p');
+    errorElement.className = 'form__error-text';
+    errorElement.textContent = message;
+    errorElement.style.color = 'red';
+    field.parentNode.appendChild(errorElement);
+  }
 
+  field.classList.add('error');
+};
+
+const reportSuccess = (field) => {
+  field.classList.remove('error');
+  const existingErrors = field.parentNode.querySelectorAll('.error-message, .form__error-text');
+  existingErrors.forEach(error => error.remove());
+};
+
+const style = document.createElement('style');
+style.textContent = `
+  .error-message:not(.form__error-text) {
+    display: none;
+  }
+`;
+document.head.appendChild(style);
+
+const submitButton = document.getElementById('submitButton');
+const progressForm = document.getElementById('progress-form');
+
+submitButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  const isValid = validateAllFields();
+  if (isValid) {
+    submitButton.textContent = 'Submitting...';
+    submitButton.disabled = true;
+    const formData = new FormData(progressForm);
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    formData.append('_token', csrfToken);
+
+    fetch(screeningPostRoute, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRF-TOKEN': csrfToken,
+        'Accept': 'application/json'
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then(err => { throw err; });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        } else {
+          window.location.href = verificationRoute;
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        handleSubmissionError(error);
+      })
+      .finally(() => {
+        submitButton.textContent = 'Submit';
+        submitButton.disabled = false;
+      });
+  }
+});
+
+const handleSubmissionError = (error) => {
+  console.log('Handling submission error:', error);  
+  
+  if (error.errors) {
+    Object.entries(error.errors).forEach(([key, value]) => {
+      const field = document.querySelector(`[name="${key}"]`);
+      if (field) {
+        let errorMessage = Array.isArray(value) ? value[0] : value;
+        if (key === 'email' && errorMessage.includes('has already been taken')) {
+          errorMessage = 'The email address is already registered. Please use a different email.';
+        }
+        alert(errorMessage);
+        reportError(field, errorMessage);
+      }
+    });
+  } else if (error.message) {
+    alert(error.message);
+  } else {
+    alert('An unexpected error occurred. Please try again.');
+  }
+};
+
+/******************************************/
+/**
+ * Toggle Password
+ */
+const togglePassword = document.querySelector('#togglePassword');
+const passwordField = document.querySelector('#passwordField');
+
+togglePassword.addEventListener('click', function() {
+    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordField.setAttribute('type', type);
+    if (this.classList.contains('fa-eye')) {
+        this.classList.remove('fa-eye');
+        this.classList.add('fa-eye-slash');
+    } else {
+        this.classList.remove('fa-eye-slash');
+        this.classList.add('fa-eye');
+    }
+});
+
+const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+const confirmPasswordField = document.querySelector('#confirmPasswordField');
+
+toggleConfirmPassword.addEventListener('click', function() {
+    const type = confirmPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    confirmPasswordField.setAttribute('type', type);
+    if (this.classList.contains('fa-eye')) {
+        this.classList.remove('fa-eye');
+        this.classList.add('fa-eye-slash');
+    } else {
+        this.classList.remove('fa-eye-slash');
+        this.classList.add('fa-eye');
+    }
+});

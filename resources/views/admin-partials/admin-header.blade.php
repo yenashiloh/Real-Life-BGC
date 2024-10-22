@@ -1,27 +1,27 @@
 <!-- plugins:css -->
-<link rel="stylesheet" href="../assets-new-admin/vendors/simple-line-icons/css/simple-line-icons.css">
-<link rel="stylesheet" href="../assets-new-admin/vendors/flag-icon-css/css/flag-icon.min.css">
-<link rel="stylesheet" href="../assets-new-admin/vendors/css/vendor.bundle.base.css">
-<link href="../assets-admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-<link href="../assets-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../../assets-new-admin/vendors/simple-line-icons/css/simple-line-icons.css">
+<link rel="stylesheet" href="../../assets-new-admin/vendors/flag-icon-css/css/flag-icon.min.css">
+<link rel="stylesheet" href="../../assets-new-admin/vendors/css/vendor.bundle.base.css">
+<link href="../../assets-admin/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="../../assets-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11"> --}}
 
 <!-- Include SweetAlert JS -->
-<link href="../assets-admin/vendor/quill/quill.snow.css" rel="stylesheet">
-<link href="../assets-admin/vendor/quill/quill.bubble.css" rel="stylesheet">
-<link href="../assets-admin/vendor/remixicon/remixicon.css" rel="stylesheet">
-<link href="../assets-admin/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-<link href="../assets-admin/vendor/simple-datatables/style.css" rel="stylesheet">  
+<link href="../../assets-admin/vendor/quill/quill.snow.css" rel="stylesheet">
+<link href="../../assets-admin/vendor/quill/quill.bubble.css" rel="stylesheet">
+<link href="../../assets-admin/vendor/remixicon/remixicon.css" rel="stylesheet">
+<link href="../../assets-admin/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+<link href="../../assets-admin/vendor/simple-datatables/style.css" rel="stylesheet">  
 <!-- endinject -->
 
 <!-- End plugin css for this page -->
 <!-- inject:css -->
 <!-- endinject -->
 <!-- Layout styles -->
-<link rel="stylesheet" href="../assets-new-admin/css/style.css">
-<link rel="stylesheet" href="../assets-new-admin/css/data_table.css">
+<link rel="stylesheet" href="../../assets-new-admin/css/style.css">
+<link rel="stylesheet" href="../../assets-new-admin/css/data_table.css">
 <!-- End layout styles -->
-<link rel="shortcut icon" href="../assets-admin/img/RLlogo1.png" />
+<link rel="shortcut icon" href="../../assets-admin/img/RLlogo1.png" />
 
 <style>
   .loader {

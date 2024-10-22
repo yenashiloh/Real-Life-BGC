@@ -131,3 +131,12 @@ $(document).ready(function() {
         $(this).find('.notification-description').removeClass('full');
     });
 });
+
+window.onload = () => {
+    document.body.classList.add('animate');
+
+    // Remove the animation class after it finishes
+    setTimeout(() => {
+        document.body.classList.remove('animate');
+    }, 500); // Match this duration to your CSS animation duration
+};

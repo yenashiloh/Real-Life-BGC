@@ -1,70 +1,104 @@
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+ <!-- Sidebar -->
+ <div class="sidebar" data-background-color="dark">
+     <div class="sidebar-logo">
+         <!-- Logo Header -->
+         <div class="logo-header" data-background-color="white">
+             <a href="{{ route('dashboard') }}" class="logo">
+                 <img src="../../admin-assets/img/RLlogo.png" alt="navbar brand" class="navbar-brand" height="45" />
+             </a>
+             <div class="nav-toggle">
+                 <button class="btn btn-toggle toggle-sidebar">
+                     <i class="gg-menu-right"></i>
+                 </button>
+                 <button class="btn btn-toggle sidenav-toggler">
+                     <i class="gg-menu-left"></i>
+                 </button>
+             </div>
+             <button class="topbar-toggler more">
+                 <i class="gg-more-vertical-alt"></i>
+             </button>
+         </div>
+         <!-- End Logo Header -->
+     </div>
+     <div class="sidebar-wrapper scrollbar scrollbar-inner">
+         <div class="sidebar-content">
+             <ul class="nav nav-secondary">
+                 <li class="nav-section">
+                     <span class="sidebar-mini-icon">
+                         <i class="fa fa-ellipsis-h"></i>
+                     </span>
+                     <h4 class="text-section">Menu</h4>
+                 </li>
+                 <li class="nav-item {{ Route::currentRouteName() === 'dashboard' ? 'active' : '' }}">
+                     <a href="{{ route('dashboard') }}" aria-expanded="false">
+                         <i class="fas fa-home"></i>
+                         <p>Dashboard</p>
+                     </a>
+                 </li>
+                 <li class="nav-section">
+                     <span class="sidebar-mini-icon">
+                         <i class="fa fa-ellipsis-h"></i>
+                     </span>
+                     <h4 class="text-section">Applicants</h4>
+                 </li>
+                 <li
+                     class="nav-item {{ Route::currentRouteName() === 'admin.applicants.new_applicants' ? 'active' : '' }}">
+                     <a href="{{ route('admin.applicants.new_applicants') }}">
+                         <i class="fas fa-users"></i>
+                         <p>All Applicants</p>
+                     </a>
+                 </li>
+                 <li
+                     class="nav-item {{ Route::currentRouteName() === 'admin.applicants.approved_applicants' ? 'active' : '' }}">
+                     <a href="{{ route('admin.applicants.approved_applicants') }}">
+                         <i class="fas fa-th-list"></i>
+                         <p>Approved Applicants</p>
+                     </a>
+                 </li>
+                 <li
+                     class="nav-item {{ Route::currentRouteName() === 'admin.applicants.declined_applicants' ? 'active' : '' }}">
+                     <a href="{{ route('admin.applicants.declined_applicants') }}">
+                         <i class="fas fa-pen-square"></i>
+                         <p>Declined Applicants</p>
+                     </a>
+                 </li>
 
-      <ul class="sidebar-nav" id="sidebar-nav">
+                 <li class="nav-section">
+                     <span class="sidebar-mini-icon">
+                         <i class="fa fa-ellipsis-h"></i>
+                     </span>
+                     <h4 class="text-section">Content Management</h4>
+                 </li>
+                 <li
+                     class="nav-item {{ in_array(Route::currentRouteName(), ['admin.announcement.admin-announcement', 'admin.announcement.add-announcement', 'admin.announcement.edit-announcement']) ? 'active' : '' }}">
+                     <a href="{{ route('admin.announcement.admin-announcement') }}">
+                         <i class="fas fa-bullhorn"></i>
+                         <p>Announcement</p>
+                     </a>
+                 </li>
 
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="/dashboard" id="dashboard-link">
-            <i class="bi bi-grid"></i>
-            <span>Dashboard</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" id="applicants-link">
-            <i class="bi bi-menu-button-wide" ></i><span>Applicants</span><i class="bi bi-chevron-down ms-auto"></i>
-          </a>
-          <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-            <li>
-              <a href="{{ route('admin.applicants.new_applicants') }}">
-                <i class="bi bi-circle"></i><span>All Applicants</span>
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('admin.applicants.approved_applicants') }}">
-                <i class="bi bi-circle"></i><span>Approved Applicants</span>
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('admin.applicants.declined_applicants') }}">
-                <i class="bi bi-circle"></i><span>Declined Applicants</span>
-              </a>
-            </li>
-          </ul>
-        </li><!-- End Components Nav -->
-
-    
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="{{ route('admin.announcement.admin-announcement') }}" id="announcement-link">
-            <i class="bi bi-journal-text"></i><span>Announcement</span></i>
-          </a>
-        
-        </li><!-- End Forms Nav -->
-
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="{{ route('admin.registration') }}" id="createaccount-link">
-            <i class="bi bi-person-plus"></i><span>Create Account</span></i>
-          </a>
-          
-        </li><!-- End Charts Nav -->
-
-        <li class="nav-item">
-          <a class="nav-link collapsed"  href="{{ route('admin.admin-logout') }}" id="signout-link">
-            <i class="bi bi-box-arrow-in-right"></i><span>Sign out</span></i>
-          </a>
-        </li><!-- End Icons Nav -->
-    </aside><!-- End Sidebar-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-{{-- 
-<script>
-  $(document).ready(function() {
-    $('.nav-link').click(function() {
-      $(this).toggleClass('collapsed');
-    });
-  });
-
-  const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
-  sidebarToggleBtn.addEventListener('click', toggleSidebar);
-</script> --}}
-
-
+                 <li class="nav-item {{ in_array(Route::currentRouteName(), ['admin.email.email']) ? 'active' : '' }}">
+                     <a href="{{ route('admin.email.email') }}">
+                         <i class="fas fa-envelope"></i>
+                         <p>Email</p>
+                     </a>
+                 </li>
+                 <li
+                     class="nav-item {{ in_array(Route::currentRouteName(), ['admin.application-settings']) ? 'active' : '' }}">
+                     <a href="{{ route('admin.application-settings') }}">
+                         <i class="fas fa-cog"></i>
+                         <p>Application Settings</p>
+                     </a>
+                 </li>
+                 <li
+                     class="nav-item {{ in_array(Route::currentRouteName(), ['admin.registration']) ? 'active' : '' }}">
+                     <a href="{{ route('admin.registration') }}">
+                         <i class="fas fa-user-plus"></i>
+                         <p>Create Account</p>
+                     </a>
+                 </li>
+             </ul>
+         </div>
+     </div>
+ </div>
+ <!-- End Sidebar -->

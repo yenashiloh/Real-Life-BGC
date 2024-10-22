@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets-applicant\login-assets\fonts\icomoon\style.css">
     <link rel="stylesheet" href="assets-applicant\login-assets\css\owl.carousel.min.css">
-
+    <link href="assets/img/RLlogo1.png" rel="icon">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets-applicant\login-assets\css\bootstrap.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">

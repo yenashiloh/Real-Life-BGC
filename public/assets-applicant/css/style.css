@@ -1,26 +1,11 @@
-/******************************************************************
-  Template Name: Sona
-  Description: Sona Hotel Html Template
-  Author: Colorlib
-  Author URI: https:
-  Version: 1.0
-  Created: Colorlib
-******************************************************************/
-
-
-
-
-
-
-
 html, body {
 	height: 100%;
-	font-family: "Cabin", sans-serif;
+	  font-family: "Poppins", sans-serif;
 	-webkit-font-smoothing: antialiased;
 	font-smoothing: antialiased;
 }
 .change{
-	font-family: "Cabin", sans-serif;
+	  font-family: "Poppins", sans-serif;
 	font-weight: bold;
 }
 h1, h2, h3, h4, h5, h6 {
@@ -49,7 +34,7 @@ h6 {
 }
 p {
 	font-size: 16px;
-	font-family: "Cabin", sans-serif;
+	  font-family: "Poppins", sans-serif;
 	color: #222222;
 	font-weight: 400;
 	line-height: 30px;
@@ -737,7 +722,7 @@ ul, ol {
 	transition: all 0.2s;
 }
 .hp-room-items .hp-room-item .hr-text h2 span {
-	font-family: "Cabin", sans-serif;
+	  font-family: "Poppins", sans-serif;
 	font-size: 16px;
 	font-weight: 400;
 	color: #ffffff;
@@ -877,7 +862,7 @@ ul, ol {
 	text-transform: uppercase;
 	font-weight: 700;
 	letter-spacing: 3px;
-	font-family: "Cabin", sans-serif;
+	  font-family: "Poppins", sans-serif;
 	margin-bottom: 20px;
 }
 .footer-section .footer-text .ft-contact ul li {
@@ -892,7 +877,7 @@ ul, ol {
 	text-transform: uppercase;
 	font-weight: 700;
 	letter-spacing: 3px;
-	font-family: "Cabin", sans-serif;
+	  font-family: "Poppins", sans-serif;
 	margin-bottom: 20px;
 }
 .footer-section .footer-text .ft-newslatter p {
@@ -1140,7 +1125,7 @@ ul, ol {
 	margin-bottom: 14px;
 }
 .room-item .ri-text h3 span {
-	font-family: "Cabin", sans-serif;
+	  font-family: "Poppins", sans-serif;
 	font-size: 14px;
 	font-weight: 400;
 	color: #19191a;
@@ -1229,7 +1214,7 @@ ul, ol {
 	margin-bottom: 25px;
 }
 .room-details-item .rd-text h2 span {
-	font-family: "Cabin", sans-serif;
+	  font-family: "Poppins", sans-serif;
 	font-size: 16px;
 	font-weight: 400;
 	color: #19191a;
@@ -2308,7 +2293,7 @@ ul, ol {
 
   .nav-link {
     color: #71BF44;
-    font-family: "Cabin", sans-serif;
+      font-family: "Poppins", sans-serif;
     position: relative;
     font-weight: 500;
     font-size: 16px;
@@ -2376,7 +2361,7 @@ ul.list-unstyled li {
 }
 
 .icon-container i {
-    font-size: 18px; /* Adjust icon size */
+    font-size: 18px; 
 }
 
 .notification-count {
@@ -2390,14 +2375,14 @@ ul.list-unstyled li {
     height: 15px;
     width: 15px;
     text-align: center;
-    line-height: 15px; /* Ensures the text is vertically centered */
+    line-height: 15px;
     transform: translateX(-35%);
 }
 
 .notification-dropdown {
     position: absolute;
-    top: 40px; /* Adjust dropdown position */
-    right: 10px; /* Adjust dropdown position */
+    top: 40px;
+    right: 10px;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -2429,3 +2414,30 @@ ul.list-unstyled li {
         right: 0;
     }
 }
+.capitalize-first-letter {
+    text-transform: lowercase;
+}
+
+.capitalize-first-letter::first-letter {
+    text-transform: uppercase;
+}
+
+  .notification-dropdown-mobile {
+	position: absolute;
+	left: 0; /* Change this from 'right: 0' to 'left: 0' */
+	top: 100%; /* This positions the dropdown below the bell icon */
+	width: 280px; /* Adjust the width as needed */
+	background-color: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+	z-index: 1000;
+  }
+
+  @media (max-width: 480px) {
+	.notification-dropdown-mobile {
+	  width: 100%;
+	  left: 0;
+	  right: 0;
+	}
+  }

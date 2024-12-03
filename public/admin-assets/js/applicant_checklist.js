@@ -3,13 +3,15 @@ const documentTypes = [
     { type: "Birth Certificate", checkboxId: "flexCheckDefault2" },
     { type: "Character Evaluation Forms", checkboxId: "flexCheckDefault3" },
     { type: "Proof of Financial Status", checkboxId: "flexCheckDefault4" },
+    { type: "Application Form", checkboxId: "flexCheckDefault5" },
     { type: "Two Reference Forms", checkboxId: "flexCheckDefault6" },
     { type: "Home Visitation Form", checkboxId: "flexCheckDefault7" },
     { type: "Report Card / Grades", checkboxId: "flexCheckDefault8" },
     { type: "Prospectus", checkboxId: "flexCheckDefault9" },
     { type: "Official Grading System", checkboxId: "flexCheckDefault10" },
     { type: "Tuition Projection", checkboxId: "flexCheckDefault11" },
-    { type: "Admission Slip", checkboxId: "flexCheckDefault12" }
+    { type: "Admission Slip", checkboxId: "flexCheckDefault12" },
+    { type: "Character References", checkboxId: "flexCheckDefault13" },
 ];
 
 

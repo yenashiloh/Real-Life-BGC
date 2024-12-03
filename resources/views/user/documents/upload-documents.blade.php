@@ -197,11 +197,18 @@
                                                                 {{ $requirement->notes }}
                                                             </td>
                                                             <td style="max-width: 110px; word-wrap: break-word; overflow-wrap: break-word;">
-                                                                @if (Storage::exists($requirement->uploaded_document))
+                                                                @php
+                                                                    \Log::info('Full Uploaded Document Path: ' . $requirement->uploaded_document);
+                                                                
+                                                                    $fileExists = file_exists(storage_path('app/public/' . $requirement->uploaded_document));
+                                                                @endphp
+                                                            
+                                                                @if ($fileExists)
                                                                     @php
                                                                         $originalFilename = basename($requirement->uploaded_document);
                                                                         $filename = preg_replace('/_\d+/', '', $originalFilename);
-                                                                        $fileUrl = Storage::url($requirement->uploaded_document);
+                                                                        
+                                                                        $fileUrl = asset('storage/' . $requirement->uploaded_document);
                                                                     @endphp
                                                                     <a href="{{ $fileUrl }}" 
                                                                        target="_blank" 
@@ -210,7 +217,7 @@
                                                                         {{ $filename }}
                                                                     </a>
                                                                 @else
-                                                                    File not found
+                                                                    <span class="text-danger">File not found: {{ $requirement->uploaded_document }}</span>
                                                                 @endif
                                                             </td>
                                                             <td>

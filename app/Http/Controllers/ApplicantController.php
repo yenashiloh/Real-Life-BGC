@@ -100,15 +100,12 @@ class ApplicantController extends Controller
     {
         $applicantId = auth()->id();
     
-        // count total submitted documents
         $totalDocuments = Requirement::where('applicant_id', $applicantId)->count();
-    
-        // count total approved documents
+
         $totalApprovedDocuments = Requirement::where('applicant_id', $applicantId)
             ->where('status', 'approved')
             ->count();
-    
-        // count total declined documents
+
         $totalDeclinedDocuments = Requirement::where('applicant_id', $applicantId)
             ->where('status', 'declined')
             ->count();
@@ -137,6 +134,8 @@ class ApplicantController extends Controller
             "Birth Certificate",
             "Character Evaluation Forms",
             "Proof of Financial Status",
+            'Application Form',
+            'Character References',
             "Two References Form",
             "Home Visitation Form",
             "Report Card / Grades",
@@ -162,13 +161,11 @@ class ApplicantController extends Controller
         $familyInfoData = ApplicantsFamilyInformation::where('applicant_id', $applicantId)->first();
         $members = Member::where('applicant_id', $applicantId)->get();
     
-        // Handle the file upload if a file is present
         if ($request->hasFile('payslip')) {
             $file = $request->file('payslip');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('public/Payslips', $filename);
             
-            // Update the familyInfoData with the new filename
             if (!$familyInfoData) {
                 $familyInfoData = new ApplicantsFamilyInformation();
                 $familyInfoData->applicant_id = $applicantId;
@@ -181,6 +178,7 @@ class ApplicantController extends Controller
         return view('user.personal_details', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'members', 'familyInfoData', 'personalInfo'));
     }
 
+    //get incoming grade 
     public function getIncomingGradeYearAttribute($value)
     {
         $mapping = [
@@ -198,6 +196,7 @@ class ApplicantController extends Controller
         return $mapping[$value] ?? $value;
     }
 
+    //apply again
     public function applyAgain(Request $request)
     {
         $request->validate([
@@ -224,16 +223,13 @@ class ApplicantController extends Controller
             'payslip' => 'file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
     
-        // Get the authenticated user and their associated applicant
         $user = auth()->user();
         $applicant = $user->applicant;
     
-        // Check if the applicant exists
         if (!$applicant) {
             return redirect()->back()->withErrors(['msg' => 'No applicant record found for the authenticated user.']);
         }
-    
-        // Create new Personal Information
+
         $personalInfoData = [
             'applicant_id' => $applicant->applicant_id,
             'first_name' => $request->first_name,
@@ -244,11 +240,10 @@ class ApplicantController extends Controller
             'street' => $request->street,
             'barangay' => $request->barangay,
             'municipality' => $request->municipality,
-            'created_at' => now(),  // Ensure to set timestamps
+            'created_at' => now(), 
             'updated_at' => now(),
         ];
     
-        // Handle map address file upload
         if ($request->hasFile('mapAddress')) {
             $mapAddressFile = $request->file('mapAddress');
             $originalFilename = pathinfo($mapAddressFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -259,19 +254,17 @@ class ApplicantController extends Controller
     
         ApplicantsPersonalInformation::create($personalInfoData);
     
-        // Create new Academic Information
         $academicInfoData = [
             'applicant_id' => $applicant->applicant_id,
             'incoming_grade_year' => $request->incoming_grade_year,
             'current_course_program_grade' => $request->current_course_program_grade,
             'current_school' => $request->current_school,
-            'created_at' => now(),  // Ensure to set timestamps
+            'created_at' => now(), 
             'updated_at' => now(),
         ];
     
         ApplicantsAcademicInformation::create($academicInfoData);
     
-        // Create new Academic Information Choices
         $academicInfoChoiceData = [
             'applicant_id' => $applicant->applicant_id,
             'first_choice_school' => $request->first_choice_school,
@@ -280,24 +273,22 @@ class ApplicantController extends Controller
             'first_choice_course' => $request->first_choice_course,
             'second_choice_course' => $request->second_choice_course,
             'third_choice_course' => $request->third_choice_course,
-            'created_at' => now(),  // Ensure to set timestamps
+            'created_at' => now(),  
             'updated_at' => now(),
         ];
         ApplicantsAcademicInformationChoice::create($academicInfoChoiceData);
-    
-        // Create new Academic Information Grades
+
         $academicInfoGradesData = [
             'applicant_id' => $applicant->applicant_id,
             'latestAverage' => $request->latestAverage,
             'latestGWA' => $request->latestGWA,
             'scopeGWA' => $request->scopeGWA,
             'equivalentGrade' => $request->equivalentGrade,
-            'created_at' => now(),  // Ensure to set timestamps
+            'created_at' => now(),  
             'updated_at' => now(),
         ];
         ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
     
-        // Create new Family Information
         $familyInformationData = [
             'applicant_id' => $applicant->applicant_id,
             'total_household_members' => $request->total_household_members,
@@ -305,12 +296,11 @@ class ApplicantController extends Controller
             'father_income' => $request->father_income,
             'mother_occupation' => $request->mother_occupation,
             'mother_income' => $request->mother_income,
-            'created_at' => now(),  // Ensure to set timestamps
+            'created_at' => now(),  
             'updated_at' => now(),
         ];
         ApplicantsFamilyInformation::create($familyInformationData);
     
-        // Handle Payslip upload
         if ($request->hasFile('payslip')) {
             $payslipFile = $request->file('payslip');
             $originalFilename = pathinfo($payslipFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -322,13 +312,12 @@ class ApplicantController extends Controller
                 'document_type' => 'Proof of Financial Status',
                 'uploaded_document' => $payslipFilePath,
                 'status' => 'For Review',
-                'created_at' => now(),  // Ensure to set timestamps
+                'created_at' => now(),  
                 'updated_at' => now(),
             ];
             Requirement::create($payslipData);
         }
     
-        // Update applicant status for the new application
         $applicant->status = 'Sent';
         $applicant->save();
     
@@ -357,9 +346,8 @@ class ApplicantController extends Controller
     
         try {
             $file = $request->file('fileUpload');
-            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $filename = $originalFilename . '.' . $file->getClientOriginalExtension();
-            $filePath = $file->storeAs('public/uploads', $filename);
+            $originalFilename = $file->getClientOriginalName();
+            $filePath = $file->storeAs('uploads', $originalFilename, 'public');
     
             $requirement = new Requirement();
             $requirement->applicant_id = auth()->id();
@@ -368,7 +356,6 @@ class ApplicantController extends Controller
             $requirement->uploaded_document = $filePath;
             $requirement->status = 'For Review';
             $requirement->uploaded_at = now();
-    
             $requirement->save();
     
             $applicantInfo = ApplicantsPersonalInformation::where('applicant_id', auth()->id())->first();
@@ -422,7 +409,6 @@ class ApplicantController extends Controller
         return redirect(route('login'))->with("error", "Incorrect email address or password. Please try again.");
     }
 
-    
     public function register()
     {
         $title = 'Register';
@@ -816,38 +802,39 @@ class ApplicantController extends Controller
     public function update(Request $request, $id)
     {
         try {
-                $request->validate([
-                    'documentType' => 'required|string',
-                    'notes' => 'nullable|string',
-                    'uploaded_document' => 'file|mimes:pdf|max:102400', 
-                ]);
+            $request->validate([
+                'documentType' => 'required|string',
+                'notes' => 'nullable|string',
+                'uploaded_document' => 'file|mimes:pdf|max:102400', 
+            ]);
     
-                $document = Requirement::findOrFail($id);
-                $document->document_type = $request->input('documentType');
-                $document->notes = $request->input('notes');
+            $document = Requirement::findOrFail($id);
+            $document->document_type = $request->input('documentType');
+            $document->notes = $request->input('notes');
     
-                if ($request->hasFile('uploaded_document')) {
-                    $uploadedFile = $request->file('uploaded_document');
+            if ($request->hasFile('uploaded_document')) {
+                $uploadedFile = $request->file('uploaded_document');
     
-                    $originalFileName = $uploadedFile->getClientOriginalName();
-                    $uploadedFilePath = $uploadedFile->storeAs('public/uploads', $originalFileName);
+                $originalFileName = $uploadedFile->getClientOriginalName();
+                $uploadedFilePath = $uploadedFile->storeAs('uploads', $originalFileName, 'public');
     
-                    if ($document->uploaded_document) {
-                        Storage::delete($document->uploaded_document);
-                    }
-    
-                    $document->uploaded_document = $uploadedFilePath;
+                if ($document->uploaded_document) {
+                    $oldFilePath = str_replace('public/', '', $document->uploaded_document);
+                    Storage::disk('public')->delete($oldFilePath);
                 }
     
-                $document->save();
-    
-                return response()->json(['message' => 'Document updated successfully'], 200);
-            } catch (\Exception $e) {
-                return response()->json(['message' => 'Failed to update document', 'error' => $e->getMessage()], 500);
+                $document->uploaded_document = $uploadedFilePath;
             }
+    
+            $document->save();
+    
+            return response()->json(['message' => 'Document updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to update document', 'error' => $e->getMessage()], 500);
         }
+    }
         
-        
+    //show edit documents
     public function showEdit($id)
     {
         $document = Requirement::findOrFail($id);
@@ -917,8 +904,9 @@ class ApplicantController extends Controller
             if ($request->hasFile('mapAddress')) {
                 $mapAddressFile = $request->file('mapAddress');
                 $originalFilename = pathinfo($mapAddressFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $mapAddressFilename = $originalFilename . '.' . $mapAddressFile->getClientOriginalExtension();
-                $mapAddressFilePath = $mapAddressFile->storeAs('public/map-addresses', $mapAddressFilename);
+                $mapAddressFilename = uniqid() . '_' . $originalFilename . '.' . $mapAddressFile->getClientOriginalExtension();
+                
+                $mapAddressFilePath = $mapAddressFile->storeAs('map-addresses', $mapAddressFilename, 'public');
                 $personalInfoData['mapAddress'] = $mapAddressFilePath;
             }
     
@@ -979,11 +967,12 @@ class ApplicantController extends Controller
             ];
             ApplicantsFamilyInformation::create($familyInformationData);
     
+           // report card file
             if ($request->hasFile('ReportCard')) {
                 $reportcardFile = $request->file('ReportCard');
-                $originalFilename = pathinfo($reportcardFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $reportcardfilename = $originalFilename . '.' . $reportcardFile->getClientOriginalExtension();
-                $reportcardFilePath = $reportcardFile->storeAs('public/ReportCards', $reportcardfilename);
+                $reportcardfilename = $reportcardFile->getClientOriginalName();
+                
+                $reportcardFilePath = $reportcardFile->storeAs('report-cards', $reportcardfilename, 'public');
                 
                 Requirement::create([
                     'applicant_id' => $applicant->applicant_id,
@@ -993,12 +982,13 @@ class ApplicantController extends Controller
                     'uploaded_at' => now()
                 ]);
             }
-    
+
+            //payslip file
             if ($request->hasFile('payslip')) {
                 $payslipFile = $request->file('payslip');
-                $originalFilename = pathinfo($payslipFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $payslipfilename = $originalFilename . '.' . $payslipFile->getClientOriginalExtension();
-                $payslipFilePath = $payslipFile->storeAs('public/Payslips', $payslipfilename);
+                $payslipfilename = $payslipFile->getClientOriginalName();
+                
+                $payslipFilePath = $payslipFile->storeAs('payslips', $payslipfilename, 'public');
                 
                 Requirement::create([
                     'applicant_id' => $applicant->applicant_id,
@@ -1008,65 +998,39 @@ class ApplicantController extends Controller
                     'uploaded_at' => now()
                 ]);
             }
-            
+
+            //application form file
             if ($request->hasFile('applicationForm')) {
-                try {
-                    $applicationFormFile = $request->file('applicationForm');
-                    
-                    \Log::info('Application Form File Details:', [
-                        'original_name' => $applicationFormFile->getClientOriginalName(),
-                        'extension' => $applicationFormFile->getClientOriginalExtension(),
-                        'size' => $applicationFormFile->getSize()
-                    ]);
-    
-                    $originalFilename = pathinfo($applicationFormFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $applicationFormname = $originalFilename . '.' . $applicationFormFile->getClientOriginalExtension();
-                    $applicationFormPath = $applicationFormFile->storeAs('public/ApplicationForm', $applicationFormname);
-                    
-                    Requirement::create([
-                        'applicant_id' => $applicant->applicant_id,
-                        'document_type' => 'Application Form',
-                        'uploaded_document' => $applicationFormPath,
-                        'status' => 'For Review',
-                        'uploaded_at' => now()
-                    ]);
-    
-                    \Log::info('Application Form File Processed Successfully');
-                } catch (\Exception $e) {
-                    \Log::error('Application Form File Upload Error: ' . $e->getMessage());
-                    \Log::error('Application Form File Upload Trace: ' . $e->getTraceAsString());
-                }
+                $applicationFormFile = $request->file('applicationForm');
+                $applicationFormname = $applicationFormFile->getClientOriginalName();
+                
+                $applicationFormPath = $applicationFormFile->storeAs('application-forms', $applicationFormname, 'public');
+                
+                Requirement::create([
+                    'applicant_id' => $applicant->applicant_id,
+                    'document_type' => 'Application Form',
+                    'uploaded_document' => $applicationFormPath,
+                    'status' => 'For Review',
+                    'uploaded_at' => now()
+                ]);
+            }
+
+            //character references file
+            if ($request->hasFile('characterReferences')) {
+                $characterReferencesFile = $request->file('characterReferences');
+                $characterReferencesname = $characterReferencesFile->getClientOriginalName();
+                
+                $characterReferencesPath = $characterReferencesFile->storeAs('character-references', $characterReferencesname, 'public');
+                
+                Requirement::create([
+                    'applicant_id' => $applicant->applicant_id,
+                    'document_type' => 'Character References',
+                    'uploaded_document' => $characterReferencesPath,
+                    'status' => 'For Review',
+                    'uploaded_at' => now()
+                ]);
             }
             
-            if ($request->hasFile('characterReferences')) {
-                try {
-                    $characterReferencesFile = $request->file('characterReferences');
-                    
-                    \Log::info('Character References File Details:', [
-                        'original_name' => $characterReferencesFile->getClientOriginalName(),
-                        'extension' => $characterReferencesFile->getClientOriginalExtension(),
-                        'size' => $characterReferencesFile->getSize()
-                    ]);
-    
-                    $originalFilename = pathinfo($characterReferencesFile->getClientOriginalName(), PATHINFO_FILENAME);
-                    $characterReferencesname = $originalFilename . '.' . $characterReferencesFile->getClientOriginalExtension();
-                    $characterReferencesPath = $characterReferencesFile->storeAs('public/CharacterReferences', $characterReferencesname);
-                    
-                    Requirement::create([
-                        'applicant_id' => $applicant->applicant_id,
-                        'document_type' => 'Character References',
-                        'uploaded_document' => $characterReferencesPath,
-                        'status' => 'For Review',
-                        'uploaded_at' => now()
-                    ]);
-    
-                    \Log::info('Character References File Processed Successfully');
-                } catch (\Exception $e) {
-                    \Log::error('Character References File Upload Error: ' . $e->getMessage());
-                    \Log::error('Character References File Upload Trace: ' . $e->getTraceAsString());
-                }
-            }
-    
             //attendance record
             $attendanceData = [
                 'applicant_id' => $applicant->applicant_id,
@@ -1074,10 +1038,12 @@ class ApplicantController extends Controller
                 'orientation_date' => $request->attend_orientation == 'yes' ? $request->orientation_date : null
             ];
     
+            //attendance proof file
             if ($request->hasFile('orientation_proof')) {
                 $orientationProofFile = $request->file('orientation_proof');
                 $orientationProofFilename = $orientationProofFile->getClientOriginalName();
-                $orientationProofPath = $orientationProofFile->storeAs('public/orientation-proofs', $orientationProofFilename);
+                
+                $orientationProofPath = $orientationProofFile->storeAs('orientation-proofs', $orientationProofFilename, 'public');
                 $attendanceData['orientation_proof'] = $orientationProofPath;
             }
     

@@ -26,7 +26,7 @@ use App\Mail\VerificationMail;
 use App\Models\ApplicationSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\ApplicantAttendance;
 
 class ApplicantController extends Controller
 {
@@ -137,7 +137,6 @@ class ApplicantController extends Controller
             "Birth Certificate",
             "Character Evaluation Forms",
             "Proof of Financial Status",
-            "Payslip / Social Case Study Report / ITR",
             "Two References Form",
             "Home Visitation Form",
             "Report Card / Grades",
@@ -211,7 +210,6 @@ class ApplicantController extends Controller
             'barangay' => 'required',
             'municipality' => 'required',
             'mapAddress' => 'file|mimes:jpeg,jpg,png,pdf|max:2048',
-            'noteAddress' => 'required',
             'incoming_grade_year' => 'required',
             'current_course_program_grade' => 'required',
             'current_school' => 'required',
@@ -246,7 +244,6 @@ class ApplicantController extends Controller
             'street' => $request->street,
             'barangay' => $request->barangay,
             'municipality' => $request->municipality,
-            'noteAddress' => $request->noteAddress,
             'created_at' => now(),  // Ensure to set timestamps
             'updated_at' => now(),
         ];
@@ -322,7 +319,7 @@ class ApplicantController extends Controller
     
             $payslipData = [
                 'applicant_id' => $applicant->applicant_id,
-                'document_type' => 'Payslip / Social Case Study Report / ITR',
+                'document_type' => 'Proof of Financial Status',
                 'uploaded_document' => $payslipFilePath,
                 'status' => 'For Review',
                 'created_at' => now(),  // Ensure to set timestamps
@@ -627,7 +624,7 @@ class ApplicantController extends Controller
 
             $payslipData = [
                 'applicant_id' => $applicant->applicant_id,
-                'document_type' => 'Payslip / Social Case Study Report / ITR',
+                'document_type' => 'Proof of Financial Status',
                 'uploaded_document' => $payslipFile->storeAs('Payslips', $fileName, 'public'),
                 'status' => 'For Review',
             ];
@@ -665,7 +662,6 @@ class ApplicantController extends Controller
         $street = $request->input('street');
         $barangay = $request->input('barangay');
         $municipality = $request->input('municipality');
-        $noteAddress = $request->input('noteAddress');
     
         $personalInfo = ApplicantsPersonalInformation::updateOrCreate(
             ['applicant_id' => auth()->id()],
@@ -678,7 +674,6 @@ class ApplicantController extends Controller
                 'street' => $street,
                 'barangay' => $barangay,
                 'municipality' => $municipality,
-                'noteAddress' => $noteAddress,
             ]
         );
     
@@ -853,44 +848,60 @@ class ApplicantController extends Controller
         }
         
         
-        public function showEdit($id)
-        {
-            $document = Requirement::findOrFail($id);
-            return response()->json([
-                'id' => $document->id,
-                'document_type' => $document->document_type,
-                'notes' => $document->notes,
-                'uploaded_document' => $document->uploaded_document, 
-            ]);
-        }
+    public function showEdit($id)
+    {
+        $document = Requirement::findOrFail($id);
+        return response()->json([
+            'id' => $document->id,
+            'document_type' => $document->document_type,
+            'notes' => $document->notes,
+            'uploaded_document' => $document->uploaded_document, 
+        ]);
+    }
 
     //application form post
-    function screeningPost(Request $request)
+    public function screeningPost(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|unique:applicants',
-            'password' => 'required|min:8',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'contact' => 'required',
-            'birthdate' => 'required',
-            'houseNumber' => 'required',
-            'street' => 'required',
-            'barangay' => 'required',
-            'municipality' => 'required',
-            'mapAddress' => 'file|mimes:jpeg,jpg,png,pdf|max:2048',
-            'noteAddress' => 'required',
-            'attend_orientation' => 'required|in:yes,no', 
-            'orientation_date' => 'required_if:attend_orientation,yes', 
-            'orientation_proof' => 'nullable|file|mimes:jpeg,jpg,png,pdf|max:2048' 
-        ]);
-        
-        $data['email'] = $request->email;
-        $data['password'] = Hash::make($request->password);
-        $data['status'] = 'Sent';
-        $applicant = Applicant::create($data);
+        try {
+            \Log::info('Screening Post Request Started');
+            \Log::info('Request Data:', $request->all());
 
-        if ($applicant) {
+            $request->validate([
+                'email' => 'required|email|unique:applicants',
+                'password' => 'required|min:8',
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'contact' => 'required',
+                'birthdate' => 'required',
+                'houseNumber' => 'required',
+                'street' => 'required',
+                'barangay' => 'required',
+                'municipality' => 'required',
+                'mapAddress' => 'file|mimes:jpeg,jpg,png,pdf|max:2048',
+                'attend_orientation' => 'required|in:yes,no',
+                'orientation_date' => 'required_if:attend_orientation,yes',
+                'orientation_proof' => 'nullable|file|mimes:jpeg,jpg,png,pdf|max:2048',
+                'schoolGrade.*' => 'required|string',
+                'yearLevel.*' => 'required|string',
+                'generalAverage.*' => 'required|numeric|between:0,100'
+            ]);
+
+            \Log::info('Validation Passed');
+
+            DB::beginTransaction();
+    
+            //main applicant record
+            $data = [
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'status' => 'Sent'
+            ];
+            $applicant = Applicant::create($data);
+    
+            if (!$applicant) {
+                throw new \Exception('Failed to create applicant record');
+            }
+    
             $personalInfoData = [
                 'applicant_id' => $applicant->applicant_id,
                 'first_name' => $request->firstname,
@@ -901,9 +912,8 @@ class ApplicantController extends Controller
                 'street' => $request->street,
                 'barangay' => $request->barangay,
                 'municipality' => $request->municipality,
-                'noteAddress' => $request->noteAddress
             ];
-
+    
             if ($request->hasFile('mapAddress')) {
                 $mapAddressFile = $request->file('mapAddress');
                 $originalFilename = pathinfo($mapAddressFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -911,9 +921,9 @@ class ApplicantController extends Controller
                 $mapAddressFilePath = $mapAddressFile->storeAs('public/map-addresses', $mapAddressFilename);
                 $personalInfoData['mapAddress'] = $mapAddressFilePath;
             }
-
+    
             ApplicantsPersonalInformation::create($personalInfoData);
-
+    
             $gradeMapping = [
                 'GradeSeven' => 'Grade 7',
                 'GradeEight' => 'Grade 8',
@@ -925,40 +935,39 @@ class ApplicantController extends Controller
                 'SecondYear' => 'Second Year College',
                 'ThirdYear' => 'Third Year College',
             ];
-
+    
             $incomingGrade = $request->incomingGrade;
             $convertedGrade = isset($gradeMapping[$incomingGrade]) ? $gradeMapping[$incomingGrade] : $incomingGrade;
-
+    
+            //academic information
             $academicInfoData = [
                 'applicant_id' => $applicant->applicant_id,
                 'incoming_grade_year' => $convertedGrade,
                 'current_course_program_grade' => $request->currentProgram,
                 'current_school' => $request->currentSchool
             ];
-
             ApplicantsAcademicInformation::create($academicInfoData);
-
-
-            $academicInfoChoiceData = [
-                'applicant_id' => $applicant->applicant_id,
-                'first_choice_school' => $request->schoolChoice1,
-                'second_choice_school' => $request->schoolChoice2,
-                'third_choice_school' => $request->schoolChoice3,
-                'first_choice_course' => $request->courseChoice1,
-                'second_choice_course' => $request->courseChoice2,
-                'third_choice_course' => $request->courseChoice3,
-            ];
-            ApplicantsAcademicInformationChoice::create($academicInfoChoiceData);
-
-            $academicInfoGradesData = [
-                'applicant_id' => $applicant->applicant_id,
-                'latestAverage' => $request->latestAverage,
-                'latestGWA' => $request->latestGWA,
-                'scopeGWA' => $request->scopeGWA,
-                'equivalentGrade' => $request->equivalentGrade
-            ];
-            ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
-
+    
+            //academic choices
+            $schoolGrades = $request->schoolGrade;
+            $yearLevels = $request->yearLevel ?? [];
+            $generalAverages = $request->generalAverage ?? [];
+            
+            //school grades
+            $schoolGrades = is_array($schoolGrades) ? $schoolGrades : [$schoolGrades];
+            $yearLevels = is_array($yearLevels) ? $yearLevels : [$yearLevels];
+            $generalAverages = is_array($generalAverages) ? $generalAverages : [$generalAverages];
+        
+            foreach ($schoolGrades as $index => $schoolGrade) {
+                ApplicantsAcademicInformationGrade::create([
+                    'applicant_id' => $applicant->applicant_id,
+                    'schoolGrade' => $schoolGrade,
+                    'yearLevel' => $yearLevels[$index] ?? null,
+                    'generalAverage' => $generalAverages[$index] ?? null
+                ]);
+            }
+                
+            //family information
             $familyInformationData = [
                 'applicant_id' => $applicant->applicant_id,
                 'total_household_members' => $request->householdMembers,
@@ -969,44 +978,102 @@ class ApplicantController extends Controller
                 'total_support_received' => str_replace(',', '', $request->supportReceived)
             ];
             ApplicantsFamilyInformation::create($familyInformationData);
-            
+    
             if ($request->hasFile('ReportCard')) {
                 $reportcardFile = $request->file('ReportCard');
                 $originalFilename = pathinfo($reportcardFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $reportcardfilename = $originalFilename . '.' . $reportcardFile->getClientOriginalExtension();
                 $reportcardFilePath = $reportcardFile->storeAs('public/ReportCards', $reportcardfilename);
-            
-                $reportcardData = [
+                
+                Requirement::create([
                     'applicant_id' => $applicant->applicant_id,
                     'document_type' => 'Report Card / Grades',
                     'uploaded_document' => $reportcardFilePath,
                     'status' => 'For Review',
-                ];
-                Requirement::create($reportcardData);
+                    'uploaded_at' => now()
+                ]);
             }
-            
+    
             if ($request->hasFile('payslip')) {
                 $payslipFile = $request->file('payslip');
                 $originalFilename = pathinfo($payslipFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $payslipfilename = $originalFilename . '.' . $payslipFile->getClientOriginalExtension();
-                $payslipFilePath = $payslipFile->storeAs('public/Payslips', $payslipfilename);            
-    
-                $payslipData = [
+                $payslipFilePath = $payslipFile->storeAs('public/Payslips', $payslipfilename);
+                
+                Requirement::create([
                     'applicant_id' => $applicant->applicant_id,
-                    'document_type' => 'Payslip / Social Case Study Report / ITR',
+                    'document_type' => 'Proof of Financial Status',
                     'uploaded_document' => $payslipFilePath,
                     'status' => 'For Review',
-                ];
-                Requirement::create($payslipData);
+                    'uploaded_at' => now()
+                ]);
             }
-
+            
+            if ($request->hasFile('applicationForm')) {
+                try {
+                    $applicationFormFile = $request->file('applicationForm');
+                    
+                    \Log::info('Application Form File Details:', [
+                        'original_name' => $applicationFormFile->getClientOriginalName(),
+                        'extension' => $applicationFormFile->getClientOriginalExtension(),
+                        'size' => $applicationFormFile->getSize()
+                    ]);
+    
+                    $originalFilename = pathinfo($applicationFormFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $applicationFormname = $originalFilename . '.' . $applicationFormFile->getClientOriginalExtension();
+                    $applicationFormPath = $applicationFormFile->storeAs('public/ApplicationForm', $applicationFormname);
+                    
+                    Requirement::create([
+                        'applicant_id' => $applicant->applicant_id,
+                        'document_type' => 'Application Form',
+                        'uploaded_document' => $applicationFormPath,
+                        'status' => 'For Review',
+                        'uploaded_at' => now()
+                    ]);
+    
+                    \Log::info('Application Form File Processed Successfully');
+                } catch (\Exception $e) {
+                    \Log::error('Application Form File Upload Error: ' . $e->getMessage());
+                    \Log::error('Application Form File Upload Trace: ' . $e->getTraceAsString());
+                }
+            }
+            
+            if ($request->hasFile('characterReferences')) {
+                try {
+                    $characterReferencesFile = $request->file('characterReferences');
+                    
+                    \Log::info('Character References File Details:', [
+                        'original_name' => $characterReferencesFile->getClientOriginalName(),
+                        'extension' => $characterReferencesFile->getClientOriginalExtension(),
+                        'size' => $characterReferencesFile->getSize()
+                    ]);
+    
+                    $originalFilename = pathinfo($characterReferencesFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $characterReferencesname = $originalFilename . '.' . $characterReferencesFile->getClientOriginalExtension();
+                    $characterReferencesPath = $characterReferencesFile->storeAs('public/CharacterReferences', $characterReferencesname);
+                    
+                    Requirement::create([
+                        'applicant_id' => $applicant->applicant_id,
+                        'document_type' => 'Character References',
+                        'uploaded_document' => $characterReferencesPath,
+                        'status' => 'For Review',
+                        'uploaded_at' => now()
+                    ]);
+    
+                    \Log::info('Character References File Processed Successfully');
+                } catch (\Exception $e) {
+                    \Log::error('Character References File Upload Error: ' . $e->getMessage());
+                    \Log::error('Character References File Upload Trace: ' . $e->getTraceAsString());
+                }
+            }
+    
+            //attendance record
             $attendanceData = [
                 'applicant_id' => $applicant->applicant_id,
                 'attend_orientation' => $request->attend_orientation,
                 'orientation_date' => $request->attend_orientation == 'yes' ? $request->orientation_date : null
             ];
     
-            // If orientation proof file is provided
             if ($request->hasFile('orientation_proof')) {
                 $orientationProofFile = $request->file('orientation_proof');
                 $orientationProofFilename = $orientationProofFile->getClientOriginalName();
@@ -1016,46 +1083,27 @@ class ApplicantController extends Controller
     
             ApplicantAttendance::create($attendanceData);
     
-            // Save ReportCard and Payslip (existing code)
-            if ($request->hasFile('ReportCard')) {
-                $reportcardFile = $request->file('ReportCard');
-                $reportcardfilename = $reportcardFile->getClientOriginalName();
-                $reportcardFilePath = $reportcardFile->storeAs('public/ReportCards', $reportcardfilename);
-                
-                $reportcardData = [
-                    'applicant_id' => $applicant->applicant_id,
-                    'document_type' => 'Report Card / Grades',
-                    'uploaded_document' => $reportcardFilePath,
-                    'status' => 'For Review',
-                ];
-                Requirement::create($reportcardData);
-            }
-    
-            if ($request->hasFile('payslip')) {
-                $payslipFile = $request->file('payslip');
-                $payslipfilename = $payslipFile->getClientOriginalName();
-                $payslipFilePath = $payslipFile->storeAs('public/Payslips', $payslipfilename);            
-        
-                $payslipData = [
-                    'applicant_id' => $applicant->applicant_id,
-                    'document_type' => 'Payslip / Social Case Study Report / ITR',
-                    'uploaded_document' => $payslipFilePath,
-                    'status' => 'For Review',
-                ];
-                Requirement::create($payslipData);
-            }
-    
-
             $verificationToken = Str::random(60);
-
             $applicant->api_token = $verificationToken;
             $applicant->save();
-
+    
             \Mail::to($applicant->email)->send(new \App\Mail\VerificationMail($applicant));
-
-            return response()->json(['message' => 'Registration successful, please check your email for verification.', 'redirect' => route('verification')], 201);
-        } else {
-            return response()->json(['message' => 'Registration failed, try again.'], 400);
+    
+            DB::commit();
+    
+            return response()->json([
+                'message' => 'Registration successful, please check your email for verification.',
+                'redirect' => route('verification')
+            ], 201);
+    
+        } catch (\Exception $e) {
+            DB::rollback();
+            \Log::error('Registration Failed: ' . $e->getMessage());
+            \Log::error('Error Trace: ' . $e->getTraceAsString());    
+            return response()->json([
+                'message' => 'Registration failed: ' . $e->getMessage(),
+                'error' => $e->getMessage()
+            ], 400);
         }
     }
 }

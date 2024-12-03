@@ -46,39 +46,46 @@
                 <div class="d-flex align-items-start mb-3 sm:mb-5 progress-form__tabs" role="tablist">
                     <button id="progress-form__tab-1" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button"
                         role="tab" aria-controls="progress-form__panel-1" aria-selected="true">
-                        <span class="d-block step" aria-hidden="true">Step 1 <span class="sm:d-none">of 6</span></span>
+                        <span class="d-block step" aria-hidden="true">Step 1 <span class="sm:d-none">of 7</span></span>
                         Eligibility, Qualifications & Requirements
                     </button>
                     <button id="progress-form__tab-2" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button"
                         role="tab" aria-controls="progress-form__panel-2" aria-selected="false" tabindex="-1"
                         aria-disabled="true">
-                        <span class="d-block step" aria-hidden="true">Step 2<span class="sm:d-none">of 6</span></span>
+                        <span class="d-block step" aria-hidden="true">Step 2<span class="sm:d-none">of 7</span></span>
                         Attendance for Orientation
                     </button>
                     <button id="progress-form__tab-3" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button"
                         role="tab" aria-controls="progress-form__panel-3" aria-selected="false" tabindex="-1"
                         aria-disabled="true">
-                        <span class="d-block step" aria-hidden="true">Step 3<span class="sm:d-none">of 6</span></span>
+                        <span class="d-block step" aria-hidden="true">Step 3<span class="sm:d-none">of 7</span></span>
                         Create Account
                     </button>
                     <button id="progress-form__tab-4" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button"
                         role="tab" aria-controls="progress-form__panel-4" aria-selected="false" tabindex="-1"
                         aria-disabled="true">
-                        <span class="d-block step" aria-hidden="true">Step 4 <span class="sm:d-none">of 6</span></span>
+                        <span class="d-block step" aria-hidden="true">Step 4 <span class="sm:d-none">of 7</span></span>
                         Personal Information
                     </button>
                     <button id="progress-form__tab-5" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button"
                         role="tab" aria-controls="progress-form__panel-5" aria-selected="false" tabindex="-1"
                         aria-disabled="true">
-                        <span class="d-block step" aria-hidden="true">Step 5 <span class="sm:d-none">of 6</span></span>
+                        <span class="d-block step" aria-hidden="true">Step 5 <span class="sm:d-none">of 7</span></span>
                         Academic Information
                     </button>
                     <button id="progress-form__tab-6" class="flex-1 px-0 pt-2 progress-form__tabs-item" type="button"
                         role="tab" aria-controls="progress-form__panel-6" aria-selected="false" tabindex="-1"
                         aria-disabled="true">
                         <span class="d-block step" aria-hidden="true">Step 6 <span class="sm:d-none">of
-                                6</span></span>
+                                7</span></span>
                         Family Information
+                    </button>
+                    <button id="progress-form__tab-7" class="flex-1 px-0 pt-2 progress-form__tabs-item"
+                        type="button" role="tab" aria-controls="progress-form__panel-7" aria-selected="false"
+                        tabindex="-1" aria-disabled="true">
+                        <span class="d-block step" aria-hidden="true">Step 7 <span class="sm:d-none">of
+                                7</span></span>
+                        Other Requirements
                     </button>
                 </div>
                 <!-- / End Step Navigation -->
@@ -94,6 +101,8 @@
                 @include('user.steps.step-five')
 
                 @include('user.steps.step-six')
+
+                @include('user.steps.step-seven')
         </form>
     @else
         <p>The screening form is currently closed. Please contact the admin if you need further assistance or have any

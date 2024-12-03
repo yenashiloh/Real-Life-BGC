@@ -41,8 +41,8 @@
   list-style: none;
   width: min(60rem, 90%);
   margin-inline: auto;
+  font-family: 'Poppins', sans-serif; /* Apply Poppins font here */
 }
-
 
 .timeline_ul::before {
   content: "";
@@ -116,19 +116,20 @@
   background: var(--bgColor);
   position: relative;
   padding-inline: 1.5rem;
+  font-family: 'Poppins', sans-serif; /* Apply Poppins font to title and description */
 }
+
 .timeline_ul li .title {
   overflow: hidden;
   padding-block-start: 1.5rem;
   padding-block-end: 1rem;
   font-weight: 500;
 }
+
 .timeline_ul li .descr {
   padding-block-end: 1.5rem;
- font-size: 17px; 
- font-family: "Cabin", sans-serif;
- color:#47474a;
-
+  font-size: 17px;
+  color: #47474a;
 }
 
 .timeline_ul li .title::before,
@@ -143,6 +144,7 @@
   filter: blur(3px);
   transform: translate(-50%, 50%);
 }
+
 .timeline_ul li .title::before {
   bottom: calc(100% + 0.125rem);
 }
@@ -151,6 +153,7 @@
   z-index: -1;
   bottom: 0.25rem;
 }
+
 
 @media (min-width: 40rem) {
   .timeline_ul {
@@ -228,9 +231,7 @@
     margin-bottom: 5px;
 }
 
-/* .notification-description {
-    color: #333;
-} */
+
 
 .notification-time {
     font-style: italic;
@@ -392,20 +393,18 @@
 
 @media (min-width: 992px) {
     .education-assistance {
-        font-size: 24px;
+      font-size: 24px;
     }
 }
 
-
-
 .mission-statement {
-  font-size: 16px; /* Smaller size for mobile */
+  font-size: 16px;
 }
 
-/* Increase font size for laptops and larger devices */
-@media (min-width: 768px) { /* For devices 768px and wider */
+
+@media (min-width: 768px) {
   .mission-statement {
-      font-size: 25px !important; /* Set font size to 25px with important */
+      font-size: 25px !important;
   }
 }
 
@@ -508,22 +507,22 @@
   word-wrap: break-word; 
 }
 .tn-left li {
-  transition: none; /* or adjust timing as needed */
+  transition: none;
 }
 .notification-dropdown-mobile {
   position: absolute;
   top: 50px;
-  left: 0; /* Ensure it starts from the left */
+  left: 0;
   width: 300px;
   background-color: #fff;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 999;
-  display: none; /* Ensure it's displayed when needed */
+  display: none;
 }
 
-/* Ensure that the dropdown is displayed properly */
+
 .notification-dropdown-mobile.active {
   display: block;
 }
@@ -574,7 +573,7 @@
 }
 
 
-/* Tablet styles */
+
 @media (max-width: 768px) {
   .notification-dropdown-mobile {
     width: 100%;
@@ -599,7 +598,7 @@
   }
 }
 
-/* Mobile styles */
+
 @media (max-width: 480px) {
   .notification-dropdown-mobile {
     width: 100%;

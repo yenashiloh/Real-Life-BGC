@@ -1,98 +1,4 @@
-{{-- <!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Edit Announcement</title>
-
-    @include('admin-partials.admin-header')
-</head>
-
-<body>
-    <div id="loading-spinner" class="loading-spinner">
-        <div class="spinner"></div>
-    </div>
-    @include('admin-partials.admin-sidebar', [
-        'notifications' => app()->make(\App\Http\Controllers\Admin\AdminController::class)->showNotifications(),
-    ])
-    <!-- partial -->
-    <div class="main-panel">
-        <div class="content-wrapper">
-            <div class="page-header">
-                <h3 class="page-title">Edit Announcement</h3>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="../announcement/admin-announcement">Announcement</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Announcement</li>
-                    </ol>
-                </nav>
-            </div>
-
-            <form method="POST" action="{{ route('admin.update-announcement', ['id' => $announcement->id]) }}">
-                @csrf
-                @method('PUT')
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                @if (session('success'))
-                                    <div class="alert alert-success mt-3" role="alert" style="text-align: center">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
-                                @if ($errors->any())
-                                    <div class="alert alert-danger mt-3">
-                                        @foreach ($errors->all() as $error)
-                                            {{ $error }}
-                                        @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-                                <div class="form-group">
-                                    <h4>Title</h4>
-                                    <input type="text" class="form-control" id="announcement_title"
-                                        name="announcement_title" value="{{ $announcement->title }}">
-                                </div>
-                                <br>
-                                <h4>Content</h4>
-                                <textarea class="tinymce-editor" name="announcement_caption">{{ $announcement->caption }}</textarea>
-                                <div class="text-center mt-3">
-                                    <button class="btn custom-btn" style="width: 200px;" type="submit">Save
-                                        Changes</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- container-scroller -->
-                <!-- plugins:js -->
-                <script src="../assets-new-admin/vendors/js/vendor.bundle.base.js"></script>
-                <!-- endinject -->
-                <!-- Plugin js for this page -->
-                <!-- End plugin js for this page -->
-                <!-- inject:js -->
-                <script src="../assets-new-admin/js/off-canvas.js"></script>
-                <script src="../assets-new-admin/js/misc.js"></script>
-                <!-- Vendor JS Files -->
-                <script src="../assets-admin/vendor/apexcharts/apexcharts.min.js"></script>
-                <script src="../assets-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-                <script src="../assets-admin/vendor/simple-datatables/simple-datatables.js"></script>
-                <script src="../assets-admin/vendor/tinymce/tinymce.min.js"></script>
-                <script src="../assets-admin/vendor/php-email-form/validate.js"></script>
-                <script src="../assets-admin/tinymce/tinymce.min.js"></script>
-
-                <script src="../assets-admin/vendor/chart.js/chart.umd.js"></script>
-                <script src="../assets-admin/vendor/echarts/echarts.min.js"></script>
-                <script src="../assets-admin/vendor/quill/quill.min.js"></script>
-                <script src="../assets-new-admin/js/loader.js"></script>
-
-                <!-- Template Main JS File -->
                 <script src="../assets-admin/js/main.js"></script> --}}
 
 <!DOCTYPE html>
@@ -168,54 +74,50 @@
                     </ul>
                 </div>
                 <form id="announcementForm" method="POST"
-                    action="{{ route('admin.update-announcement', ['id' => $announcement->id]) }}">
-                    @csrf
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    @if (session('success'))
-                                        <div class="alert alert-success mt-3" role="alert" style="text-align: center">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger mt-3">
-                                            @foreach ($errors->all() as $error)
-                                                <div>{{ $error }}</div>
-                                            @endforeach
-                                        </div>
-                                    @endif
-
-                                    <div class="form-group">
-                                        <label for="announcement_title">Title</label>
-                                        <input type="text" class="form-control" id="announcement_title"
-                                            name="announcement_title" value="{{ $announcement->title }}">
-                                        <div id="titleError" class="error-message"></div>
+                action="{{ route('admin.update-announcement', ['id' => $announcement->id]) }}">
+                @csrf
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                @if (session('success'))
+                                    <div class="alert alert-success mt-3" role="alert" style="text-align: center">
+                                        {{ session('success') }}
                                     </div>
-
-                                    <div class="form-group">
-                                        <label for="editor">Content</label>
-                                        <div id="editor">{{ strip_tags($announcement->caption) }}</div>
-                                        <div id="contentError" class="error-message"></div>
+                                @endif
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mt-3">
+                                        @foreach ($errors->all() as $error)
+                                            <div>{{ $error }}</div>
+                                        @endforeach
                                     </div>
-
-                                    <input type="hidden" name="announcement_caption" id="announcement_caption">
-
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <button type="submit" class="btn btn-success">Save
-                                                    Announcement</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                @endif
+            
+                                <div class="form-group">
+                                    <label for="announcement_title">Title</label>
+                                    <input type="text" class="form-control" id="announcement_title" name="announcement_title"
+                                        value="{{ $announcement->title }}">
+                                    <div id="titleError" class="error-message"></div>
                                 </div>
+            
+                                <div class="form-group">
+                                    <label for="editor">Content</label>
+                                    <div id="editor">{!! $announcement->caption !!}</div>
+                                    <div id="contentError" class="error-message"></div>
+                                </div>
+            
+                                <input type="hidden" name="announcement_caption" id="announcement_caption">
+            
+                                <div class="form-group text-right">
+                                    <button type="submit" class="btn btn-success ">Save Announcement</button>
+                                </div>
+            
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+            </form>
+            
             </div>
         </div>
 

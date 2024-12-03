@@ -11,7 +11,6 @@ function getValidationData(field) {
         case 'email':
           if (field.name === 'latestAverage') {
             const selectedGrade = document.getElementById('incomingGrade').value;
-            // Only validate if the selected grade is Grade 7 to 10
             if (selectedGrade === 'GradeSeven' || selectedGrade === 'GradeEight' || selectedGrade === 'GradeNine' || selectedGrade === 'GradeTen') {
               if (field.value.trim() === '') {
                 return {
@@ -25,9 +24,7 @@ function getValidationData(field) {
             }
           }   
           if (field.name === 'equivalentGrade') {
-            // Get the selected grade level
             const selectedGrade = document.getElementById('incomingGrade').value;
-            // Only validate the number range if the selected grade is Grade 12 or higher
             if (selectedGrade === 'GradeTwelve' || selectedGrade === 'FirstYear' || selectedGrade === 'SecondYear' || selectedGrade === 'ThirdYear') {
               if (field.value.trim() === '') {
                 return {
@@ -50,18 +47,29 @@ function getValidationData(field) {
             throw new Error(`The provided field type '${field.type}' with ID '${field.id}' is not supported in this form.`);
           }
         case 'date':
-          return validateDate(field);
+          if (field.name === 'birthdate' || field.id === 'birthdate') {
+            return validateDate(field); 
+          } else if (field.name === 'orientation_date') {
+            return validateDate(field); 
+          }
+          break;
         case 'tel':
           return validatePhone(field);
         case 'checkbox':
         case 'radio':
           return validateChoice(field);
         case 'file':
-          if (field.name === 'orientation-proof') {
+          if (field.name === 'orientation_proof') {
             return validateOrientationProof(field); 
           }
           if (field.name === 'payslip') {
             return validatePayslip(field);
+          }
+          if (field.name === 'applicationForm') { 
+            return validateApplicationForm(field); 
+          }
+          if (field.name === 'characterReferences') { 
+            return validateCharacterReferences(field); 
           }
           if (field.name === 'reportCard') {
             return validateReportCard(field);
@@ -69,9 +77,10 @@ function getValidationData(field) {
             return validateMapAddress(field);
           } else if (field.name === 'ReportCard') { 
             return validateReportCard(field); 
-          } else if (field.name === 'payslip') { 
-            return validatePayslip(field); 
-          } else {
+          // } else if (field.name === 'payslip') { 
+          //   return validatePayslip(field); 
+          }
+          else {
             throw new Error(`The provided file input field with name '${field.name}' is not supported in this form.`);
           }
           
@@ -79,39 +88,50 @@ function getValidationData(field) {
           throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
       }
     case 'textarea':
-      if (field.name === 'noteAddress') {
-        if (field.value.trim() === '') {
-          return {
-            isValid: false,
+      // if (field.name === 'noteAddress') {
+      //   if (field.value.trim() === '') {
+      //     return {
+      //       isValid: false,
         
-          };
-        }
-        return { isValid: true };
-      } else {
-        throw new Error(`The provided field type 'TEXTAREA:${field.name}' is not supported in this form.`);
-      }
-    case 'select':
-      if (field.name === 'attend-orientation') {
+      //     };
+      //   }
+      //   return { isValid: true };
+      // } else {
+      //   throw new Error(`The provided field type 'TEXTAREA:${field.name}' is not supported in this form.`);
+      // }
+      case 'select':
+      if (field.name === 'attend-orientation' || field.id === 'attend-orientation') {
         const selectedOption = field.value;
-        if (selectedOption === 'no') {
-          return {
-            isValid: false,
-            message: 'You cannot apply for the scholarship without attending the orientation. Please wait for the next scheduled orientation session.'
-          };
-        } else if (selectedOption === '') {
+        if (selectedOption === '') {
           return {
             isValid: false,
             message: 'Please select an option for orientation attendance.'
+          };
+        } else if (selectedOption === 'no') {
+          return {
+            isValid: false,
+            message: 'You cannot apply for the scholarship without attending the orientation. Please wait for the next scheduled orientation session.'
           };
         } else {
           return { isValid: true };
         }
       }
-      return validateSelect(field);
+      
+      if (field.name === 'incomingGrade' || field.id === 'incomingGrade') {
+        const selectedOption = field.value;
+        if (selectedOption === '') {
+          return {
+            isValid: false,
+            message: 'Please select a grade or year level.'
+          };
+        } else {
+          return { isValid: true };
+        }
+      }
+      
     default:
       throw new Error(`The provided field type '${field.tagName}' is not supported in this form.`);
   }
-
 };
 
 const validateChoice = field => {
@@ -130,6 +150,7 @@ const validateChoice = field => {
     return /\.(jpe?g|png)$/i.test(filename);
   };
 
+  //validition for phone
   const validatePhone = field => {
     const val = field.value.trim();
 
@@ -149,6 +170,7 @@ const validateChoice = field => {
     }
   };
 
+  //validition for report card
   const validateReportCard = field => {
     const val = field.value.trim();
     if (val === '' && field.required) {
@@ -167,6 +189,7 @@ const validateChoice = field => {
     }
   };
 
+  //validition for map address
   const validateMapAddress = field => {
     const val = field.value.trim();
     if (val === '' && field.hasAttribute('required')) {
@@ -185,12 +208,12 @@ const validateChoice = field => {
     }
   };
   
+  //validition for payslip file
   const validatePayslip = (field) => {
     const val = field.value.trim();
     if (val === '' && field.required) {
       return {
         isValid: false,
-        message: 'Please upload a PDF file only.'
       };
     } else if (val !== '' && !isPDFFile(val)) {
       return {
@@ -204,17 +227,18 @@ const validateChoice = field => {
     }
   };
 
-  const validateOrientationProof = field => {
+  //validition for application form file
+  const validateApplicationForm = (field) => {
     const val = field.value.trim();
     if (val === '' && field.required) {
       return {
         isValid: false,
- 
+        message: 'Please complete this required field'
       };
-    } else if (val !== '' && !isImageFile(val)) {
+    } else if (val !== '' && !isPDFFile(val)) {
       return {
         isValid: false,
-        message: 'Please upload JPG, JPEG, or PNG files only.'
+        message: 'Please upload a PDF file only.'
       };
     } else {
       return {
@@ -222,6 +246,46 @@ const validateChoice = field => {
       };
     }
   };
+
+  //validation for character references file
+  const validateCharacterReferences = (field) => {
+    const val = field.value.trim();
+    if (val === '' && field.required) {
+      return {
+        isValid: false,
+        message: 'Please complete this required field'
+      };
+    } else if (val !== '' && !isPDFFile(val)) {
+      return {
+        isValid: false,
+        message: 'Please upload a PDF file only.'
+      };
+    } else {
+      return {
+        isValid: true
+      };
+    }
+  };
+
+  //validition for attendance
+  const validateOrientationProof = field => {
+    const val = field.value.trim();
+    if (val === '' && field.required) {
+      return {
+        isValid: false,
+      };
+    } else if (val !== '' && !(isImageFile(val) || isPDFFile(val))) {
+      return {
+        isValid: false,
+        message: 'Please upload JPG, JPEG, PNG, or PDF files only.'
+      };
+    } else {
+      return {
+        isValid: true
+      };
+    }
+  };
+  
 
 /*****************************************************************************
  * Expects a Node (input[type="email"]).
@@ -337,31 +401,39 @@ const validateText = field => {
 };
 
 /*****************************************************************************
-* Birthdate Validation
+* Birthdate and Orientation Date Validation
 */
-const validateDate = field => {
+const validateDate = field => { 
   const val = field.value.trim();
 
   if (val === '' && field.required) {
     return {
       isValid: false,
     };
-  } else {
+  }
+
+  if (field.name === 'birthdate') {
     const currentDate = new Date();
     const selectedDate = new Date(val);
     const ageInYears = (currentDate - selectedDate) / (365 * 24 * 60 * 60 * 1000);
-
-    if (ageInYears < 10 || ageInYears > 25) {
+  
+    if (ageInYears > 25) {
       return {
         isValid: false,
         message: 'Should not be more than 25 years of age upon admission'
       };
     }
-
+  }
+  
+  if (field.name === 'orientation_date') {
     return {
       isValid: true
     };
   }
+
+  return {
+    isValid: true
+  };
 };
 
 /*****************************************************************************
@@ -933,79 +1005,128 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /****************************************************************************/
 /**
- * Grades step 4
+ * incoming grade or year level input field
  */
 document.getElementById('incomingGrade').addEventListener('change', function() {
-  const toggleDisplay = (field, input, show, required) => {
-    if (field && input) {
-      field.style.display = show ? 'block' : 'none';
-      if (required) {
-        input.setAttribute('required', 'required');
-      } else {
-        input.removeAttribute('required');
-        input.value = '';
-      }
-    }
+  const selectedValue = this.value;
+  const additionalFields = document.getElementById('additionalFields');
+  const currentProgramField = document.getElementById('currentProgramField');
+  const currentProgramInput = document.getElementById('currentProgram');
+  
+  // clear any existing fields
+  additionalFields.innerHTML = '';
+  currentProgramInput.value = '';
+
+  // apply grid styles for desktop/laptop
+  additionalFields.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  additionalFields.style.gap = '20px';
+
+  const gradeLevels = {
+    'GradeSeven': ['Grade 5', 'Grade 4', 'Grade 3'],
+    'GradeEight': ['Grade 6', 'Grade 5', 'Grade 4'],
+    'GradeNine': ['Grade 7', 'Grade 6', 'Grade 5'],
+    'GradeTen': ['Grade 8', 'Grade 7', 'Grade 6'],
+    'GradeEleven': ['Grade 9', 'Grade 8', 'Grade 7'],
+    'GradeTwelve': ['Grade 10', 'Grade 9', 'Grade 8'],
+    'FirstYear': ['Grade 11', 'Grade 10', 'Grade 9'],
+    'SecondYear': ['Grade 12', 'Grade 11', 'Grade 10'],
+    'ThirdYear': ['First Year College', 'Grade 12', 'Grade 11']
   };
+  
+  //show the current program if they are incoming second year to fourth year
+  const collegeYearsWithProgram = ['SecondYear', 'ThirdYear', 'FourthYear'];
+  if (collegeYearsWithProgram.includes(selectedValue)) {
+    currentProgramField.style.display = 'block';
+    currentProgramInput.setAttribute('required', 'required');
+  } else {
+    currentProgramField.style.display = 'none';
+    currentProgramInput.removeAttribute('required');
+  }
+  
+  if (gradeLevels[selectedValue]) {
+    for (let i = 0; i < 3; i++) {
+      const yearLevelField = document.createElement('div');
+      yearLevelField.className = 'form__field';
+      yearLevelField.innerHTML = `
+        <label for="yearLevel${i + 1}">
+          Grade Level
+          <span class="text-red-500" style="color: red;">*</span>
+        </label>
+        <input type="text" id="yearLevel${i + 1}" name="yearLevel[]" 
+               value="${gradeLevels[selectedValue][i]}" disabled required
+               style="background-color: #f0f0f0; color: #888;">
+      `;
+      additionalFields.appendChild(yearLevelField);
 
-  const grade = this.value;
-  const isUpperGrade = grade === 'GradeTwelve' || grade === 'FirstYear' || grade === 'SecondYear' || grade === 'ThirdYear';
-  const isFirstYear = grade === 'FirstYear';
+      // school input field
+      const schoolField = document.createElement('div');
+      schoolField.className = 'form__field';
+      schoolField.innerHTML = `
+        <label for="schoolGrade${i + 1}">
+          School
+          <span class="text-red-500" style="color: red;">*</span>
+        </label>
+        <input type="text" id="schoolGrade${i + 1}" name="schoolGrade[]" 
+               autocomplete="school" required>
+      `;
+      additionalFields.appendChild(schoolField);
 
-  toggleDisplay(document.getElementById('currentProgramField'), document.getElementById('currentProgram'), isUpperGrade, isUpperGrade);
-  toggleDisplay(document.getElementById('latestAverageField'), document.getElementById('latestAverage'), !isUpperGrade, !isUpperGrade);
-  toggleDisplay(document.getElementById('latestGWAField'), document.getElementById('latestGWA'), isUpperGrade, isUpperGrade);
-  toggleDisplay(document.getElementById('equivalentGradeField'), document.getElementById('equivalentGrade'), isUpperGrade, isUpperGrade);
-
-  document.getElementById('scopeGWA-label').innerHTML = `Scope of Latest ${isUpperGrade ? 'GWA' : 'General Average'} <span data-required="true" aria-hidden="true"></span><span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;"> Ex. ${isUpperGrade ? '1st Semester' : '1st Grading'}</span>`;
-
-  const schoolFields = ['schoolChoice1Field', 'schoolChoice2Field', 'schoolChoice3Field'];
-  const schoolInputs = ['schoolChoice1', 'schoolChoice2', 'schoolChoice3'];
-  const programFields = ['courseChoice1Field', 'courseChoice2Field', 'courseChoice3Field'];
-  const programInputs = ['courseChoice1', 'courseChoice2', 'courseChoice3'];
-
-  schoolFields.forEach((field, i) => {
-    const fieldElem = document.getElementById(field);
-    const inputElem = document.getElementById(schoolInputs[i]);
-    toggleDisplay(fieldElem, inputElem, isFirstYear, isFirstYear);
+      // general Average input field
+      const generalAverageField = document.createElement('div');
+      generalAverageField.className = 'form__field';
+      generalAverageField.innerHTML = `
+        <label for="generalAverage${i + 1}">
+          General Average
+          <span class="text-red-500" style="color: red;">*</span>
+        </label>
+        <input type="number" id="generalAverage${i + 1}" name="generalAverage[]" 
+               autocomplete="generalAverage" required>
+      `;
+      additionalFields.appendChild(generalAverageField);
+    }
+  }
+  
+  const isFirstYearCollege = selectedValue === 'FirstYear';
+    
+  // school Application fields
+  document.getElementById("schoolApplicationHeader").style.display = isFirstYearCollege ? "block" : "none";
+  
+  // school Choice fields
+  const schoolChoiceFields = ["schoolChoice1", "schoolChoice2", "schoolChoice3"];
+  schoolChoiceFields.forEach(field => {
+    const fieldElement = document.getElementById(field);
+    const fieldContainer = document.getElementById(field + "Field");
+    fieldContainer.style.display = isFirstYearCollege ? "block" : "none";
+    
+    if (isFirstYearCollege) {
+      fieldElement.setAttribute("required", "");
+      document.querySelector(`label[for="${field}"] span[data-required="true"]`).style.color = "red";
+    } else {
+      fieldElement.removeAttribute("required");
+      document.querySelector(`label[for="${field}"] span[data-required="true"]`).innerHTML = "";
+    }
   });
 
-  programFields.forEach((field, i) => {
-    const fieldElem = document.getElementById(field);
-    const inputElem = document.getElementById(programInputs[i]);
-    toggleDisplay(fieldElem, inputElem, isFirstYear, isFirstYear);
+  // preferred Program fields
+  document.getElementById("preferredProgramHeader").style.display = isFirstYearCollege ? "block" : "none";
+  
+  // course Choice fields
+  const courseChoiceFields = ["courseChoice1", "courseChoice2", "courseChoice3"];
+  courseChoiceFields.forEach(field => {
+    const fieldElement = document.getElementById(field);
+    const fieldContainer = document.getElementById(field + "Field");
+    fieldContainer.style.display = isFirstYearCollege ? "block" : "none";
+    
+    if (isFirstYearCollege) {
+      fieldElement.setAttribute("required", "");
+      document.querySelector(`label[for="${field}"] span[data-required="true"]`).style.color = "red";
+    } else {
+      fieldElement.removeAttribute("required");
+      document.querySelector(`label[for="${field}"] span[data-required="true"]`).innerHTML = "";
+    }
   });
-
-  const schoolHeader = document.getElementById('schoolApplicationHeader');
-  const programHeader = document.getElementById('preferredProgramHeader');
-
-  if (schoolHeader && programHeader) {
-    schoolHeader.style.display = isFirstYear ? 'block' : 'none';
-    programHeader.style.display = isFirstYear ? 'block' : 'none';
-  }
-
-  if (!grade) {
-    // If no grade is selected, hide the fields related to school and program
-    const schoolFields = ['schoolChoice1Field', 'schoolChoice2Field', 'schoolChoice3Field'];
-    const programFields = ['courseChoice1Field', 'courseChoice2Field', 'courseChoice3Field'];
-
-    schoolFields.forEach((field) => {
-      const fieldElem = document.getElementById(field);
-      if (fieldElem) {
-        fieldElem.style.display = 'none';
-      }
-    });
-
-    programFields.forEach((field) => {
-      const fieldElem = document.getElementById(field);
-      if (fieldElem) {
-        fieldElem.style.display = 'none';
-      }
-    });
-  }
 });
-
-document.getElementById('incomingGrade').dispatchEvent(new Event('change')); 
+  
 
 
 
@@ -1188,4 +1309,41 @@ toggleConfirmPassword.addEventListener('click', function() {
         this.classList.remove('fa-eye-slash');
         this.classList.add('fa-eye');
     }
+});
+
+/******************************************/
+/**
+ * Attendance
+ */
+document.addEventListener('DOMContentLoaded', function() {
+  const attendOrientationSelect = document.getElementById('attend-orientation');
+  const orientationDateField = document.getElementById('orientation-date').closest('.form__field');
+  const orientationProofField = document.getElementById('orientation-proof').closest('.form__field');
+  const orientationDateInput = document.getElementById('orientation-date');
+  const orientationProofInput = document.getElementById('orientation-proof');
+
+  // Initially hide the fields
+  orientationDateField.style.display = 'none';
+  orientationProofField.style.display = 'none';
+
+  attendOrientationSelect.addEventListener('change', function() {
+      if (this.value === 'yes') {
+          orientationDateField.style.display = 'block';
+          orientationProofField.style.display = 'block';
+          
+          orientationDateInput.setAttribute('required', 'required');
+          orientationProofInput.setAttribute('required', 'required');
+      } else {
+          // Clear data and hide fields
+          orientationDateField.style.display = 'none';
+          orientationProofField.style.display = 'none';
+
+          orientationDateInput.removeAttribute('required');
+          orientationProofInput.removeAttribute('required');
+          
+          // Clear the values of the inputs when orientation is not attended
+          orientationDateInput.value = '';
+          orientationProofInput.value = '';
+      }
+  });
 });

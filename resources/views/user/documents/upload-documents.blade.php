@@ -196,23 +196,17 @@
                                                                 style="max-width: 150px; word-wrap: break-word; overflow-wrap: break-word;">
                                                                 {{ $requirement->notes }}
                                                             </td>
-
-                                                            <td
-                                                                style="max-width: 110px; word-wrap: break-word; overflow-wrap: break-word;">
+                                                            <td style="max-width: 110px; word-wrap: break-word; overflow-wrap: break-word;">
                                                                 @if (Storage::exists($requirement->uploaded_document))
                                                                     @php
-                                                                        $originalFilename = basename(
-                                                                            $requirement->uploaded_document,
-                                                                        );
-                                                                        $filename = preg_replace(
-                                                                            '/_\d+/',
-                                                                            '',
-                                                                            $originalFilename,
-                                                                        );
+                                                                        $originalFilename = basename($requirement->uploaded_document);
+                                                                        $filename = preg_replace('/_\d+/', '', $originalFilename);
+                                                                        $fileUrl = Storage::url($requirement->uploaded_document);
                                                                     @endphp
-                                                                    <a href="{{ Storage::url($requirement->uploaded_document) }}"
-                                                                        download="{{ $originalFilename }}"
-                                                                        class="underline-link">
+                                                                    <a href="{{ $fileUrl }}" 
+                                                                       target="_blank" 
+                                                                       rel="noopener noreferrer" 
+                                                                       class="underline-link">
                                                                         {{ $filename }}
                                                                     </a>
                                                                 @else

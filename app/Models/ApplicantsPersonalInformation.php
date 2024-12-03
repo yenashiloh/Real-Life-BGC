@@ -22,9 +22,8 @@ class ApplicantsPersonalInformation extends Model
         'street',
         'barangay',
         'municipality',
-        'mapAddress',
-        'noteAddress'
-    ];
+        'mapAddress'
+    ];  
 
     public function academicInformation()
     {

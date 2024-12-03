@@ -22,10 +22,7 @@
                                 <td class="c-o">Address:</td>
                                 <td>32nd Street corner University Parkway, Bonifacio Global City, 1634 Philippines</td>
                             </tr>
-                            <tr>
-                                <td class="c-o">Phone:</td>
-                                <td>(632) 8817-1212</td>
-                            </tr>
+
                             <tr>
                                 <td class="c-o">Email:</td>
                                 <td style="text-transform: lowercase">bgc@reallife.ph</td>

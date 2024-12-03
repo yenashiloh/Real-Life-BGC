@@ -741,10 +741,6 @@
                                         </div>
                                         <br>
                                         <div class="mb-4">
-                                            <div class="label bold-label mb-2">Note Address:</div>
-                                            <div>{!! nl2br(e($applicant->noteAddress)) !!}</div>
-                                        </div> 
-                                        <div class="mb-4">
                                             <div class="label bold-label mb-2">Map Address:</div>
                                             <div>
                                                 @php

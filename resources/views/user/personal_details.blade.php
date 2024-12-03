@@ -780,10 +780,6 @@
                                                     <input type="text" name="municipality" id="municipality" class="form-control" value="{{ $personalInfo->municipality ?? '' }}">
                                                 </div>
                                                 <div class="col-12">
-                                                    <label for="noteAddress" class="form-label fw-bold">Instructions on how to go to your place if you will be coming from Every Nation BGC</label>
-                                                    <textarea class="form-control" name="noteAddress" id="noteAddress" rows="5">{{ $personalInfo->noteAddress ?? '' }}</textarea>
-                                                </div>
-                                                <div class="col-12">
                                                     <label for="mapAddress" class="form-label fw-bold">Google Map Address</label>
                                                     <input type="file" class="form-control" id="mapAddress" name="mapAddress">
                                                 </div>

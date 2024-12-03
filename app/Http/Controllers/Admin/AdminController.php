@@ -685,7 +685,6 @@ class AdminController extends Controller
             "Birth Certificate",
             "Character Evaluation Forms",
             "Proof of Financial Status",
-            "Payslip / Social Case Study Report / ITR",
             "Two References Form",
             "Home Visitation Form",
             "Report Card / Grades",

@@ -18,8 +18,6 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
-
-
 .loading-content {
     display: flex;
     flex-direction: column;

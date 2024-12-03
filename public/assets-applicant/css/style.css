@@ -291,6 +291,21 @@ ul, ol {
 	text-transform: uppercase;
 	letter-spacing: 2px;
 }
+.top-nav .tn-right .bk-btn {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 16px 28px 15px;
+    background: #71BF44;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: background-color 0.3s ease; 
+}
+
+.top-nav .tn-right .bk-btn:hover {
+    background:  #487a2b;
+}
 
 .top-nav .tn-right .language-option {
 	display: inline-block;
@@ -2421,12 +2436,11 @@ ul.list-unstyled li {
 .capitalize-first-letter::first-letter {
     text-transform: uppercase;
 }
-
   .notification-dropdown-mobile {
 	position: absolute;
-	left: 0; /* Change this from 'right: 0' to 'left: 0' */
-	top: 100%; /* This positions the dropdown below the bell icon */
-	width: 280px; /* Adjust the width as needed */
+	left: 0; 
+	top: 100%; 
+	width: 280px;
 	background-color: #fff;
 	border: 1px solid #e0e0e0;
 	border-radius: 4px;
@@ -2441,3 +2455,55 @@ ul.list-unstyled li {
 	  right: 0;
 	}
   }
+
+/*logo*/
+#loading-spinner {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	z-index: 9999;
+	opacity: 1;
+	transition: opacity 0.3s ease-in-out;
+}
+
+.loading-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.loading-logo {
+	width: 200px;
+	height: auto;
+	display: block;
+	margin-bottom: 20px;
+	opacity: 1;
+	transition: opacity 0s;
+}
+
+.spinner {
+	border: 4px solid #f3f3f3;
+	border-top: 4px solid #71BF44;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+

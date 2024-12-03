@@ -10,7 +10,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }}</title>
     <link href="assets/img/RLlogo1.png" rel="icon">
-    {{-- <link href="assets/img/RLlogo1.png" rel="apple-touch-icon"> --}}
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
@@ -20,6 +19,9 @@
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="assets-applicant/css/bootstrap.min.css" type="text/css">
+    {{-- <link rel="stylesheet" href="../../../admin-assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../../admin-assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../../../admin-assets/css/kaiadmin.min.css" /> --}}
     <link rel="stylesheet" href="assets-applicant/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="assets-applicant/css/elegant-icons.css" type="text/css">
     <link rel="stylesheet" href="assets-applicant/css/flaticon.css" type="text/css">
@@ -40,13 +42,19 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body style="background-color: #fafafa;">
+
     @php
         if (auth()->check()) {
             $personalInfo = auth()->user()->personalInformation()->first();
         }
     @endphp
+    <div id="loading-spinner" class="loading-spinner">
+        <div class="loading-content">
+            <img src="../admin-assets/img/RLlogo.png" alt="Logo" class="loading-logo" id="loading-logo">
+            <div class="spinner"></div>
+        </div>
+    </div>
     <!-- Offcanvas Menu Section Begin -->
     <div class="offcanvas-menu-overlay"></div>
     <div class="canvas-open">
@@ -68,7 +76,6 @@
         </div>
         <div class="header-configure-area">
             <br>
-
             <a href="/registration" class="bk-btn">Apply Now</a>
         </div>
         <nav class="mainmenu mobile-menu">
@@ -95,7 +102,6 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <ul class="tn-left">
-                            <li><i class="fa fa-phone"></i>(632) 8817-1212</li>
                             <li><i class="fa fa-envelope"></i>bgc@reallife.ph</li>
                         </ul>
                     </div>
@@ -157,10 +163,10 @@
             </div>
         </header>
         <!-- Header Section End -->
-
+{{-- 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="assets/js/applicant_notification.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="assets-applicant/jquery-3.3.1.min.js"></script>
-        <script src="assets/js/header.js"></script>
+        <script src="assets-applicant/jquery-3.3.1.min.js"></script> --}}
+   
+            

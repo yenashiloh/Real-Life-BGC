@@ -18,7 +18,6 @@
     }
 
     @media (max-width: 768px) {
-b
         .announcement-message {
             font-size: 17px;
         }
@@ -47,7 +46,7 @@ b
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 @if ($announcement->isEmpty())
-                    <p class="announcement-message">No announcements available.</p>
+                    <p class="announcement-message text-center">No announcements available.</p>
                     <br>
                     <br>
                 @else
@@ -90,7 +89,11 @@ b
                                         '<a href="data:image/jpeg;base64,$2" target="_blank"$1$3><img$1src="data:image/jpeg;base64,$2"$3></a>',
                                         $announce->caption,
                                     );
-                                    $shortContent = substr(strip_tags($fullContent), 0, 600);
+
+                                    $shortContent =
+                                        strlen(strip_tags($fullContent)) > 500
+                                            ? substr($fullContent, 0, 500) . '<span>...</span>'
+                                            : $fullContent;
                                 @endphp
                                 <div id="short-content-{{ $announce->id }}">
                                     {!! $shortContent !!}
@@ -113,5 +116,24 @@ b
         </div>
     </div>
 </section>
+<script>
+    function toggleContent(id) {
+        var shortContent = document.getElementById('short-content-' + id);
+        var fullContent = document.getElementById('full-content-' + id);
+        var seeMoreBtn = document.getElementById('see-more-' + id);
+        var seeLessBtn = document.getElementById('see-less-' + id);
 
+        if (shortContent.style.display === "none") {
+            shortContent.style.display = "block";
+            fullContent.style.display = "none";
+            seeMoreBtn.style.display = "inline";
+            seeLessBtn.style.display = "none";
+        } else {
+            shortContent.style.display = "none";
+            fullContent.style.display = "block";
+            seeMoreBtn.style.display = "none";
+            seeLessBtn.style.display = "inline";
+        }
+    }
+</script>
 @include('partials.footer')

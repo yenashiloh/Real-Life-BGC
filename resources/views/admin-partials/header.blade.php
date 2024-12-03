@@ -55,7 +55,7 @@
                         </div>
                     </li>
                     <li>
-                        <div class="notif-scroll scrollbar-outer">
+                        {{-- <div class="notif-scroll scrollbar-outer">
                             <div class="notif-center">
                                 <a href="#">
                                     <div class="notif-icon notif-primary">
@@ -99,7 +99,7 @@
                                     </div>
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
                     </li>
                     <li>
                         <a class="see-all" href="javascript:void(0);">See all notifications<i

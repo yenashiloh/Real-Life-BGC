@@ -39,21 +39,25 @@
             <div class="faq-answer">
                 To be eligible to receive the Real LIFE scholarship, applicants must:
                 <ul>
-                    <li>Be a Filipino citizen</li>
-                    <li>Have a grade weighted average (GWA) of at least 88% or its equivalent in the previous
-                        academic year for high school students or the previous semester for college students</li>
-                    <li>Have a combined monthly household income of no more than 15,000 PHP</li>
-                    <li>Not be married, have children, or be older than 25 years of age</li>
-                    <li>Be enrolled at a school recognized by the Department of Education (DepEd) or Commission on
-                        Higher Education (CHED)</li>
-                    <li>For high school applicants, be currently studying or willing to transfer to a public school
+                    <li>Filipino citizen</li>
+                    <li>Grade weighted average equivalent to 88% for the past 3 school years</li>
+                    <li>For <strong>college</strong> applicants: <strong>incoming 1st year or 2nd year only</strong>
                     </li>
-                    <li>For college applicants, have tuition fees of not more than 15,000 PHP per semester</li>
-                    <li>Be willing to undergo our character formation and leadership development programs</li>
+                    <li>Total combined household net monthly income of <strong>Php 20,000 or less</strong></li>
+                    <li>Not married, no children, and not older than 25 years old upon scholarship admission</li>
+                    <li>Enrolled or will be enrolled in a school recognized by Department of Education (DepEd) or
+                        Commission on
+                        Higher Education (CHED)</li>
+                    <li>If a high school student, must be enrolled in a school that offers free tuition or has DepEd
+                        voucher
+                    </li>
+                    <li>If a college student, must be enrolled in a state university or a private school that charges
+                        not
+                        more than Phpl 5,000 per semester for tuition and miscellaneous fees</li>
                 </ul>
             </div>
             <div class="faq-question shadow-sm " onclick="toggleFAQ(this)">
-                I’m a college student and my tuition fees are beyond 15,000 PHP. Does this mean I can’t apply
+                I’m a college student and my tuition fees are beyond 20,000 PHP. Does this mean I can’t apply
                 anymore?
             </div>
             <div class="faq-answer">
@@ -87,9 +91,6 @@
                 <li style="margin-bottom: 5px;">After the final deliberation, chosen applicants will receive a
                     letter from the Real LIFE national office, confirming their acceptance into the scholarship
                     program.</li>
-                <li style="margin-bottom: 5px;">The entire screening process runs from January to June each year.
-                </li>
-                <li style="margin-bottom: 5px;">We start accepting applications every November.</li>
                 </ul>
             </div>
             <div class="faq-question shadow-sm " onclick="toggleFAQ(this)">
@@ -110,32 +111,86 @@
                 Do I have to prepare other documents to apply for a scholarship?
             </div>
             <div class="faq-answer">
-                <strong>General Forms</strong>
+                <strong>Official Copy of Grades for the past 3 school years</strong>
                 <ul>
-                    <li>A Real LIFE scholarship application form, completely filled out</li>
-                    <li> An official and complete transcript of school records</li>
-                    <li>Photocopies of income tax returns (ITR) or monthly pay slips of all earning household members,
-                        or a Case Study Report from the Department of Social Welfare and Development (DSWD)</li>
-                    <li>Two reference forms (available at local Real LIFE centers), filled out and signed by an
-                        applicant’s class advisor, professor, church leader, or community leader</li>
+                    <li>Current school year (SY 2024-2025) is not included</li>
+                    <li>Course prospectus & grading system (for college)</li>
+                    <li>Copy should bear the name of the student, the school
+                        name, and their year level</li>
                 </ul>
                 <br>
-                <strong>Requirements for college applicants:</strong>
+                <strong>Proof of Financial Status</strong>
                 <ul>
-                    <li>The official grading system of the applicant’s school with grade equivalents</li>
-                    <li> The course curriculum indicating the list of all required subjects to complete the course
-                        of
-                        study</li>
-                    <li>The projected tuition fee for the incoming semester or school year, or an enrollment
-                        assessment
-                        form</li>
+                    <li>Combined monthly income should be 20,000 or less</li>
+                    <li> This is for ALL household members who contribute to the
+                        household income</li>
+
+                    <strong>Proof of Financial Status (FOR EMPLOYED)</strong>
+                    <ul>
+                        <li>2024 Income Tax Return (ITR)</li>
+                        <li> Payslips for the past 3 months of household members who
+                            contribute to the household income</li>
+                    </ul>
+
+                    <strong>Proof of Financial Status (FOR BLUE COLLAR JOBS)</strong>
+                    <ul>
+                        <li>Completely filled out Proof of Employment/Patunay ng Trabaho
+                            form (for those without payslips)</li>
+                    </ul>
+
+                    <strong>Proof of Financial Status (SELF-EMPLOYED)</strong>
+                    <ul>
+                        <li>Patunay ng Trabaho form for self-employed</li>
+                    </ul>
+
+                    <strong>Proof of Financial Status (FOR UNEMPLOYED)</strong>
+                    <ul>
+                        <li>DSWD Case Report</li>
+                        <li> Certificate of Non-FiIing of Tax Return (if DSWD Case Report
+                            is not available)</li>
+                        <li> Proof of 4Ps (Barangay certification, narrative report, etc -
+                            with date, and only for applicants not older than 18 yrs old)</li>
+                    </ul>
                 </ul>
                 <br>
-                <strong>Additional requirements for incoming first-year college applicants</strong>
+
+                <strong>Projected Tuition Fees</strong>
                 <ul>
-                    <li>Photocopies of reports cards from Grades 11 and 12</li>
-                    <li>An admission slip or any proof that the applicant will be enrolled in the requested
-                        university.
+                    <li>Copy of DepEd voucher and/ or projected tuition & misc. fees (for SHS applicants enrolled in
+                        private school)</li>
+                    <li>Projected tuition & misc. fees (for current college
+                        applicants enrolled in private school)
+                    </li>
+                </ul>
+
+                <br>
+                <strong>Other requirements</strong>
+                <p>CHARACTER REFERENCES SHOULD FILL OUT THE FORM BEFORE THE APPLICANTS' PANEL SCREENING</p>
+                <strong>2 Character References</strong>
+                <ul>
+                    <li>1 class adviser/teacher & 1 church/community leader</li>
+                    <li>If you are not yet connected to a church or community,
+                        you can ask another teacher to be your 2nd Character
+                        Reference
+                    </li>
+                </ul>
+
+                <br>
+                <strong>Conditional requirements</strong>
+                <p>THESE MAY BE ASKED ON A CASE:TO-CASE BASIS</p>
+                <ul>
+                    <li>Commitment Forms (for excess fees, guardianship, etc.)
+                        Projected Tuition Fees (for incoming SHS or college who will enroll in
+                        a private school)</li>
+                    <li>Admission Slip (for incoming college)
+                    </li>
+                    <li> Course Prospectus and Grading System (for incoming college)
+                    </li>
+                    <li>Scholarship Documents (if applicant who is enrolled or will enroll in a
+                        private school has other scholarships)
+                    </li>
+                    <li>
+                        Medical Clearance or Fit to Enroll Certificate
                     </li>
                 </ul>
             </div>

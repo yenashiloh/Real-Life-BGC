@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationMail;
 use App\Models\ApplicationSettings;
+use App\Models\ApplicantAttendance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -57,7 +58,6 @@ class DocumentsController extends Controller
             "Birth Certificate",
             "Character Evaluation Forms",
             "Proof of Financial Status",
-            "Payslip / Social Case Study Report / ITR",
             "Two References Form",
             "Home Visitation Form",
             "Report Card / Grades",

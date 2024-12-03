@@ -35,7 +35,6 @@
                         <br>
                         Bonifacio Global City, <br>
                         1634 Philippines<br><br>
-                        <strong>Phone:</strong>(632) 8817-1212<br>
                         <strong>Email:</strong>bgc@reallife.ph<br>
                     </p>
                 </div>
@@ -58,3 +57,24 @@
 <script src="assets-applicant/js/jquery.slicknav.js"></script>
 <script src="assets-applicant/js/owl.carousel.min.js"></script>
 <script src="assets-applicant/js/main.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const logo = document.getElementById('loading-logo');
+    
+        function showContent() {
+            setTimeout(() => {
+                loadingSpinner.style.opacity = '0';
+                setTimeout(() => {
+                    loadingSpinner.style.display = 'none';
+                }, 300);
+            }, 1000);
+        }
+    
+        loadingSpinner.style.opacity = '1';
+        loadingSpinner.style.display = 'flex';
+        logo.style.opacity = '1';
+    
+        showContent();
+    });
+    </script>

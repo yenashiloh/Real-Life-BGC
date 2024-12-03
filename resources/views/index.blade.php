@@ -1,6 +1,9 @@
 @include('partials.header')
 <!-- Hero Section Begin -->
+<style>
 
+
+</style>
 <section class="banner">
     <div class="container">
         <div class="col-lg-12">
@@ -81,10 +84,7 @@
                         </strong>
                         Our scholars no longer need to worry about where to get funds for transportation and
                         meals.</p>
-                    <p class="education-assistance f-para"><strong>Freedom to choose their course strand or program -
-                        </strong>
-                        Giving our senior high school and college scholars this choice helps them grow in their
-                        strengths.</p>
+
                 </div>
             </div>
         </div>
@@ -144,7 +144,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 mb-4 order-md-4">
+            <div class="col-12 col-md-6 mb-4">
                 <div class="about-text h-100 d-flex flex-column justify-content-center">
                     <p class="education-assistance f-para">
                         <strong style="font-weight: bold;">LIFE Groups - </strong>
@@ -192,7 +192,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 mb-4 order-md-3">
+            <div class="col-12 col-md-6 mb-4">
                 <div class="about-text h-100 d-flex flex-column justify-content-center">
                     <p class="education-assistance f-para">
                         <strong style="font-weight: bold;">Scholar Updates - </strong>
@@ -225,11 +225,7 @@
                         practical life skills and
                         well-being. These arm the scholars with competence and knowledge to get ahead in life.
                     </p>
-                    <p class="education-assistance f-para"><strong style="font-weight: bold;">National
-                            Scholars’ Conference - </strong>
-                        The National Scholars’ Conference is an annual event held specifically for graduating
-                        college scholars to
-                        prepare them for the working world.</p>
+
                     <p class="education-assistance f-para"><strong style="font-weight: bold;">Freedom to
                             choose their course strand or program - </strong>
                         Giving our senior high school and college scholars this choice helps them grow in their
@@ -248,47 +244,110 @@
             <div class="col-lg-12">
                 <div class="section-title">
                     <span>Scholarship Application Flow</span>
-                    <!-- <h2>This is the application Flow</h2> -->
                 </div>
             </div>
         </div>
         <ul class="timeline_ul">
             <li class="timeline_li" style="--accent-color:#0A6E57;">
-                <div class="date">01</div>
+                <div class="date">01 - Scouting</div>
                 <div class="title"></div>
-                <div class="descr">Scholarship applications submitted through the form will be reviewed by February
-                    2024.</div>
+                <div class="descr">
+                    <ul>
+                        <li>- Scouting in the scholarship process refers to the proactive identification and recruitment
+                            of talented individuals who may be eligible for scholarships.</li>
+                        <li>- By actively scouting for talented individuals, organizations can ensure that their
+                            scholarship programs reach the most deserving students.</li>
+                    </ul>
+                </div>
+
+
             </li>
             <li class="timeline_li" style="--accent-color:#0A6E57;">
-                <div class="date">02</div>
+                <div class="date">02 - Applicant's Orientation</div>
                 <div class="title"></div>
-                <div class="descr">The team from the Real LIFE local center where you are filing your application will
-                    reach out to you sometime between February and March 2024 to inform you if your application will
-                    proceed to the next screening stage.</div>
+                <div class="descr">
+                    <ul>
+                        <li>- Applicants’ Orientation is one of the main parts of the application process. It is an
+                            online
+                            session designed to inform and guide the applicants about the overview of the scholarship
+                            program, explain the benefits and responsibilities, and discuss the qualifications and
+                            requirements upon application.</li>
+                        <li>- The goal of the orientation is to ensure that scholars understand their rights and
+                            responsibilities, and to provide them with the necessary tools that can help them overcome
+                            the application process.</li>
+                        <li>- Please take note that <strong>FAILURE TO ATTEND THE ORIENTATION WILL INVALIDATE THE
+                                APPLICATION.</strong></li>
+                    </ul>
+                </div>
+
             </li>
             <li class="timeline_li" style="--accent-color:#0A6E57;">
-                <div class="date">03</div>
+                <div class="date">03 - Online Application </div>
                 <div class="title"></div>
-                <div class="descr">If found qualified, you will be invited for a panel interview by March or April
-                    2024. You may be asked to bring in additional documents to complete your application.</div>
+                <div class="descr">- After attending the orientation, the applicants will be given a QR code or link
+                    for google form in order to proceed with the application. The applicants need to fill out all the
+                    details needed and submit all the requirements within the given time frame. </div>
             </li>
             <li class="timeline_li" style="--accent-color:#0A6E57;">
-                <div class="date">04</div>
+                <div class="date">04 - Applicant Shortlist</div>
                 <div class="title"></div>
-                <div class="descr">Applicants who pass the panel interview will be visited in their homes by March or
-                    April 2024.</div>
+                <div class="descr">
+                    <ul>
+                        <li>- The Real Life local team will undergo a paper screening with all the applicants' submitted
+                            documents. After the paper screening, the local team will update the applicants who will
+                            proceed with the next step of the application.</li>
+                        <li>- Reminder: <strong>INCOMPLETE REQUIREMENTS WILL NOT BE ACCOMMODATED.</strong></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="timeline_li" style="--accent-color:#0A6E57;">
+                <div class="date">05 - Panel Screening</div>
+                <div class="title"></div>
+                <div class="descr">
+                    <ul>
+                        <li>- Panel screening is a face-to-face interview with the National Team and Local team in order
+                            to carefully evaluate the applicants’ applications and know them more. Victory pastors,
+                            psychologists, social workers, and Every Nation Campus missionaries are also invited to join
+                            the panel screening. After this, the local center teams will make another shortlist of those
+                            who are qualified to proceed to the next stage.</li>
+                        <li>- Please take note that <strong>FAILURE TO ATTEND THE GIVEN SCHEDULE WILL INVALIDATE THE
+                                APPLICATION.</strong></li>
+                    </ul>
+                </div>
             </li>
             <li class="timeline_li" style="--accent-color:#0A6E57;">
-                <div class="date">05</div>
+                <div class="date">06 - Family Assessment</div>
                 <div class="title"></div>
-                <div class="descr">Recommended applications will be forwarded to the Real LIFE National Office for
-                    final review and approval by May 2024.</div>
+                <div class="descr">
+                    <ul>
+                        <li>- This is conducted to verify the information given by applicants in their application
+                            forms and panel screenings. This is also an opportunity for our local center teams to meet
+                            the applicants' families and explain the scholarship program to them. We value home visits
+                            because we want to build partnerships with the families of our scholars and know how we can
+                            provide the best support to their children. After the home visits, the local center teams
+                            will send the final list of recommended applicants to the Real LIFE national office. </li>
+                        <li>- Please take note that only selected applicants after the panel screening will continue
+                            with the next process of the application. </li>
+                    </ul>
+                </div>
             </li>
             <li class="timeline_li" style="--accent-color:#0A6E57;">
-                <div class="date">06</div>
+                <div class="date">07 - Application Result</div>
                 <div class="title"></div>
-                <div class="descr">Results of the scholarship applications will be released by the National Office by
-                    June-July 2024.</div>
+                <div class="descr">
+                    <ul>
+                        <li>- Here we come! After all the application process, selected applicants will be part of the
+                            Real Life Scholarship program. </li>
+                        <li>- Once all local center teams have submitted their recommendations, the scholarship team at
+                            the Real LIFE national office will deliberate and select the applicants who will be accepted
+                            into the program. </li>
+                        <li>
+                            - After the final deliberation, chosen applicants will receive a letter from the Real LIFE
+                            national office, confirming their acceptance into the scholarship program.
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
     </div>

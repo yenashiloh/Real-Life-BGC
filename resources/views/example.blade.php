@@ -148,7 +148,6 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <ul class="tn-left">
-                            <li><i class="fa fa-phone"></i>(632) 8817-1212</li>
                             <li><i class="fa fa-envelope"></i>bgc@reallife.ph</li>
                         </ul>
                     </div>

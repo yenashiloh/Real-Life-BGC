@@ -1800,8 +1800,8 @@ section {
   max-width: 120px;
 }
 .notifications-container {
-  max-height: 300px; /* Adjust the height as needed */
-  overflow-y: auto; /* Enable vertical scrollbar */
+  max-height: 300px; 
+  overflow-y: auto; 
 }
 
 .input-group {

@@ -68,7 +68,7 @@
                  </li>
                  <li class="nav-item">
                      <a href="#" onclick="confirmLogout(); return false;"> <i
-                             class="fas fa-sign-out-alt"></i>Logout</a>
+                             class="fas fa-sign-out-alt"></i><p>Logout</p></a>
                      <form id="logout-form" action="" method="POST" style="display: none;">
                          @csrf
                      </form>
@@ -88,7 +88,7 @@
              showCancelButton: true,
              confirmButtonColor: '#3085d6',
              cancelButtonColor: '#d33',
-             confirmButtonText: 'Yes, log me out!'
+             confirmButtonText: 'Yes'
          }).then((result) => {
              if (result.isConfirmed) {
                  var form = document.createElement('form');

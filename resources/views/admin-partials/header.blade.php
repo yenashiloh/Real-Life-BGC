@@ -3,8 +3,7 @@
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="white">
             <a href="index.html" class="logo">
-                <img src="../admin-assets/img/RLlogo.png" alt="navbar brand"
-                    class="navbar-brand" height="20" />
+                <img src="../admin-assets/img/RLlogo.png" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
@@ -21,64 +20,104 @@
         <!-- End Logo Header -->
     </div>
 
- <!-- Navbar Header -->
+    <!-- Navbar Header -->
 
- <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
-    <div class="container-fluid">
-       
 
-        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-            <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                    role="button" aria-expanded="false" aria-haspopup="true">
-                    <i class="fa fa-search"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-search animated fadeIn">
-                    <form class="navbar-left navbar-form nav-search">
-                        <div class="input-group">
-                            <input type="text" placeholder="Search ..." class="form-control" />
-                        </div>
-                    </form>
-                </ul>
-            </li>
-        
-            <li class="nav-item topbar-user dropdown hidden-caret">
-                <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
-                    aria-expanded="false">
-                    <div class="avatar-sm">
-                        <i class="fas fa-user-circle avatar-img rounded-circle" style="font-size: 35px;"></i>
-                      </div>
-                    <span class="profile-username">
-                        <span class="op-7">Hi,</span>
-                        <span class="fw-bold">{{ Session::get('adminFirstName') }}</span>
-                    </span>
-                </a>
-                <ul class="dropdown-menu dropdown-user animated fadeIn">
-                    <div class="dropdown-user-scroll scrollbar-outer">
+    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+        <div class="container-fluid">
+
+
+            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                        aria-expanded="false" aria-haspopup="true">
+                        <i class="fa fa-search"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-search animated fadeIn">
+                        <form class="navbar-left navbar-form nav-search">
+                            <div class="input-group">
+                                <input type="text" placeholder="Search ..." class="form-control" />
+                            </div>
+                        </form>
+                    </ul>
+                </li>
+
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                    <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bell"></i>
+                        <span class="notification">4</span>
+                    </a>
+                    <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                         <li>
-                            <div class="user-box">
-                                <div class="avatar-sm">
-                                    <i class="fas fa-user-circle avatar-img rounded-circle" style="font-size: 45px;"></i>
-                                  </div>
-                                
-                                <div class="u-text p-3">
-                                    <h4>{{ Session::get('adminFirstName') }} {{ Session::get('adminLastName') }}</h4>
-                                  
+                            <div class="dropdown-title">You have 4 new notification</div>
+                        </li>
+                        <li>
+                            <div class="notif-scroll scrollbar-outer">
+                                <div class="notif-center">
+                                    <a href="#">
+                                        <div class="notif-icon notif-primary">
+                                            <div class="notif-icon notif-success">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                        </div>
+                                        <div class="notif-content">
+                                            <span class="block">
+                                                Shiloh Eugenio
+                                            </span>
+                                            <span class="time">5 minutes ago</span>
+                                        </div>
+                                    </a>
+
                                 </div>
                             </div>
                         </li>
                         <li>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{route ('admin-profile')}}">My Profile</a>
-                          
-                            <a class="dropdown-item" href="{{ route('admin.admin-logout') }}">Logout</a>
+                            <a class="see-all" href="javascript:void(0);">See all notifications<i
+                                    class="fa fa-angle-right"></i> </a>
                         </li>
-                    </div>
-                </ul>
-            </li>
-        </ul>
-    </div>
-</nav>
+                    </ul>
+                </li>
+
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                    <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
+                        aria-expanded="false">
+                        <div class="avatar-sm">
+                            <i class="fas fa-user-circle avatar-img rounded-circle" style="font-size: 35px;"></i>
+                        </div>
+                        <span class="profile-username">
+                            <span class="op-7">Hi,</span>
+                            <span class="fw-bold">{{ Session::get('adminFirstName') }}</span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user animated fadeIn">
+                        <div class="dropdown-user-scroll scrollbar-outer">
+                            <li>
+                                <div class="user-box">
+                                    <div class="avatar-sm">
+                                        <i class="fas fa-user-circle avatar-img rounded-circle"
+                                            style="font-size: 45px;"></i>
+                                    </div>
+
+                                    <div class="u-text p-3">
+                                        <h4>{{ Session::get('adminFirstName') }} {{ Session::get('adminLastName') }}
+                                        </h4>
+
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('admin-profile') }}">My Profile</a>
+
+                                <a class="dropdown-item" href="{{ route('admin.admin-logout') }}">Logout</a>
+                            </li>
+                        </div>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
 
-<!-- End Navbar -->
+    <!-- End Navbar -->

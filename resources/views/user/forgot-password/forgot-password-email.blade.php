@@ -125,11 +125,11 @@
     }
     
     .button--green {
-      background-color: #22BC66;
-      border-top: 10px solid #22BC66;
-      border-right: 18px solid #22BC66;
-      border-bottom: 10px solid #22BC66;
-      border-left: 18px solid #22BC66;
+      background-color: #71BF44;
+      border-top: 10px solid #71BF44;
+      border-right: 18px solid #71BF44;
+      border-bottom: 10px solid #71BF44;
+      border-left: 18px solid #71BF44;
     }
     
     .button--red {

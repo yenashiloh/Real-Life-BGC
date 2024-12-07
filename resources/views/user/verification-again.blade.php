@@ -66,12 +66,7 @@
             </div>
             @endif
     
-            @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert">
-                {{ session('error') }}
-
-            </div>
-            @endif
+           
             <div class="card-body">
                 <h1 class="fw-bold">Verify your Email Address</h1>
                 <img src="assets-applicant/img/verification_sent.png" class="img-fluid" alt="Successfully Sent Image"

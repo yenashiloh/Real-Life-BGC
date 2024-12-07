@@ -1,5 +1,5 @@
 // $(document).ready(function() {
-//     // Function to fetch notification count from the server
+//     // Function to fetch notification count from the server  
 //     function fetchNotificationCount() {
 //         $.ajax({
 //             url: '/fetch-notification-count', // Endpoint to fetch notification count

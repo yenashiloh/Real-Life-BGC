@@ -470,7 +470,7 @@ class ApplicantController extends Controller
                         Log::error('Failed to send verification email on login: ' . $e->getMessage());
                     }
 
-                    return redirect(route('verification-again'))
+                    return redirect(route('user.verification-again'))
                         ->with("error", "Your email is not verified. A new verification email has been sent to your email address.");
                 }
             }

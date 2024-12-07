@@ -444,9 +444,7 @@
           <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
             <tr>
               <td class="email-masthead">
-                <a href="https://example.com" class="f-fallback email-masthead_name">
-                PASSWORD RESET
-              </a>
+        
               </td>
             </tr>
             <!-- Email Body -->
@@ -466,7 +464,7 @@
                               <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                 <tr>
                                   <td align="center">
-                                    <a href="{{ $actionUrl }}" class="f-fallback button button--green" target="_blank">Reset your password</a>
+                                    <a href="{{ $actionUrl }}" class="f-fallback button button--green" target="_blank" style="color:white;">Reset your password</a>
                                 </td>
                                 </tr>
                               </table>
@@ -474,11 +472,6 @@
                           </tr>
                         </table>
                         <p>If you did not request a password reset, you can safely ignore this email. Only a person with access to your email can reset your account password.</p>
-                        <p>Thanks,
-                          <br>The [Product Name] team</p>
-                        <!-- Sub copy -->
-                        
-                      </div>
                     </td>
                   </tr>
                 </table>
@@ -491,8 +484,8 @@
                     <td class="content-cell" align="center">
                       <p class="f-fallback sub align-center">
                         Real LIFE BGC
-                        <br>1234 Street Rd.
-                        <br>Suite 1234
+                        <br>32nd Street corner University Parkway,
+                        <br>Bonifacio Global City, 1634 Philippines
                       </p>
                     </td>
                   </tr>

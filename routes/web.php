@@ -28,6 +28,7 @@ Route::get('reset-password/{token}/{email}', [ForgotPasswordController::class, '
 Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
 
 
+
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/', [ApplicantController::class, 'index'])->name('home');
   
@@ -44,12 +45,17 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
 
     //EMAIL VERIFICATION 
     Route::get('/verify-email/{token}', [VerificationController::class, 'verify'])->name('verify');
-    Route::get('/verification', [ApplicantController::class, 'showVerification'])->name('verification');
-    Route::get('/verification_success', [VerificationController::class, 'showVerificationSucess'])->name('verification_sucess');
-
+  
     //EMAIL 
     Route::get('/email', [EmailController::class, 'create']);
     Route::post('/email', [EmailController::class, 'sendEmail'])->name('send.email');
+
+    Route::get('/verify-email/{token}', [VerificationController::class, 'verify'])->name('verify');
+    Route::get('/verification', [ApplicantController::class, 'showVerification'])->name('verification');
+    Route::get('/verification_success', [VerificationController::class, 'showVerificationSucess'])->name('verification_sucess');
+
+    Route::get('/resend-verification', [VerificationController::class, 'resendVerificationEmail'])->name('resend.verification');
+    Route::get('/verification-again', [VerificationController::class, 'verificationAgain'])->name('user.verification-again');
 });
 
 

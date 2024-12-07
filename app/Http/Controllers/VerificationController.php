@@ -78,12 +78,12 @@ class VerificationController extends Controller
         try {
             Mail::to($applicant->email)->send(new VerificationMail($applicant));
 
-            return redirect(route('verification-again'))
+            return redirect(route('user.verification-again'))
                 ->with('success', 'Verification email resent successfully.');
         } catch (\Exception $e) {
             Log::error('Failed to resend verification email: ' . $e->getMessage());
 
-            return redirect(route('verification-again'))
+            return redirect(route('user.verification-again'))
                 ->with('error', 'Failed to resend verification email. Please try again.');
         }
     }

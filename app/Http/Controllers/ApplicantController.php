@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Applicant;
 use App\Models\ApplicantsPersonalInformation;
 use Illuminate\Http\Request;
@@ -27,9 +28,12 @@ use App\Models\ApplicationSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\ApplicantAttendance;
+use App\Traits\GoogleDriveStorageTrait;
 
 class ApplicantController extends Controller
 {
+    use GoogleDriveStorageTrait;
+
     //show index page
     public function index()
     {
@@ -42,8 +46,8 @@ class ApplicantController extends Controller
     {
         $title = 'Announcement';
         $announcements = Announcement::where('published', true)
-                                    ->orderByDesc('created_at')
-                                    ->get();
+            ->orderByDesc('created_at')
+            ->get();
 
         return view('announcement', [
             'title' => $title,
@@ -85,7 +89,7 @@ class ApplicantController extends Controller
         $title = 'Home';
         $applicantId = auth()->id();
         $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
-        return view('user.home', compact('title', 'personalInfo' ));
+        return view('user.home', compact('title', 'personalInfo'));
     }
 
     //verification
@@ -95,12 +99,12 @@ class ApplicantController extends Controller
         $email = session('registered_email');
         return view('user.verification', compact('title', 'email'));
     }
-    
+
     //show applicant dashboard page
     public function applicantDashboard()
     {
         $applicantId = auth()->id();
-    
+
         $totalDocuments = Requirement::where('applicant_id', $applicantId)->count();
 
         $totalApprovedDocuments = Requirement::where('applicant_id', $applicantId)
@@ -110,22 +114,22 @@ class ApplicantController extends Controller
         $totalDeclinedDocuments = Requirement::where('applicant_id', $applicantId)
             ->where('status', 'declined')
             ->count();
-    
+
         $approvedDocumentTypes = Requirement::where('applicant_id', $applicantId)
             ->where('status', 'approved')
             ->pluck('document_type')
             ->toArray();
-    
+
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
         $academicInfoGradesData = ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
         $academicInfoChoiceData = ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
         $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $title = 'Dashboard';
         $reportcardData = Requirement::where('applicant_id', $applicantId)->get();
-    
+
         $incomingGradeYear = $academicInfoData->incoming_grade_year ?? null;
 
-           $documentTypes = [
+        $documentTypes = [
             "Signed Application Form",
             "Birth Certificate",
             "Character Evaluation Forms",
@@ -140,18 +144,22 @@ class ApplicantController extends Controller
             "Tuition Projection",
             "Admission Slip",
         ];
-    
-        if ($incomingGradeYear === 'First Year College' || 
-            $incomingGradeYear === 'Second Year College' || 
-            $incomingGradeYear === 'Third Year College' || 
-            $incomingGradeYear === 'Fourth Year College') {
+
+        if (
+            $incomingGradeYear === 'First Year College' ||
+            $incomingGradeYear === 'Second Year College' ||
+            $incomingGradeYear === 'Third Year College' ||
+            $incomingGradeYear === 'Fourth Year College'
+        ) {
         } else {
             $documentTypes = array_diff($documentTypes, ["Official Grading System"]);
         }
 
-        if ($incomingGradeYear === 'Second Year College' || 
-            $incomingGradeYear === 'Third Year College' || 
-            $incomingGradeYear === 'Fourth Year College') {
+        if (
+            $incomingGradeYear === 'Second Year College' ||
+            $incomingGradeYear === 'Third Year College' ||
+            $incomingGradeYear === 'Fourth Year College'
+        ) {
         } else {
             $documentTypes = array_diff($documentTypes, ["Prospectus"]);
         }
@@ -163,9 +171,19 @@ class ApplicantController extends Controller
             return $item;
         });
 
-        return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData',
-            'academicInfoChoiceData', 'personalInfo', 'reportcardData', 'documentTypes', 'approvedDocumentTypes', 
-            'totalDocuments', 'totalApprovedDocuments', 'totalDeclinedDocuments'));
+        return view('user.applicant_dashboard', compact(
+            'title',
+            'academicInfoData',
+            'academicInfoGradesData',
+            'academicInfoChoiceData',
+            'personalInfo',
+            'reportcardData',
+            'documentTypes',
+            'approvedDocumentTypes',
+            'totalDocuments',
+            'totalApprovedDocuments',
+            'totalDeclinedDocuments'
+        ));
     }
 
     //show personal details page
@@ -178,12 +196,11 @@ class ApplicantController extends Controller
         $academicInfoChoiceData = ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
         $familyInfoData = ApplicantsFamilyInformation::where('applicant_id', $applicantId)->first();
         $members = Member::where('applicant_id', $applicantId)->get();
-    
+
         if ($request->hasFile('payslip')) {
             $file = $request->file('payslip');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('public/Payslips', $filename);
-    
             if (!$familyInfoData) {
                 $familyInfoData = new ApplicantsFamilyInformation();
                 $familyInfoData->applicant_id = $applicantId;
@@ -191,7 +208,7 @@ class ApplicantController extends Controller
             $familyInfoData->payslip = $filename;
             $familyInfoData->save();
         }
-    
+
         $title = 'Personal Details';
         return view('user.personal_details', compact('title', 'academicInfoData', 'academicInfoGradesData', 'academicInfoChoiceData', 'members', 'familyInfoData', 'personalInfo'));
     }
@@ -240,10 +257,10 @@ class ApplicantController extends Controller
             'mother_income' => 'required',
             'payslip' => 'file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
-    
+
         $user = auth()->user();
         $applicant = $user->applicant;
-    
+
         if (!$applicant) {
             return redirect()->back()->withErrors(['msg' => 'No applicant record found for the authenticated user.']);
         }
@@ -258,10 +275,10 @@ class ApplicantController extends Controller
             'street' => $request->street,
             'barangay' => $request->barangay,
             'municipality' => $request->municipality,
-            'created_at' => now(), 
+            'created_at' => now(),
             'updated_at' => now(),
         ];
-    
+
         if ($request->hasFile('mapAddress')) {
             $mapAddressFile = $request->file('mapAddress');
             $originalFilename = pathinfo($mapAddressFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -269,20 +286,20 @@ class ApplicantController extends Controller
             $mapAddressFilePath = $mapAddressFile->storeAs('public/map-addresses', $mapAddressFilename);
             $personalInfoData['mapAddress'] = $mapAddressFilePath;
         }
-    
+
         ApplicantsPersonalInformation::create($personalInfoData);
-    
+
         $academicInfoData = [
             'applicant_id' => $applicant->applicant_id,
             'incoming_grade_year' => $request->incoming_grade_year,
             'current_course_program_grade' => $request->current_course_program_grade,
             'current_school' => $request->current_school,
-            'created_at' => now(), 
+            'created_at' => now(),
             'updated_at' => now(),
         ];
-    
+
         ApplicantsAcademicInformation::create($academicInfoData);
-    
+
         $academicInfoChoiceData = [
             'applicant_id' => $applicant->applicant_id,
             'first_choice_school' => $request->first_choice_school,
@@ -291,7 +308,7 @@ class ApplicantController extends Controller
             'first_choice_course' => $request->first_choice_course,
             'second_choice_course' => $request->second_choice_course,
             'third_choice_course' => $request->third_choice_course,
-            'created_at' => now(),  
+            'created_at' => now(),
             'updated_at' => now(),
         ];
         ApplicantsAcademicInformationChoice::create($academicInfoChoiceData);
@@ -302,11 +319,11 @@ class ApplicantController extends Controller
             'latestGWA' => $request->latestGWA,
             'scopeGWA' => $request->scopeGWA,
             'equivalentGrade' => $request->equivalentGrade,
-            'created_at' => now(),  
+            'created_at' => now(),
             'updated_at' => now(),
         ];
         ApplicantsAcademicInformationGrade::create($academicInfoGradesData);
-    
+
         $familyInformationData = [
             'applicant_id' => $applicant->applicant_id,
             'total_household_members' => $request->total_household_members,
@@ -314,34 +331,34 @@ class ApplicantController extends Controller
             'father_income' => $request->father_income,
             'mother_occupation' => $request->mother_occupation,
             'mother_income' => $request->mother_income,
-            'created_at' => now(),  
+            'created_at' => now(),
             'updated_at' => now(),
         ];
         ApplicantsFamilyInformation::create($familyInformationData);
-    
+
         if ($request->hasFile('payslip')) {
             $payslipFile = $request->file('payslip');
             $originalFilename = pathinfo($payslipFile->getClientOriginalName(), PATHINFO_FILENAME);
             $payslipfilename = $originalFilename . '.' . $payslipFile->getClientOriginalExtension();
-            $payslipFilePath = $payslipFile->storeAs('public/Payslips', $payslipfilename);            
-    
+            $payslipFilePath = $payslipFile->storeAs('public/Payslips', $payslipfilename);
+
             $payslipData = [
                 'applicant_id' => $applicant->applicant_id,
                 'document_type' => 'Proof of Financial Status',
                 'uploaded_document' => $payslipFilePath,
                 'status' => 'For Review',
-                'created_at' => now(),  
+                'created_at' => now(),
                 'updated_at' => now(),
             ];
             Requirement::create($payslipData);
         }
-    
+
         $applicant->status = 'Sent';
         $applicant->save();
-    
+
         return redirect()->back()->with('success', 'Application submitted successfully!');
     }
-    
+
 
     //show change password page
     public function viewChangePassword()
@@ -349,7 +366,7 @@ class ApplicantController extends Controller
         $applicantId = auth()->id();
         $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $title = 'Change Password';
-        
+
         return view('user.change_password', compact('title', 'personalInfo'));
     }
 
@@ -361,38 +378,68 @@ class ApplicantController extends Controller
             'notes' => 'nullable',
             'fileUpload' => 'required|file|mimes:pdf,doc,docx|max:102400',
         ]);
-    
+
         try {
             $file = $request->file('fileUpload');
             $originalFilename = $file->getClientOriginalName();
             $filePath = $file->storeAs('uploads', $originalFilename, 'public');
-    
+
+            // Retrieve applicant personal information
+            $applicantInfo = ApplicantsPersonalInformation::where('applicant_id', auth()->id())->first();
+            $firstName = $applicantInfo->first_name;
+            $lastName = $applicantInfo->last_name;
+
+            // Prepare Google Drive upload information
+            $driveUploadInfo = [
+                'last_name' => $lastName,
+                'first_name' => $firstName
+            ];
+
+            // Upload to Google Drive
+            $fullLocalPath = storage_path('app/public/' . $filePath);
+            $gdriveFileId = $this->uploadToGoogleDrive(
+                $fullLocalPath,
+                $originalFilename,
+                $driveUploadInfo
+            );
+
+            // Create requirement record
             $requirement = new Requirement();
             $requirement->applicant_id = auth()->id();
             $requirement->document_type = $request->documentType;
             $requirement->notes = $request->notes;
             $requirement->uploaded_document = $filePath;
+            $requirement->gdrive_file_id = $gdriveFileId; // Store Google Drive file ID
             $requirement->status = 'For Review';
             $requirement->uploaded_at = now();
             $requirement->save();
-    
-            $applicantInfo = ApplicantsPersonalInformation::where('applicant_id', auth()->id())->first();
-            $firstName = $applicantInfo->first_name;
-            $lastName = $applicantInfo->last_name;
-    
+
+            // Create notification
             $notification = new Notification();
             $notification->applicant_id = auth()->id();
             $notification->applicant_name = "$firstName $lastName";
             $notification->message = "Submitted {$request->documentType}";
             $notification->save();
-    
+
             return response()->json(['success' => 'Document uploaded successfully']);
         } catch (\Exception $e) {
-            \Log::error('Error saving requirement: ' . $e->getMessage());
-            return response()->json(['error' => 'An error occurred while saving the document. Please try again later.'], 500);
+            // If Google Drive upload fails, delete the local file
+            if (isset($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+
+            \Log::error('Error uploading requirement: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+                'applicant_id' => auth()->id(),
+                'document_type' => $request->documentType
+            ]);
+
+            return response()->json([
+                'error' => 'An error occurred while saving the document. Please try again later.'
+            ], 500);
         }
     }
-    
+
     //login post
     public function loginPost(Request $request)
     {
@@ -400,41 +447,41 @@ class ApplicantController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-    
+
         $credentials = $request->only('email', 'password');
-    
+
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-    
+
             if ($user instanceof Applicant) {
                 if (!$user->verify_status || !$user->email_verified_at) {
                     Auth::logout();
-    
+
                     session(['unverified_email' => $user->email]);
-    
+
                     if (!$user->api_token) {
                         $user->api_token = Str::random(60);
                         $user->save();
                     }
-    
+
                     try {
                         Mail::to($user->email)->send(new VerificationMail($user));
                     } catch (\Exception $e) {
                         Log::error('Failed to send verification email on login: ' . $e->getMessage());
                     }
-    
+
                     return redirect(route('verification-again'))
                         ->with("error", "Your email is not verified. A new verification email has been sent to your email address.");
                 }
             }
-    
+
             return redirect()->intended(route('user.applicant_dashboard'));
         }
-    
+
         return redirect(route('login'))
             ->with("error", "Incorrect email address or password. Please try again.");
     }
-    
+
     //register 
     public function register()
     {
@@ -448,17 +495,17 @@ class ApplicantController extends Controller
         $title = 'Registration';
 
         $settings = ApplicationSettings::first();
-        
+
         $now = Carbon::now('Asia/Manila');
-        
+
         $currentDate = $now->format('Y-m-d');
         $currentTime = $now->format('H:i:s');
-        
+
         if ($settings) {
             $startDate = $settings->start_date;
             $startTime = $settings->start_time;
             $stopDate = $settings->stop_date;
-            $stopTime = $settings->stop_time;   
+            $stopTime = $settings->stop_time;
             $applicationOpen = $this->isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime);
         } else {
             $applicationOpen = false;
@@ -466,37 +513,37 @@ class ApplicantController extends Controller
 
         return view('user.registration', compact('title', 'applicationOpen'));
     }
-    
+
     //open and close Application
     private function isApplicationOpen($currentDate, $currentTime, $startDate, $startTime, $stopDate, $stopTime)
     {
         $startDate = Carbon::createFromFormat('Y-m-d', $startDate);
         $stopDate = Carbon::createFromFormat('Y-m-d', $stopDate);
         $currentDate = Carbon::createFromFormat('Y-m-d', $currentDate);
-    
+
         if ($currentDate->lt($startDate) || $currentDate->gt($stopDate)) {
             return false;
         }
-        
+
         $currentTime = Carbon::createFromFormat('H:i:s', $currentTime);
         $startTime = Carbon::createFromFormat('H:i:s', $startTime);
         $stopTime = Carbon::createFromFormat('H:i:s', $stopTime);
-    
+
         if (!$currentTime->between($startTime, $stopTime)) {
             return false;
         }
-    
+
         $applicantCount = DB::table('applicants')->count();
-    
+
         $maxNumber = DB::table('application_settings')->value('max_number');
 
         if ($applicantCount >= $maxNumber) {
             return false;
         }
-    
+
         return true;
     }
-    
+
     //registration post
     function registerPost(Request $request)
     {
@@ -626,7 +673,7 @@ class ApplicantController extends Controller
                 'uploaded_document' => $reportcardFile->storeAs('ReportCards', $fileName, 'public'),
                 'status' => 'For Review',
             ];
-            
+
             Requirement::create($reportcardData);
 
             $payslipFile = $request->file('payslip');
@@ -655,7 +702,7 @@ class ApplicantController extends Controller
         auth()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return redirect(route('home'))
             ->withHeaders([
                 'Cache-Control' => 'no-cache, no-store, must-revalidate',
@@ -675,7 +722,7 @@ class ApplicantController extends Controller
         $street = $request->input('street');
         $barangay = $request->input('barangay');
         $municipality = $request->input('municipality');
-    
+
         $personalInfo = ApplicantsPersonalInformation::updateOrCreate(
             ['applicant_id' => auth()->id()],
             [
@@ -689,37 +736,64 @@ class ApplicantController extends Controller
                 'municipality' => $municipality,
             ]
         );
-    
-        $familyInfoData= $request->only([
-            'total_household_members','father_occupation','father_incom','mother_occupation',
+
+        $familyInfoData = $request->only([
+            'total_household_members',
+            'father_occupation',
+            'father_incom',
+            'mother_occupation',
             'mother_income'
         ]);
-       
+
         $familyInfo = ApplicantsFamilyInformation::updateOrCreate(
             ['applicant_id' => auth()->id()],
             $familyInfoData
         );
 
         $academicInfoGradesData = $request->only([
-            'latestAverage','latestGWA','scopeGWA','equivalentGrade',
-            'grade_3_gwa', 'grade_4_gwa', 'grade_5_gwa', 'grade_6_gwa', 'grade_7_gwa', 'grade_8_gwa', 'grade_9_gwa', 'grade_10_gwa',
-            'grade_11_sem1_gwa', 'grade_11_sem2_gwa', 'grade_11_sem3_gwa', 'grade_11_sem4_gwa', 'grade_12_sem1_gwa', 'grade_12_sem2_gwa',
-            'grade_12_sem3_gwa', 'grade_12_sem4_gwa', '1st_year_sem1_gwa', '1st_year_sem2_gwa', '1st_year_sem3_gwa', '1st_year_sem4_gwa', '2nd_year_sem1_gwa',
-            '2nd_year_sem2_gwa', '2nd_year_sem3_gwa', '2nd_year_sem4_gwa'
+            'latestAverage',
+            'latestGWA',
+            'scopeGWA',
+            'equivalentGrade',
+            'grade_3_gwa',
+            'grade_4_gwa',
+            'grade_5_gwa',
+            'grade_6_gwa',
+            'grade_7_gwa',
+            'grade_8_gwa',
+            'grade_9_gwa',
+            'grade_10_gwa',
+            'grade_11_sem1_gwa',
+            'grade_11_sem2_gwa',
+            'grade_11_sem3_gwa',
+            'grade_11_sem4_gwa',
+            'grade_12_sem1_gwa',
+            'grade_12_sem2_gwa',
+            'grade_12_sem3_gwa',
+            'grade_12_sem4_gwa',
+            '1st_year_sem1_gwa',
+            '1st_year_sem2_gwa',
+            '1st_year_sem3_gwa',
+            '1st_year_sem4_gwa',
+            '2nd_year_sem1_gwa',
+            '2nd_year_sem2_gwa',
+            '2nd_year_sem3_gwa',
+            '2nd_year_sem4_gwa'
         ]);
-    
+
         $academicInfoGradesData['applicant_id'] = auth()->id();
-    
+
         $academicInfo = ApplicantsAcademicInformationGrade::updateOrCreate(
             ['applicant_id' => auth()->id()],
             $academicInfoGradesData
         );
-    
+
         $academicInfoData = $request->only([
-            'current_course_program_grade', 'current_school'
+            'current_course_program_grade',
+            'current_school'
         ]);
         $academicInfoData['applicant_id'] = auth()->id();
-    
+
         $academicInfoIncoming = ApplicantsAcademicInformation::updateOrCreate(
             ['applicant_id' => auth()->id()],
             [
@@ -727,18 +801,22 @@ class ApplicantController extends Controller
                 'current_school' => $academicInfoData['current_school'] ?? null
             ]
         );
-    
+
         $academicInfoChoiceData = $request->only([
-            'first_choice_school', 'second_choice_school', 'third_choice_school',
-            'first_choice_course', 'second_choice_course', 'third_choice_course'
+            'first_choice_school',
+            'second_choice_school',
+            'third_choice_school',
+            'first_choice_course',
+            'second_choice_course',
+            'third_choice_course'
         ]);
         $academicInfoChoiceData['applicant_id'] = auth()->id();
-    
+
         $academicChoices = ApplicantsAcademicInformationChoice::updateOrCreate(
             ['applicant_id' => auth()->id()],
             $academicInfoChoiceData
         );
-    
+
         if ($personalInfo && $academicInfo && $academicInfoIncoming && $academicChoices && $familyInfo) {
             return redirect()->back()->with('success', 'Updated Successfully!')->with(compact('familyInfoData'));
         } else {
@@ -763,27 +841,27 @@ class ApplicantController extends Controller
                 'renew_password.same' => 'The re-enter new password field must match new password.',
                 'new_password.regex' => 'The new password must contain at least one lowercase letter, one uppercase letter, and one number.',
             ]);
-    
+
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 400);
             }
-    
-            $applicantId = auth()->id(); 
+
+            $applicantId = auth()->id();
             $user = Auth::user();
-    
+
             if ($user->applicant_id !== $applicantId) {
                 return response()->json(['errors' => ['auth' => ['Unauthorized access.']]]);
             }
-    
+
             if (!Hash::check($request->current_password, $user->password)) {
                 return response()->json(['errors' => ['current_password' => ['The current password is incorrect.']]]);
             }
-    
+
             $user->password = Hash::make($request->new_password);
             $user->save();
-    
+
             \Log::info('Password changed successfully for user: ' . $user->email);
-    
+
             return response()->json(['success' => 'Password changed successfully!']);
         } catch (\Exception $e) {
             \Log::error('Error changing password: ' . $e->getMessage());
@@ -791,7 +869,7 @@ class ApplicantController extends Controller
         }
     }
 
-    
+
     //notification fetch
     public function fetchNotificationCount()
     {
@@ -824,7 +902,7 @@ class ApplicantController extends Controller
             return response()->json(['error' => 'Failed to mark notifications as read'], 500);
         }
     }
-    
+
     //update documents uploaded
     public function update(Request $request, $id)
     {
@@ -832,35 +910,78 @@ class ApplicantController extends Controller
             $request->validate([
                 'documentType' => 'required|string',
                 'notes' => 'nullable|string',
-                'uploaded_document' => 'file|mimes:pdf|max:102400', 
+                'uploaded_document' => 'file|mimes:pdf|max:102400',
             ]);
-    
+
             $document = Requirement::findOrFail($id);
             $document->document_type = $request->input('documentType');
             $document->notes = $request->input('notes');
-    
+
+            // If a new file is uploaded
             if ($request->hasFile('uploaded_document')) {
                 $uploadedFile = $request->file('uploaded_document');
-    
                 $originalFileName = $uploadedFile->getClientOriginalName();
                 $uploadedFilePath = $uploadedFile->storeAs('uploads', $originalFileName, 'public');
-    
+
+                // Delete old local file
                 if ($document->uploaded_document) {
                     $oldFilePath = str_replace('public/', '', $document->uploaded_document);
                     Storage::disk('public')->delete($oldFilePath);
                 }
-    
-                $document->uploaded_document = $uploadedFilePath;
+
+                // Delete old Google Drive file if it exists
+                if ($document->gdrive_file_id) {
+                    try {
+                        $this->deleteFromGoogleDrive($document->gdrive_file_id);
+                    } catch (\Exception $e) {
+                        Log::error('Failed to delete old Google Drive file', [
+                            'file_id' => $document->gdrive_file_id,
+                            'error' => $e->getMessage()
+                        ]);
+                    }
+                }
+
+                // Upload new file to Google Drive
+                try {
+                    $fullLocalPath = storage_path('app/public/' . $uploadedFilePath);
+                    $gdriveFileId = $this->uploadToGoogleDrive(
+                        $fullLocalPath,
+                        $originalFileName,
+                        // Attempt to get applicant information if possible
+                        // You might need to adjust this based on how you retrieve applicant info
+                        [
+                            'last_name' => optional($document->applicant)->last_name ?? '',
+                            'first_name' => optional($document->applicant)->first_name ?? ''
+                        ]
+                    );
+
+                    // Update document with new file path and Google Drive file ID
+                    $document->uploaded_document = $uploadedFilePath;
+                    $document->gdrive_file_id = $gdriveFileId;
+                } catch (\Exception $e) {
+                    Log::error('Google Drive upload failed during document update', [
+                        'document_id' => $document->id,
+                        'error' => $e->getMessage()
+                    ]);
+
+                    // Rollback local file upload if Google Drive upload fails
+                    Storage::disk('public')->delete($uploadedFilePath);
+
+                    throw $e;
+                }
             }
-    
+
             $document->save();
-    
+
             return response()->json(['message' => 'Document updated successfully'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to update document', 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'message' => 'Failed to update document',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
-        
+
     //show edit documents
     public function showEdit($id)
     {
@@ -869,7 +990,7 @@ class ApplicantController extends Controller
             'id' => $document->id,
             'document_type' => $document->document_type,
             'notes' => $document->notes,
-            'uploaded_document' => $document->uploaded_document, 
+            'uploaded_document' => $document->uploaded_document,
         ]);
     }
 
@@ -905,7 +1026,7 @@ class ApplicantController extends Controller
             \Log::info('Validation Passed');
 
             DB::beginTransaction();
-    
+
             //main applicant record
             $data = [
                 'email' => $request->email,
@@ -913,11 +1034,11 @@ class ApplicantController extends Controller
                 'status' => 'Sent'
             ];
             $applicant = Applicant::create($data);
-    
+
             if (!$applicant) {
                 throw new \Exception('Failed to create applicant record');
             }
-    
+
             $personalInfoData = [
                 'applicant_id' => $applicant->applicant_id,
                 'first_name' => $request->firstname,
@@ -929,18 +1050,39 @@ class ApplicantController extends Controller
                 'barangay' => $request->barangay,
                 'municipality' => $request->municipality,
             ];
-    
+
+            // Map Address file
             if ($request->hasFile('mapAddress')) {
                 $mapAddressFile = $request->file('mapAddress');
                 $originalFilename = pathinfo($mapAddressFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $mapAddressFilename = uniqid() . '_' . $originalFilename . '.' . $mapAddressFile->getClientOriginalExtension();
-                
+
                 $mapAddressFilePath = $mapAddressFile->storeAs('map-addresses', $mapAddressFilename, 'public');
+
+                // Update personal info with local file path
                 $personalInfoData['mapAddress'] = $mapAddressFilePath;
+
+                // Upload to Google Drive
+                try {
+                    $fullLocalPath = storage_path('app/public/' . $mapAddressFilePath);
+                    $this->uploadToGoogleDrive(
+                        $fullLocalPath,
+                        $mapAddressFilename,
+                        [
+                            'last_name' => $request->lastname,
+                            'first_name' => $request->firstname
+                        ]
+                    );
+                } catch (\Exception $e) {
+                    Log::error('Google Drive upload failed for Map Address', [
+                        'applicant_id' => $applicant->applicant_id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
-    
+
             ApplicantsPersonalInformation::create($personalInfoData);
-    
+
             $gradeMapping = [
                 'GradeSeven' => 'Grade 7',
                 'GradeEight' => 'Grade 8',
@@ -952,20 +1094,20 @@ class ApplicantController extends Controller
                 'SecondYear' => 'Second Year College',
                 'ThirdYear' => 'Third Year College',
             ];
-    
+
             $incomingGrade = $request->incomingGrade;
             $convertedGrade = isset($gradeMapping[$incomingGrade]) ? $gradeMapping[$incomingGrade] : $incomingGrade;
-    
+
             //academic information
             $academicInfoData = [
                 'applicant_id' => $applicant->applicant_id,
                 'incoming_grade_year' => $convertedGrade,
                 'current_course_program_grade' => $request->current_course_program_grade,
                 'current_school' => $request->currentSchool,
-                'reasonGrades' => $request->reasonGrades 
+                'reasonGrades' => $request->reasonGrades
             ];
             ApplicantsAcademicInformation::create($academicInfoData);
-    
+
             $academicInfoChoiceData = [
                 'applicant_id' => $applicant->applicant_id,
                 'first_choice_school' => $request->schoolChoice1,
@@ -979,14 +1121,14 @@ class ApplicantController extends Controller
 
             //academic choices
             $schoolGrades = $request->schoolGrade;
-            $yearLevels = $request->yearLevel; 
+            $yearLevels = $request->yearLevel;
             $generalAverages = $request->generalAverage;
-            
+
             //grades
             $schoolGrades = is_array($schoolGrades) ? $schoolGrades : [$schoolGrades];
             $yearLevels = is_array($yearLevels) ? $yearLevels : [$yearLevels];
             $generalAverages = is_array($generalAverages) ? $generalAverages : [$generalAverages];
-        
+
             foreach ($schoolGrades as $index => $schoolGrade) {
                 ApplicantsAcademicInformationGrade::create([
                     'applicant_id' => $applicant->applicant_id,
@@ -995,7 +1137,7 @@ class ApplicantController extends Controller
                     'generalAverage' => $generalAverages[$index] ?? null,
                 ]);
             }
-                    
+
             //family information
             $familyInformationData = [
                 'applicant_id' => $applicant->applicant_id,
@@ -1010,126 +1152,247 @@ class ApplicantController extends Controller
                 'additionalInfo' => $request->additionalInfo
             ];
             ApplicantsFamilyInformation::create($familyInformationData);
-    
-           // report card file
+
+            // Report Card file
             if ($request->hasFile('ReportCard')) {
                 $reportcardFile = $request->file('ReportCard');
                 $reportcardfilename = $reportcardFile->getClientOriginalName();
-                
+
                 $reportcardFilePath = $reportcardFile->storeAs('report-cards', $reportcardfilename, 'public');
-                
-                Requirement::create([
+
+                $requirement = Requirement::create([
                     'applicant_id' => $applicant->applicant_id,
                     'document_type' => 'Report Card / Grades',
                     'uploaded_document' => $reportcardFilePath,
                     'status' => 'For Review',
                     'uploaded_at' => now()
                 ]);
+
+                // Upload to Google Drive
+                try {
+                    $fullLocalPath = storage_path('app/public/' . $reportcardFilePath);
+                    $gdriveFileId = $this->uploadToGoogleDrive(
+                        $fullLocalPath,
+                        $reportcardfilename,
+                        [
+                            'last_name' => $request->lastname,
+                            'first_name' => $request->firstname
+                        ]
+                    );
+
+                    // Update requirement with Google Drive file ID
+                    $requirement->update(['gdrive_file_id' => $gdriveFileId]);
+                } catch (\Exception $e) {
+                    Log::error('Google Drive upload failed for Report Card', [
+                        'applicant_id' => $applicant->applicant_id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
 
-            //payslip file
+            // Payslip file
             if ($request->hasFile('payslip')) {
                 $payslipFile = $request->file('payslip');
                 $payslipfilename = $payslipFile->getClientOriginalName();
-                
+
                 $payslipFilePath = $payslipFile->storeAs('payslips', $payslipfilename, 'public');
-                
-                Requirement::create([
+
+                $requirement = Requirement::create([
                     'applicant_id' => $applicant->applicant_id,
                     'document_type' => 'Proof of Financial Status',
                     'uploaded_document' => $payslipFilePath,
                     'status' => 'For Review',
                     'uploaded_at' => now()
                 ]);
+
+                // Upload to Google Drive
+                try {
+                    $fullLocalPath = storage_path('app/public/' . $payslipFilePath);
+                    $gdriveFileId = $this->uploadToGoogleDrive(
+                        $fullLocalPath,
+                        $payslipfilename,
+                        [
+                            'last_name' => $request->lastname,
+                            'first_name' => $request->firstname
+                        ]
+                    );
+
+                    // Update requirement with Google Drive file ID
+                    $requirement->update(['gdrive_file_id' => $gdriveFileId]);
+                } catch (\Exception $e) {
+                    Log::error('Google Drive upload failed for Payslip', [
+                        'applicant_id' => $applicant->applicant_id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
 
-            //application form file
+            // Application Form file
             if ($request->hasFile('applicationForm')) {
                 $applicationFormFile = $request->file('applicationForm');
                 $applicationFormname = $applicationFormFile->getClientOriginalName();
-                
+
                 $applicationFormPath = $applicationFormFile->storeAs('application-forms', $applicationFormname, 'public');
-                
-                Requirement::create([
+
+                $requirement = Requirement::create([
                     'applicant_id' => $applicant->applicant_id,
                     'document_type' => 'Application Form',
                     'uploaded_document' => $applicationFormPath,
                     'status' => 'For Review',
                     'uploaded_at' => now()
                 ]);
+
+                // Upload to Google Drive
+                try {
+                    $fullLocalPath = storage_path('app/public/' . $applicationFormPath);
+                    $gdriveFileId = $this->uploadToGoogleDrive(
+                        $fullLocalPath,
+                        $applicationFormname,
+                        [
+                            'last_name' => $request->lastname,
+                            'first_name' => $request->firstname
+                        ]
+                    );
+
+                    // Update requirement with Google Drive file ID
+                    $requirement->update(['gdrive_file_id' => $gdriveFileId]);
+                } catch (\Exception $e) {
+                    Log::error('Google Drive upload failed for Application Form', [
+                        'applicant_id' => $applicant->applicant_id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
 
-            //character references file
+            // Character References file
             if ($request->hasFile('characterReferences')) {
                 $characterReferencesFile = $request->file('characterReferences');
                 $characterReferencesname = $characterReferencesFile->getClientOriginalName();
-                
+
                 $characterReferencesPath = $characterReferencesFile->storeAs('character-references', $characterReferencesname, 'public');
-                
-                Requirement::create([
+
+                $requirement = Requirement::create([
                     'applicant_id' => $applicant->applicant_id,
                     'document_type' => 'Character References',
                     'uploaded_document' => $characterReferencesPath,
                     'status' => 'For Review',
                     'uploaded_at' => now()
                 ]);
+
+                // Upload to Google Drive
+                try {
+                    $fullLocalPath = storage_path('app/public/' . $characterReferencesPath);
+                    $gdriveFileId = $this->uploadToGoogleDrive(
+                        $fullLocalPath,
+                        $characterReferencesname,
+                        [
+                            'last_name' => $request->lastname,
+                            'first_name' => $request->firstname
+                        ]
+                    );
+
+                    // Update requirement with Google Drive file ID
+                    $requirement->update(['gdrive_file_id' => $gdriveFileId]);
+                } catch (\Exception $e) {
+                    Log::error('Google Drive upload failed for Character References', [
+                        'applicant_id' => $applicant->applicant_id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
 
+            // Grading System file
             if ($request->hasFile('GradingSystem')) {
                 $gradingSystemFile = $request->file('GradingSystem');
                 $gradingSystemname = $gradingSystemFile->getClientOriginalName();
-                
+
                 $gradingSystemPath = $gradingSystemFile->storeAs('grading-system', $gradingSystemname, 'public');
-                
-                Requirement::create([
+
+                $requirement = Requirement::create([
                     'applicant_id' => $applicant->applicant_id,
                     'document_type' => 'Grading System',
                     'uploaded_document' => $gradingSystemPath,
                     'status' => 'For Review',
                     'uploaded_at' => now()
                 ]);
-                \Log::info('GradingSystem File Path:', ['path' => $gradingSystemPath]);
 
+                // Upload to Google Drive
+                try {
+                    $fullLocalPath = storage_path('app/public/' . $gradingSystemPath);
+                    $gdriveFileId = $this->uploadToGoogleDrive(
+                        $fullLocalPath,
+                        $gradingSystemname,
+                        [
+                            'last_name' => $request->lastname,
+                            'first_name' => $request->firstname
+                        ]
+                    );
+
+                    // Update requirement with Google Drive file ID
+                    $requirement->update(['gdrive_file_id' => $gdriveFileId]);
+                } catch (\Exception $e) {
+                    Log::error('Google Drive upload failed for Grading System', [
+                        'applicant_id' => $applicant->applicant_id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
-            
-            
+
             //attendance record
             $attendanceData = [
                 'applicant_id' => $applicant->applicant_id,
                 'attend_orientation' => $request->attend_orientation,
                 'orientation_date' => $request->attend_orientation == 'yes' ? $request->orientation_date : null
             ];
-    
-            //attendance proof file
+
+            // Orientation Proof file
             if ($request->hasFile('orientation_proof')) {
                 $orientationProofFile = $request->file('orientation_proof');
                 $orientationProofFilename = $orientationProofFile->getClientOriginalName();
-                
+
                 $orientationProofPath = $orientationProofFile->storeAs('orientation-proofs', $orientationProofFilename, 'public');
                 $attendanceData['orientation_proof'] = $orientationProofPath;
+
+                // Upload to Google Drive
+                try {
+                    $fullLocalPath = storage_path('app/public/' . $orientationProofPath);
+                    $this->uploadToGoogleDrive(
+                        $fullLocalPath,
+                        $orientationProofFilename,
+                        [
+                            'last_name' => $request->lastname,
+                            'first_name' => $request->firstname
+                        ],
+                        'orientation-proof'
+                    );
+                } catch (\Exception $e) {
+                    Log::error('Google Drive upload failed for Orientation Proof', [
+                        'applicant_id' => $applicant->applicant_id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
-    
+
             ApplicantAttendance::create($attendanceData);
-    
+
             $verificationToken = Str::random(60);
             $applicant->api_token = $verificationToken;
             $applicant->save();
-    
+
             \Mail::to($applicant->email)->send(new \App\Mail\VerificationMail($applicant));
-    
+
             DB::commit();
-    
+
             session(['registered_email' => $applicant->email]);
 
             return response()->json([
                 'message' => 'Registration successful, please check your email for verification.',
                 'redirect' => route('verification')
             ], 201);
-    
-    } catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             \Log::error('Registration Failed: ' . $e->getMessage());
-            \Log::error('Error Trace: ' . $e->getTraceAsString());    
+            \Log::error('Error Trace: ' . $e->getTraceAsString());
             return response()->json([
                 'message' => 'Registration failed: ' . $e->getMessage(),
                 'error' => $e->getMessage()

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Applicant;
 use App\Models\ApplicantsPersonalInformation;
 use Illuminate\Http\Request;
@@ -29,19 +30,19 @@ class VerificationController extends Controller
     public function verify($token)
     {
         $applicant = Applicant::where('api_token', $token)->first();
-    
+
         if (!$applicant) {
             return redirect()->route('login')->with('error', 'Invalid verification token.');
         }
-    
+
         $applicant->email_verified_at = now();
-        $applicant->verify_status = 'verified'; 
-        $applicant->api_token = null; 
+        $applicant->verify_status = 'verified';
+        $applicant->api_token = null;
         $applicant->save();
-    
+
         return response()->view('user.verification_success', ['message' => 'Your email is now verified and your application has successfully reached the scholarship provider.']);
     }
-    
+
     public function sendVerificationEmail($token)
     {
         $applicant = Applicant::where('api_token', $token)->first();
@@ -54,36 +55,34 @@ class VerificationController extends Controller
 
         return redirect()->back()->with('success', 'Verification email sent successfully.');
     }
-    
+
     public function resendVerificationEmail()
     {
         $email = session('unverified_email') ?: session('registered_email');
-        
         if (!$email) {
             return redirect(route('login'))
                 ->with('error', 'No email found to resend verification.');
         }
-        
+
         $applicant = Applicant::where('email', $email)->first();
-        
+
         if (!$applicant) {
             return redirect(route('login'))
                 ->with('error', 'Applicant not found.');
         }
-        
         if (!$applicant->api_token) {
             $applicant->api_token = Str::random(60);
             $applicant->save();
         }
-        
+
         try {
             Mail::to($applicant->email)->send(new VerificationMail($applicant));
-            
+
             return redirect(route('verification-again'))
                 ->with('success', 'Verification email resent successfully.');
         } catch (\Exception $e) {
             Log::error('Failed to resend verification email: ' . $e->getMessage());
-            
+
             return redirect(route('verification-again'))
                 ->with('error', 'Failed to resend verification email. Please try again.');
         }
@@ -99,14 +98,13 @@ class VerificationController extends Controller
     public function verificationAgain()
     {
         $email = session('unverified_email') ?: session('registered_email');
-        
         if (!$email) {
             return redirect(route('login'))
                 ->with('error', 'No email found for verification.');
         }
 
         $applicant = Applicant::where('email', $email)->first();
-        
+
         if (!$applicant) {
             return redirect(route('login'))
                 ->with('error', 'Applicant not found.');
@@ -117,5 +115,4 @@ class VerificationController extends Controller
             'email' => $email
         ]);
     }
-
 }

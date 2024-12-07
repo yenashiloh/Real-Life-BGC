@@ -47,9 +47,6 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/verification', [ApplicantController::class, 'showVerification'])->name('verification');
     Route::get('/verification_success', [VerificationController::class, 'showVerificationSucess'])->name('verification_sucess');
 
-    Route::get('/resend-verification', [VerificationController::class, 'resendVerificationEmail'])->name('resend.verification');
-    Route::get('/verification-again', [VerificationController::class, 'verificationAgain'])->name('verification-again');
-
     //EMAIL 
     Route::get('/email', [EmailController::class, 'create']);
     Route::post('/email', [EmailController::class, 'sendEmail'])->name('send.email');

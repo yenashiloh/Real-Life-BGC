@@ -57,11 +57,7 @@ class VerificationController extends Controller
     
     public function resendVerificationEmail()
     {
-        $email = session('registered_email');
-        $unverifiedEmail = session('unverified_email');
-        
-        // Prioritize unverified email if available
-        $email = $unverifiedEmail ?: $email;
+        $email = session('unverified_email') ?: session('registered_email');
         
         if (!$email) {
             return redirect(route('login'))
@@ -75,7 +71,6 @@ class VerificationController extends Controller
                 ->with('error', 'Applicant not found.');
         }
         
-        // Generate a new token if needed
         if (!$applicant->api_token) {
             $applicant->api_token = Str::random(60);
             $applicant->save();
@@ -103,11 +98,11 @@ class VerificationController extends Controller
 
     public function verificationAgain()
     {
-        $email = session('unverified_email');
+        $email = session('unverified_email') ?: session('registered_email');
         
         if (!$email) {
             return redirect(route('login'))
-                ->with('error', 'No unverified email found.');
+                ->with('error', 'No email found for verification.');
         }
 
         $applicant = Applicant::where('email', $email)->first();
@@ -122,4 +117,5 @@ class VerificationController extends Controller
             'email' => $email
         ]);
     }
+
 }

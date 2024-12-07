@@ -910,7 +910,14 @@
                                             <hr>
                                         @endforeach
                                     @endif
+
+                                    <div class="row mb-2">
+                                        <div class="col-lg-4 col-md-4 label bold-label">Reason for Low Grades</div>
+                                        <div class="capitalize col-lg-7 col-md-8">
+                                            {{ $applicant->academicInformation->reasonGrades }}</div>
                                     </div>
+                                    </div>
+                                    
 
                                     <div class="tab-pane fade" id="family-info-tab" role="tabpanel"
                                         aria-labelledby="family-info">
@@ -926,6 +933,7 @@
                                                 <div class="col-lg-8 col-md-8 capitalize">
                                                     {{ $member->total_household_members ?? '' }}</div>
                                             </div>
+                                           
                                             <div class="row mb-2">
                                                 <div class="col-lg-4 col-md-4 label"
                                                     style="margin-top: 20px; color: #0A6E57; font-weight: bold;">FATHER'S DETAILS</div>
@@ -978,6 +986,12 @@
                                                 <div class="col-lg-4 col-md-4 label bold-label">Relationship</div>
                                                 <div class="col-lg-8 col-md-8 capitalize">
                                                     {{ $member->othersRelationship ?? '' }} </div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col-lg-4 col-md-4 label bold-label">Additional Information</div>
+                                                <div class="col-lg-8 col-md-8 capitalize">
+                                                    {{ $member->additionalInfo ?? '' }} </div>
                                             </div>
                                         @endforeach
                                     </div>

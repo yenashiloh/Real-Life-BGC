@@ -7,6 +7,15 @@
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     @include('applicant-partials.link')
 </head>
+<style>
+    .form-control,
+    textarea,
+    select {
+        pointer-events: none;
+        background-color: #f0f0f0;
+        color: #6c757d;
+    }
+</style>
 
 <body>
     <div id="loading-spinner" class="loading-spinner">
@@ -69,8 +78,8 @@
                                         <!-- Personal Information Tab -->
                                         <div class="tab-pane fade show active" id="personal-info-tab" role="tabpanel"
                                             aria-labelledby="personal-info">
-                                            <h6 class="mt-4 mb-3 mt-2"
-                                                style="color: #0A6E57; font-weight: bold;">PERSONAL INFORMATION</h6>
+                                            <h6 class="mt-4" style="color: #0A6E57; font-weight: bold;">PERSONAL
+                                                INFORMATION</h6>
                                             <div class="row g-3">
                                                 <div class="col-12 col-md-6">
                                                     <label for="first_name" class="form-label fw-bold">First
@@ -124,27 +133,38 @@
                                                         class="form-control"
                                                         value="{{ $personalInfo->municipality ?? '' }}">
                                                 </div>
-                                             
+
                                                 <div class="col-md-8">
                                                     <div class="d-flex flex-column align-items-start">
-                                                        <label for="map-address" class="form-label fw-bold mb-2">Map Address: </label>
+                                                        <label for="map-address" class="form-label fw-bold mb-2">Map
+                                                            Address: </label>
                                                         @php
                                                             $filename = basename($personalInfo->mapAddress);
-                                                            $filePath = public_path('storage/map-addresses/' . $filename);
+                                                            $filePath = public_path(
+                                                                'storage/map-addresses/' . $filename,
+                                                            );
                                                             $fileUrl = asset('storage/map-addresses/' . $filename);
-                                                            $isImage = in_array(strtolower(pathinfo($filename, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']);
+                                                            $isImage = in_array(
+                                                                strtolower(pathinfo($filename, PATHINFO_EXTENSION)),
+                                                                ['jpg', 'jpeg', 'png', 'gif'],
+                                                            );
                                                         @endphp
-                                                
+
                                                         @if ($isImage)
-                                                            <a href="{{ $fileUrl }}" target="_blank" class="btn btn-link p-0">
-                                                                <img src="{{ $fileUrl }}" alt="Map Address" class="img-fluid rounded" style="max-width: 40%; height: auto;">
+                                                            <a href="{{ $fileUrl }}" target="_blank"
+                                                                class="btn btn-link p-0">
+                                                                <img src="{{ $fileUrl }}" alt="Map Address"
+                                                                    class="img-fluid rounded"
+                                                                    style="max-width: 40%; height: auto;">
                                                             </a>
                                                         @else
-                                                            <a href="{{ $fileUrl }}" target="_blank" class="btn btn-link p-0">
-                                                                <i class="fas fa-file-download"></i> {{ $filename }}
+                                                            <a href="{{ $fileUrl }}" target="_blank"
+                                                                class="btn btn-link p-0">
+                                                                <i class="fas fa-file-download"></i>
+                                                                {{ $filename }}
                                                             </a>
                                                         @endif
-                                                
+
                                                         @if (!file_exists($filePath))
                                                             <p class="text-danger mt-2">Map Address file not found</p>
                                                         @endif
@@ -156,14 +176,14 @@
                                         <!-- Academic Information Tab -->
                                         <div class="tab-pane fade" id="academic-info-tab" role="tabpanel"
                                             aria-labelledby="academic-info">
-                                            <h6 class="mt-4 mb-3 mt-2"
-                                                style="color: #0A6E57; font-weight: bold;">ACADEMIC INFORMATION</h6>
+                                            <h6 class="mt-4 mb-3 mt-2" style="color: #0A6E57; font-weight: bold;">
+                                                ACADEMIC INFORMATION</h6>
                                             <div class="row g-3">
                                                 <div class="col-12 col-md-6">
                                                     <label for="incomingGrade" class="form-label fw-bold">Incoming
                                                         Grade Year</label>
                                                     <select id="incoming_grade_year" name="incoming_grade_year"
-                                                        class="form-select" required>
+                                                        class="form-control" required>
                                                         <option value="">Select grade or year level</option>
                                                         @php
                                                             $gradeOptions = [
@@ -205,47 +225,33 @@
                                                 @endif
                                             </div>
 
-                                            <h6 class="mt-4 mb-3 mt-5"
-                                                style="color: #0A6E57; font-weight: bold;">GRADES</h6>
+                                            <h6 class="mt-4 mb-3 mt-5" style="color: #0A6E57; font-weight: bold;">
+                                                GRADES</h6>
                                             <div class="row g-3">
-                                                @if (!empty($academicInfoGradesData->latestAverage))
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="latestAverage" class="form-label fw-bold">Latest
-                                                            Average</label>
-                                                        <input type="text" name="latestAverage" id="latestAverage"
-                                                            class="form-control"
-                                                            value="{{ $academicInfoGradesData->latestAverage }}">
-                                                    </div>
-                                                @endif
-
-                                                @if (!empty($academicInfoGradesData->latestGWA))
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="latestGWA" class="form-label fw-bold">Latest
-                                                            GWA</label>
-                                                        <input type="text" name="latestGWA" id="latestGWA"
-                                                            class="form-control"
-                                                            value="{{ $academicInfoGradesData->latestGWA }}">
-                                                    </div>
-                                                @endif
-
-                                                @if (!empty($academicInfoGradesData->scopeGWA))
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="scopeGWA" class="form-label fw-bold">Scope
-                                                            GWA</label>
-                                                        <input type="text" name="scopeGWA" id="scopeGWA"
-                                                            class="form-control"
-                                                            value="{{ $academicInfoGradesData->scopeGWA }}">
-                                                    </div>
-                                                @endif
-
-                                                @if (!empty($academicInfoGradesData->equivalentGrade))
-                                                    <div class="col-12 col-md-6">
-                                                        <label for="equivalentGrade"
-                                                            class="form-label fw-bold">Equivalent Grade</label>
-                                                        <input type="text" name="equivalentGrade"
-                                                            id="equivalentGrade" class="form-control"
-                                                            value="{{ $academicInfoGradesData->equivalentGrade }}">
-                                                    </div>
+                                                @if (!empty($academicInfoGradesData))
+                                                    @foreach ($academicInfoGradesData as $gradeData)
+                                                        <div class="col-12 col-md-4">
+                                                            <label for="yearLevel" class="form-label fw-bold">Year
+                                                                Level</label>
+                                                            <input type="text" name="yearLevel" id="yearLevel"
+                                                                class="form-control"
+                                                                value="{{ $gradeData->yearLevel }}">
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <label for="schoolGrade"
+                                                                class="form-label fw-bold">School</label>
+                                                            <input type="text" name="schoolGrade" id="schoolGrade"
+                                                                class="form-control"
+                                                                value="{{ $gradeData->schoolGrade }}">
+                                                        </div>
+                                                        <div class="col-12 col-md-4">
+                                                            <label for="generalAverage"
+                                                                class="form-label fw-bold">General Average</label>
+                                                            <input type="text" name="generalAverage"
+                                                                id="generalAverage" class="form-control"
+                                                                value="{{ $gradeData->generalAverage }}">
+                                                        </div>
+                                                    @endforeach
                                                 @endif
                                             </div>
 
@@ -256,8 +262,8 @@
                                                     !empty($academicInfoChoiceData->first_choice_course) ||
                                                     !empty($academicInfoChoiceData->second_choice_course) ||
                                                     !empty($academicInfoChoiceData->third_choice_course))
-                                                <h6 class="mt-4 mb-3 mt-5"
-                                                    style="color: #0A6E57; font-weight: bold;">SCHOOL APPLICATIONS</h6>
+                                                <h6 class="mt-4 mb-3 mt-5" style="color: #0A6E57; font-weight: bold;">
+                                                    SCHOOL APPLICATIONS</h6>
                                                 <div class="row g-3">
                                                     @if (!empty($academicInfoChoiceData->first_choice_school))
                                                         <div class="col-12 col-md-6">
@@ -288,8 +294,8 @@
                                                     @endif
                                                 </div>
 
-                                                <h6 class="mt-4 mb-3 mt-5"
-                                                    style="color: #0A6E57; font-weight: bold;">CHOICE COURSES</h6>
+                                                <h6 class="mt-4 mb-3 mt-5" style="color: #0A6E57; font-weight: bold;">
+                                                    CHOICE COURSES</h6>
                                                 <div class="row g-3">
                                                     @if (!empty($academicInfoChoiceData->first_choice_course))
                                                         <div class="col-12 col-md-6">
@@ -325,33 +331,24 @@
                                         <!-- Family Information Tab -->
                                         <div class="tab-pane fade" id="family-info-tab" role="tabpanel"
                                             aria-labelledby="family-info">
-                                            <h6 class="mt-4 mb-3 mt-2"
-                                                style="color: #0A6E57; font-weight: bold;">FAMILY INFORMATION</h6>
+                                            <h6 class="mt-4 mb-3 mt-2" style="color: #0A6E57; font-weight: bold;">FAMILY
+                                                INFORMATION</h6>
+
+                                            <!-- Total Household Members -->
                                             <div class="row g-3">
-                                                <div class="col-12 col-md-6">
+                                                <div class="col-12">
                                                     <label for="total_household_members"
                                                         class="form-label fw-bold">Total Household Members</label>
                                                     <input type="number" name="total_household_members"
                                                         id="total_household_members" class="form-control"
                                                         value="{{ $familyInfoData->total_household_members ?? '' }}">
                                                 </div>
-                                                <div class="col-12 col-md-6">
-                                                    <label for="payslip" class="form-label fw-bold">Payslip</label>
-                                                    <div class="input-group mb-3">
-                                                        <input type="file" name="payslip" id="payslip"
-                                                            class="form-control" accept=".pdf">
-                                                        @if (!empty($familyInfoData->payslip))
-                                                            <div class="input-group-append">
-                                                                <span class="input-group-text">
-                                                                    <a href="{{ asset('storage/Payslips/' . $familyInfoData->payslip) }}"
-                                                                        target="_blank">View Current Payslip</a>
-                                                                </span>
-                                                            </div>
-                                                        @endif
-                                                    </div>
+                                            </div>
 
-
-                                                </div>
+                                            <!-- Father's Details -->
+                                            <h6 class="mt-4 mb-3 mt-2" style="color: #0A6E57; font-weight: bold;">
+                                                FATHER'S DETAILS</h6>
+                                            <div class="row g-3">
                                                 <div class="col-12 col-md-6">
                                                     <label for="father_occupation" class="form-label fw-bold">Father's
                                                         Occupation</label>
@@ -366,6 +363,12 @@
                                                         id="father_income" class="form-control"
                                                         value="{{ $familyInfoData->father_income ?? '' }}">
                                                 </div>
+                                            </div>
+
+                                            <!-- Mother's Details -->
+                                            <h6 class="mt-4 mb-3 mt-2" style="color: #0A6E57; font-weight: bold;">
+                                                MOTHER'S DETAILS</h6>
+                                            <div class="row g-3">
                                                 <div class="col-12 col-md-6">
                                                     <label for="mother_occupation" class="form-label fw-bold">Mother's
                                                         Occupation</label>
@@ -381,7 +384,47 @@
                                                         value="{{ $familyInfoData->mother_income ?? '' }}">
                                                 </div>
                                             </div>
+
+                                            <!-- Other Support Details -->
+                                            <h6 class="mt-4 mb-3 mt-2" style="color: #0A6E57; font-weight: bold;">
+                                                OTHER SUPPORT DETAILS</h6>
+                                            <div class="row g-3">
+                                                <div class="col-12 col-md-4">
+                                                    <label for="othersOccupation" class="form-label fw-bold">Other
+                                                        Support Occupation</label>
+                                                    <input type="text" name="othersOccupation"
+                                                        id="othersOccupation" class="form-control"
+                                                        value="{{ $familyInfoData->othersOccupation ?? '' }}">
+                                                </div>
+
+                                                <div class="col-12 col-md-4">
+                                                    <label for="othersRelationship"
+                                                        class="form-label fw-bold">Relationship</label>
+                                                    <input type="text" name="othersRelationship"
+                                                        id="othersRelationship" class="form-control"
+                                                        value="{{ $familyInfoData->othersRelationship ?? '' }}">
+                                                </div>
+
+                                                <div class="col-12 col-md-4">
+                                                    <label for="othersIncome" class="form-label fw-bold">Other Support
+                                                        Income</label>
+                                                    <input type="text" name="othersIncome" id="othersIncome"
+                                                        class="form-control"
+                                                        value="{{ $familyInfoData->othersIncome ?? '' }}">
+                                                </div>
+
+                                                <div class="col-12 col-md-12">
+                                                    <label for="additionalInfo" class="form-label fw-bold">Additional
+                                                        Information</label>
+                                                    <textarea name="additionalInfo" id="additionalInfo" class="form-control" rows="3">{{ $familyInfoData->additionalInfo ?? '' }}</textarea>
+                                                </div>
+
+
+
+
+                                            </div>
                                         </div>
+
                                         {{-- <div class="row mt-4">
                                             <div class="col-12">
                                                 <button type="submit" class="btn btn-success">Apply Again</button>

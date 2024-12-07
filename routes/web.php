@@ -7,6 +7,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\ApplicationSettingsController;
 use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\ForgotPasswordController;
 
 // ANNOUNCEMENT
 Route::get('/announcement', [ApplicantController::class, 'announcement'])->name('announcement')->middleware('PreventBackHistory');
@@ -18,6 +19,14 @@ Route::get('/contact', [ApplicantController::class, 'contact'])->name('contact')
 Route::get('/faq', [ApplicantController::class, 'faq'])->name('faq')->middleware('PreventBackHistory');
 
 Route::get('/data-privacy', [ApplicantController::class, 'dataPrivacy'])->name('data-privacy')->middleware('PreventBackHistory');
+
+Route::get('/forgot-password', [ForgotPasswordController::class, 'forgotPasswordPage'])->name('user.forgot-password.forgot-password')->middleware('PreventBackHistory');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->name('send-reset-link');
+Route::get('reset-password/{token}/{email}', [ForgotPasswordController::class, 'showResetForm'])
+     ->name('password.reset');
+
+Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
+
 
 Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/', [ApplicantController::class, 'index'])->name('home');

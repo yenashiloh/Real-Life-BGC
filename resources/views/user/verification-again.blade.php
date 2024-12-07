@@ -35,7 +35,12 @@
 <link rel="stylesheet" href="../../../admin-assets/css/plugins.min.css" />
 <link rel="stylesheet" href="../../../admin-assets/css/kaiadmin.min.css" />
 <link rel="stylesheet" href="../../../admin-assets/css/style.css" />
+<style>
+    .fade {
+    transition: opacity 0.5s ease;
+}
 
+</style>
 <style>
     .card {
         width: 100%;
@@ -55,6 +60,18 @@
     style="min-height: 100vh; padding-left: 15px; padding-right: 15px;">
     <div class="container d-flex justify-content-center align-items-center" style="height: 100vh; padding: 20px;">
         <div class="card text-center" style="padding: 20px;">
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
+                {{ session('success') }}
+            </div>
+            @endif
+    
+            @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert">
+                {{ session('error') }}
+
+            </div>
+            @endif
             <div class="card-body">
                 <h1 class="fw-bold">Verify your Email Address</h1>
                 <img src="assets-applicant/img/verification_sent.png" class="img-fluid" alt="Successfully Sent Image"
@@ -67,7 +84,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -112,14 +128,20 @@
         const successAlert = document.getElementById('success-alert');
         const errorAlert = document.getElementById('error-alert');
 
-        if (successAlert) {
-            successAlert.classList.remove('show');
-            successAlert.classList.add('fade');
-        }
+        // Function to smoothly fade and remove the alert
+        const fadeOutAlert = (alertElement) => {
+            if (alertElement) {
+                alertElement.classList.remove('show');
+                alertElement.classList.add('fade');
 
-        if (errorAlert) {
-            errorAlert.classList.remove('show');
-            errorAlert.classList.add('fade');
-        }
-    }, 3000);
+                // Wait for the fade-out transition to finish before removing the alert from the DOM
+                setTimeout(() => {
+                    alertElement.remove(); // Remove from DOM after the fade transition
+                }, 500); // Match the duration of the fade transition
+            }
+        };
+
+        fadeOutAlert(successAlert);
+        fadeOutAlert(errorAlert);
+    }, 3000); // Trigger the fade-out after 3 seconds
 </script>

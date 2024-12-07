@@ -15,8 +15,9 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'applicants', 
     ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -86,6 +87,11 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
+
+        'applicants' => [
+            'driver' => 'eloquent',             // Use Eloquent model
+            'model' => App\Models\Applicant::class,  // Point to your Applicant model
+        ],
     ],
 
     /*
@@ -108,11 +114,10 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => 'password_reset_tokens',
+        'applicants' => [
+            'provider' => 'applicants',
+            'table' => 'password_reset_tokens', // Custom table name
             'expire' => 60,
-            'throttle' => 60,
         ],
     ],
 

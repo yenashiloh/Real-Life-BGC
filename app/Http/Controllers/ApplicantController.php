@@ -174,7 +174,7 @@ class ApplicantController extends Controller
         $applicantId = auth()->id();
         $personalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->first();
         $academicInfoData = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
-        $academicInfoGradesData = ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->first();
+        $academicInfoGradesData = ApplicantsAcademicInformationGrade::where('applicant_id', $applicantId)->get();
         $academicInfoChoiceData = ApplicantsAcademicInformationChoice::where('applicant_id', $applicantId)->first();
         $familyInfoData = ApplicantsFamilyInformation::where('applicant_id', $applicantId)->first();
         $members = Member::where('applicant_id', $applicantId)->get();
@@ -183,7 +183,7 @@ class ApplicantController extends Controller
             $file = $request->file('payslip');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('public/Payslips', $filename);
-            
+    
             if (!$familyInfoData) {
                 $familyInfoData = new ApplicantsFamilyInformation();
                 $familyInfoData->applicant_id = $applicantId;

@@ -31,4 +31,11 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'google' => [
+        'drive' => [
+            'credentials_path' => 'app/google-drive/google-drive-credentials.json',
+            'folder_id' => env('GOOGLE_DRIVE_FOLDER_ID'),
+        ],
+    ],
+
 ];

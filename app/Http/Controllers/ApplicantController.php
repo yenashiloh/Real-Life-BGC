@@ -92,9 +92,10 @@ class ApplicantController extends Controller
     public function showVerification()
     {
         $title = 'Verification';
-        return view('user.verification')->with('title', $title);
+        $email = session('registered_email');
+        return view('user.verification', compact('title', 'email'));
     }
-
+    
     //show applicant dashboard page
     public function applicantDashboard()
     {
@@ -122,29 +123,46 @@ class ApplicantController extends Controller
         $title = 'Dashboard';
         $reportcardData = Requirement::where('applicant_id', $applicantId)->get();
     
-        $reportcardData = $reportcardData->map(function ($item) {
-            if ($item->uploaded_at && is_string($item->uploaded_at)) {
-                $item->uploaded_at = \Carbon\Carbon::parse($item->uploaded_at);
-            }
-            return $item;
-        });
-    
-        $documentTypes = [
+        $incomingGradeYear = $academicInfoData->incoming_grade_year ?? null;
+
+           $documentTypes = [
             "Signed Application Form",
             "Birth Certificate",
             "Character Evaluation Forms",
             "Proof of Financial Status",
-            'Application Form',
-            'Character References',
+            "Application Form",
+            "Character References",
             "Two References Form",
             "Home Visitation Form",
             "Report Card / Grades",
             "Prospectus",
             "Official Grading System",
             "Tuition Projection",
-            "Admission Slip"
+            "Admission Slip",
         ];
     
+        if ($incomingGradeYear === 'First Year College' || 
+            $incomingGradeYear === 'Second Year College' || 
+            $incomingGradeYear === 'Third Year College' || 
+            $incomingGradeYear === 'Fourth Year College') {
+        } else {
+            $documentTypes = array_diff($documentTypes, ["Official Grading System"]);
+        }
+
+        if ($incomingGradeYear === 'Second Year College' || 
+            $incomingGradeYear === 'Third Year College' || 
+            $incomingGradeYear === 'Fourth Year College') {
+        } else {
+            $documentTypes = array_diff($documentTypes, ["Prospectus"]);
+        }
+
+        $reportcardData = $reportcardData->map(function ($item) {
+            if ($item->uploaded_at && is_string($item->uploaded_at)) {
+                $item->uploaded_at = \Carbon\Carbon::parse($item->uploaded_at);
+            }
+            return $item;
+        });
+
         return view('user.applicant_dashboard', compact('title', 'academicInfoData', 'academicInfoGradesData',
             'academicInfoChoiceData', 'personalInfo', 'reportcardData', 'documentTypes', 'approvedDocumentTypes', 
             'totalDocuments', 'totalApprovedDocuments', 'totalDeclinedDocuments'));
@@ -376,39 +394,48 @@ class ApplicantController extends Controller
     }
     
     //login post
-    function loginPost(Request $request)
+    public function loginPost(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
-
+    
         $credentials = $request->only('email', 'password');
-
+    
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-
+    
             if ($user instanceof Applicant) {
-                Log::debug('User is an applicant');
-
-                if (!$user->verify_status) {
+                if (!$user->verify_status || !$user->email_verified_at) {
                     Auth::logout();
-                    return redirect(route('login'))->with("error", "Your email is not verified. Please verify your email before logging in.");
-                }
-
-                if ($user->api_token) {
-                    Auth::logout();
-                    return redirect(route('login'))->with("error", "Your account is not verified. Please verify your email before logging in.");
+    
+                    session(['unverified_email' => $user->email]);
+    
+                    if (!$user->api_token) {
+                        $user->api_token = Str::random(60);
+                        $user->save();
+                    }
+    
+                    try {
+                        Mail::to($user->email)->send(new VerificationMail($user));
+                    } catch (\Exception $e) {
+                        Log::error('Failed to send verification email on login: ' . $e->getMessage());
+                    }
+    
+                    return redirect(route('verification-again'))
+                        ->with("error", "Your email is not verified. A new verification email has been sent to your email address.");
                 }
             }
-
-            Log::debug('Login successful');
+    
             return redirect()->intended(route('user.applicant_dashboard'));
         }
-
-        return redirect(route('login'))->with("error", "Incorrect email address or password. Please try again.");
+    
+        return redirect(route('login'))
+            ->with("error", "Incorrect email address or password. Please try again.");
     }
-
+    
+    //register 
     public function register()
     {
         $title = 'Register';
@@ -665,7 +692,7 @@ class ApplicantController extends Controller
     
         $familyInfoData= $request->only([
             'total_household_members','father_occupation','father_incom','mother_occupation',
-            'mother_income', 'total_support_received'
+            'mother_income'
         ]);
        
         $familyInfo = ApplicantsFamilyInformation::updateOrCreate(
@@ -864,13 +891,15 @@ class ApplicantController extends Controller
                 'street' => 'required',
                 'barangay' => 'required',
                 'municipality' => 'required',
-                'mapAddress' => 'file|mimes:jpeg,jpg,png,pdf|max:2048',
+                'mapAddress' => 'file|mimes:jpeg,jpg,png,pdf',
                 'attend_orientation' => 'required|in:yes,no',
                 'orientation_date' => 'required_if:attend_orientation,yes',
-                'orientation_proof' => 'nullable|file|mimes:jpeg,jpg,png,pdf|max:2048',
+                'orientation_proof' => 'nullable|file|mimes:jpeg,jpg,png,pdf',
                 'schoolGrade.*' => 'required|string',
                 'yearLevel.*' => 'required|string',
-                'generalAverage.*' => 'required|numeric|between:0,100'
+                'generalAverage.*' => 'required|numeric|between:0,100',
+                'reasonGrades' => 'required|string',
+                'current_course_program_grade' => 'nullable|string',
             ]);
 
             \Log::info('Validation Passed');
@@ -931,17 +960,29 @@ class ApplicantController extends Controller
             $academicInfoData = [
                 'applicant_id' => $applicant->applicant_id,
                 'incoming_grade_year' => $convertedGrade,
-                'current_course_program_grade' => $request->currentProgram,
-                'current_school' => $request->currentSchool
+                'current_course_program_grade' => $request->current_course_program_grade,
+                'current_school' => $request->currentSchool,
+                'reasonGrades' => $request->reasonGrades 
             ];
             ApplicantsAcademicInformation::create($academicInfoData);
     
+            $academicInfoChoiceData = [
+                'applicant_id' => $applicant->applicant_id,
+                'first_choice_school' => $request->schoolChoice1,
+                'second_choice_school' => $request->schoolChoice2,
+                'third_choice_school' => $request->schoolChoice3,
+                'first_choice_course' => $request->courseChoice1,
+                'second_choice_course' => $request->courseChoice2,
+                'third_choice_course' => $request->courseChoice3,
+            ];
+            ApplicantsAcademicInformationChoice::create($academicInfoChoiceData);
+
             //academic choices
             $schoolGrades = $request->schoolGrade;
-            $yearLevels = $request->yearLevel ?? [];
-            $generalAverages = $request->generalAverage ?? [];
+            $yearLevels = $request->yearLevel; 
+            $generalAverages = $request->generalAverage;
             
-            //school grades
+            //grades
             $schoolGrades = is_array($schoolGrades) ? $schoolGrades : [$schoolGrades];
             $yearLevels = is_array($yearLevels) ? $yearLevels : [$yearLevels];
             $generalAverages = is_array($generalAverages) ? $generalAverages : [$generalAverages];
@@ -951,10 +992,10 @@ class ApplicantController extends Controller
                     'applicant_id' => $applicant->applicant_id,
                     'schoolGrade' => $schoolGrade,
                     'yearLevel' => $yearLevels[$index] ?? null,
-                    'generalAverage' => $generalAverages[$index] ?? null
+                    'generalAverage' => $generalAverages[$index] ?? null,
                 ]);
             }
-                
+                    
             //family information
             $familyInformationData = [
                 'applicant_id' => $applicant->applicant_id,
@@ -963,7 +1004,10 @@ class ApplicantController extends Controller
                 'father_income' => $request->fatherIncome,
                 'mother_occupation' => $request->motherOccupation,
                 'mother_income' => $request->incomeMother,
-                'total_support_received' => str_replace(',', '', $request->supportReceived)
+                'othersOccupation' => $request->othersOccupation,
+                'othersRelationship' => $request->othersRelationship,
+                'othersIncome' => $request->othersIncome,
+                'additionalInfo' => $request->additionalInfo
             ];
             ApplicantsFamilyInformation::create($familyInformationData);
     
@@ -1030,6 +1074,24 @@ class ApplicantController extends Controller
                     'uploaded_at' => now()
                 ]);
             }
+
+            if ($request->hasFile('GradingSystem')) {
+                $gradingSystemFile = $request->file('GradingSystem');
+                $gradingSystemname = $gradingSystemFile->getClientOriginalName();
+                
+                $gradingSystemPath = $gradingSystemFile->storeAs('grading-system', $gradingSystemname, 'public');
+                
+                Requirement::create([
+                    'applicant_id' => $applicant->applicant_id,
+                    'document_type' => 'Grading System',
+                    'uploaded_document' => $gradingSystemPath,
+                    'status' => 'For Review',
+                    'uploaded_at' => now()
+                ]);
+                \Log::info('GradingSystem File Path:', ['path' => $gradingSystemPath]);
+
+            }
+            
             
             //attendance record
             $attendanceData = [
@@ -1057,12 +1119,14 @@ class ApplicantController extends Controller
     
             DB::commit();
     
+            session(['registered_email' => $applicant->email]);
+
             return response()->json([
                 'message' => 'Registration successful, please check your email for verification.',
                 'redirect' => route('verification')
             ], 201);
     
-        } catch (\Exception $e) {
+    } catch (\Exception $e) {
             DB::rollback();
             \Log::error('Registration Failed: ' . $e->getMessage());
             \Log::error('Error Trace: ' . $e->getTraceAsString());    

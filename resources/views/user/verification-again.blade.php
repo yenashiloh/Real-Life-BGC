@@ -55,26 +55,11 @@
     style="min-height: 100vh; padding-left: 15px; padding-right: 15px;">
     <div class="container d-flex justify-content-center align-items-center" style="height: 100vh; padding: 20px;">
         <div class="card text-center" style="padding: 20px;">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
             <div class="card-body">
-
                 <h1 class="fw-bold">Verify your Email Address</h1>
                 <img src="assets-applicant/img/verification_sent.png" class="img-fluid" alt="Successfully Sent Image"
                     style="max-width: 30%; height: auto;">
-                <h5 style="padding: 10px;">Thank you for your interest in applying! We’ve sent an email to verify your
-                    address and activate your account.</h5>
+                <h5 style="padding: 10px;">Your email is not verified. A new verification email has been sent to your email address.</h5>
                 <p style="padding: 10px;">Did not receive the email? <a href="{{ route('resend.verification') }}"
                         style="text-decoration: underline !important; color: #71BF44;">
                         Click here to resend

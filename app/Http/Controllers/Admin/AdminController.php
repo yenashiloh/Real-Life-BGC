@@ -686,15 +686,37 @@ class AdminController extends Controller
             "Character Evaluation Forms",
             "Proof of Financial Status",
             'Application Form',
-            'Character References',
+            "Character References",
             "Two References Form",
             "Home Visitation Form",
             "Report Card / Grades",
             "Prospectus",
             "Official Grading System",
             "Tuition Projection",
-            "Admission Slip"
+            "Admission Slip",
         ];
+
+        $incomingGradeYear = $applicant->academicInformation->incoming_grade_year ?? null;
+
+        if ($incomingGradeYear === 'First Year College' || 
+            $incomingGradeYear === 'Second Year College' || 
+            $incomingGradeYear === 'Third Year College' || 
+            $incomingGradeYear === 'Fourth Year College') {
+            // "Official Grading System" is allowed for all college levels
+        } else {
+            // Remove "Official Grading System" for other grade levels
+            $documentTypes = array_diff($documentTypes, ["Official Grading System"]);
+        }
+
+        if ($incomingGradeYear === 'Second Year College' || 
+            $incomingGradeYear === 'Third Year College' || 
+            $incomingGradeYear === 'Fourth Year College') {
+            // "Prospectus" is allowed for 2nd year and above
+        } else {
+            // Remove "Prospectus" for other grade levels
+            $documentTypes = array_diff($documentTypes, ["Prospectus"]);
+        }
+
 
         $gradeFields = [
             'grade_11_sem1_gwa' => 'Grade 11 First Sem GWA',

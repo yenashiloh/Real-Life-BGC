@@ -42,8 +42,6 @@ class VerificationController extends Controller
         return response()->view('user.verification_success', ['message' => 'Your email is now verified and your application has successfully reached the scholarship provider.']);
     }
     
-
-    
     public function sendVerificationEmail($token)
     {
         $applicant = Applicant::where('api_token', $token)->first();
@@ -56,6 +54,46 @@ class VerificationController extends Controller
 
         return redirect()->back()->with('success', 'Verification email sent successfully.');
     }
+    
+    public function resendVerificationEmail()
+    {
+        $email = session('registered_email');
+        $unverifiedEmail = session('unverified_email');
+        
+        // Prioritize unverified email if available
+        $email = $unverifiedEmail ?: $email;
+        
+        if (!$email) {
+            return redirect(route('login'))
+                ->with('error', 'No email found to resend verification.');
+        }
+        
+        $applicant = Applicant::where('email', $email)->first();
+        
+        if (!$applicant) {
+            return redirect(route('login'))
+                ->with('error', 'Applicant not found.');
+        }
+        
+        // Generate a new token if needed
+        if (!$applicant->api_token) {
+            $applicant->api_token = Str::random(60);
+            $applicant->save();
+        }
+        
+        try {
+            Mail::to($applicant->email)->send(new VerificationMail($applicant));
+            
+            return redirect(route('verification-again'))
+                ->with('success', 'Verification email resent successfully.');
+        } catch (\Exception $e) {
+            Log::error('Failed to resend verification email: ' . $e->getMessage());
+            
+            return redirect(route('verification-again'))
+                ->with('error', 'Failed to resend verification email. Please try again.');
+        }
+    }
+
 
     public function showVerificationSuccess()
     {
@@ -63,4 +101,25 @@ class VerificationController extends Controller
         return view('user.verification_success')->with('title', $title);
     }
 
+    public function verificationAgain()
+    {
+        $email = session('unverified_email');
+        
+        if (!$email) {
+            return redirect(route('login'))
+                ->with('error', 'No unverified email found.');
+        }
+
+        $applicant = Applicant::where('email', $email)->first();
+        
+        if (!$applicant) {
+            return redirect(route('login'))
+                ->with('error', 'Applicant not found.');
+        }
+
+        return view('user.verification-again', [
+            'title' => 'Verification',
+            'email' => $email
+        ]);
+    }
 }

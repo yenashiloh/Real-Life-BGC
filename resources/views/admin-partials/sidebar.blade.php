@@ -41,8 +41,7 @@
                      </span>
                      <h4 class="text-section">Applicants</h4>
                  </li>
-                 <li
-                     class="nav-item {{ Route::currentRouteName() === 'admin.applicants.new_applicants' ? 'active' : '' }}">
+                 <li class="nav-item {{ request()->routeIs('admin.applicants.new_applicants', 'admin.view_applicant') ? 'active' : '' }}">
                      <a href="{{ route('admin.applicants.new_applicants') }}">
                          <i class="fas fa-users"></i>
                          <p>All Applicants</p>

@@ -7,12 +7,13 @@ const documentTypes = [
     { type: "Two Reference Forms", checkboxId: "flexCheckDefault6" },
     { type: "Home Visitation Form", checkboxId: "flexCheckDefault7" },
     { type: "Report Card / Grades", checkboxId: "flexCheckDefault8" },
-    { type: "Prospectus", checkboxId: "flexCheckDefault9" },
-    { type: "Official Grading System", checkboxId: "flexCheckDefault10" },
-    { type: "Tuition Projection", checkboxId: "flexCheckDefault11" },
-    { type: "Admission Slip", checkboxId: "flexCheckDefault12" },
-    { type: "Character References", checkboxId: "flexCheckDefault13" },
+    { type: "Tuition Projection", checkboxId: "flexCheckDefault9" },
+    { type: "Admission Slip", checkboxId: "flexCheckDefault10" },
+    { type: "Character References", checkboxId: "flexCheckDefault11" },
+    { type: "Official Grading System", checkboxId: "flexCheckDefault12" },
+    { type: "Prospectus", checkboxId: "flexCheckDefault13" }
 ];
+
 
 async function updateChecklistStatus() {
     try {

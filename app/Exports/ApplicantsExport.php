@@ -51,7 +51,6 @@ class ApplicantsExport implements FromCollection, WithHeadings, WithStyles
             'family_info.father_income',
             'family_info.mother_occupation',
             'family_info.mother_income',
-            'family_info.total_support_received'
         )
         ->join('applicants_personal_information as personal_info', 'applicants.applicant_id', '=', 'personal_info.applicant_id')
         ->join('applicants_academic_information as academic_info', 'applicants.applicant_id', '=', 'academic_info.applicant_id')

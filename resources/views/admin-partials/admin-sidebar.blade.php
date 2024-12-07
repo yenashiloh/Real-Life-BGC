@@ -123,13 +123,16 @@
               <i class="icon-screen-desktop menu-icon"></i>
             </a>
           </li>
-          <li class="nav-item nav-category"><span class="nav-link">Applicants</span></li>
-          <li class="nav-item">
+ 
+          <li class="nav-item {{ request()->routeIs('admin.applicants.new_applicants', 'admin.view_applicant') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.applicants.new_applicants') }}">
-              <span class="menu-title">All Applicants</span>
-              <i class="icon-people menu-icon"></i>
+                <span class="menu-title">All Applicantsss</span>
+                <i class="icon-people menu-icon"></i>
             </a>
-          </li>
+        </li>
+        
+        
+        
           <li class="nav-item">
             <a class="nav-link" href="{{ route('admin.applicants.approved_applicants') }}">
               <span class="menu-title">Approved Applicants</span>

@@ -66,7 +66,7 @@ class DocumentsController extends Controller
             "Prospectus",
             "Official Grading System",
             "Tuition Projection",
-            "Admission Slip"
+            "Admission Slip",
         ];
     
         return view('user.documents.upload-documents', compact('title', 'academicInfoData', 'academicInfoGradesData', 

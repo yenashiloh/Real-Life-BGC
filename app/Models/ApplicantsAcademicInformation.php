@@ -16,7 +16,8 @@ class ApplicantsAcademicInformation extends Model
         'applicant_id',
         'incoming_grade_year',
         'current_course_program_grade',
-        'current_school'
+        'current_school',
+        'reasonGrades'
     ];
     
     public function personalInformation()

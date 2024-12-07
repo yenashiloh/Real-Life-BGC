@@ -17,7 +17,10 @@ class ApplicantsFamilyInformation extends Model
         'father_income',
         'mother_occupation',
         'mother_income',
-        'total_support_received',
+        'othersOccupation',
+        'othersRelationship',
+        'othersIncome',
+        'additionalInfo'
     ];
     
     public function applicant()
@@ -42,5 +45,4 @@ class ApplicantsFamilyInformation extends Model
     {
         return $this->hasMany(ApplicantsAcademicInformationGrade::class, 'applicant_id');
     }
-
 }

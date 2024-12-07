@@ -45,7 +45,7 @@
       <button type="button" class="mt-1 sm:mt-0 button--simple" data-action="prev">
           Previous
       </button>
-      <button type="button" data-action="next">
+      <button type="button"  id="nextButton" data-action="next">
           Next
       </button>
   </div>

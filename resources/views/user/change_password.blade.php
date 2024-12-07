@@ -36,7 +36,7 @@
                             <i class="icon-arrow-right"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route ('user.change_password')}}">Change Password</a>
+                            <a href="{{ route('user.change_password') }}">Change Password</a>
                         </li>
                     </ul>
                 </div>
@@ -48,33 +48,40 @@
                                     @csrf
                                     <div id="message"></div>
 
-                                    <div class="row mb-3">
-                                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
-                                            Password</label>
-                                        <div class="col-md-8 col-lg-6">
-                                            <input name="current_password" type="password" class="form-control"
-                                                id="currentPassword" required>
+                                    <div class="row">
+                                        <!-- First Column -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="currentPassword" class="form-label">Current Password</label>
+                                                <input name="current_password" type="password" class="form-control"
+                                                    id="currentPassword" required>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- Second Column -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="newPassword" class="form-label">New Password</label>
+                                                <input name="new_password" type="password" class="form-control"
+                                                    id="newPassword" required>
+
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="row mb-3">
-                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
-                                            Password</label>
-                                        <div class="col-md-8 col-lg-6">
-                                            <input name="new_password" type="password" class="form-control"
-                                                id="newPassword" required>
+                                    <div class="row">
+                                        <!-- Third Column (with full width if needed) -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="renewPassword" class="form-label">Re-enter New
+                                                    Password</label>
+                                                <input name="renew_password" type="password" class="form-control"
+                                                    id="renewPassword" required>
+
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
-                                            Password</label>
-                                        <div class="col-md-8 col-lg-6">
-                                            <input name="renew_password" type="password" class="form-control"
-                                                id="renewPassword" required>
-                                        </div>
-                                    </div>
-
                                     <div class="p-1">
                                         <button type="submit" class="btn btn-success">Change Password</button>
                                     </div>

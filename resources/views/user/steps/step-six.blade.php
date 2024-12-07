@@ -14,8 +14,7 @@
              <label for="payslip">
                  Upload Proof of Financial Status
                  <span data-required="true" aria-hidden="true"></span>
-                 <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">PDF
-                     only</span>
+                 <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;"></span>
              </label>
              <input value="" id="payslip" type="file" name="payslip" autocomplete="payslip" required
                  style="padding" accept=".pdf">
@@ -58,14 +57,50 @@
          </div>
 
          <div class="mt-3 form__field">
+             <label for="othersOccupation">
+                 Others
+                 <span data-required="true" aria-hidden="true"></span>
+             </label>
+             <input value="" id="othersOccupation" type="text" name="othersOccupation"
+                 autocomplete="othersOccupation" required>
+         </div>
+
+         <div class="mt-3 form__field">
+             <label for="othersRelationship">
+                 Please specify relationship
+                 <span data-required="true" aria-hidden="true"></span>
+             </label>
+             <input value="" id="othersRelationship" type="text" name="othersRelationship"
+                 autocomplete="othersRelationship" required>
+         </div>
+     </div>
+
+     <div class="sm:d-grid sm:grid-col-12 ">
+         <div class="mt-3 form__field">
+             <label for="othersIncome">
+                 Monthly Net Income (take home pay)
+                 <span data-required="true" aria-hidden="true"></span>
+             </label>
+             <input value="" id="othersIncome" type="number" name="othersIncome" autocomplete="othersIncome"
+                 required>
+         </div>
+
+         <div class="mt-3 form__field" id="additionalInfoField">
+             <label for="additionalInfo">
+                 Please specify of there are additional information you would like to provide
+             </label>
+             <textarea id="additionalInfo" name="additionalInfo" rows="6"></textarea>
+         </div>
+     </div>
+     {{-- <div class="mt-3 form__field">
              <label for="supportReceived">
                  Total Support Received
                  <span data-required="true" aria-hidden="true"></span>
              </label>
              <input value="" id="supportReceived" type="text" name="supportReceived"
                  autocomplete="supportReceived" required readonly>
-         </div>
-     </div>
+        </div> --}}
+
 
      <div class="d-flex flex-column-reverse sm:flex-row align-items-center justify-center sm:justify-end mt-4 sm:mt-5">
          <button type="button" class="mt-1 sm:mt-0 button--simple" data-action="prev">

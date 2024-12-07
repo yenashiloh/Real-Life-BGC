@@ -664,7 +664,7 @@
                                     </li>
                                 </ul>
 
-                              <!-----------------------SUCCESS MESSAGE----------------------------------->
+                                <!-----------------------SUCCESS MESSAGE----------------------------------->
                                 <div class="toast-container position-fixed bottom-0 end-0 p-3">
                                     <div id="successToast" class="toast align-items-center text-bg-success border-0"
                                         role="alert" aria-live="assertive" aria-atomic="true">
@@ -687,51 +687,55 @@
                                                 PERSONAL INFORMATION</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-lg-3 col-md-4 label mt-2 bold-label">Status: </div>
+                                            <div class="col-lg-3 col-md-4 label mt-2 bold-label">Status </div>
                                             <div class="col-lg-9 col-md-8 mt-2">
                                                 {{ $status }}
                                             </div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-lg-3 col-md-4 label bold-label">First Name:</div>
+                                            <div class="col-lg-3 col-md-4 label bold-label">First Name</div>
                                             <div class="col-lg-9 col-md-8">{{ $applicant->first_name }}</div>
                                         </div>
 
                                         <div class="row mb-2">
-                                            <div class="col-lg-3 col-md-4 label bold-label">Last Name:</div>
+                                            <div class="col-lg-3 col-md-4 label bold-label">Last Name</div>
                                             <div class="col-lg-9 col-md-8">{{ $applicant->last_name }}</div>
                                         </div>
 
                                         <div class="row mb-2">
-                                            <div class="col-lg-3 col-md-4 label bold-label">Email:</div>
+                                            <div class="col-lg-3 col-md-4 label bold-label">Email</div>
                                             <div class="col-lg-9 col-md-8" style="text-transform:lowercase;">
                                                 {{ $email }}</div>
                                         </div>
 
                                         <div class="row mb-2">
-                                            <div class="col-lg-3 col-md-4 label bold-label">Contact Number:</div>
+                                            <div class="col-lg-3 col-md-4 label bold-label">Contact Number</div>
                                             <div class="col-lg-9 col-md-8">{{ $applicant->contact }}</div>
                                         </div>
 
                                         <div class="row mb-2">
-                                            <div class="col-lg-3 col-md-4 label bold-label">Birthday:</div>
+                                            <div class="col-lg-3 col-md-4 label bold-label">Birthdate</div>
                                             <div class="col-lg-9 col-md-8">
                                                 {{ date('F j, Y', strtotime($applicant->birthday)) }}
                                             </div>
                                         </div>
-
                                         <div class="row mb-2">
-                                            <div class="col-lg-3 col-md-4 label bold-label">House Number:</div>
+                                            <div class="col-lg-4 col-md-4 label"
+                                                style="margin-top: 20px; color: #0A6E57; font-weight: bold;">
+                                                ADDRESS</div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-lg-3 col-md-4 label bold-label">House Number</div>
                                             <div class="col-lg-9 col-md-8">{{ $applicant->house_number }}</div>
                                         </div>
 
                                         <div class="row mb-2">
-                                            <div class="col-lg-3 col-md-4 label bold-label">Street:</div>
+                                            <div class="col-lg-3 col-md-4 label bold-label">Street</div>
                                             <div class="col-lg-9 col-md-8">{{ $applicant->street }}</div>
                                         </div>
 
                                         <div class="row mb-2">
-                                            <div class="col-lg-3 col-md-4 label bold-label">Barangay:</div>
+                                            <div class="col-lg-3 col-md-4 label bold-label">Barangay</div>
                                             <div class="col-lg-9 col-md-8">{{ $applicant->barangay }}</div>
                                         </div>
 
@@ -739,23 +743,40 @@
                                             <div class="col-lg-3 col-md-4 label bold-label">Municipality:</div>
                                             <div class="col-lg-9 col-md-8">{{ $applicant->municipality }}</div>
                                         </div>
-                                        <br>
                                         <div class="mb-4">
-                                            <div class="label bold-label mb-2">Map Address:</div>
-                                            <div>
-                                                @php
-                                                    $filename = basename($applicant->mapAddress);
-                                                    $imagePath = public_path('storage/map-addresses/' . $filename);
-                                                    $imageUrl = asset('storage/map-addresses/' . $filename);
-                                                @endphp
-                                                <a href="{{ $imageUrl }}" target="_blank">
-                                                    <img src="{{ $imageUrl }}" alt="Map Address" class="img-fluid rounded" style="max-width: 50%; height: auto;">
-                                                </a>
-                                                @if (!file_exists($imagePath))
-                                                    <p class="text-danger mt-2">Map Address image file not found</p>
-                                                @endif
+                                            <div class="row">
+                                                <!-- Label Column -->
+                                                <div class="col-md-3">
+                                                    <div class="label bold-label mb-2">Map Address</div>
+                                                </div>
+                                                
+                                                <!-- File/Download Link Column -->
+                                                <div class="col-md-8">
+                                                    @php
+                                                        $filename = basename($applicant->mapAddress);
+                                                        $filePath = public_path('storage/map-addresses/' . $filename);
+                                                        $fileUrl = asset('storage/map-addresses/' . $filename);
+                                                        $isImage = in_array(strtolower(pathinfo($filename, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']);
+                                                    @endphp
+                                                    
+                                                    @if ($isImage)
+                                                        <a href="{{ $fileUrl }}" target="_blank" class="btn btn-link p-0">
+                                                            <i class="fas fa-file-download"></i> {{ $filename }}
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ $fileUrl }}" target="_blank" class="btn btn-link p-0">
+                                                            <i class="fas fa-file-download"></i> {{ $filename }}
+                                                        </a>
+                                                    @endif
+                                        
+                                                    @if (!file_exists($filePath))
+                                                        <p class="text-danger mt-2">Map Address file not found</p>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
+                                        
+                                        
                                     </div>
 
                                     <div class="tab-pane fade" id="academic-info-tab" role="tabpanel"
@@ -766,7 +787,7 @@
                                                 INFORMATION</div>
                                         </div>
                                         <div class="row mb-2">
-                                            <div class="col-lg-4 col-md-4 label bold-label">Incoming Grade:</div>
+                                            <div class="col-lg-4 col-md-4 label bold-label">Incoming Grade</div>
                                             <div class="capitalize col-lg-7 col-md-8">
                                                 {{ $applicant->academicInformation->incoming_grade_year }}</div>
                                         </div>
@@ -781,168 +802,114 @@
                                         @endif
 
                                         <div class="row mb-2">
-                                            <div class="col-lg-4 col-md-4 label bold-label">Current School:</div>
+                                            <div class="col-lg-4 col-md-4 label bold-label">Current School</div>
                                             <div class="capitalize col-lg-7 col-md-8">
                                                 {{ $applicant->academicInformation->current_school }}</div>
                                         </div>
 
-                                        @if ($applicant->grades->isNotEmpty())
-                                            @foreach ($applicant->grades as $grade)
+                                        @if ($applicant->choices->isNotEmpty())
+                                        @foreach ($applicant->choices as $choice)
+                                            @if ($choice->first_choice_school)
                                                 <div class="row mb-2">
-                                                    <div class="col-lg-4 col-md-4 label bold-label"
+                                                    <div class="col-lg-4 col-md-4 label"
                                                         style="margin-top: 20px; color: #0A6E57; font-weight: bold;">
-                                                        GRADES
+                                                        SCHOOL
+                                                        APPLICATIONS</div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label">First School Choice</div>
+                                                    <div class="capitalize col-lg-7 col-md-8">
+                                                        {{ $choice->first_choice_school }}</div>
+                                                </div>
+                                            @endif
+
+                                            @if ($choice->second_choice_school)
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label">Second School Choice</div>
+                                                    <div class="capitalize col-lg-7 col-md-8">
+                                                        {{ $choice->second_choice_school }}</div>
+                                                </div>
+                                            @endif
+
+                                            @if ($choice->third_choice_school)
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label">Third School Choice</div>
+                                                    <div class="capitalize col-lg-7 col-md-8">
+                                                        {{ $choice->third_choice_school }}</div>
+                                                </div>
+                                            @endif
+
+                                            @if ($choice->first_choice_course)
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label"
+                                                        style="margin-top: 20px;  color: #0A6E57; font-weight: bold; ">
+                                                        COURSE CHOICES</div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label">First Choice Course</div>
+                                                    <div class="capitalize col-lg-7 col-md-8">
+                                                        {{ $choice->first_choice_course }}</div>
+                                                </div>
+                                            @endif
+
+                                            @if ($choice->second_choice_course)
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label">Second Choice Course</div>
+                                                    <div class="capitalize col-lg-7 col-md-8">
+                                                        {{ $choice->second_choice_course }}</div>
+                                                </div>
+                                            @endif
+
+                                            @if ($choice->third_choice_course)
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label">Third Choice Course</div>
+                                                    <div class="capitalize col-lg-7 col-md-8">
+                                                        {{ $choice->third_choice_course }}</div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @endif
+
+                                        @if ($applicant->grades->isNotEmpty())
+                                        <!-- Display the phrase only once -->
+                                        <div class="row mb-2">
+                                            <div class="col-lg-4 col-md-4 label bold-label" style="margin-top: 20px; color: #0A6E57; font-weight: bold;">
+                                                GRADES
+                                            </div>
+                                        </div>
+                                    
+                                        @foreach ($applicant->grades as $grade)
+                                            @if (!empty($grade->yearLevel))
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label bold-label">Year Level</div>
+                                                    <div class="capitalize col-lg-7 col-md-8">
+                                                        {{ $grade->yearLevel }}
                                                     </div>
                                                 </div>
-                                                @if (!empty($grade->latestAverage))
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label bold-label">Latest Average:
-                                                        </div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $grade->latestAverage }}
-                                                        </div>
+                                            @endif
+                                    
+                                            @if (!empty($grade->schoolGrade))
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label bold-label">School</div>
+                                                    <div class="capitalize col-lg-7 col-md-8">
+                                                        {{ $grade->schoolGrade }}
                                                     </div>
-                                                @endif
-                                                @if (!empty($grade->latestGWA))
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label bold-label">Latest General
-                                                            Average:</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $grade->latestGWA }}
-                                                        </div>
+                                                </div>
+                                            @endif
+                                    
+                                            @if (!empty($grade->generalAverage))
+                                                <div class="row mb-2">
+                                                    <div class="col-lg-4 col-md-4 label bold-label">General Average</div>
+                                                    <div class="capitalize col-lg-7 col-md-8">
+                                                        {{ number_format($grade->generalAverage, 0) }}
                                                     </div>
-                                                @endif
-                                                @if (!empty($grade->scopeGWA))
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label bold-label">Scope General
-                                                            Average/GWA:</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $grade->scopeGWA }}</div>
-                                                    </div>
-                                                @endif
-                                                @if (!empty($grade->equivalentGrade))
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label bold-label">Equivalent
-                                                            Grade:</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $grade->equivalentGrade }}</div>
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        @endif
-
-                                        @if ($applicant->choices->isNotEmpty())
-                                            @foreach ($applicant->choices as $choice)
-                                                @if ($choice->first_choice_school)
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label"
-                                                            style="margin-top: 20px; color: #0A6E57; font-weight: bold;">
-                                                            SCHOOL
-                                                            APPLICATIONS</div>
-                                                    </div>
-
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label">First School Choice</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $choice->first_choice_school }}</div>
-                                                    </div>
-                                                @endif
-
-                                                @if ($choice->second_choice_school)
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label">Second School Choice</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $choice->second_choice_school }}</div>
-                                                    </div>
-                                                @endif
-
-                                                @if ($choice->third_choice_school)
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label">Third School Choice</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $choice->third_choice_school }}</div>
-                                                    </div>
-                                                @endif
-
-                                                @if ($choice->first_choice_course)
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label"
-                                                            style="margin-top: 20px;  color: #0A6E57; font-weight: bold; ">
-                                                            COURSE CHOICES</div>
-                                                    </div>
-
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label">First Choice Course</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $choice->first_choice_course }}</div>
-                                                    </div>
-                                                @endif
-
-                                                @if ($choice->second_choice_course)
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label">Second Choice Course</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $choice->second_choice_course }}</div>
-                                                    </div>
-                                                @endif
-
-                                                @if ($choice->third_choice_course)
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label">Third Choice Course</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $choice->third_choice_course }}</div>
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                        @foreach ($applicant->grades as $grade)
-                                            @for ($i = 3; $i <= 10; $i++)
-                                                @php
-                                                    $gradeField = 'grade_' . $i . '_gwa';
-                                                @endphp
-
-                                                @if ($grade->$gradeField && !$gradesExist)
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label"
-                                                            style="margin-top: 20px; color: #0A6E57; font-weight: bold;">
-                                                            GRADES</div>
-                                                    </div>
-                                                    @php $gradesExist = true; @endphp
-                                                @endif
-
-                                                @if ($grade->$gradeField)
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label">Grade {{ $i }}
-                                                            GWA</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">
-                                                            {{ $grade->$gradeField }}</div>
-                                                    </div>
-                                                @endif
-                                            @endfor
+                                                </div>
+                                            @endif
+                                            <hr>
                                         @endforeach
-                                        @php
-                                            $gradesExist = false;
-                                        @endphp
-
-                                        @foreach ($applicant->grades as $grade)
-                                            @foreach ($gradeFields as $field => $label)
-                                                @if ($grade->$field)
-                                                    @if (!$gradesExist)
-                                                        <div class="row mb-2">
-                                                            <div class="col-lg-4 col-md-4 label"
-                                                                style="margin-top: 20px; color: #0A6E57;">GRADES</div>
-                                                        </div>
-                                                        @php $gradesExist = true; @endphp
-                                                    @endif
-                                                    <div class="row mb-2">
-                                                        <div class="col-lg-4 col-md-4 label">{{ $label }}</div>
-                                                        <div class="capitalize col-lg-7 col-md-8">{{ $grade->$field }}
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        @endforeach
-
+                                    @endif
                                     </div>
 
                                     <div class="tab-pane fade" id="family-info-tab" role="tabpanel"
@@ -960,32 +927,57 @@
                                                     {{ $member->total_household_members ?? '' }}</div>
                                             </div>
                                             <div class="row mb-2">
-                                                <div class="col-lg-4 col-md-4 label bold-label">Father's Occupation:
+                                                <div class="col-lg-4 col-md-4 label"
+                                                    style="margin-top: 20px; color: #0A6E57; font-weight: bold;">FATHER'S DETAILS</div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-lg-4 col-md-4 label bold-label">Father's Occupation
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 capitalize">
                                                     {{ $member->father_occupation ?? '' }}</div>
                                             </div>
                                             <div class="row mb-2">
-                                                <div class="col-lg-4 col-md-4 label bold-label">Father's Income:</div>
+                                                <div class="col-lg-4 col-md-4 label bold-label">Father's Income</div>
                                                 <div class="col-lg-8 col-md-8 capitalize">
-                                                    {{ number_format($member->father_income ?? 0, 2) }}</div>
+                                                    ₱{{ number_format($member->father_income ?? 0, 2) }}</div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col-lg-4 col-md-4 label"
+                                                    style="margin-top: 20px; color: #0A6E57; font-weight: bold;">MOTHER'S DETAILS</div>
                                             </div>
                                             <div class="row mb-2">
-                                                <div class="col-lg-4 col-md-4 label bold-label">Mother's Occupation:
+                                                <div class="col-lg-4 col-md-4 label bold-label">Mother's Occupation
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 capitalize">
                                                     {{ $member->mother_occupation ?? '' }}</div>
                                             </div>
                                             <div class="row mb-2">
-                                                <div class="col-lg-4 col-md-4 label bold-label">Mother's Income:</div>
+                                                <div class="col-lg-4 col-md-4 label bold-label">Mother's Income</div>
                                                 <div class="col-lg-8 col-md-8 capitalize">
-                                                    {{ number_format($member->mother_income ?? 0, 2) }}</div>
+                                                    ₱{{ number_format($member->mother_income ?? 0, 2) }}</div>
+                                            </div>
+
+                                            <div class="row mb-2">
+                                                <div class="col-lg-4 col-md-4 label"
+                                                    style="margin-top: 20px; color: #0A6E57; font-weight: bold;">OTHER SUPPORT DETAILS</div>
                                             </div>
                                             <div class="row mb-2">
-                                                <div class="col-lg-4 col-md-4 label bold-label">Total Support Received:
-                                                </div>
+                                                <div class="col-lg-4 col-md-4 label bold-label">Other Support Occupation</div>
                                                 <div class="col-lg-8 col-md-8 capitalize">
-                                                    {{ number_format($member->total_support_received ?? 0, 2) }}</div>
+                                                    {{ $member->othersOccupation ?? '' }}</div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-lg-4 col-md-4 label bold-label">Other Support Income</div>
+                                                <div class="col-lg-8 col-md-8 capitalize">
+                                                    ₱{{ number_format((float) $member->othersIncome ?? 0, 2) }}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row mb-2">
+                                                <div class="col-lg-4 col-md-4 label bold-label">Relationship</div>
+                                                <div class="col-lg-8 col-md-8 capitalize">
+                                                    {{ $member->othersRelationship ?? '' }} </div>
                                             </div>
                                         @endforeach
                                     </div>
@@ -1016,10 +1008,11 @@
                                                                 <td
                                                                     style="max-width: 110px; word-wrap: break-word; overflow-wrap: break-word;">
                                                                     <a href="{{ Storage::url($requirement->uploaded_document) }}"
-                                                                        download="{{ basename($requirement->uploaded_document) }}"
+                                                                        target="_blank"
                                                                         class="text-primary">
                                                                         {{ basename($requirement->uploaded_document) }}
-                                                                    </a>
+                                                                     </a>
+                                                                     
                                                                 </td>
                                                                 <td>
                                                                     @if ($requirement->status == 'Approved')
@@ -1033,26 +1026,41 @@
                                                                             {{ $requirement->declined_reason }}</small>
                                                                     @elseif($requirement->status == 'For Review')
                                                                         <span
-                                                                            class="badge bg-warning text-dark">{{ $requirement->status }}</span>
+                                                                            class="badge bg-primary">{{ $requirement->status }}</span>
                                                                     @else
                                                                         {{ $requirement->status }}
                                                                     @endif
                                                                 </td>
                                                                 <td>
                                                                     @if ($requirement->status != 'Approved' && $requirement->status != 'Declined')
-                                                                        <div class="d-flex flex-column">
-                                                                            @if ($requirement->status != 'Approved' && $requirement->status != 'Declined')
-                                                                                <button type="button"
-                                                                                    class="btn btn-primary p-2 btn-fw change-status"
+                                                                        <div
+                                                                            class="d-flex justify-content-start align-items-center">
+                                                                            <div class="approve-button mx-1">
+                                                                                <a href="javascript:void(0)"
+                                                                                    class="btn btn-view p-2 btn-fw change-status"
                                                                                     data-requirement-id="{{ $requirement->id }}"
                                                                                     data-action="Approved"
-                                                                                    data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Approve</button>
-                                                                                <button type="button"
-                                                                                    class="btn btn-danger p-2 mt-1 btn-fw  open-decline-modal"
+                                                                                    data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-placement="top"
+                                                                                    title="Approve">
+                                                                                    <i class="fas fa-check"
+                                                                                        style="color: #28a745;"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="decline-button mx-1">
+                                                                                <a href="javascript:void(0)"
+                                                                                    class="btn btn-view p-2 btn-fw open-decline-modal"
                                                                                     data-requirement-id="{{ $requirement->id }}"
                                                                                     data-action="Declined"
-                                                                                    data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}">Decline</button>
-                                                                            @endif
+                                                                                    data-route="{{ route('requirements.file-status', ['requirement_id' => $requirement->id]) }}"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-placement="top"
+                                                                                    title="Decline">
+                                                                                    <i class="fas fa-times"
+                                                                                        style="color: red;"></i>
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
                                                                     @endif
                                                                 </td>

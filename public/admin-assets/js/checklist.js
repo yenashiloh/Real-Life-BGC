@@ -50,7 +50,6 @@ async function updateChecklistStatus() {
     }
 }
 
-
 document.addEventListener('change', function(event) {
     const target = event.target;
     if (target.type === 'checkbox') {

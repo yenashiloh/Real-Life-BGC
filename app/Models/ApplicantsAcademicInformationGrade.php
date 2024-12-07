@@ -18,5 +18,6 @@ class ApplicantsAcademicInformationGrade extends Model
         'schoolGrade',   
         'yearLevel',         
         'generalAverage', 
+        'GradingSystem',
     ];
 }

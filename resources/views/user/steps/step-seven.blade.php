@@ -5,8 +5,7 @@
              <label for="applicationForm">
                  Upload Application Form
                  <span data-required="true" aria-hidden="true"></span>
-                 <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">PDF
-                     only</span>
+                 <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;"></span>
              </label>
              <input value="" id="applicationForm" type="file" name="applicationForm"
                  autocomplete="applicationForm" required style="padding" accept=".pdf">
@@ -16,8 +15,7 @@
              <label for="characterReferences">
                  Upload 2 Character References
                  <span data-required="true" aria-hidden="true"></span>
-                 <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">PDF
-                     only</span>
+                 <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;"></span>
              </label>
              <input value="" id="characterReferences" type="file" name="characterReferences"
                  autocomplete="characterReferences" required style="padding" accept=".pdf">

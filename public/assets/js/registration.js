@@ -71,6 +71,9 @@ function getValidationData(field) {
           if (field.name === 'characterReferences') { 
             return validateCharacterReferences(field); 
           }
+          if (field.name === 'GradingSystem') { 
+            return validateGradingSystem(field); 
+          }
           if (field.name === 'reportCard') {
             return validateReportCard(field);
           } else if (field.name === 'mapAddress') {
@@ -87,18 +90,24 @@ function getValidationData(field) {
         default:
           throw new Error(`The provided field type '${field.tagName}:${field.type}' is not supported in this form.`);
       }
-    case 'textarea':
-      // if (field.name === 'noteAddress') {
-      //   if (field.value.trim() === '') {
-      //     return {
-      //       isValid: false,
-        
-      //     };
-      //   }
-      //   return { isValid: true };
-      // } else {
-      //   throw new Error(`The provided field type 'TEXTAREA:${field.name}' is not supported in this form.`);
-      // }
+      case 'textarea':
+        if (field.name === 'reasonGrades') {
+          if (field.value.trim() === '') {
+            return {
+              isValid: false,
+            };
+          }
+          return { isValid: true };
+        } else if (field.name === 'additionalInfo') {
+          if (field.value.trim() === '') {
+            return {
+              isValid: false,
+            };
+          }
+          return { isValid: true };
+        } else {
+          throw new Error(`The provided field type 'TEXTAREA:${field.name}' is not supported in this form.`);
+      }
       case 'select':
       if (field.name === 'attend-orientation' || field.id === 'attend-orientation') {
         const selectedOption = field.value;
@@ -189,17 +198,38 @@ const validateChoice = field => {
     }
   };
 
+    //validation for grading system file
+    const validateGradingSystem = (field) => {
+      const val = field.value.trim();
+      if (val === '' && field.required) {
+        return {
+          isValid: false,
+          message: 'Please complete this required field'
+        };
+      } else if (val !== '' && !isPDFFile(val)) {
+        return {
+          isValid: false,
+          message: 'Please upload a PDF file only.'
+        };
+      } else {
+        return {
+          isValid: true
+        };
+      }
+    };
+  
   //validition for map address
-  const validateMapAddress = field => {
+  const validateMapAddress = (field) => {
     const val = field.value.trim();
     if (val === '' && field.hasAttribute('required')) {
       return {
         isValid: false,
+        message: 'This field is required.'
       };
-    } else if (val !== '' && !isImageFile(val)) {
+    } else if (val !== '' && !isImageFile(val) && !isPDFFile(val)) {
       return {
         isValid: false,
-        message: 'Please upload JPG, JPEG, or PNG files only.'
+        message: 'Please upload JPG, JPEG, PNG, or PDF files only.'
       };
     } else {
       return {
@@ -468,48 +498,45 @@ const validateNumberRange = (field, min, max) => {
 };
 
 /*****************************************************************************
-* Average Validation
-*/
-const validateLatestAverage = (field, minPercentage) => {
-  const value = parseFloat(field.value);
-  if (isNaN(value) || value < minPercentage || value > 100) {
-    return {
-      isValid: false,
-      message: `To qualify for the scholarship, your General Average must be at least ${minPercentage}%.`
-    };
-  }
-  return { isValid: true };
-};
-
-/*****************************************************************************
 * Password Validation
 */
-const validatePassword = field => {
+const validatePassword = (field) => {
   const val = field.value.trim();
 
+  // Check if the field is required and empty
   if (val === '' && field.required) {
     return {
       isValid: false,
+      message: 'Password is required.',
     };
   }
 
+  // Regular expressions to validate password
   const hasLowercase = /[a-z]/.test(val);
-
   const hasUppercase = /[A-Z]/.test(val);
-
   const hasNumber = /\d/.test(val);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(val);
+  const hasMinLength = val.length >= 6;
 
-  const hasMinLength = val.length >= 8;
-
-  if (!(hasLowercase && hasUppercase && hasNumber && hasMinLength)) {
+  // Validate all conditions
+  if (
+    !(
+      hasLowercase &&
+      hasUppercase &&
+      hasNumber &&
+      hasSpecialChar &&
+      hasMinLength
+    )
+  ) {
     return {
       isValid: false,
-      message: 'Requires one lowercase letter, one capital letter, one number, and a minimum of 8 characters.'
+      message:
+        'Password must be at least 6 characters long, and include one lowercase letter, one uppercase letter, one number, and one special character.',
     };
   }
 
   return {
-    isValid: true
+    isValid: true,
   };
 };
 
@@ -524,14 +551,13 @@ const validateConfirmPassword = field => {
   if (val === '' && field.required) {
     return {
       isValid: false,
-      message: 'Please confirm your password.'
     };
   }
 
   if (val !== password) {
     return {
       isValid: false,
-      message: 'Password and Confirm Password doesn\'t match.'
+      message: 'Password and Confirm Password do not match.',
     };
   }
 
@@ -953,7 +979,7 @@ function saveFormData() {
 
   inputs.forEach(function (input) {
       if (input.type === "select-one") {
-          formData[input.name] = input.selectedIndex;
+          formData[input.name] = input.value; // Changed from selectedIndex to value
       } else if (input.type === "checkbox") {
           formData[input.name] = input.checked; 
       } else if (input.type === "file") {
@@ -972,24 +998,38 @@ function loadFormData() {
   if (storedData) {
       var formData = JSON.parse(storedData);
 
+      // First, set the incoming grade select
+      var incomingGradeSelect = document.getElementById('incomingGrade');
+      if (incomingGradeSelect && formData['incomingGrade']) {
+          incomingGradeSelect.value = formData['incomingGrade'];
+          
+          // Create and dispatch a custom event that we'll use to handle grade level generation
+          var event = new CustomEvent('dynamicGradeChange', { 
+              detail: { selectedValue: formData['incomingGrade'] } 
+          });
+          incomingGradeSelect.dispatchEvent(event);
+      }
+
+      // Then load other form fields
       for (var key in formData) {
           if (formData.hasOwnProperty(key)) {
-              var inputElement = document.querySelector('[name="' + key + '"]');
-              if (inputElement) {
-                  if (inputElement.type === "select-one") {
-                      inputElement.selectedIndex = formData[key];
-                      inputElement.dispatchEvent(new Event('change'));
-                  } else if (inputElement.type === "checkbox") {
-                      inputElement.checked = formData[key]; 
-                  } else if (inputElement.type !== "file") {
-                      inputElement.value = formData[key];
+              var inputElements = document.querySelectorAll('[name="' + key + '"]');
+              inputElements.forEach(function(inputElement) {
+                  if (inputElement) {
+                      if (inputElement.type === "select-one") {
+                          inputElement.value = formData[key];
+                          inputElement.dispatchEvent(new Event('change'));
+                      } else if (inputElement.type === "checkbox") {
+                          inputElement.checked = formData[key]; 
+                      } else if (inputElement.type !== "file") {
+                          inputElement.value = formData[key];
+                      }
                   }
-              }
+              });
           }
       }
   }
 }
-
 
 window.addEventListener('beforeunload', saveFormData);
 window.addEventListener('load', loadFormData);
@@ -1007,151 +1047,148 @@ document.addEventListener("DOMContentLoaded", function () {
 /**
  * incoming grade or year level input field
  */
-document.getElementById('incomingGrade').addEventListener('change', function() {
+document.getElementById('incomingGrade').addEventListener('change', function () {
   const selectedValue = this.value;
   const additionalFields = document.getElementById('additionalFields');
   const currentProgramField = document.getElementById('currentProgramField');
   const currentProgramInput = document.getElementById('currentProgram');
-  
-  // clear any existing fields
-  additionalFields.innerHTML = '';
-  currentProgramInput.value = '';
 
-  // apply grid styles for desktop/laptop
-  additionalFields.style.gridTemplateColumns = 'repeat(3, 1fr)';
-  additionalFields.style.gap = '20px';
+  const schoolApplicationHeader = document.getElementById("schoolApplicationHeader");
+  const preferredProgramHeader = document.getElementById("preferredProgramHeader");
+
+  const gradingSystemField = document.getElementById('gradingSystemField');
+  const gradingSystemInput = document.getElementById('gradingSystem');
+
+  const reasonGradesField = document.getElementById('reasonGradesField');
+  const reasonGradesInput = document.getElementById('reasonGrades');
+    
+  const gradesLabel = document.getElementById('gradesLabel');
+  gradesLabel.style.display = selectedValue ? 'block' : 'none';
+
+  if (selectedValue) {
+    reasonGradesField.style.display = 'block';
+    reasonGradesInput.setAttribute('required', 'required');
+  } else {
+      reasonGradesField.style.display = 'none';
+      reasonGradesInput.removeAttribute('required');
+      reasonGradesInput.value = ''; // Clear the textarea
+  }
+
+  // Clear dynamically generated fields
+  additionalFields.innerHTML = '';
+  currentProgramInput.value = ''; // Clear current program input
+  gradingSystemInput.value = ''; // Clear grading system input
 
   const gradeLevels = {
-    'GradeSeven': ['Grade 5', 'Grade 4', 'Grade 3'],
-    'GradeEight': ['Grade 6', 'Grade 5', 'Grade 4'],
-    'GradeNine': ['Grade 7', 'Grade 6', 'Grade 5'],
-    'GradeTen': ['Grade 8', 'Grade 7', 'Grade 6'],
-    'GradeEleven': ['Grade 9', 'Grade 8', 'Grade 7'],
-    'GradeTwelve': ['Grade 10', 'Grade 9', 'Grade 8'],
-    'FirstYear': ['Grade 11', 'Grade 10', 'Grade 9'],
-    'SecondYear': ['Grade 12', 'Grade 11', 'Grade 10'],
-    'ThirdYear': ['First Year College', 'Grade 12', 'Grade 11']
+      'GradeSeven': ['Grade 3', 'Grade 4', 'Grade 5'],
+      'GradeEight': ['Grade 4', 'Grade 5', 'Grade 6'],
+      'GradeNine': ['Grade 5', 'Grade 6', 'Grade 7'],
+      'GradeTen': ['Grade 6', 'Grade 7', 'Grade 8'],
+      'GradeEleven': ['Grade 7', 'Grade 8', 'Grade 9'],
+      'GradeTwelve': ['Grade 8', 'Grade 9', 'Grade 10'],
+      'FirstYear': ['Grade 9', 'Grade 10', 'Grade 11'],
+      'SecondYear': ['Grade 10', 'Grade 11', 'Grade 12'],
+      'ThirdYear': ['Grade 11', 'Grade 12', 'First Year College'],
+      'FourthYear': ['Grade 12', 'First Year College', 'Second Year College']
   };
-  
-  //show the current program if they are incoming second year to fourth year
+
+  // Handle dynamic grade levels
+  let requiresGradingSystem = false;
+
+  if (gradeLevels[selectedValue]) {
+      gradeLevels[selectedValue].forEach((grade, i) => {
+          // Check if grading system is required
+          if (['Grade 11', 'Grade 12', 'First Year College', 'Second Year College'].includes(grade)) {
+              requiresGradingSystem = true;
+          }
+
+          const yearLevelField = document.createElement('div');
+          yearLevelField.className = 'form__field';
+          yearLevelField.innerHTML = `
+              <label for="yearLevel${i + 1}">
+                  Grade Level
+                  <span class="text-red-500" style="color: red;">*</span>
+              </label>
+              <input type="text" id="yearLevel${i + 1}" name="yearLevel[]" value="${grade}" disabled required style="background-color: #f0f0f0; color: #888;">
+              <input type="hidden" name="yearLevel[]" value="${grade}">
+          `;
+          additionalFields.appendChild(yearLevelField);
+
+          const schoolField = document.createElement('div');
+          schoolField.className = 'form__field';
+          schoolField.innerHTML = `
+              <label for="schoolGrade${i + 1}">
+                  School
+                  <span class="text-red-500" style="color: red;">*</span>
+              </label>
+              <input type="text" id="schoolGrade${i + 1}" name="schoolGrade[]" autocomplete="school" required>
+          `;
+          additionalFields.appendChild(schoolField);
+
+          const generalAverageField = document.createElement('div');
+          generalAverageField.className = 'form__field';
+          const isFinalGWA = ['Grade 11', 'Grade 12', 'First Year College', 'Second Year College'].includes(grade);
+          generalAverageField.innerHTML = `
+              <label for="generalAverage${i + 1}">
+                  ${isFinalGWA ? 'Final General Weighted Average' : 'General Average'}
+                  <span class="text-red-500" style="color: red;">*</span>
+              </label>
+              <input type="number" id="generalAverage${i + 1}" name="generalAverage[]" autocomplete="generalAverage" required>
+          `;
+          additionalFields.appendChild(generalAverageField);
+      });
+  }
+
+  // Show or hide Grading System field based on Grade 11, 12, or College level
+  if (requiresGradingSystem) {
+      gradingSystemField.style.display = 'block';
+      gradingSystemInput.setAttribute('required', 'required');
+  } else {
+      gradingSystemField.style.display = 'none';
+      gradingSystemInput.removeAttribute('required');
+      gradingSystemInput.value = ''; // Reset the value when not required
+  }
+
+  // Show/Hide currentProgramField based on selected value (Second Year, Third Year, Fourth Year)
   const collegeYearsWithProgram = ['SecondYear', 'ThirdYear', 'FourthYear'];
   if (collegeYearsWithProgram.includes(selectedValue)) {
-    currentProgramField.style.display = 'block';
-    currentProgramInput.setAttribute('required', 'required');
+      currentProgramField.style.display = 'block';
+      currentProgramInput.setAttribute('required', 'required');
   } else {
-    currentProgramField.style.display = 'none';
-    currentProgramInput.removeAttribute('required');
+      currentProgramField.style.display = 'none';
+      currentProgramInput.removeAttribute('required');
+      currentProgramInput.value = ''; // Reset the value when not required
   }
-  
-  if (gradeLevels[selectedValue]) {
-    for (let i = 0; i < 3; i++) {
-      const yearLevelField = document.createElement('div');
-      yearLevelField.className = 'form__field';
-      yearLevelField.innerHTML = `
-        <label for="yearLevel${i + 1}">
-          Grade Level
-          <span class="text-red-500" style="color: red;">*</span>
-        </label>
-        <input type="text" id="yearLevel${i + 1}" name="yearLevel[]" 
-               value="${gradeLevels[selectedValue][i]}" disabled required
-               style="background-color: #f0f0f0; color: #888;">
-      `;
-      additionalFields.appendChild(yearLevelField);
 
-      // school input field
-      const schoolField = document.createElement('div');
-      schoolField.className = 'form__field';
-      schoolField.innerHTML = `
-        <label for="schoolGrade${i + 1}">
-          School
-          <span class="text-red-500" style="color: red;">*</span>
-        </label>
-        <input type="text" id="schoolGrade${i + 1}" name="schoolGrade[]" 
-               autocomplete="school" required>
-      `;
-      additionalFields.appendChild(schoolField);
-
-      // general Average input field
-      const generalAverageField = document.createElement('div');
-      generalAverageField.className = 'form__field';
-      generalAverageField.innerHTML = `
-        <label for="generalAverage${i + 1}">
-          General Average
-          <span class="text-red-500" style="color: red;">*</span>
-        </label>
-        <input type="number" id="generalAverage${i + 1}" name="generalAverage[]" 
-               autocomplete="generalAverage" required>
-      `;
-      additionalFields.appendChild(generalAverageField);
-    }
-  }
-  
+  // Show/Hide School Application and Preferred Program sections for First Year College
   const isFirstYearCollege = selectedValue === 'FirstYear';
-    
-  // school Application fields
-  document.getElementById("schoolApplicationHeader").style.display = isFirstYearCollege ? "block" : "none";
-  
-  // school Choice fields
-  const schoolChoiceFields = ["schoolChoice1", "schoolChoice2", "schoolChoice3"];
-  schoolChoiceFields.forEach(field => {
-    const fieldElement = document.getElementById(field);
-    const fieldContainer = document.getElementById(field + "Field");
-    fieldContainer.style.display = isFirstYearCollege ? "block" : "none";
-    
-    if (isFirstYearCollege) {
-      fieldElement.setAttribute("required", "");
-      document.querySelector(`label[for="${field}"] span[data-required="true"]`).style.color = "red";
-    } else {
-      fieldElement.removeAttribute("required");
-      document.querySelector(`label[for="${field}"] span[data-required="true"]`).innerHTML = "";
-    }
-  });
+  schoolApplicationHeader.style.display = isFirstYearCollege ? 'block' : 'none';
+  preferredProgramHeader.style.display = isFirstYearCollege ? 'block' : 'none';
 
-  // preferred Program fields
-  document.getElementById("preferredProgramHeader").style.display = isFirstYearCollege ? "block" : "none";
-  
-  // course Choice fields
-  const courseChoiceFields = ["courseChoice1", "courseChoice2", "courseChoice3"];
-  courseChoiceFields.forEach(field => {
-    const fieldElement = document.getElementById(field);
-    const fieldContainer = document.getElementById(field + "Field");
-    fieldContainer.style.display = isFirstYearCollege ? "block" : "none";
-    
-    if (isFirstYearCollege) {
-      fieldElement.setAttribute("required", "");
-      document.querySelector(`label[for="${field}"] span[data-required="true"]`).style.color = "red";
-    } else {
-      fieldElement.removeAttribute("required");
-      document.querySelector(`label[for="${field}"] span[data-required="true"]`).innerHTML = "";
-    }
+  const fieldsToToggle = ['schoolChoice1', 'schoolChoice2', 'schoolChoice3', 'courseChoice1', 'courseChoice2', 'courseChoice3'];
+  fieldsToToggle.forEach(fieldId => {
+      const fieldContainer = document.getElementById(`${fieldId}Field`);
+      const fieldInput = document.getElementById(fieldId);
+      if (fieldContainer) {
+          fieldContainer.style.display = isFirstYearCollege ? 'block' : 'none';
+          if (isFirstYearCollege) {
+              fieldInput.setAttribute('required', 'required');
+              fieldInput.value = ''; // Reset value
+          } else {
+              fieldInput.removeAttribute('required');
+              fieldInput.value = ''; // Reset value
+          }
+      }
   });
 });
-  
 
-
-
-/******************************************/
-//Total Received Income
-const fatherIncomeInput = document.getElementById('fatherIncome');
-const motherIncomeInput = document.getElementById('incomeMother');
-const supportReceivedInput = document.getElementById('supportReceived');
-
-// Function to format a number with commas as thousand separators
-function formatNumberWithCommas(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-// Function to calculate and update the total support received
-function updateTotalSupport() {
-  const fatherIncome = parseFloat(fatherIncomeInput.value) || 0;
-  const motherIncome = parseFloat(motherIncomeInput.value) || 0;
-  const totalSupport = fatherIncome + motherIncome;
-  supportReceivedInput.value = formatNumberWithCommas(totalSupport.toFixed(2));
-}
-
-// Add event listeners to the input elements to trigger the calculation
-fatherIncomeInput.addEventListener('input', updateTotalSupport);
-motherIncomeInput.addEventListener('input', updateTotalSupport);
+// Trigger the change event on page load to set the initial state
+window.addEventListener('load', function () {
+  const incomingGradeSelect = document.getElementById('incomingGrade');
+  if (incomingGradeSelect) {
+      incomingGradeSelect.dispatchEvent(new Event('change'));
+  }
+});
 
 /******************************************/
 /**

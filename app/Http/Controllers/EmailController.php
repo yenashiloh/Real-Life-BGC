@@ -26,7 +26,6 @@ use App\Models\ContentEmail;
 use App\Mail\IncompleteRequirementsNotification;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-
 class EmailController extends Controller
 {
     //send email to applicant
@@ -54,7 +53,7 @@ class EmailController extends Controller
         
             $senderName = $data['first_name'] . ' ' . $data['last_name'];
             
-            $message->to('reallifebgc@gmail.com')
+            $message->to('bullyproofumak@gmail.com')
                 ->subject($data['subject'])
                 ->from($data['email'], $senderName)
                 ->replyTo($data['email'], $senderName);
@@ -234,21 +233,34 @@ class EmailController extends Controller
     {
         try {
             $applicantPersonalInfo = ApplicantsPersonalInformation::where('applicant_id', $applicantId)->firstOrFail();
-
+    
             $applicant = $applicantPersonalInfo->applicant;
-
+    
             if (!$applicant) {
                 throw new ModelNotFoundException('Applicant not found for applicant_id: ' . $applicantId);
             }
-
+    
             $email = $applicant->email;
             $firstName = $applicant->applicants_personal_information->first_name ?? ''; 
+            
+            $academicInfo = ApplicantsAcademicInformation::where('applicant_id', $applicantId)->first();
+            $incomingGradeYear = $academicInfo->incoming_grade_year;
+    
             $uncheckedDocumentTypes = $request->input('document_types');
-
+    
+            $nonCollegeGrades = ['Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'];
+            if (in_array($incomingGradeYear, $nonCollegeGrades)) {
+                $uncheckedDocumentTypes = array_filter($uncheckedDocumentTypes, function($docType) {
+                    return $docType !== 'Prospectus' && $docType !== 'Official Grading System';
+                });
+            }
+    
             $subject = 'Incomplete Requirements';
-
-            Mail::to($email)->send(new IncompleteRequirementsNotification($uncheckedDocumentTypes, $firstName, $subject));
-
+    
+            if (!empty($uncheckedDocumentTypes)) {
+                Mail::to($email)->send(new IncompleteRequirementsNotification($uncheckedDocumentTypes, $firstName, $subject));
+            }
+    
             return response()->json(['message' => 'Notification sent successfully'], 200);
         } catch (ModelNotFoundException $e) {
             Log::error('Applicant not found: ' . $e->getMessage());

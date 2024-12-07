@@ -5,7 +5,7 @@
         high school students or the previous semester for college students.</p>
     <p>Upload the Report of Card for three indicated Grade/Year Levels.</p>
     <br>
-    <h2 class="mt-3" style="font-weight: bold;">Educational Background </h2>
+    <h2 class="mt-3">Educational Background </h2>
     <div class="sm:d-grid sm:grid-col-2">
         <div class="form__field">
             <label for="incoming-grade">
@@ -38,17 +38,6 @@
                 required>
         </div>
 
-        <div class="mb-3 form__field mt-3" id="ReportCardField">
-            <label for="ReportCard">
-                Report Card
-                <span data-required="true" aria-hidden="true"></span>
-                <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">PDF
-                    only</span>
-            </label>
-            <input value="" id="ReportCard" type="file" name="ReportCard" autocomplete="report card" required
-                style="padding" accept=".pdf">
-        </div>
-
         <div class="form__field mt-3" id="currentProgramField" style="display: none;">
             <label for="currentProgram">
                 Current Program/Course
@@ -59,9 +48,29 @@
             <input value="" id="currentProgram" type="text" name="current_course_program_grade"
                 autocomplete="current program">
         </div>
+
+        <div class=" form__field mt-3" id="ReportCardField">
+            <label for="ReportCard">
+                Upload Report Card
+                <span data-required="true" aria-hidden="true"></span>
+                <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;"></span>
+            </label>
+            <input value="" id="ReportCard" type="file" name="ReportCard" autocomplete="report card" required
+                style="padding" accept=".pdf">
+        </div>
+
+        <div class="mb-3 form__field mt-3" id="gradingSystemField" style="display: none;">
+            <label for="GradingSystem">
+                Upload Grading System
+                <span data-required="true" aria-hidden="true"></span>
+                <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;"></span>
+            </label>
+            <input value="" id="gradingSystem" type="file" name="GradingSystem" autocomplete="grading system"
+                style="padding" accept=".pdf">
+        </div>
     </div>
 
-    <h1 style="font-weight: bold;">Grades</h1>
+    <h2 class="mt-3" id="gradesLabel">Grades</h2>
     {{-- <div class="sm:d-grid sm:grid-col-2">
       <div class="form__field" id="firstGeneralAverageField" style="display: none;">
           <label for="firstGeneralAverage" id="firstGeneralAverage-label">
@@ -111,8 +120,15 @@
       </div>
   </div> --}}
     <div class="sm:d-grid sm:grid-col-3" id="additionalFields">
-
     </div>
+    <div class="mt-3 form__field" id="reasonGradesField" style="display: none;">
+        <label for="reasonGrades">
+            If the grade is below 88%, specify the reason (or enter 'N/A' if not applicable)
+            <span data-required="true" aria-hidden="true"></span>
+        </label>
+        <textarea id="reasonGrades" name="reasonGrades" rows="6" ></textarea>
+    </div>
+    
     <div class="sm:d-grid sm:grid-col-2">
         {{-- <div class="form__field" id="equivalentGradeField" style="display: none;">
               <label for="equivalentGrade">
@@ -161,7 +177,8 @@
                 Second Choice School
                 <span data-required="true" aria-hidden="true"></span>
             </label>
-            <input value="" type="text" id="schoolChoice2" name="schoolChoice2" autocomplete="schoolChoice2">
+            <input value="" type="text" id="schoolChoice2" name="schoolChoice2"
+                autocomplete="schoolChoice2">
         </div>
     </div>
 

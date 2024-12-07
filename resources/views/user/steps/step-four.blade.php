@@ -72,22 +72,13 @@
      <div class="sm:d-grid sm:grid-col-12 sm:mt-3">
          <div class="form__field">
              <label for="mapAddress">
-                Upload a Google Maps screenshot in jpg/pdf format showing the route from Every Nation BGC or Market
-                Market to your location
-                 <span data-required="true" aria-hidden="true"></span>
-             </label>
-             <input value="" id="mapAddress" type="file" name="mapAddress" autocomplete="map address" required
-                 style="padding" accept=".jpeg, .jpg, .png">
-         </div>
-
-         {{-- <div class="mt-3 form__field">
-             <label for="noteAddress">
                  Upload a Google Maps screenshot in jpg/pdf format showing the route from Every Nation BGC or Market
                  Market to your location
                  <span data-required="true" aria-hidden="true"></span>
              </label>
-             <textarea id="noteAddress" name="noteAddress" rows="4" required></textarea>
-         </div> --}}
+             <input value="" id="mapAddress" type="file" name="mapAddress" autocomplete="map address" required
+                 style="padding" accept=".jpeg, .jpg, .png, .pdf">
+         </div>
      </div>
 
      <div class="d-flex flex-column-reverse sm:flex-row align-items-center justify-center sm:justify-end mt-4 sm:mt-5">

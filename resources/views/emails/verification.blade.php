@@ -341,7 +341,7 @@
                       <!-- Start Text -->                                
                       <tr>
                         <td align="left" class="headline-two text-dark-gray">
-                          Verify your email address
+                          Verify your Email Address
                           
                         </td>
                       </tr>
@@ -380,11 +380,7 @@
                       <!-- Start Text -->                               
                      
                       </tr>
-                      <!-- End Text -->
-                      <tr>
-                        <td class="spacer-lg"></td>
-                      </tr>
-                      <!-- Start Text -->                                
+                            
                       
                       <!-- End Text -->
                     </tbody>
@@ -433,11 +429,6 @@
                 <td class="spacer-md"></td>
               </tr>       
               <tr>
-                {{-- <td align="left" class="text-secondary">
-                  You are being contacted because you signed up for Company.
-                  <br />
-                  <a href="https://www.example.com" class="text-primary">Unsubscribe</a> | <a href="https://www.example.com" class="body text-primary">Privacy Policy</a> | <a href="https://www.example.com" class="body text-primary">Support</a>
-                </td> --}}
               </tr>    
             </tbody>           
           </table>

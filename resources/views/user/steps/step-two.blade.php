@@ -19,24 +19,17 @@
                 What was the date of the orientation?
                 <span data-required="true" aria-hidden="true"></span>
             </label>
-            <input value="" id="orientation-date" type="date" name="orientation_date"  autocomplete="orientation_date" required
-                max="{{ \Carbon\Carbon::now()->toDateString() }}">
+            <input value="" id="orientation-date" type="date" name="orientation_date"
+                autocomplete="orientation_date" required max="{{ \Carbon\Carbon::now()->toDateString() }}">
         </div>
-
-        {{-- <div class="form__field">
-            <label for="orientation-date">
-                What was the date of the orientation?
-                <span data-required="true" aria-hidden="true"></span>
-            </label>
-            <input id="orientation-date" type="text" name="orientation_date" required>
-        </div> --}}
 
         <div class="mt-3 form__field">
             <label for="orientation-proof">
                 Upload a screenshot in jpg/pdf format as proof of attendance
                 <span data-required="true" aria-hidden="true"></span>
             </label>
-            <input id="orientation-proof" type="file" name="orientation_proof" accept="image/*, application/pdf" required>
+            <input id="orientation-proof" type="file" name="orientation_proof" accept="image/*, application/pdf"
+                required>
         </div>
     </div>
 

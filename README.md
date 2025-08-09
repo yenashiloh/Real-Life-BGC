@@ -71,3 +71,5 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 <ul>
     <li>All the dedicated volunteers and staff of Real LIFE Foundation</li>
     <li>The students and families who inspire our mission</li>
+<li>The development team who made this system possible</li>
+</ul>

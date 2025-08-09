@@ -5,7 +5,8 @@ Real LIFE Foundation is a faith-based nonprofit organization in the Philippines 
 📋 Project Overview
 This web-based scholarship application system was developed to streamline the scholarship application process for both students and administrators. The platform eliminates the need for physical documents and manual communication, making the entire process more efficient and accessible.
 
-<b>MISSION<b>
+<strong>MISSION<strong>
+<br>
 To simplify the scholarship application process by:
 • Enabling students to easily apply online and submit requirements digitally
 • Allowing administrators to efficiently approve or decline applications

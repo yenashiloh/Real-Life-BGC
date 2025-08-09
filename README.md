@@ -15,7 +15,11 @@ To simplify the scholarship application process by:
 </ul>
 <br>
 <h2>🚀 <strong>FEATURES</strong></h2>
+<div align="center">
+    <img src="images/features-overview.png" alt="Features Overview" width="700">
+</div>
 <h3><strong>For Students</strong></h3>
+<img src="images/student-dashboard.png" alt="Student Dashboard" width="500" align="right">
 <ul>
     <li><strong>User Registration & Login</strong> - Secure account creation and authentication</li>
     <li><strong>Online Application Form</strong> - Comprehensive scholarship application with multiple sections</li>
@@ -23,7 +27,9 @@ To simplify the scholarship application process by:
     <li><strong>Application Status Tracking</strong> - Real-time monitoring of application progress</li>
     <li><strong>Automatic Email Notifications</strong> - Instant updates when application status changes</li>
 </ul>
+<br clear="all">
 <h3><strong>For Administrators</strong></h3>
+<img src="images/admin-dashboard.png" alt="Admin Dashboard" width="500" align="left">
 <ul>
     <li><strong>Admin Dashboard</strong> - Centralized management interface</li>
     <li><strong>Application Management</strong> - Review, approve, or decline student applications</li>
@@ -33,6 +39,7 @@ To simplify the scholarship application process by:
     <li><strong>Google Drive Integration</strong> - Automatic upload of student documents to Google Drive for cloud storage</li>
     <li><strong>Admin Account Management</strong> - Create and manage additional administrator accounts</li>
 </ul>
+<br clear="all">
 <h2>🛠️ <strong>TECHNOLOGY STACK</strong></h2>
 <ul>
     <li><strong>Frontend:</strong> HTML5, CSS3, Bootstrap 5, JavaScript</li>
@@ -49,6 +56,66 @@ To simplify the scholarship application process by:
     <li>MySQL >= 5.7</li>
     <li>Node.js & NPM (for asset compilation)</li>
 </ul>
+<h3><strong>Setup Instructions</strong></h3>
+<strong>1. Clone the repository</strong>
+git clone https://github.com/yourusername/reallife-scholarship-system.git
+cd reallife-scholarship-system
+
+<strong>2. Install PHP dependencies</strong>
+composer install
+
+<strong>3. Install JavaScript dependencies</strong>
+npm install
+
+<strong>4. Environment Configuration</strong>
+cp .env.example .env
+php artisan key:generate
+
+<strong>5. Configure your .env file</strong>
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=reallife_scholarship
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+
+MAIL_MAILER=smtp
+MAIL_HOST=your_smtp_host
+MAIL_PORT=587
+MAIL_USERNAME=your_email
+MAIL_PASSWORD=your_password
+MAIL_ENCRYPTION=tls
+
+# Google Drive API Configuration
+GOOGLE_DRIVE_CLIENT_ID=your_google_client_id
+GOOGLE_DRIVE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_DRIVE_REFRESH_TOKEN=your_refresh_token
+GOOGLE_DRIVE_FOLDER_ID=your_drive_folder_id
+
+<strong>6. Database Setup</strong>
+php artisan migrate
+php artisan db:seed
+
+<strong>7. Start the Server</strong>
+php artisan serve
+
+<h2>📁 <strong>PROJECT STRUCTURE</strong></h2>
+
+Real-Life-BGC/
+├── app/
+│   ├── Http/Controllers/
+│   ├── Models/
+│   └── Mail/
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── public/
+├── resources/
+│   ├── views/
+│   ├── css/
+│   └── js/
+├── routes/
+└── storage/
 
 <h2>🔒 <strong>SECURITY FEATURES</strong></h2>
 <ul>

@@ -66,7 +66,7 @@ To simplify the scholarship application process by:
 </ul>
 <h2>📝 <strong>LICENSE</strong></h2>
 This project is licensed under the MIT License - see the LICENSE.md file for details.
-<br>
+<br><br>
 <strong>ACKNOWLEDGEMENTS</strong></h2>
 <ul>
     <li>All the dedicated volunteers and staff of Real LIFE Foundation</li>

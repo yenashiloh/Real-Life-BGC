@@ -1,4 +1,4 @@
-<h1>Real LIFE Foundation BGC Scholarship Application System</h1>
+<h1>Real LIFE BGC Scholarship Application System</h1>
 <strong>Real LIFE Foundation</strong> is a faith-based nonprofit organization in the Philippines dedicated to serving and empowering underprivileged youth through educational assistance, character formation, and leadership development.
 <h2>📋 <strong>PROJECT OVERVIEW</strong></h2>
 <br>

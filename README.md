@@ -60,7 +60,7 @@ To simplify the scholarship application process by:
 <strong>1. Clone the repository</strong>
 <pre>
 <code>
-git clone https://github.com/yourusername/reallife-scholarship-system.git
+git clone https://github.com/yenashiloh/Real-Life-BGC.git
 cd reallife-scholarship-system
 </code>
 </pre>

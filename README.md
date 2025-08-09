@@ -128,7 +128,7 @@ npm run build
 php artisan serve
 </code>
 </pre>
-Visit <code>http://localhost:8000</code> to access the application.
+Visit <code>http://127.0.0.1:8000</code> to access the application.
 <h2>📁 <strong>PROJECT STRUCTURE</strong></h2>
 <pre>
 <code>

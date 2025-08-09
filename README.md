@@ -18,11 +18,7 @@ To simplify the scholarship application process by:
 </ul>
 <br>
 <h2>🚀 <strong>FEATURES</strong></h2>
-<div align="center">
-    <img src="images/features-overview.png" alt="Features Overview" width="700">
-</div>
 <h3><strong>For Students</strong></h3>
-<img src="images/student-dashboard.png" alt="Student Dashboard" width="500" align="right">
 <ul>
     <li><strong>User Registration & Login</strong> - Secure account creation and authentication</li>
     <li><strong>Online Application Form</strong> - Comprehensive scholarship application with multiple sections</li>
@@ -32,7 +28,6 @@ To simplify the scholarship application process by:
 </ul>
 <br clear="all">
 <h3><strong>For Administrators</strong></h3>
-<img src="images/admin-dashboard.png" alt="Admin Dashboard" width="500" align="left">
 <ul>
     <li><strong>Admin Dashboard</strong> - Centralized management interface</li>
     <li><strong>Application Management</strong> - Review, approve, or decline student applications</li>

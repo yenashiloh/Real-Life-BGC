@@ -58,20 +58,34 @@ To simplify the scholarship application process by:
 </ul>
 <h3><strong>Setup Instructions</strong></h3>
 <strong>1. Clone the repository</strong>
+<pre>
+<code>
 git clone https://github.com/yourusername/reallife-scholarship-system.git
 cd reallife-scholarship-system
-
+</code>
+</pre>
 <strong>2. Install PHP dependencies</strong>
+<pre>
+<code>
 composer install
-
+</code>
+</pre>
 <strong>3. Install JavaScript dependencies</strong>
+<pre>
+<code>
 npm install
-
+</code>
+</pre>
 <strong>4. Environment Configuration</strong>
+<pre>
+<code>
 cp .env.example .env
 php artisan key:generate
-
+</code>
+</pre>
 <strong>5. Configure your .env file</strong>
+<pre>
+<code>
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -91,17 +105,34 @@ GOOGLE_DRIVE_CLIENT_ID=your_google_client_id
 GOOGLE_DRIVE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_DRIVE_REFRESH_TOKEN=your_refresh_token
 GOOGLE_DRIVE_FOLDER_ID=your_drive_folder_id
-
+</code>
+</pre>
 <strong>6. Database Setup</strong>
+<pre>
+<code>
 php artisan migrate
 php artisan db:seed
-
-<strong>7. Start the Server</strong>
+</code>
+</pre>
+<strong>7. Compile Assets</strong>
+<pre>
+<code>
+npm run dev
+# or for production
+npm run build
+</code>
+</pre>
+<strong>8. Start the Server</strong>
+<pre>
+<code>
 php artisan serve
-
+</code>
+</pre>
+Visit <code>http://localhost:8000</code> to access the application.
 <h2>📁 <strong>PROJECT STRUCTURE</strong></h2>
-
-Real-Life-BGC/
+<pre>
+<code>
+reallife-scholarship-system/
 ├── app/
 │   ├── Http/Controllers/
 │   ├── Models/
@@ -116,7 +147,35 @@ Real-Life-BGC/
 │   └── js/
 ├── routes/
 └── storage/
-
+</code>
+</pre>
+<h2>🎯 <strong>USAGE</strong></h2>
+<h3><strong>For Students</strong></h3>
+<ul>
+    <li><strong>Register</strong> for a new account or <strong>Login</strong> with existing credentials</li>
+    <li><strong>Complete</strong> the scholarship application form</li>
+    <li><strong>Upload</strong> all required documents (ID, grades, certificates, etc.)</li>
+    <li><strong>Submit</strong> your application</li>
+    <li><strong>Track</strong> your application status and receive email updates</li>
+</ul>
+<h3><strong>For Administrators</strong></h3>
+<ul>
+    <li><strong>Login</strong> to the admin dashboard</li>
+    <li><strong>Review</strong> submitted applications</li>
+    <li><strong>Download/View</strong> student documents</li>
+    <li><strong>Update</strong> application status (Pending/Approved/Declined)</li>
+    <li><strong>Use search/filter</strong> to manage applications efficiently</li>
+    <li><strong>Create new admin accounts</strong> for additional staff members</li>
+    <li><strong>Manage admin user permissions</strong> and access levels</li>
+</ul>
+<h2>📧 <strong>EMAIL NOTIFICATIONS</strong></h2>
+The system automatically sends email notifications to students when:
+<ul>
+    <li>Application is successfully submitted</li>
+    <li>Application status is changed by admin</li>
+    <li>Additional documents are required</li>
+    <li>Scholarship decision is finalized</li>
+</ul>
 <h2>🔒 <strong>SECURITY FEATURES</strong></h2>
 <ul>
     <li>Password hashing and secure authentication</li>
@@ -128,14 +187,23 @@ Real-Life-BGC/
     <li>Google Drive API secure authentication</li>
     <li>Encrypted file storage in cloud</li>
 </ul>
-
+<h2>🤝 <strong>CONTRIBUTING</strong></h2>
+<ul>
+    <li>Fork the repository</li>
+    <li>Create a feature branch (<code>git checkout -b feature/AmazingFeature</code>)</li>
+    <li>Commit your changes (<code>git commit -m 'Add some AmazingFeature'</code>)</li>
+    <li>Push to the branch (<code>git push origin feature/AmazingFeature</code>)</li>
+    <li>Open a Pull Request</li>
 </ul>
 <h2>📝 <strong>LICENSE</strong></h2>
 This project is licensed under the MIT License - see the LICENSE.md file for details.
-<br><br>
-<strong>ACKNOWLEDGEMENTS</strong></h2>
+<h2>📞 <strong>CONTACT</strong></h2>
+<ul>
+    <li>Email: shiloheugenio21@gmail.com</li>
+</ul>
+<h2>🙏 <strong>ACKNOWLEDGEMENTS</strong></h2>
 <ul>
     <li>All the dedicated volunteers and staff of Real LIFE Foundation</li>
     <li>The students and families who inspire our mission</li>
-<li>The development team who made this system possible</li>
+    <li>The development team who made this system possible</li>
 </ul>

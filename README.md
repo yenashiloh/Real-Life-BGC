@@ -1,4 +1,4 @@
-<h1>Real LIFE Foundation Scholarship Application System</h1>
+<h1>Real LIFE Foundation BGC Scholarship Application System</h1>
 <strong>Real LIFE Foundation</strong> is a faith-based nonprofit organization in the Philippines dedicated to serving and empowering underprivileged youth through educational assistance, character formation, and leadership development.
 <h2>📋 <strong>PROJECT OVERVIEW</strong></h2>
 <br>
@@ -50,3 +50,56 @@ To simplify the scholarship application process by:
     <li>Node.js & NPM (for asset compilation)</li>
 </ul>
 <h3><strong>Setup Instructions</strong></h3>
+
+<h2>🎯 <strong>USAGE</strong></h2>
+<h3><strong>For Students</strong></h3>
+<ul>
+    <li><strong>Register</strong> for a new account or <strong>Login</strong> with existing credentials</li>
+    <li><strong>Complete</strong> the scholarship application form</li>
+    <li><strong>Upload</strong> all required documents (ID, grades, certificates, etc.)</li>
+    <li><strong>Submit</strong> your application</li>
+    <li><strong>Track</strong> your application status and receive email updates</li>
+</ul>
+<h3><strong>For Administrators</strong></h3>
+<ul>
+    <li><strong>Login</strong> to the admin dashboard</li>
+    <li><strong>Review</strong> submitted applications</li>
+    <li><strong>Download/View</strong> student documents</li>
+    <li><strong>Update</strong> application status (Pending/Approved/Declined)</li>
+    <li><strong>Use search/filter</strong> to manage applications efficiently</li>
+    <li><strong>Create new admin accounts</strong> for additional staff members</li>
+    <li><strong>Manage admin user permissions</strong> and access levels</li>
+</ul>
+<h2>📧 <strong>EMAIL NOTIFICATIONS</strong></h2>
+The system automatically sends email notifications to students when:
+<ul>
+    <li>Application is successfully submitted</li>
+    <li>Application status is changed by admin</li>
+    <li>Additional documents are required</li>
+    <li>Scholarship decision is finalized</li>
+</ul>
+<h2>🔒 <strong>SECURITY FEATURES</strong></h2>
+<ul>
+    <li>Password hashing and secure authentication</li>
+    <li>CSRF protection</li>
+    <li>File upload validation and security</li>
+    <li>Role-based access control (Admin vs Student roles)</li>
+    <li>Admin account creation permissions</li>
+    <li>Secure session management</li>
+    <li>Google Drive API secure authentication</li>
+    <li>Encrypted file storage in cloud</li>
+</ul>
+<h2>🤝 <strong>CONTRIBUTING</strong></h2>
+<ul>
+    <li>Fork the repository</li>
+    <li>Create a feature branch (<code>git checkout -b feature/AmazingFeature</code>)</li>
+    <li>Commit your changes (<code>git commit -m 'Add some AmazingFeature'</code>)</li>
+    <li>Push to the branch (<code>git push origin feature/AmazingFeature</code>)</li>
+    <li>Open a Pull Request</li>
+</ul>
+<h2>📝 <strong>LICENSE</strong></h2>
+This project is licensed under the MIT License - see the LICENSE.md file for details.
+<strong>ACKNOWLEDGEMENTS</strong></h2>
+<ul>
+    <li>All the dedicated volunteers and staff of Real LIFE Foundation</li>
+    <li>The students and families who inspire our mission</li>

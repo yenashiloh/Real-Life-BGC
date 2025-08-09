@@ -161,14 +161,7 @@ reallife-scholarship-system/
     <li>Google Drive API secure authentication</li>
     <li>Encrypted file storage in cloud</li>
 </ul>
-<h2>🤝 <strong>CONTRIBUTING</strong></h2>
-<ul>
-    <li>Fork the repository</li>
-    <li>Create a feature branch (<code>git checkout -b feature/AmazingFeature</code>)</li>
-    <li>Commit your changes (<code>git commit -m 'Add some AmazingFeature'</code>)</li>
-    <li>Push to the branch (<code>git push origin feature/AmazingFeature</code>)</li>
-    <li>Open a Pull Request</li>
-</ul>
+
 <h2>📝 <strong>LICENSE</strong></h2>
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 <h2>📞 <strong>CONTACT</strong></h2>

@@ -49,7 +49,6 @@ To simplify the scholarship application process by:
     <li>MySQL >= 5.7</li>
     <li>Node.js & NPM (for asset compilation)</li>
 </ul>
-<h3><strong>Setup Instructions</strong></h3>
 
 <h2>🔒 <strong>SECURITY FEATURES</strong></h2>
 <ul>

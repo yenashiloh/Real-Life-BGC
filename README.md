@@ -149,33 +149,7 @@ reallife-scholarship-system/
 └── storage/
 </code>
 </pre>
-<h2>🎯 <strong>USAGE</strong></h2>
-<h3><strong>For Students</strong></h3>
-<ul>
-    <li><strong>Register</strong> for a new account or <strong>Login</strong> with existing credentials</li>
-    <li><strong>Complete</strong> the scholarship application form</li>
-    <li><strong>Upload</strong> all required documents (ID, grades, certificates, etc.)</li>
-    <li><strong>Submit</strong> your application</li>
-    <li><strong>Track</strong> your application status and receive email updates</li>
-</ul>
-<h3><strong>For Administrators</strong></h3>
-<ul>
-    <li><strong>Login</strong> to the admin dashboard</li>
-    <li><strong>Review</strong> submitted applications</li>
-    <li><strong>Download/View</strong> student documents</li>
-    <li><strong>Update</strong> application status (Pending/Approved/Declined)</li>
-    <li><strong>Use search/filter</strong> to manage applications efficiently</li>
-    <li><strong>Create new admin accounts</strong> for additional staff members</li>
-    <li><strong>Manage admin user permissions</strong> and access levels</li>
-</ul>
-<h2>📧 <strong>EMAIL NOTIFICATIONS</strong></h2>
-The system automatically sends email notifications to students when:
-<ul>
-    <li>Application is successfully submitted</li>
-    <li>Application status is changed by admin</li>
-    <li>Additional documents are required</li>
-    <li>Scholarship decision is finalized</li>
-</ul>
+
 <h2>🔒 <strong>SECURITY FEATURES</strong></h2>
 <ul>
     <li>Password hashing and secure authentication</li>

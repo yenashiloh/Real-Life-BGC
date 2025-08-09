@@ -1,71 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real LIFE Foundation Scholarship Application System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1, h2, h3 {
-            color: #2c3e50;
-        }
-        h1 {
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        h2 {
-            color: #34495e;
-            margin-top: 30px;
-        }
-        ul {
-            margin: 15px 0;
-            padding-left: 20px;
-        }
-        li {
-            margin: 8px 0;
-        }
-        .feature-section {
-            background: #f8f9fa;
-            padding: 15px;
-            border-left: 4px solid #3498db;
-            margin: 15px 0;
-        }
-        .tech-stack {
-            background: #e8f6f3;
-            padding: 15px;
-            border-radius: 5px;
-        }
-        code {
-            background: #f1f2f6;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: 'Courier New', monospace;
-        }
-        .installation-step {
-            background: #fff3cd;
-            padding: 10px;
-            margin: 10px 0;
-            border-left: 4px solid #ffc107;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Real LIFE Foundation Scholarship Application System</h1>
+     <h1>Real LIFE Foundation Scholarship Application System</h1>
         
         <p><strong>Real LIFE Foundation</strong> is a faith-based nonprofit organization in the Philippines dedicated to serving and empowering underprivileged youth through educational assistance, character formation, and leadership development.</p>
 
@@ -269,9 +202,3 @@
             <li>The students and families who inspire our mission</li>
             <li>The development team who made this system possible</li>
         </ul>
-
-        <hr>
-        <p style="text-align: center;"><strong>Empowering Youth Through Education</strong> 🎓</p>
-    </div>
-</body>
-</html>

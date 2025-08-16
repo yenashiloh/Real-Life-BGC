@@ -161,7 +161,7 @@ reallife-scholarship-system/
 </ul>
 
 <h2>📝 <strong>LICENSE</strong></h2>
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+<p>This project is licensed under the MIT License - see the <a href="https://github.com/yenashiloh/Real-Life-BGC/blob/main/LICENSE.md">LICENSE.md</a> file for details.</p>
 <h2>📞 <strong>CONTACT</strong></h2>
 <ul>
     <li>Email: shiloheugenio21@gmail.com</li>

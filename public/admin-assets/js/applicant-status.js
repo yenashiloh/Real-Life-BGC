@@ -6,7 +6,6 @@ function showMessage(options) {
         if (typeof Swal !== 'undefined' && isOnline) {
             Swal.fire(options).then(resolve);
         } else {
-            // Fallback for offline or when SweetAlert is not available
             const message = `${options.title}\n\n${options.text}`;
             alert(message);
             resolve({ isConfirmed: confirm("Proceed?") });
@@ -15,7 +14,6 @@ function showMessage(options) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Check if SweetAlert2 is available
     if (typeof window.Swal === 'undefined') {
         console.warn('SweetAlert2 is not loaded. Using fallback alert method.');
     } else {
@@ -252,13 +250,38 @@ function getDropdownContent(applicantId, newStatus) {
 }
 
 function showSuccessMessage(applicantId, newStatus) {
-    const applicantFullName = document.getElementById('status-' + applicantId).closest('tr').querySelector('td:nth-child(3)').textContent;
-    Swal.fire({
-        title: 'Success',
-        text: `${applicantFullName} is now ${newStatus}`,
-        icon: 'success',
-        confirmButtonText: 'OK'
-    });
+    try {
+        let row = document.querySelector(`#status-${applicantId}`);
+        
+        if (!row) {
+            row = document.querySelector(`[data-applicant-id="${applicantId}"]`);
+        }
+
+        if (row) {
+            row = row.closest('tr');
+        }
+
+        if (!row) {
+            throw new Error(`Could not find row for applicant ID ${applicantId}`);
+        }
+        
+        const applicantFullName = row.querySelector('td:nth-child(3)').textContent.trim();
+        
+        Swal.fire({
+            title: 'Success',
+            text: `${applicantFullName} is now ${newStatus}`,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    } catch (error) {
+        console.error('Error in showSuccessMessage:', error);
+        Swal.fire({
+            title: 'Success',
+            text: `Applicant status updated to ${newStatus}`,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    }
 }
 
 function initializeDataTables() {

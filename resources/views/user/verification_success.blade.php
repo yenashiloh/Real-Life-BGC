@@ -55,7 +55,6 @@
             margin: 0 auto;
         }
     
-        /* SVG Styling */
         .svg-success {
             display: inline-block;
             vertical-align: top;
@@ -151,7 +150,7 @@
     </style>
     
     <body class="d-flex align-items-center justify-content-center" style="min-height: 100vh; padding-left: 15px; padding-right: 15px;">
-        <div class="card px-3"> <!-- Add Bootstrap padding utility here -->
+        <div class="card px-3"> 
             <h1 class="mt-4 fw-bold">Email Successfully Verified!</h1>
             <div class="container mt-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="svg-success" viewBox="0 0 24 24">

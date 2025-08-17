@@ -14,11 +14,10 @@ class AdminsTableSeeder extends Seeder
     {
         DB::table('admins')->insert([
             [
-                'first_name' => 'Pearloucelle',
-                'last_name' => 'Buenaventura',
-                'email' => 'pearl@gmail.com',
-                'password' => bcrypt('adminpassword'), 
-                'contact_number' => '09659865359',
+                'first_name' => 'REAL LIFE',
+                'last_name' => 'BGC',
+                'email' => 'bgc@reallife.ph',
+                'password' => bcrypt('RealLifeBGC2024'), 
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

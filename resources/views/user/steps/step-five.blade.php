@@ -71,56 +71,10 @@
     </div>
 
     <h2 class="mt-3" id="gradesLabel">Grades</h2>
-    {{-- <div class="sm:d-grid sm:grid-col-2">
-      <div class="form__field" id="firstGeneralAverageField" style="display: none;">
-          <label for="firstGeneralAverage" id="firstGeneralAverage-label">
-              Grade General Average
-              <span data-required="true" aria-hidden="true"></span>
-          </label>
-          <input value="" type="number" id="firstGeneralAverage" name="firstGeneralAverage"
-              autocomplete="firstGeneralAverage">
-      </div>
 
-      <div class="form__field" id="secondGeneralAverageField" style="display: none;">
-          <label for="secondGeneralAverage" id="secondGeneralAverage-label">
-              Grade General Average
-              <span data-required="true" aria-hidden="true"></span>
-          </label>
-          <input value="" type="number" id="secondGeneralAverage"
-              name="secondGeneralAverage" autocomplete="secondGeneralAverage">
-      </div>
-
-      <div class="form__field" id="latestAverageField" style="display: none;">
-          <label for="latestAverage" id="latestAverage-label">
-              Latest General Average
-              <span data-required="true" aria-hidden="true"></span>
-          </label>
-          <input value="" type="number" id="latestAverage" name="latestAverage"
-              autocomplete="latestAverage">
-      </div>
-
-      <div class="form__field" id="latestGWAField" style="display: none;">
-          <label for="latestGWA" id="latestGWA-label">
-              Latest Grade Weighted Average
-              <span data-required="true" aria-hidden="true"></span>
-          </label>
-          <input value="" id="latestGWA" type="number" name="latestGWA"
-              autocomplete="latestGWA">
-      </div>
-
-      <div class="form__field">
-          <label for="scopeGWA" id="scopeGWA-label">
-              Scope of Latest GWA
-              <span data-required="true" aria-hidden="true"></span>
-              <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">Ex.
-                  1st Semester/ 2nd Grading</span>
-          </label>
-          <input value="" id="scopeGWA" type="text" name="scopeGWA"
-              autocomplete="current school" required>
-      </div>
-  </div> --}}
     <div class="sm:d-grid sm:grid-col-3" id="additionalFields">
     </div>
+
     <div class="mt-3 form__field" id="reasonGradesField" style="display: none;">
         <label for="reasonGrades">
             If the grade is below 88%, specify the reason (or enter 'N/A' if not applicable)
@@ -130,36 +84,6 @@
     </div>
     
     <div class="sm:d-grid sm:grid-col-2">
-        {{-- <div class="form__field" id="equivalentGradeField" style="display: none;">
-              <label for="equivalentGrade">
-                  Grade Weighted Average Percentage Equivalent
-                  <span data-required="true" aria-hidden="true"></span>
-              </label>
-              <input value="" id="equivalentGrade" type="number" name="equivalentGrade"
-                  autocomplete="equivalent grade">
-          </div> --}}
-
-        {{-- <div class="mb-3 form__field mt-3" id="ReportCardField">
-              <label for="ReportCard">
-                  Report Card
-                  <span data-required="true" aria-hidden="true"></span>
-                  <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">PDF
-                      only</span>
-              </label>
-              <input value="" id="ReportCard" type="file" name="ReportCard" autocomplete="report card"
-                  required style="padding" accept=".pdf">
-          </div>
-
-          <div class="mb-3 form__field mt-3" id="GradingField">
-              <label for="gradingSystem">
-                  Grading System
-                  <span data-required="true" aria-hidden="true"></span>
-                  <span style="margin-left: 15px; color: red; font-size: 10px; font-weight: normal;">PDF
-                      only</span>
-              </label>
-              <input type="file" id="gradingSystem" name="gradingSystem" required class="w-full">
-
-          </div> --}}
     </div>
 
     <h1 id="schoolApplicationHeader" style="display: none; font-weight: bold;">School Application</h1>

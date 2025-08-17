@@ -134,39 +134,28 @@
                                                         value="{{ $personalInfo->municipality ?? '' }}">
                                                 </div>
 
-                                                <div class="col-md-8">
-                                                    <div class="d-flex flex-column align-items-start">
-                                                        <label for="map-address" class="form-label fw-bold mb-2">Map
-                                                            Address: </label>
+                                                <div class="col-12 col-md-8">
+                                                    <div class="d-flex flex-column flex-md-row align-items-start">
+                                                        <label for="map-address" class="form-label fw-bold mb-0 me-2">Map Address: </label>
                                                         @php
                                                             $filename = basename($personalInfo->mapAddress);
-                                                            $filePath = public_path(
-                                                                'storage/map-addresses/' . $filename,
-                                                            );
+                                                            $filePath = public_path('storage/map-addresses/' . $filename);
                                                             $fileUrl = asset('storage/map-addresses/' . $filename);
-                                                            $isImage = in_array(
-                                                                strtolower(pathinfo($filename, PATHINFO_EXTENSION)),
-                                                                ['jpg', 'jpeg', 'png', 'gif'],
-                                                            );
+                                                            $isImage = in_array(strtolower(pathinfo($filename, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']);
                                                         @endphp
-
+                                                
                                                         @if ($isImage)
-                                                            <a href="{{ $fileUrl }}" target="_blank"
-                                                                class="btn btn-link p-0">
-                                                                <img src="{{ $fileUrl }}" alt="Map Address"
-                                                                    class="img-fluid rounded"
-                                                                    style="max-width: 40%; height: auto;">
+                                                            <a href="{{ $fileUrl }}" target="_blank" class="btn btn-link p-0">
+                                                                <i class="fas fa-file-download"></i> {{ $filename }}
                                                             </a>
                                                         @else
-                                                            <a href="{{ $fileUrl }}" target="_blank"
-                                                                class="btn btn-link p-0">
-                                                                <i class="fas fa-file-download"></i>
-                                                                {{ $filename }}
+                                                            <a href="{{ $fileUrl }}" target="_blank" class="btn btn-link p-0">
+                                                                <i class="fas fa-file-download"></i> {{ $filename }}
                                                             </a>
                                                         @endif
-
+                                                
                                                         @if (!file_exists($filePath))
-                                                            <p class="text-danger mt-2">Map Address file not found</p>
+                                                            <p class="text-danger mt-2 ms-2">Map Address file not found</p>
                                                         @endif
                                                     </div>
                                                 </div>

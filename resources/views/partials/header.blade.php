@@ -19,9 +19,6 @@
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="assets-applicant/css/bootstrap.min.css" type="text/css">
-    {{-- <link rel="stylesheet" href="../../../admin-assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../../../admin-assets/css/plugins.min.css" />
-    <link rel="stylesheet" href="../../../admin-assets/css/kaiadmin.min.css" /> --}}
     <link rel="stylesheet" href="assets-applicant/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="assets-applicant/css/elegant-icons.css" type="text/css">
     <link rel="stylesheet" href="assets-applicant/css/flaticon.css" type="text/css">
@@ -42,8 +39,7 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body style="background-color: #fafafa;">
-
+<body style="background-color: #fafafa;" >
     @php
         if (auth()->check()) {
             $personalInfo = auth()->user()->personalInformation()->first();

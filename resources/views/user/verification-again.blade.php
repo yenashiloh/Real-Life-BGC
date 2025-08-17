@@ -123,20 +123,17 @@
         const successAlert = document.getElementById('success-alert');
         const errorAlert = document.getElementById('error-alert');
 
-        // Function to smoothly fade and remove the alert
         const fadeOutAlert = (alertElement) => {
             if (alertElement) {
                 alertElement.classList.remove('show');
                 alertElement.classList.add('fade');
-
-                // Wait for the fade-out transition to finish before removing the alert from the DOM
                 setTimeout(() => {
-                    alertElement.remove(); // Remove from DOM after the fade transition
-                }, 500); // Match the duration of the fade transition
+                    alertElement.remove(); 
+                }, 500);
             }
         };
 
         fadeOutAlert(successAlert);
         fadeOutAlert(errorAlert);
-    }, 3000); // Trigger the fade-out after 3 seconds
+    }, 3000); 
 </script>

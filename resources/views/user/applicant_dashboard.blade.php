@@ -136,7 +136,7 @@
                                 <h4 class="card-title fw-bold">Monitoring Checklist</h4>
                             </div>
                         </div>
-                        <div class="container">
+                        <div class="container-fluid px-0">
                             <div class="row">
                                 <div class="d-flex align-items-center">
                                     <p class="text-muted mt-2">

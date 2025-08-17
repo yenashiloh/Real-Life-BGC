@@ -53,7 +53,7 @@
                     </li>
                     <li>If a college student, must be enrolled in a state university or a private school that charges
                         not
-                        more than Phpl 5,000 per semester for tuition and miscellaneous fees</li>
+                        more than Php l5,000 per semester for tuition and miscellaneous fees</li>
                 </ul>
             </div>
             <div class="faq-question shadow-sm " onclick="toggleFAQ(this)">

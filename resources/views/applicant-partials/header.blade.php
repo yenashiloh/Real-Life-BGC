@@ -25,8 +25,6 @@
 
     <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
         <div class="container-fluid">
-
-
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
                 <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
@@ -41,7 +39,7 @@
                         </form>
                     </ul>
                 </li>
-
+{{-- 
                 @if (isset($applicantNotifications) && count($applicantNotifications) > 0)
                     <li class="nav-item topbar-icon dropdown hidden-caret">
                         <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button"
@@ -101,7 +99,7 @@
                             </li>
                         </ul>
                     </li>
-                @endif
+                @endif --}}
                 <li class="nav-item topbar-user dropdown hidden-caret">
                     <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                         aria-expanded="false">
@@ -129,7 +127,7 @@
                             </li>
                             <li>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('user.profile') }}">My Profile</a>
+                                {{-- <a class="dropdown-item" href="{{ route('user.profile') }}">My Profile</a> --}}
                                 <a class="dropdown-item" href="{{ route('user.change_password') }}">Settings</a>
                                 <a class="dropdown-item" onclick="confirmLogout(); return false; "
                                     href="">Logout</a>

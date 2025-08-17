@@ -16,152 +16,19 @@
     <link rel="stylesheet" href="../../assets-login/vendors/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../assets-login/css/style.css">
     <!-- End layout styles -->
-    <style>
-        /* Default Styling for larger devices */
-        .form-group a {
-            font-size: 14px;
-        }
-
-        .apply_now a {
-            font-size: 14px;
-        }
-
-        /* Responsive Styling for large screens */
-        @media (max-width: 1200px) {
-
-            /* Large Screens */
-            .form-group a {
-                font-size: 14px;
-            }
-
-            .apply_now a {
-                font-size: 14px;
-            }
-        }
-
-        /* Responsive Styling for medium screens */
-        @media (max-width: 992px) {
-
-            /* Medium Screens (Tablets) */
-            .form-group a {
-                font-size: 13px;
-            }
-
-            .apply_now a {
-                font-size: 13px;
-            }
-        }
-
-        /* Responsive Styling for small screens (mobile portrait) */
-        @media (max-width: 768px) {
-
-            /* Small Screens */
-            .form-group a {
-                font-size: 12px;
-            }
-
-            .apply_now a {
-                font-size: 12px;
-            }
-
-            /* Flexbox to make checkbox and link on the same row */
-            .form-group .d-flex {
-                flex-direction: row !important;
-                /* Ensure both elements stay on the same row */
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .form-group .d-flex a {
-                font-size: 12px;
-                /* Adjust font size for mobile */
-            }
-
-            /* Adjust checkbox size for smaller screens */
-            .form-group input[type="checkbox"] {
-                transform: scale(0.85);
-                /* Scale down checkbox to fit better */
-            }
-
-            /* Adjust Apply Now link font size for small screens */
-            .form-group .apply_now a {
-                font-size: 12px;
-            }
-        }
-
-        /* Extra Small Screens */
-        @media (max-width: 576px) {
-
-            /* Very small screens */
-            .form-group a {
-                font-size: 11px;
-                /* Reduce font size further */
-            }
-
-            .apply_now a {
-                font-size: 11px;
-            }
-
-            .form-group .d-flex {
-                flex-direction: row !important;
-                /* Ensure elements stay in the same row */
-                align-items: center;
-                justify-content: space-between;
-                /* Space out the elements */
-            }
-
-            /* Further reduce checkbox size for very small screens */
-            .form-group input[type="checkbox"] {
-                transform: scale(0.8);
-                /* Even smaller checkbox */
-            }
-
-            /* Adjust font sizes for small screen devices */
-            .form-group .d-flex a {
-                font-size: 11px;
-            }
-
-            /* Make the 'Remember me' and 'Forgot password?' text more compact on iPhones */
-            .form-group .d-flex {
-                flex-wrap: wrap;
-                justify-content: flex-start;
-            }
-        }
-
-        /* iPhone specific adjustments (for screen sizes < 667px wide) */
-        @media (max-width: 667px) {
-
-            /* iPhone and small mobile screens */
-            .form-group .d-flex {
-                flex-direction: row !important;
-                /* Force row layout */
-                justify-content: space-between;
-                /* Ensure elements stay spaced */
-            }
-
-            .form-group .d-flex input[type="checkbox"] {
-                transform: scale(0.75);
-                /* Further scale down checkbox */
-            }
-
-            .form-group .d-flex a {
-                font-size: 10px;
-                /* Reduce font size further */
-            }
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
+ 
 </head>
-
+<style>
+    body {
+  font-family: 'Poppins', sans-serif;
+}
+</style>
 <body>
     <div class="container-scroller">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
             <div class="content-wrapper d-flex align-items-center auth">
                 <div class="row flex-grow">
-                    <div class="col-lg-4 mx-auto">
+                    <div class="col-lg-5 mx-auto">
                         <div class="auth-form-light text-left p-5 pt-3 pb-3">
 
                             <div class="brand-logo d-flex justify-content-center align-items-center "

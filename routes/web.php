@@ -36,9 +36,6 @@ Route::middleware(['guest', 'PreventBackHistory'])->group(function () {
     Route::get('/login', [ApplicantController::class, 'login'])->name('login');
     Route::post('/login', [ApplicantController::class, 'loginPost'])->name('login.post');
 
-    Route::get('/register', [ApplicantController::class, 'register'])->name('register');
-    Route::post('/register', [ApplicantController::class, 'registerPost'])->name('register.post');
-
     //APPLICANT APPLICATION FORM
     Route::get('/registration', [ApplicantController::class, 'registration'])->name('registration');
     Route::post('/registration', [ApplicantController::class, 'screeningPost'])->name('screening.post');
@@ -70,7 +67,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
 
     Route::post('/user/change-password', [ApplicantController::class, 'changePassword'])->name('change.password');
     Route::get('/applicant_dashboard', [ApplicantController::class, 'applicantDashboard'])->name('user.applicant_dashboard');
-    Route::get('/change_password', [ApplicantController::class, 'viewChangePassword'])->name('user.change_password');
+    Route::get('/change-password', [ApplicantController::class, 'viewChangePassword'])->name('user.change_password');
     Route::post('/add-requirements', [ApplicantController::class, 'store']);
 
     Route::post('/change-applicant-status/{applicant_id}', [ApplicantController::class, 'changeStatus'])->name('change.applicant.status');
@@ -86,7 +83,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function () {
     Route::post('/documents/{id}', [ApplicantController::class, 'update'])->name('update_document');
     Route::get('/documents/{id}', [ApplicantController::class, 'showEdit'])->name('show_document');
 
-    Route::get('/upload/documents', [DocumentsController::class, 'showUploadDocuments'])->name('user.documents.upload-documents');
+    Route::get('/documents', [DocumentsController::class, 'showUploadDocuments'])->name('user.documents.upload-documents');
     Route::post('/apply-again', [ApplicantController::class, 'applyAgain'])->name('apply.again');
 
 });
@@ -110,7 +107,7 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::post('/change-password', [AdminController::class, 'changePassword'])->name('admin.password-update');
 
     //ANNOUNCEMENT
-    Route::get('/announcement/admin-announcement', [AdminController::class, 'showAnnouncement'])->name('admin.announcement.admin-announcement');
+    Route::get('/admin-announcement', [AdminController::class, 'showAnnouncement'])->name('admin.announcement.admin-announcement');
     Route::get('/announcement/add-announcement', [AdminController::class, 'addAnnouncement'])->name('admin.announcement.add-announcement');
     Route::post('/announcement/add-announcement', [AdminController::class, 'saveAnnouncement'])->name('admin.save-announcement');
     // Route::delete('/delete-announcement/{id}', [AdminController::class, 'deleteAnnouncement'])->name('delete.announcement');
@@ -129,18 +126,18 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/admin/get-dashboard-data', [AdminController::class, 'getDashboardData'])->name('admin.get-dashboard-data');
 
     //DATA APPLICANTS 
-    Route::get('/applicants/new_applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
+    Route::get('/all-applicants', [AdminController::class, 'showNewApplicants'])->name('admin.applicants.new_applicants');
     Route::get('/applicants-data', [AdminController::class, 'getApplicantsData'])->name('applicants.data');
 
     //DECLINED APPLICANTS
-    Route::get('/applicants/declined_applicants', [AdminController::class, 'showDeclinedApplicants'])->name('admin.applicants.declined_applicants');
+    Route::get('/declined-applicants', [AdminController::class, 'showDeclinedApplicants'])->name('admin.applicants.declined_applicants');
     Route::get('/applicants-declined', [AdminController::class, 'getDeclinedData'])->name('declined.data');
 
     //UPDATE STATUS
     Route::post('/applicants/new-applicants/update-status', [AdminController::class, 'updateStatus'])->name('update.status');
 
     //APPROVED DECLINED APPLICANTS
-    Route::get('/applicants/approved_applicants', [AdminController::class, 'showApprovedApplicants'])->name('admin.applicants.approved_applicants');
+    Route::get('/approved-applicants', [AdminController::class, 'showApprovedApplicants'])->name('admin.applicants.approved_applicants');
     Route::get('/applicants-approved', [AdminController::class, 'getApprovedData'])->name('approved.data');
 
     //VIEW DATA OF APPLICANTS
@@ -167,7 +164,7 @@ Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
     Route::get('/export.declined.applicants', [AdminController::class, 'exportDeclined'])->name('export.declined.applicants');
 
     //EMAIL CONTENT
-    Route::get('/email/email', [EmailController::class, 'emailShow'])->name('admin.email.email');
+    Route::get('/email', [EmailController::class, 'emailShow'])->name('admin.email.email');
     Route::prefix('/email')->name('admin.email.')->group(function () {
         Route::post('/save-under-review-content', [EmailController::class, 'saveUnderReviewContent'])->name('save-under-review-content');
         Route::post('/save-shortlisted-content', [EmailController::class, 'saveShortlistedContent'])->name('save-shortlisted-content');

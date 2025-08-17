@@ -3,6 +3,13 @@
 <p>Real LIFE Foundation believes that education is the most effective way to empower individuals to lift themselves out of poverty. The organization provides comprehensive financial aid to scholars that goes beyond covering tuition and miscellaneous fees. The foundation also provides school-related expenses including supplies, uniforms, and other educational materials, ensuring scholars can comply with school requirements and excel in their academic projects. Weekly allowances are provided to cover transportation and meals, removing financial barriers that could hinder academic success.</p>
 <p>The foundation empowers scholars by giving them the freedom to choose their preferred course strand or program, allowing senior high school and college students to develop their natural strengths and interests. This approach helps students pursue their passions while building the skills needed for future success.</p>
 
+<div align="center">
+
+  <img src="https://github.com/yenashiloh/Real-Life-BGC/blob/main/public/assets/img/rl-hero.png" alt="Hero Section" width="800">
+ 
+  <br><br>
+</div>
+
 <h2>📋 <strong>PROJECT OVERVIEW</strong></h2>
 <br>
 This web-based scholarship application system was developed to streamline the scholarship application process for both students and administrators. The platform eliminates the need for physical documents and manual communication, making the entire process more efficient and accessible.

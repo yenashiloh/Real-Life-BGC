@@ -6,7 +6,8 @@
 <div align="center">
 
   <img src="https://github.com/yenashiloh/Real-Life-BGC/blob/main/public/assets/img/rl-hero.png" alt="Hero Section" width="800">
-  <img src="https://github.com/yenashiloh/Real-Life-BGC/blob/main/public/assets/img/rl-mission.png" alt="Hero Section" width="800">
+  <img src="https://github.com/yenashiloh/Real-Life-BGC/blob/main/public/assets/img/rl-mission.png" alt="Mission" width="800">
+    <img src="https://github.com/yenashiloh/Real-Life-BGC/blob/main/public/assets/img/rl-character-formation.png" alt="Character Formation" width="800">
   <br><br>
 </div>
 

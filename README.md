@@ -10,6 +10,7 @@
   <img src="https://github.com/yenashiloh/Real-Life-BGC/blob/main/public/assets/img/rl-character-formation.png" alt="Character Formation" width="800">
   <img src="https://github.com/yenashiloh/Real-Life-BGC/blob/main/public/assets/img/rl-leadership.png" alt="Leadership Development" width="800">
   <img src="https://github.com/yenashiloh/Real-Life-BGC/blob/main/public/assets/img/rl-flow-1.png" alt="Leadership Development" width="800">
+  <img src="https://github.com/yenashiloh/Real-Life-BGC/blob/main/public/assets/img/rl-flow-2.png" alt="Leadership Development" width="800">
   <br><br>
 </div>
 
